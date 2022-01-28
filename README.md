@@ -6,4 +6,6 @@ Data-Forge Notebook will be open sourced in this code repository in 2022.
 
 [Read more about the decision here](https://github.com/data-forge-notebook/wiki/wiki/Future-Plans)
 
+[See the issues page to contribute to the discussion](https://github.com/data-forge-notebook/editor-core/issues)
+
 [Follow the developer on Twitter for more frequent news and updates](https://twitter.com/codecapers)
