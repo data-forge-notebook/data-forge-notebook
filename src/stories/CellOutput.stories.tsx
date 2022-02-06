@@ -1,19 +1,18 @@
 import React from 'react';
-
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { CellOutput } from '../notebook/cell/output/cell-output';
+import { ComponentMeta } from '@storybook/react';
+import { PluggableCellOutput } from '../notebook/cell/output/pluggable-cell-output';
 
 export default {
   title: 'Cell Output',
-  component: CellOutput,
-} as ComponentMeta<typeof CellOutput>;
+  component: PluggableCellOutput,
+} as ComponentMeta<typeof PluggableCellOutput>;
 
-//👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof CellOutput> = (args) => <CellOutput {...args} />;
-
-export const FirstStory = Template.bind({});
-
-FirstStory.args = {
-  /*👇 The args you need here will depend on your component */
-};
+export const StructuredData = () => 
+    <PluggableCellOutput
+        config={{
+            data: {
+                some: "data",
+                array: [1, 2, 3],
+            },
+        }}
+        />

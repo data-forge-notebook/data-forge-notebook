@@ -1,4 +1,5 @@
 import { loadMonaco } from '../src/__fixtures__/load-monaco';
+import "../src/__fixtures__/services/plugin-repository";
 
 export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },

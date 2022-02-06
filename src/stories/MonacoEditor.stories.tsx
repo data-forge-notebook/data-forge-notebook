@@ -17,8 +17,8 @@ export default {
 //👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof MonacoEditor> = (args) => <MonacoEditor {...args} />;
 
-export const FirstStory = Template.bind({});
+export const BasicUseCase = Template.bind({});
 
-FirstStory.args = {
+BasicUseCase.args = {
   /*👇 The args you need here will depend on your component */
 };

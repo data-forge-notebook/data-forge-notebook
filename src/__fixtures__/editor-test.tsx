@@ -1,7 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { MonacoEditor } from "../components/monaco-editor";
+import { PluggableCellOutput } from "../notebook/cell/output/pluggable-cell-output";
 import { loadMonaco } from "./load-monaco";
+import "./services/plugin-repository";
 
 console.log("Loading Monaco...");
 loadMonaco()
@@ -19,7 +21,18 @@ loadMonaco()
 function App() {
     return (
         <div>
-            <MonacoEditor />            
+            <h1>Monaco Editor test:</h1>
+            <MonacoEditor />       
+            <hr />
+            <h1>Cell output test:</h1>     
+            <PluggableCellOutput
+                config={{
+                    data: {
+                        some: "data",
+                        array: [1, 2, 3],
+                    },
+                }}
+                />
         </div>
     );
 }

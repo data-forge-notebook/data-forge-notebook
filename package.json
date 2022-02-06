@@ -13,7 +13,7 @@
     "devDependencies": {
         "@babel/core": "^7.17.0",
         "@storybook/addon-actions": "^6.4.18",
-    "@storybook/addon-docs": "^6.4.18",
+        "@storybook/addon-docs": "^6.4.18",
         "@storybook/addon-essentials": "^6.4.18",
         "@storybook/addon-links": "^6.4.18",
         "@storybook/react": "^6.4.18",
@@ -37,6 +37,8 @@
         "webpack-dev-server": "^3.10.3"
     },
     "dependencies": {
+        "@codecapers/fusion": "^1.0.13",
+        "axios": "^0.25.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "source-map-support": "^0.5.19"
