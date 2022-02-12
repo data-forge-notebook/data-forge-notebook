@@ -20,15 +20,7 @@ module.exports = {
 
     devServer: {
         contentBase: outputDir,
-        hotOnly: true,
-
-        // https://medium.com/@drgenejones/proxying-an-external-api-with-webpack-serve-code-and-a-restful-data-from-separate-endpoints-4da9b8daf430
-        proxy: {
-            '/api': {
-                target: 'http://localhost:3000',
-                secure: false
-            }
-        },
+        hot: false,
     },
 
     resolve: {
@@ -38,12 +30,6 @@ module.exports = {
 
     module: {
         rules: [
-            {
-                test: /\.jsx?$/,
-                loader: "shebang-loader",
-            },
-
-            // { test: /\.tsx?$/, loader: "awesome-typescript-loader", options: { transpileOnly: true } },
             { 
                 test: /\.tsx?$/, 
                 loader: "ts-loader", 
