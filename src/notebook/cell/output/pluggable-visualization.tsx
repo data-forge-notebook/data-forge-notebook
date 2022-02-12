@@ -6,14 +6,14 @@ import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import * as React from 'react';
 import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../services/plugin-repository';
 
-export interface IPluggableCellOutputProps {
+export interface IPluggableVisualizationProps {
     //
     // Plugin configuration.
     //
     config: IPluginConfig;
 }
 
-export interface IPluggableCellOutputState {
+export interface IPluggableVisualizationState {
     //
     // The visulization plugin, once loaded.
     //
@@ -21,7 +21,7 @@ export interface IPluggableCellOutputState {
 }
 
 @InjectableClass()
-export class PluggableCellOutput extends React.Component<IPluggableCellOutputProps, IPluggableCellOutputState> {
+export class PluggableVisualization extends React.Component<IPluggableVisualizationProps, IPluggableVisualizationState> {
 
     @InjectProperty(IPluginRepo_ID)
     pluginRepo!: IPluginRepo;
@@ -31,7 +31,7 @@ export class PluggableCellOutput extends React.Component<IPluggableCellOutputPro
     //
     private iframeRef: React.RefObject<HTMLIFrameElement>;
 
-    constructor(props: IPluggableCellOutputProps) {
+    constructor(props: IPluggableVisualizationProps) {
         super(props);
 
         this.state = {};
