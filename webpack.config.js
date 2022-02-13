@@ -47,8 +47,5 @@ module.exports = {
             eslint: false
         }),
         new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript', excludeWarnings: false }),        
-
-        // https://hackernoon.com/react-with-typescript-and-webpack-654f93f34db6
-        new webpack.HotModuleReplacementPlugin(),
     ],
 };
