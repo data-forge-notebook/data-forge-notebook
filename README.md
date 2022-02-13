@@ -22,7 +22,15 @@ npm install
 
 ## Run the main browser entry point
 
-This shows the whole notebook editor.
+This runs the whole notebook editor in the browser.
+
+```bash
+npm start
+```
+
+## Run the main Electron entry point
+
+This runs the whole notebook editor in Electron.
 
 ```bash
 npm start
@@ -43,3 +51,11 @@ Storybox showcases various configurations for UI components.
 ```bash
 npm run storybook
 ```
+
+## Build the TypeScript code
+
+```bash
+npm run build
+```
+
+Compiled JavaScript code is output to `ts-build`.

@@ -10,7 +10,10 @@
         "s": "npm run start",
         "storybook": "start-storybook -s ./ -p 6006",
         "sb": "npm run storybook",
-        "build-storybook": "build-storybook"
+        "build-storybook": "build-storybook",
+        "b": "npm run build",
+        "build": "tsc --incremental",
+        "clean": "rm -rf ts-build && rm -rf tsconfig.tsbuildinfo"
     },
     "devDependencies": {
         "@babel/core": "^7.17.0",
@@ -30,7 +33,7 @@
         "requirejs": "^2.3.6",
         "source-map-loader": "^0.2.4",
         "ts-loader": "^6.2.2",
-        "typescript": "^3.8.3",
+        "typescript": "^4.5.5",
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.11",
         "webpack-dev-server": "^3.10.3"
