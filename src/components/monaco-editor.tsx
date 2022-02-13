@@ -66,7 +66,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
                 ref={this.containerElement} 
                 style={{
                     width: "100%",
-                    height: "600px",
+                    height: "300px",
                     border: "1px solid gray",
                 }}
                 />
