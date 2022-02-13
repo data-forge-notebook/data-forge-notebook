@@ -6,7 +6,7 @@ const outputDir = __dirname;
 
 module.exports = {
     entry: {
-        "editor-test": "./src/__fixtures__/editor-test.tsx",
+        "testbed": "./src/__fixtures__/testbed.tsx",
     },
     output: {
         filename: "[name].js",
