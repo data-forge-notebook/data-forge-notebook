@@ -10,6 +10,9 @@ Data-Forge Notebook will be open sourced in this code repository in 2022.
 
 [Follow the developer on Twitter for more frequent news and updates](https://twitter.com/codecapers)
 
+
+TODO: DOCO TESTBED VS MAIN VS ELECTRON
+
 ## Run it 
 
 Clone this repo locally and change to that directory.

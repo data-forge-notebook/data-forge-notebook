@@ -4,6 +4,8 @@
     "description": "Data-Forge Notebook Editor-core.",
     "author": "ashley@codecapers.com.au",
     "scripts": {
+        "testbed": "webpack-dev-server --open --open-page testbed.html",
+        "tb": "npm run testbed",
         "start": "webpack-dev-server --open --open-page index.html",
         "s": "npm run start",
         "storybook": "start-storybook -s ./ -p 6006",

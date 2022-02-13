@@ -6,6 +6,7 @@ const outputDir = __dirname;
 
 module.exports = {
     entry: {
+        "index": "./src/index.tsx",
         "testbed": "./src/__fixtures__/testbed.tsx",
     },
     output: {
