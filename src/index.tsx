@@ -31,7 +31,7 @@ function App() {
             </p>
             <MonacoEditor />       
             <hr />
-            <h1>Cell output test:</h1>     
+            <h1>Pluggable visualization test run:</h1>     
             <PluggableVisualization
                 config={{
                     data: {

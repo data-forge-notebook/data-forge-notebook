@@ -10,12 +10,9 @@ Data-Forge Notebook will be open sourced in this code repository in 2022.
 
 [Follow the developer on Twitter for more frequent news and updates](https://twitter.com/codecapers)
 
+## Setup 
 
-TODO: DOCO TESTBED VS MAIN VS ELECTRON
-
-## Run it 
-
-Clone this repo locally and change to that directory.
+Clone this repo locally, open a terminal and change to the local directory.
 
 Install dependencies:
 
@@ -23,13 +20,25 @@ Install dependencies:
 npm install
 ```
 
-Run the dev server:
+## Run the main browser entry point
+
+This shows the whole notebook editor.
 
 ```bash
 npm start
 ```
 
+## Run the testbed
+
+The testbed is used for testing selected UI components.
+
+```bash
+npm run testbed
+```
+
 ## Run Storybook
+
+Storybox showcases various configurations for UI components.
 
 ```bash
 npm run storybook
