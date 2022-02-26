@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { MonacoEditor } from "../components/monaco-editor";
-import { PluggableVisualization } from "../notebook/cell/output/pluggable-visualization";
-import { loadMonaco } from "./load-monaco";
-import "./services/plugin-repository";
+import { MonacoEditor } from "./components/monaco-editor";
+import { PluggableVisualization } from "./notebook/cell/output/pluggable-visualization";
+import { loadMonaco } from "./__fixtures__/load-monaco-browser";
+import "./__fixtures__/services/plugin-repository";
 
 console.log("Loading Monaco...");
 loadMonaco()

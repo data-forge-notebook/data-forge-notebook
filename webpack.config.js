@@ -6,8 +6,8 @@ const outputDir = __dirname;
 
 module.exports = {
     entry: {
-        "index": "./src/index.tsx",
-        "testbed": "./src/__fixtures__/testbed.tsx",
+        "browser": "./src/browser.tsx",
+        "testbed": "./src/testbed.tsx",
     },
     output: {
         filename: "[name].js",

@@ -6,23 +6,20 @@ export function loadMonaco() {
         var script = document.createElement('script');
         script.onload = () => {
             const amdRequire = window.require as any;
-        amdRequire.config({
-            baseUrl: "lib/monaco-editor/min",
-        });
+            amdRequire.config({
+                baseUrl: "lib/monaco-editor/min",
+            });
 
-        // workaround monaco-css not understanding the environment
-        (self as any).module = undefined;
-    
-        amdRequire(
-            ['vs/editor/editor.main'], 
-            () => {
+            amdRequire(
+                ['vs/editor/editor.main'], 
+                () => {
                     console.log(`Monaco was loaded!`);
-                resolve();
-            },
-            (err: any) => {
-                reject(err);
-            }
-        );
+                    resolve();
+                },
+                (err: any) => {
+                    reject(err);
+                }
+            );
         };
 
         script.setAttribute('src', './node_modules/requirejs/require.js');

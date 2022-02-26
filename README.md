@@ -2,7 +2,7 @@
 
 The core repository for Data-Forge Notebook's editor. Reused in the Electron and Online builds.
 
-Data-Forge Notebook will be open sourced in this code repository in 2022.
+Data-Forge Notebook is being open sourced in this code repository in 2022.
 
 [Read more about the decision here](https://github.com/data-forge-notebook/wiki/wiki/Future-Plans)
 
@@ -20,7 +20,7 @@ Install dependencies:
 npm install
 ```
 
-## Run the main browser entry point
+## Run the browser shell
 
 This runs the whole notebook editor in the browser.
 
@@ -28,12 +28,12 @@ This runs the whole notebook editor in the browser.
 npm start
 ```
 
-## Run the main Electron entry point
+## Run the Electron shell
 
 This runs the whole notebook editor in Electron.
 
 ```bash
-npm start
+npm run electron
 ```
 
 ## Run the testbed
