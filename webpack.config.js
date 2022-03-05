@@ -10,6 +10,7 @@ module.exports = {
     entry: {
         "browser": "./src/browser.tsx",
         "testbed": "./src/testbed.tsx",
+        "electron": "./src/electron.tsx",
 		'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
 		'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
 		'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
@@ -83,6 +84,10 @@ module.exports = {
                 },
                 {
                     from: "./src/testbed.html",
+                    to: outputDir,
+                },
+                {
+                    from: "./src/electron.html",
                     to: outputDir,
                 },
             ],

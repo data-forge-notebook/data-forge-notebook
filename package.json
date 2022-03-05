@@ -16,7 +16,7 @@
     "build-storybook": "build-storybook",
     "clean": "rm -rf ./dist ts-build tsconfig.tsbuildinfo",
     "compile": "tsc --incremental",
-    "electron": "npm run compile && electron .",
+    "electron": "npm run compile && webpack --target node && electron .",
     "e": "npm run electron"
   },
   "devDependencies": {
