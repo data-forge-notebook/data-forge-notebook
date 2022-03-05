@@ -1,16 +1,24 @@
 const webpack = require('webpack');
 const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require("path");
 
-const outputDir = __dirname;
+const outputDir = path.resolve(__dirname, "dist");
 
 module.exports = {
     entry: {
         "browser": "./src/browser.tsx",
         "testbed": "./src/testbed.tsx",
+		'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
+		'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
+		'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
+		'html.worker': 'monaco-editor/esm/vs/language/html/html.worker',
+		'ts.worker': 'monaco-editor/esm/vs/language/typescript/ts.worker'
     },
     output: {
-        filename: "[name].js",
+        globalObject: 'self',
+        filename: "[name].bundle.js",
         path: outputDir,
     },
 
@@ -20,7 +28,9 @@ module.exports = {
     devtool: "inline-source-map",
 
     devServer: {
-        contentBase: outputDir,
+        static: {
+            directory: outputDir,
+        },
         hot: false,
     },
 
@@ -31,6 +41,16 @@ module.exports = {
 
     module: {
         rules: [
+            {
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
+			},
+
+			{
+				test: /\.ttf$/,
+				use: ['file-loader']
+			},
+
             { 
                 test: /\.tsx?$/, 
                 loader: "ts-loader", 
@@ -43,9 +63,29 @@ module.exports = {
     },
 
     plugins: [
-        new ForkTsCheckerWebpackPlugin({
-            eslint: false
+        
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
         }),
+
+        new webpack.EnvironmentPlugin({
+            // Configure environment variables here.
+        }),
+
+        new ForkTsCheckerWebpackPlugin(),
         new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript', excludeWarnings: false }),        
+
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: "./src/browser.html",
+                    to: outputDir,
+                },
+                {
+                    from: "./src/testbed.html",
+                    to: outputDir,
+                },
+            ],
+        }),
     ],
 };

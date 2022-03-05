@@ -2,21 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { MonacoEditor } from "./components/monaco-editor";
 import { PluggableVisualization } from "./notebook/cell/output/pluggable-visualization";
-import { loadMonaco } from "./__fixtures__/load-monaco-browser";
 import "./__fixtures__/services/plugin-repository";
-
-console.log("Loading Monaco...");
-loadMonaco()
-    .then(() => {
-        console.log("Monaco loaded!");
-
-        render();
-    })
-    .catch(err => {
-        console.error("Failed to load Monaco!");
-        console.error(err && err.stack || err);
-    });
-
 
 function App() {
     return (
@@ -37,6 +23,4 @@ function App() {
     );
 }
 
-function render() {
-    ReactDOM.render(<App />, document.getElementById("root"));
-}
+ReactDOM.render(<App />, document.getElementById("root"));
