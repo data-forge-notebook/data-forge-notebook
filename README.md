@@ -30,10 +30,16 @@ npm start
 
 ## Run the Electron shell
 
-This runs the whole notebook editor in Electron.
+This runs the whole notebook editor in Electron (with a static build):
 
 ```bash
 npm run electron
+```
+
+To run in Electron with live reload:
+
+```bash
+npm run electron:live
 ```
 
 ## Run the testbed
@@ -66,6 +72,5 @@ Clone a plugin repo, for example
 [the structured data plugin](https://github.com/data-forge-notebook/output-plugin-structured-data).
 
 Install dependencies (`npm install`) and then run the web server for the local plugin (usually `npm start` or `npm run start:dev`).
-
 
 Open `editor-core/src/__fixtures__/services/plugin-repository.ts` and set `pluginUrl` to the local URL for the plugin web server (e.g.  http://127.0.0.1:5000).

@@ -19,8 +19,10 @@
     "build-storybook": "build-storybook",
     "clean": "rm -rf ./dist ts-build tsconfig.tsbuildinfo",
     "compile": "tsc --incremental",
-    "electron": "npm run compile && concurrently --names=\"serve,electron\" --kill-others \"npm run serve-electron\" \"electron .\"",
-    "e": "npm run electron"
+    "electron": "npm run compile && npm run build-electron && cross-env ENTRY=dist/electron/electron.html electron .",
+    "e": "npm run electron",
+    "electron:live": "npm run compile && concurrently --names=\"serve,electron\" --kill-others \"npm run serve-electron\" \"cross-env ENTRY=http://localhost:8080/electron.html electron .\"",
+    "el": "npm run electron:live"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
@@ -38,6 +40,7 @@
     "babel-loader": "^8.2.3",
     "concurrently": "^7.0.0",
     "copy-webpack-plugin": "^10.2.4",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.6.0",
     "electron": "^17.0.0",
     "file-loader": "^6.2.0",

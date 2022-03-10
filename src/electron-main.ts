@@ -4,6 +4,11 @@
 
 const { app, BrowserWindow } = require('electron');
 
+const ENTRY = process.env.ENTRY;
+if (!ENTRY) {
+    throw new Error(`Env var ENTRY is not defined. This should specify the entry point for the Electron browser process.`);
+}
+
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
@@ -15,7 +20,14 @@ const createWindow = () => {
         },
     });
 
-    win.loadURL('http://localhost:8080/electron.html');
+    if (ENTRY.startsWith("http://")) {
+        console.log(`Loading URL ${ENTRY}`);
+        win.loadURL(ENTRY);
+    }
+    else {
+        console.log(`Loading file ${ENTRY}`);
+        win.loadFile('dist/electron/electron.html');
+    }
 }
 
 app.whenReady().then(() => {
