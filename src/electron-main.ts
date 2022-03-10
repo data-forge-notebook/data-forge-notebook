@@ -15,7 +15,7 @@ const createWindow = () => {
         },
     });
 
-    win.loadFile('dist/electron/electron.html');
+    win.loadURL('http://localhost:8080/electron.html');
 }
 
 app.whenReady().then(() => {

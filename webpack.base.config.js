@@ -9,7 +9,7 @@ module.exports = function (env) {
     const outputDir = path.resolve(__dirname, "dist", env);
 
     const targets = {
-        electron: "node",
+        electron: "web",
         default: "web",
     };
 
