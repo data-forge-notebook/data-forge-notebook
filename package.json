@@ -19,7 +19,7 @@
     "build-storybook": "build-storybook",
     "clean": "rm -rf ./dist ts-build tsconfig.tsbuildinfo",
     "compile": "tsc --incremental",
-    "electron": "npm run compile && npm run build-electron && cross-env ENTRY=dist/electron/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron .",
+    "electron": "concurrently --names=\"build main,build browser\" \"npm run compile\" \"npm run build-electron\" && cross-env ENTRY=dist/electron/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron .",
     "e": "npm run electron",
     "electron:live": "npm run compile && concurrently --names=\"serve,electron\" --kill-others \"npm run serve-electron\" \"cross-env ENTRY=http://localhost:8080/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron .\"",
     "el": "npm run electron:live"
