@@ -50,7 +50,7 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
-    "@codecapers/fusion": "^1.0.13",
+    "@codecapers/fusion": "^1.0.14",
     "axios": "^0.25.0",
     "monaco-editor": "^0.32.1",
     "react": "^16.13.1",
