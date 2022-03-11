@@ -90,6 +90,22 @@ module.exports = function (env) {
                         from: `./src/${env}.html`,
                         to: outputDir,
                     },
+                    {
+                        from: `./node_modules/normalize.css/normalize.css`,
+                        to: outputDir,
+                    },
+                    {
+                        from: `././node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css`,
+                        to: outputDir,
+                    },
+                    {
+                        from: `./node_modules/@blueprintjs/core/lib/css/blueprint.css`,
+                        to: outputDir,
+                    },
+                    {
+                        from: `./src/styles`,
+                        to: outputDir,
+                    },
                 ],
             }),
         ],

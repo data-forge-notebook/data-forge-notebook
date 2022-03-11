@@ -19,7 +19,7 @@
     "build-storybook": "build-storybook",
     "clean": "rm -rf ./dist ts-build tsconfig.tsbuildinfo",
     "compile": "tsc --incremental",
-    "electron": "concurrently --names=\"build main,build browser\" \"npm run compile\" \"npm run build-electron\" && cross-env ENTRY=dist/electron/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron .",
+    "electron": "concurrently --names=\"build main,build electron\" \"npm run compile\" \"npm run build-electron\" && cross-env ENTRY=dist/electron/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron .",
     "e": "npm run electron",
     "electron:live": "npm run compile && concurrently --names=\"serve,electron\" --kill-others \"npm run serve-electron\" \"cross-env ENTRY=http://localhost:8080/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron .\"",
     "el": "npm run electron:live",
@@ -69,6 +69,9 @@
     "axios": "^0.26.0",
     "monaco-editor": "^0.32.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/icons": "^3.4.0",
+    "normalize.css": "^8.0.0"
   }
 }

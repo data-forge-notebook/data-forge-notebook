@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import { MonacoEditor } from "./components/monaco-editor";
 import { PluggableVisualization } from "./notebook/cell/output/pluggable-visualization";
 import "./__fixtures__/services/plugin-repository";
+import { Button } from "@blueprintjs/core";
 
 function App() {
     return (
