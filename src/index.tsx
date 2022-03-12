@@ -3,7 +3,7 @@ import { MonacoEditor } from "./components/monaco-editor";
 import { PluggableVisualization } from "./notebook/cell/output/pluggable-visualization";
 import { Button } from "@blueprintjs/core";
 
-export default function NotebookEditor() {
+export function NotebookEditor() {
     return (
         <div>
             <Button icon="refresh" />

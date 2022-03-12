@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import "./__fixtures__/services/plugin-repository";
-import NotebookEditor from ".";
+import { NotebookEditor } from ".";
 
 function App() {
     return (
