@@ -26,7 +26,7 @@ const createWindow = () => {
     }
     else {
         console.log(`Loading file ${ENTRY}`);
-        win.loadFile('dist/electron/electron.html');
+        win.loadFile(ENTRY);
     }
 }
 
