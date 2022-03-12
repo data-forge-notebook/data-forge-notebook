@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import "./__fixtures__/services/plugin-repository";
-import { NotebookEditor } from ".";
+import "./services/plugin-repository";
+import { NotebookEditor } from "..";
 
 function App() {
     return (
         <div>
-            <h1>Data-Forge Notebook: Browser testing environment</h1>
+            <h1>Data-Forge Notebook: Electron testing environment</h1>
             <p>
                 The code for DFN is incremently being open sourced and 
                 there isn't much here yet.

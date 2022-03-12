@@ -15,7 +15,7 @@ module.exports = function (env) {
 
     return {
         entry: {
-            'index': `./src/${env}.tsx`,
+            'index': `./src/testbed/${env}.tsx`,
             'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
             'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
             'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
@@ -72,6 +72,7 @@ module.exports = function (env) {
     
         plugins: [
             
+            // https://stackoverflow.com/a/65018686/25868
             new webpack.ProvidePlugin({
                 process: 'process/browser',
             }),
@@ -87,7 +88,7 @@ module.exports = function (env) {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: `./src/${env}.html`,
+                        from: `./src/testbed/${env}.html`,
                         to: outputDir,
                     },
                     {
@@ -103,7 +104,7 @@ module.exports = function (env) {
                         to: outputDir,
                     },
                     {
-                        from: `./src/styles`,
+                        from: `./src/testbed/styles`,
                         to: outputDir,
                     },
                 ],
