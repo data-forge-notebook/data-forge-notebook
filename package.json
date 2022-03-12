@@ -1,6 +1,5 @@
 {
   "name": "data-forge-notebook-editor-core",
-  "version": "0.0.0",
   "description": "Data-Forge Notebook Editor-core.",
   "author": "ashley@codecapers.com.au",
   "main": "ts-build/electron-main.js",
