@@ -15,7 +15,11 @@ export default {
 } as ComponentMeta<typeof MonacoEditor>;
 
 //👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof MonacoEditor> = (args) => <MonacoEditor {...args} />;
+const Template: ComponentStory<typeof MonacoEditor> = (args) => (
+    <div className="border border-solid border-red">
+        <MonacoEditor {...args} />
+    </div>
+);
 
 export const BasicUseCase = Template.bind({});
 
