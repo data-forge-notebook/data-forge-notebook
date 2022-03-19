@@ -20,5 +20,17 @@ const Template: ComponentStory<typeof MonacoEditor> = (args) => <MonacoEditor {.
 export const BasicUseCase = Template.bind({});
 
 BasicUseCase.args = {
-  /*👇 The args you need here will depend on your component */
+  text: "async function hello() {\n}\n\nawait hello();\n\nconst x = 5;\n\nconst x = 3;",
+  language: "javascript",
+  onChange: async (updatedText: string): Promise<void> => {
+      console.log(`Text changed:`);
+      console.log(updatedText)
+  }
+};
+
+export const WorkingUseCase = Template.bind({});
+
+WorkingUseCase.args = {
+    ...BasicUseCase.args,
+    working: true,
 };

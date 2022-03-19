@@ -96,7 +96,7 @@ module.exports = function (env) {
                         to: outputDir,
                     },
                     {
-                        from: `././node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css`,
+                        from: `./node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css`,
                         to: outputDir,
                     },
                     {
