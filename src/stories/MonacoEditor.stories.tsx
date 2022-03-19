@@ -16,7 +16,7 @@ export default {
 
 //👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof MonacoEditor> = (args) => (
-    <div className="border border-solid border-red">
+    <div className="border border-solid border-red-600">
         <MonacoEditor {...args} />
     </div>
 );
@@ -38,3 +38,23 @@ WorkingUseCase.args = {
     ...BasicUseCase.args,
     working: true,
 };
+
+
+export const TwoEditorsSameModel = () => (
+    <div>
+        <div className="border border-solid border-red-600">
+            <MonacoEditor 
+                id="AAAA"
+                text={"const x = 1;"}
+                language="javascript"
+                />
+        </div>
+        <div className="border border-solid border-red-600">
+            <MonacoEditor 
+                id="AAAA"
+                text={"const x = 2;"}
+                language="javascript"
+                />
+        </div>
+    </div>
+);
