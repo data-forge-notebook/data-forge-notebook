@@ -43,8 +43,8 @@ export type SetCaretPositionEventHandler = (sender: IMonacoEditorViewModel, care
 export type FindNextMatchEventHandler = (startingPosition: ICaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails) => Promise<void>;
 export type SelectTextEventHandler = (range: ITextRange) => Promise<void>;
 export type ReplaceTextEventHandler = (range: ITextRange, replaceText: string) => Promise<void>;
-export type SelectionChangingEventHandler = (sender: IMonacoEditorViewModel, willBeSelected: boolean) => void;
-export type SelectionChangedEventHandler = (sender: IMonacoEditorViewModel) => void;
+export type EditorSelectionChangingEventHandler = (sender: IMonacoEditorViewModel, willBeSelected: boolean) => void;
+export type EditorSelectionChangedEventHandler = (sender: IMonacoEditorViewModel) => void;
 
 //
 // A position in the editor.
@@ -94,20 +94,20 @@ export interface ITextRange {
 export interface IMonacoEditorViewModel {
 
     //
-    // Get the code for the editor.
+    // Get the text from the editor.
     //
-    getCode(): string;
+    getText(): string;
 
     //
-    // Set the code for the editor.
+    // Set the text in the editor.
     // Marks the code as dirty if changed.
     //
-    setCode(code: string): Promise<boolean>;
+    setText(code: string): Promise<boolean>;
 
     //
-    // Event raised when the code in this editor has changed.
+    // Event raised when the text in this editor has changed.
     //
-    onCodeChanged: IEventSource<BasicEventHandler>;
+    onTextChanged: IEventSource<BasicEventHandler>;
 
     //
     // Returns true if this editor is currently selected.
@@ -125,14 +125,14 @@ export interface IMonacoEditorViewModel {
     deselect(): Promise<void>; 
 
     //
-    // Event raised when the selection is about to change.
+    // Event raised when the selected editor is about to change.
     //
-    onSelectionChanging: IEventSource<SelectionChangingEventHandler>; 
+    onEditorSelectionChanging: IEventSource<EditorSelectionChangingEventHandler>; 
 
     //
-    // Event raised when the selection for this editor has changed.
+    // Event raised when the selected editor has changed.
     //
-    onSelectionChanged: IEventSource<SelectionChangedEventHandler>; 
+    onEditorSelectionChanged: IEventSource<EditorSelectionChangedEventHandler>; 
 
     //
     // Focus the editor.

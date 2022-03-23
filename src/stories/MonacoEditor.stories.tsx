@@ -4,16 +4,16 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { MonacoEditor } from '../components/monaco-editor';
 import { EventSource, BasicEventHandler } from '../lib/event-source';
-import { FindNextMatchEventHandler, FocusedEventHandler, ReplaceTextEventHandler, SelectionChangedEventHandler, SelectTextEventHandler, SetCaretPositionEventHandler } from '../view-model/monaco-editor';
+import { FindNextMatchEventHandler, FocusedEventHandler, ReplaceTextEventHandler, EditorSelectionChangedEventHandler, SelectTextEventHandler, SetCaretPositionEventHandler } from '../view-model/monaco-editor';
 
 //👇 This default export determines where your story goes in the story list
 export default {
-  /* 👇 The title prop is optional.
-  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-  * to learn how to generate automatic titles
-  */
-  title: 'Monaco Editor',
-  component: MonacoEditor,
+    /* 👇 The title prop is optional.
+    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+    * to learn how to generate automatic titles
+    */
+    title: 'Monaco Editor',
+    component: MonacoEditor,
 } as ComponentMeta<typeof MonacoEditor>;
 
 //👇 We create a “template” of how args map to rendering
@@ -23,31 +23,13 @@ const Template: ComponentStory<typeof MonacoEditor> = (args) => (
     </div>
 );
 
-export const BasicUseCase = Template.bind({});
-
-BasicUseCase.args = {
-  text: "async function hello() {\n}\n\nawait hello();\n\nconst x = 5;\n\nconst x = 3;",
-  language: "javascript",
-  onChange: async (updatedText: string): Promise<void> => {
-      console.log(`Text changed:`);
-      console.log(updatedText)
-  }
-};
-
-export const WorkingUseCase = Template.bind({});
-
-WorkingUseCase.args = {
-    ...BasicUseCase.args,
-    working: true,
-};
-
 function makeModel(text: string): any {
 
-    const onCodeChanged = new EventSource<BasicEventHandler>("onCodeChanged");
+    const onTextChanged = new EventSource<BasicEventHandler>("onTextChanged");
     const onSetFocus = new EventSource<FocusedEventHandler>("onSetFocus");
     const onSetCaretPosition = new EventSource<SetCaretPositionEventHandler>("onSetCaretPosition");
-    const onSelectionChanging = new EventSource<SelectionChangedEventHandler>("onSelectionChanging");
-    const onSelectionChanged = new EventSource<SelectionChangedEventHandler>("onSelectionChanged");
+    const onEditorSelectionChanging = new EventSource<EditorSelectionChangedEventHandler>("onEditorSelectionChanging");
+    const onEditorSelectionChanged = new EventSource<EditorSelectionChangedEventHandler>("onEditorSelectionChanged");
     const onSelectText = new EventSource<SelectTextEventHandler>("onSelectText");
     const onDeselectText = new EventSource<BasicEventHandler>("onDeselectText");
     const onReplaceText = new EventSource<ReplaceTextEventHandler>("onReplaceText");
@@ -55,15 +37,15 @@ function makeModel(text: string): any {
     const onFindNextMatch = new EventSource<FindNextMatchEventHandler>("onFindNextMatch");
 
     const model: any = {
-        getCode: () => {
+        getText: () => {
             return text;
         },
 
-        setCode: async (_text: string): Promise<void> => {
-            text = _text;;
-            await onCodeChanged.raise();
+        setText: async (_text: string): Promise<void> => {
+            text = _text;
+            await onTextChanged.raise();
         },
-    
+
         setSelectedText: () => {
         },
 
@@ -75,36 +57,54 @@ function makeModel(text: string): any {
 
         },
 
-        onCodeChanged,
+        onTextChanged,
         onSetFocus,
         onSetCaretPosition,
-        onSelectionChanging,
-        onSelectionChanged,
+        onEditorSelectionChanging,
+        onEditorSelectionChanged,
         onSelectText,
         onDeselectText,
         onReplaceText,
         onFlushChanges,
         onFindNextMatch,
     };
+
     return model;
 }
 
+export const BasicUseCase = Template.bind({});
+
+BasicUseCase.args = {
+    model: makeModel("const x = 1;"),
+    language: "javascript",
+    onChange: async (updatedText: string): Promise<void> => {
+        console.log(`Text changed:`);
+        console.log(updatedText)
+    }
+};
+
+export const WorkingUseCase = Template.bind({});
+
+WorkingUseCase.args = {
+    ...BasicUseCase.args,
+    working: true,
+};
 
 export const TwoEditorsSameModel = () => {
     const model = makeModel("const x = 1");
     return (
         <div>
             <div className="border border-solid border-red-600">
-                <MonacoEditor 
+                <MonacoEditor
                     model={model}
                     language="javascript"
-                    />
+                />
             </div>
             <div className="border border-solid border-red-600">
-                <MonacoEditor 
+                <MonacoEditor
                     model={model}
                     language="javascript"
-                    />
+                />
             </div>
         </div>
     );
@@ -116,16 +116,16 @@ export const TwoEditorsDifferentModel = () => {
     return (
         <div>
             <div className="border border-solid border-red-600">
-                <MonacoEditor 
+                <MonacoEditor
                     model={modelA}
                     language="javascript"
-                    />
+                />
             </div>
             <div className="border border-solid border-red-600">
-                <MonacoEditor 
+                <MonacoEditor
                     model={modelB}
                     language="javascript"
-                    />
+                />
             </div>
         </div>
     );
