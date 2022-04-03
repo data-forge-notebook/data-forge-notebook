@@ -66,6 +66,12 @@ npm run build
 
 Compiled JavaScript code is output to `ts-build`.
 
+## Run automated test
+
+```bash
+npm tests
+```
+
 ## Test a local plugin
 
 Clone a plugin repo, for example
