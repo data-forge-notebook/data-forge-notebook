@@ -14,10 +14,18 @@ Data-Forge Notebook is being open sourced in this code repository in 2022.
 
 Clone this repo locally, open a terminal and change to the local directory.
 
-Install dependencies:
+This projects used `pnpm` instead of `npm` because it's so much faster.
+
+Install pnpm:
 
 ```bash
-npm install
+npm install -g pnpm
+```
+
+Install dependencies for this project:
+
+```bash
+pnpm install
 ```
 
 ## Run the browser shell
