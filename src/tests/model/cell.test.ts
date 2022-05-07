@@ -19,7 +19,7 @@ describe("model / cell", () => {
 
     test("can construct with last eval date", () => {
 
-        const theLastEvaluationDate = "2022-04-02T15:31:05.075+10:00";
+        const theLastEvaluationDate = moment().toISOString(true);
         const cell = new Cell("", CellType.Code, CellScope.Global, "", theLastEvaluationDate, undefined, [], []);
         expect(moment(cell.getLastEvaluationDate()).toISOString(true)).toEqual(theLastEvaluationDate);
     });
@@ -186,7 +186,7 @@ describe("model / cell", () => {
         const theId = "1234";
         const theCellScope = CellScope.Global;
         const theText = "const x = 3;";
-        const theLastEvaluationDate = "2022-04-02T15:31:05.075+10:00";
+        const theLastEvaluationDate = moment().toISOString(true);
         const theHeight = 18;
         const cell = new Cell(theId, CellType.Code, theCellScope, theText, theLastEvaluationDate, theHeight, [], []);
         expect(cell.serialize()).toEqual({
@@ -275,7 +275,7 @@ describe("model / cell", () => {
 
    test("can deserialize cell with evaluation date", () => {
 
-        const theLastEvaluationDate = "2022-04-02T15:31:05.075+10:00";
+        const theLastEvaluationDate = moment().toISOString(true);
         const cell = Cell.deserialize({
             id: "1234",
             cellType: CellType.Code,
