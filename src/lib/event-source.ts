@@ -37,18 +37,9 @@ export interface IEventSource<HandlerType extends Function> {
 export class EventSource<HandlerType extends Function> implements IEventSource<HandlerType> {
 
     //
-    // Name of the event, just for debugging.
-    //
-    private name: string;
-
-    //
     // Registered handlers for the event.
     //
     private handlers: Set<HandlerType> = new Set<HandlerType>();
-
-    constructor(name: string) {
-        this.name = name;
-    }
 
     //
     // Attach a handler for this event.

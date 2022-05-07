@@ -3,7 +3,8 @@ import * as monaco from 'monaco-editor';
 import { Spinner } from '@blueprintjs/core';
 import * as _ from 'lodash';
 import { asyncHandler, debounceAsync, handleAsyncErrors, throttleAsync } from '../lib/async-handler';
-import { ICaretPosition, IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from '../view-model/monaco-editor';
+import { IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from '../view-model/monaco-editor';
+import { IEditorCaretPosition } from '../view-model/editor-caret-position';
 
 let monacoInitialised = false;
 
@@ -186,7 +187,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         this.onWindowResize = _.throttle(this.onWindowResize.bind(this), 400, { leading: false, trailing: true });
         this.onSetFocus = this.onSetFocus.bind(this);
         this.onSetCaretPosition = this.onSetCaretPosition.bind(this);
-        this.onCodeChanged = this.onCodeChanged.bind(this);
+        this.onTextChanged = this.onTextChanged.bind(this);
         this.onFlushChanges = this.onFlushChanges.bind(this);
         this.props.model.caretPositionProvider = this.caretPositionProvider.bind(this);
         this.onEditorSelectionChanged = asyncHandler(this, this.onEditorSelectionChanged);
@@ -328,7 +329,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
 
         this.props.model.onSetFocus.attach(this.onSetFocus);
         this.props.model.onSetCaretPosition.attach(this.onSetCaretPosition);
-        this.props.model.onTextChanged.attach(this.onCodeChanged);
+        this.props.model.onTextChanged.attach(this.onTextChanged);
         this.props.model.onFlushChanges.attach(this.onFlushChanges);
         this.props.model.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
         this.props.model.onFindNextMatch.attach(this.onFindNextMatch);
@@ -381,7 +382,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         window.removeEventListener("resize", this.onWindowResize);
         this.props.model.onSetFocus.detach(this.onSetFocus);
         this.props.model.onSetCaretPosition.detach(this.onSetCaretPosition);
-        this.props.model.onTextChanged.detach(this.onCodeChanged);
+        this.props.model.onTextChanged.detach(this.onTextChanged);
         this.props.model.onFlushChanges.detach(this.onFlushChanges);
         this.props.model.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
         this.props.model.onFindNextMatch.detach(this.onFindNextMatch);
@@ -393,7 +394,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised on request to find the next match.
     //
-    private async onFindNextMatch(startingPosition: ICaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails): Promise<void> {
+    private async onFindNextMatch(startingPosition: IEditorCaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails): Promise<void> {
         if (this.editorModel) {
             if (searchDirection === SearchDirection.Backward && startingPosition.lineNumber === -1) {
                 // Need to search from the end of this cell.
@@ -589,7 +590,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Allows the view model to retreive the caret position.
     //
-    private caretPositionProvider(): ICaretPosition | null {
+    private caretPositionProvider(): IEditorCaretPosition | null {
         if (this.editor) {
             return this.editor.getPosition();
         }
@@ -598,7 +599,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }
 
-    private onSetCaretPosition(viewModel: IMonacoEditorViewModel, caretPosition: ICaretPosition): void {
+    private onSetCaretPosition(viewModel: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition): void {
         if (this.editor) {
             if (caretPosition) {
                 this.editor.setPosition(caretPosition);
@@ -606,7 +607,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }
 
-    private onCodeChanged(): void {
+    private onTextChanged(): void {
         if (!this.updatingCode) {
             if (this.editor) {
                 const updatedCode = this.props.model.getText();

@@ -60,7 +60,7 @@ describe("model / cell", () => {
         expect(cell.getOutput()).toEqual([]);
     });
 
-    test("can overwrite stale outputs", ()=> {
+    test("can overwrite stale outputs", () => {
 
         const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
         

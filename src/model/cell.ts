@@ -26,7 +26,7 @@ export interface ICell {
     //
     // Returns true when the cell is known to be in error.
     //
-    inError (): boolean;
+    inError(): boolean;
 
     //
     // Get the type of the cell.
@@ -67,7 +67,7 @@ export interface ICell {
     //
     // Get the output for the cell.
     //
-    getOutput (): ICellOutput[];
+    getOutput(): ICellOutput[];
 
     //
     // Clear the output of the cell.
@@ -127,7 +127,7 @@ export interface ICell {
     //
     // Serialize to a data structure suitable for serialization.
     //
-    serialize (): ISerializedCell1;
+    serialize(): ISerializedCell1;
 }
 
 export class Cell implements ICell {
@@ -184,7 +184,7 @@ export class Cell implements ICell {
     //
     height: number | undefined;
 
-    constructor (id: string, cellType: CellType, cellScope: CellScope | undefined, text: string, lastEvaluationDate: string | undefined, height: number | undefined, output: ICellOutput[], errors: ICellError[]) {
+    constructor(id: string, cellType: CellType, cellScope: CellScope | undefined, text: string, lastEvaluationDate: string | undefined, height: number | undefined, output: ICellOutput[], errors: ICellError[]) {
         this.id = id;
         this.cellType = cellType;
         this.cellScope = cellScope;
@@ -206,14 +206,14 @@ export class Cell implements ICell {
     //
     // Returns true when the cell is known to be in error.
     //
-    inError (): boolean {
+    inError(): boolean {
         return this.errors && this.errors.length > 0;
     }
     
     //
     // Get the type of the cell.
     //
-    getCellType (): CellType {
+    getCellType(): CellType {
         return this.cellType;
     }
 
@@ -269,7 +269,7 @@ export class Cell implements ICell {
     //
     // Get the output for the cell.
     //
-    getOutput (): ICellOutput[] {
+    getOutput(): ICellOutput[] {
         return this.output;
     }
 
@@ -379,7 +379,7 @@ export class Cell implements ICell {
     //
     // Serialize to a data structure suitable for serialization.
     //
-    serialize (): ISerializedCell1 {
+    serialize(): ISerializedCell1 {
         return {
             id: this.id,
             cellType: this.cellType,
@@ -395,7 +395,7 @@ export class Cell implements ICell {
     //
     // Deserialize the model from a previously serialized data structure.
     //
-    static deserialize (input: ISerializedCell1): ICell {
+    static deserialize(input: ISerializedCell1): ICell {
         const output = [];
         if (input.output) {
             //

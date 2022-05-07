@@ -7,16 +7,16 @@ import { FindNextMatchEventHandler, FocusedEventHandler, ReplaceTextEventHandler
 
 function makeModel(text: string): any {
 
-    const onTextChanged = new EventSource<BasicEventHandler>("onTextChanged");
-    const onSetFocus = new EventSource<FocusedEventHandler>("onSetFocus");
-    const onSetCaretPosition = new EventSource<SetCaretPositionEventHandler>("onSetCaretPosition");
-    const onEditorSelectionChanging = new EventSource<EditorSelectionChangedEventHandler>("onEditorSelectionChanging");
-    const onEditorSelectionChanged = new EventSource<EditorSelectionChangedEventHandler>("onEditorSelectionChanged");
-    const onSelectText = new EventSource<SelectTextEventHandler>("onSelectText");
-    const onDeselectText = new EventSource<BasicEventHandler>("onDeselectText");
-    const onReplaceText = new EventSource<ReplaceTextEventHandler>("onReplaceText");
-    const onFlushChanges = new EventSource<BasicEventHandler>("onFlushChanges");
-    const onFindNextMatch = new EventSource<FindNextMatchEventHandler>("onFindNextMatch");
+    const onTextChanged = new EventSource<BasicEventHandler>();
+    const onSetFocus = new EventSource<FocusedEventHandler>();
+    const onSetCaretPosition = new EventSource<SetCaretPositionEventHandler>();
+    const onEditorSelectionChanging = new EventSource<EditorSelectionChangedEventHandler>();
+    const onEditorSelectionChanged = new EventSource<EditorSelectionChangedEventHandler>();
+    const onSelectText = new EventSource<SelectTextEventHandler>();
+    const onDeselectText = new EventSource<BasicEventHandler>();
+    const onReplaceText = new EventSource<ReplaceTextEventHandler>();
+    const onFlushChanges = new EventSource<BasicEventHandler>();
+    const onFindNextMatch = new EventSource<FindNextMatchEventHandler>();
 
     const model: any = {
         getText: () => {

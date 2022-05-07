@@ -1,4 +1,5 @@
 import { BasicEventHandler, IEventSource } from "../lib/event-source";
+import { IEditorCaretPosition } from "./editor-caret-position";
 
 //
 // Specifies whether a text search goes forward or backward.
@@ -39,27 +40,13 @@ export interface IFindDetails {
 }
 
 export type FocusedEventHandler = (sender: IMonacoEditorViewModel) => void;
-export type SetCaretPositionEventHandler = (sender: IMonacoEditorViewModel, caretPosition: ICaretPosition) => void;
-export type FindNextMatchEventHandler = (startingPosition: ICaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails) => Promise<void>;
+export type SetCaretPositionEventHandler = (sender: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition) => void;
+export type FindNextMatchEventHandler = (startingPosition: IEditorCaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails) => Promise<void>;
 export type SelectTextEventHandler = (range: ITextRange) => Promise<void>;
 export type ReplaceTextEventHandler = (range: ITextRange, replaceText: string) => Promise<void>;
 export type EditorSelectionChangingEventHandler = (sender: IMonacoEditorViewModel, willBeSelected: boolean) => void;
 export type EditorSelectionChangedEventHandler = (sender: IMonacoEditorViewModel) => void;
 
-//
-// A position in the editor.
-//
-export interface ICaretPosition {
-    //
-    // line number (starts at 1)
-    //
-    readonly lineNumber: number;
-
-    //
-    // column (the first character in a line is between column 1 and column 2)
-    //
-    readonly column: number;
-}
 
 //
 // Range of text in the editor.
@@ -147,17 +134,17 @@ export interface IMonacoEditorViewModel {
     //
     // Get the caret position within the editor.
     //
-    getCaretPosition(): ICaretPosition | null;
+    getCaretPosition(): IEditorCaretPosition | null;
 
     //
     // Allows the editor to link and provide the position of the caret in the editor.
     //
-    caretPositionProvider?: () => ICaretPosition | null;
+    caretPositionProvider?: () => IEditorCaretPosition | null;
 
     //
     // Set the position of the caret in the editor.
     //
-    setCaretPosition(caretPosition: ICaretPosition): Promise<void>;
+    setCaretPosition(caretPosition: IEditorCaretPosition): Promise<void>;
 
     //
     // Event raised when the caret position has been set for the editor.
@@ -227,7 +214,7 @@ export interface IMonacoEditorViewModel {
     //
     // Find the next instance of text.
     //
-    findNextMatch(startingPosition: ICaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails): Promise<void>;
+    findNextMatch(startingPosition: IEditorCaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails): Promise<void>;
 
     //
     // Event raised when a request is made to find the next match.
