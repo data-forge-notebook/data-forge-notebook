@@ -15,14 +15,20 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE.
       - uses: actions/checkout@v2
 
+      # https://pnpm.io/continuous-integration#github-actions
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.30.0
+
       # Installs Node.js.      
       - uses: actions/setup-node@v1
         with:
           node-version: 16
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Run tests
-        run: npm test        
+        run: pnpm test        
       
