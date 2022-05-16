@@ -1,12 +1,11 @@
 import { ICellViewModel } from "./cell";
 import { INotebookCaretPosition } from "./notebook-caret-position";
 import { IMonacoEditorViewModel } from "./monaco-editor";
-import { CodeCellViewModel, ICodeCellViewModel } from "./code-cell";
-import { InjectableClass, InjectProperty, ILog } from "@codecapers/fusion";
+import { CodeCellViewModel } from "./code-cell";
 import { IEventSource, BasicEventHandler, EventSource } from "../lib/event-source";
-import { CellType, Cell, CellScope, ICell } from "../model/cell";
+import { CellType, ICell } from "../model/cell";
 import { INotebook, Notebook } from "../model/notebook";
-import { ISerializedCell1, ISerializedNotebook1 } from "../model/serialization/serialized1";
+import { ISerializedNotebook1 } from "../model/serialization/serialized1";
 import * as path from "path";
 import { MarkdownCellViewModel } from "./markdown-cell";
 import { CellErrorViewModel } from "./cell-error";
@@ -226,7 +225,6 @@ export interface INotebookViewModel {
     onFlushChanges: IEventSource<BasicEventHandler>;
 }
 
-@InjectableClass()
 export class NotebookViewModel implements INotebookViewModel {
 
     //
@@ -679,10 +677,10 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Deserialize the model from a previously serialized data structure.
     //
-    static deserialize(fileName: string, unsaved: boolean, readOnly: boolean, containingPath: string, defaultNodejsPath: string, input: ISerializedNotebook1): INotebookViewModel {
+    static deserialize(fileName: string, unsaved: boolean, readOnly: boolean, containingPath: string, defaultNodejsVersion: string, input: ISerializedNotebook1): INotebookViewModel {
         const notebook = Notebook.deserialize(fileName, containingPath, input);
         const cells = notebook.getCells().map(cell => cellViewModelFactory(cell));
-        return new NotebookViewModel(notebook, cells, unsaved, readOnly, defaultNodejsPath);
+        return new NotebookViewModel(notebook, cells, unsaved, readOnly, defaultNodejsVersion);
     }
 
     //

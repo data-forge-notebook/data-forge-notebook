@@ -1,6 +1,5 @@
-import * as path from 'path';
-import { ISerializedNotebook1, ISerializedCell1 } from "./serialization/serialized1";
-import { ICell, CellType, Cell, CellScope } from "./cell";
+import { ISerializedNotebook1 } from "./serialization/serialized1";
+import { ICell, Cell } from "./cell";
 import { v4 as uuid } from "uuid";
 
 export const notebookVersion = 3;
