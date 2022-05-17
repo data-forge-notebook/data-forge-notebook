@@ -77,11 +77,6 @@ module.exports = function (env) {
     
         plugins: [
             
-            // https://stackoverflow.com/a/65018686/25868
-            new webpack.ProvidePlugin({
-                process: 'process/browser',
-            }),
-    
             new webpack.EnvironmentPlugin({
                 // Configure environment variables here.
                 ENVIRONMENT: env,
@@ -114,12 +109,6 @@ module.exports = function (env) {
                     },
                 ],
             }),
-
-            // For React-markdown + Web pack 5
-            // https://github.com/remarkjs/remark/discussions/903
-            // https://stackoverflow.com/a/64553486/25868
-            // https://github.com/remarkjs/react-markdown/issues/652
-            new webpack.ProvidePlugin({ process: 'process/browser' }),
         ],
     };
 }
