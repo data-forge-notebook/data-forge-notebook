@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentMeta } from '@storybook/react';
-import { PluggableVisualization } from '../notebook/cell/output/pluggable-visualization';
+import { PluggableVisualization } from '../view/notebook/editor/cell/pluggable-visualization';
 
 export default {
   title: 'Pluggable visualization',

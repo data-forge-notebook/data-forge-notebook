@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import "./services/plugin-repository";
 import { Button } from "@blueprintjs/core";
 import { MonacoEditor } from "../components/monaco-editor";
-import { PluggableVisualization } from "../notebook/cell/output/pluggable-visualization";
+import { PluggableVisualization } from "../view/notebook/editor/cell/pluggable-visualization";
 import { CodeCellViewModel } from "../view-model/code-cell";
 import { Cell, CellScope, CellType } from "../model/cell";
 

@@ -3,7 +3,6 @@
 //
 
 import * as React from 'react';
-import { renderCellOutputValue } from './render-cell-output-value';
 import styled from 'styled-components';
 import { NumberSize, Resizable } from "re-resizable";
 import { Icon } from '@blueprintjs/core';
@@ -11,6 +10,7 @@ import { Direction } from 're-resizable/lib/resizer';
 import { ICellOutputViewModel } from '../../../../view-model/cell-output';
 import { ErrorBoundary } from '../../../../lib/error-boundary';
 import { handleAsyncErrors } from '../../../../lib/async-handler';
+import { PluggableVisualization } from './pluggable-visualization';
 
 export interface ICellOutputProps {
     model: ICellOutputViewModel;
@@ -82,7 +82,11 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                     what={`cell output - type: ${this.props.model.getValue().getDisplayType()}`}
                     >
                     <OutputBorder ref={this.outputContainerElement}>
-                        {renderCellOutputValue(this.props.model.getValue())}
+                        <PluggableVisualization
+                            config={{
+                                data: this.props.model.getValue().getData(),
+                            }}
+                            />
                     </OutputBorder>
                 </ErrorBoundary>
             );
@@ -152,7 +156,11 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     style={outputWrapperStyle}
                                     ref={this.outputContainerElement}
                                     >
-                                    {renderCellOutputValue(this.props.model.getValue())}
+                                    <PluggableVisualization
+                                        config={{
+                                            data: this.props.model.getValue().getData(),
+                                        }}
+                                        />
                                 </div>
                             </div>
 

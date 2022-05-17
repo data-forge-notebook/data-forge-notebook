@@ -4,7 +4,7 @@
 
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import * as React from 'react';
-import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../services/plugin-repository';
+import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
 
 export interface IPluggableVisualizationProps {
     //
