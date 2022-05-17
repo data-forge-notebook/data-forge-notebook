@@ -4,7 +4,7 @@ import { IMonacoEditorViewModel } from '../../../../view-model/monaco-editor';
 import { asyncHandler, handleAsyncErrors } from '../../../../lib/async-handler';
 import { forceUpdate } from '../../../../lib/force-update';
 import { MonacoEditor } from '../../../../components/monaco-editor';
-import Markdown from '../../../../components/markdown';
+import ReactMarkdown from 'react-markdown';
 
 const MIN_HEIGHT = 46;
 
@@ -150,10 +150,15 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
                             paddingBottom: "6px",
                         }}
                         >
-                        <Markdown
-                            source={this.props.model.getText()} 
-                            minHeight={MIN_HEIGHT}
-                            />
+                        <div
+                            style={{
+                                minHeight: `${MIN_HEIGHT}px`,
+                            }}
+                            >
+                            <ReactMarkdown
+                                children={this.props.model.getText()} 
+                                />
+                        </div>
                     </div>
                 }
             </div>
