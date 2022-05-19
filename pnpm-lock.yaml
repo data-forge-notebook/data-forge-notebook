@@ -25,7 +25,6 @@ specifiers:
   '@types/react-dom': ^17.0.13
   '@types/styled-components': ^5.1.25
   '@types/uuid': ^8.3.4
-  axios: ^0.26.0
   babel-loader: ^8.2.3
   chai: 4.1.2
   classnames: ^2.3.1
@@ -65,7 +64,6 @@ dependencies:
   '@blueprintjs/core': 3.53.0_react-dom@17.0.2+react@17.0.2
   '@blueprintjs/icons': 3.32.0
   '@codecapers/fusion': 1.0.15
-  axios: 0.26.1
   chai: 4.1.2
   classnames: 2.3.1
   humanize-duration: 3.27.1
@@ -4906,14 +4904,6 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
-  /axios/0.26.1:
-    resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
-    dependencies:
-      follow-redirects: 1.14.9
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
   /babel-jest/27.5.1_@babel+core@7.17.5:
     resolution: {integrity: sha512-cdQ5dXjGRd0IBRATiQ4mZGlGlRE8kJpjPOixdNRdT+m3UcNqmYWN6rK6nvtXYfY3D76cb8s/O1Ss8ea24PIwcg==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -7455,6 +7445,7 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: true
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}

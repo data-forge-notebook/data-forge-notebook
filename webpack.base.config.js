@@ -64,6 +64,11 @@ module.exports = function (env) {
                     use: ['file-loader']
                 },
     
+                {
+                    test: /\.txt$/,
+                    type: 'asset/source',
+                },
+
                 { 
                     test: /\.tsx?$/, 
                     loader: "ts-loader", 
