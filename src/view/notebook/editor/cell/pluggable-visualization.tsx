@@ -4,7 +4,7 @@
 
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import * as React from 'react';
-import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
+import { IPluginConfig, IPluginContent, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
 
 export interface IPluggableVisualizationProps {
     //
@@ -15,9 +15,9 @@ export interface IPluggableVisualizationProps {
 
 export interface IPluggableVisualizationState {
     //
-    // The visulization plugin, once loaded.
+    // The content for the visualization plugin, once loaded.
     //
-    pluginContent?: string;
+    pluginContent?: IPluginContent;
 }
 
 @InjectableClass()
@@ -57,34 +57,59 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
     // Event raised when the iframe has loaded.
     //
     private onLoad() {
-        
         //
         // Configures the plugin that is running within the iframe.
         //
         this.iframeRef.current?.contentWindow?.postMessage({
             name: "config",
-            data: this.props.config.data,
+            data: this.props.config,
         }, "*");
     }
 
     render() {
+        if (this.state.pluginContent?.url) {
+            return (
+                <>
+                    <iframe 
+                        className="mx-auto"
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                        }}
+                        onLoad={this.onLoad}
+                        ref={this.iframeRef}
+                        src={this.state.pluginContent?.url}
+    
+                        title="Visualization plugin"
+                        sandbox="allow-scripts"
+                        />
+                </>
+            )
+        }
+
+        if (this.state.pluginContent?.inline) {
+            return (
+                <>
+                    <iframe 
+                        className="mx-auto"
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                        }}
+                        onLoad={this.onLoad}
+                        ref={this.iframeRef}
+    
+                        srcDoc={this.state.pluginContent?.inline}
+    
+                        title="Visualization plugin"
+                        sandbox="allow-scripts"
+                        />
+                </>
+            );
+        }
+
         return (
-            <>
-                <iframe 
-                    className="mx-auto"
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                    }}
-                    onLoad={this.onLoad}
-                    ref={this.iframeRef}
-
-                    srcDoc={this.state.pluginContent}
-
-                    title="Output plugin"
-                    sandbox="allow-scripts"
-                    />
-            </>
-        )
+            <div>Plugin not loaded</div>
+        );
     }
 }

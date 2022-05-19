@@ -12,6 +12,11 @@ export interface ICellOutputValue {
     getDisplayType(): string | undefined;
 
     //
+    // Get the id of the plugin to use to render this output.
+    //
+    getPlugin(): string | undefined;
+
+    //
     // Get the data for the value.
     //
     getData(): any;
@@ -31,12 +36,18 @@ export class CellOutputValue implements ICellOutputValue {
     displayType: string | undefined;
 
     //
+    // The id of the plugin to use to render this output.
+    //
+    plugin: string | undefined;
+
+    //
     // The actual value.
     //
     data: any;
 
-    constructor(displayType: string | undefined, data: any) {
+    constructor(displayType: string | undefined, plugin: string | undefined, data: any) {
         this.displayType = displayType;
+        this.plugin = plugin;
         this.data = data;
     }
 
@@ -45,6 +56,13 @@ export class CellOutputValue implements ICellOutputValue {
     //
     getDisplayType(): string | undefined {
         return this.displayType;
+    }
+
+    //
+    // Get the id of the plugin to use to render this output.
+    //
+    getPlugin(): string | undefined {
+        return this.plugin;
     }
 
     //
@@ -60,6 +78,7 @@ export class CellOutputValue implements ICellOutputValue {
     serialize(): ISerializedCellOutputValue1 {
         return {
             displayType: this.displayType,
+            plugin: this.plugin,
             data: this.data,
         };
     }    
@@ -68,6 +87,6 @@ export class CellOutputValue implements ICellOutputValue {
     // Deserialize the model from a previously serialized data structure.
     //
     static deserialize(input: ISerializedCellOutputValue1): ICellOutputValue {
-        return new CellOutputValue(input.displayType, input.data);
+        return new CellOutputValue(input.displayType, input.plugin, input.data);
     }
 }

@@ -87,6 +87,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                         <PluggableVisualization
                             config={{
                                 displayType: this.props.model.getValue().getDisplayType(),
+                                plugin: this.props.model.getValue().getPlugin(),
                                 data: this.props.model.getValue().getData(),
                             }}
                             />
@@ -160,6 +161,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     <PluggableVisualization
                                         config={{
                                             displayType: this.props.model.getValue().getDisplayType(),
+                                            plugin: this.props.model.getValue().getPlugin(),
                                             data: this.props.model.getValue().getData(),
                                         }}
                                         />

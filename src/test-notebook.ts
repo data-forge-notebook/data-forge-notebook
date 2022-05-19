@@ -32,6 +32,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "output": [
                 {
                     "value": {
+                        // "plugin": "http://localhost:5000",
                         "displayType": "string",
                         "data": "Whatever you want to log!\n"
                     }
@@ -58,6 +59,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "output": [
                 {
                     "value": {
+                        // "plugin": "http://localhost:5001",
                         "displayType": "array",
                         "data": [
                             1,

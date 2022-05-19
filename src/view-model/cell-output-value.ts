@@ -13,6 +13,11 @@ export interface ICellOutputValueViewModel {
     getDisplayType(): string | undefined;
 
     //
+    // Get the id of the plugin to use to render this output.
+    //
+    getPlugin(): string | undefined;
+
+    //
     // Get the data for the value.
     //
     getData(): any;
@@ -44,6 +49,13 @@ export class CellOutputValueViewModel implements ICellOutputValueViewModel {
     //
     getDisplayType(): string | undefined {
         return this.value.getDisplayType();
+    }
+
+    //
+    // Get the id of the plugin to use to render this output.
+    //
+    getPlugin(): string | undefined {
+        return this.value.getPlugin();
     }
 
     //

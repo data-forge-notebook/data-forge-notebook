@@ -6,7 +6,7 @@ describe("model / cell-output-value", () => {
 
         const theDisplayType = "string";
         const theData = "hello";
-        const cellOutputValue = new CellOutputValue(theDisplayType, theData);
+        const cellOutputValue = new CellOutputValue(theDisplayType, undefined, theData);
         expect(cellOutputValue.getDisplayType()).toEqual(theDisplayType);
         expect(cellOutputValue.getData()).toEqual(theData);
     });
@@ -15,7 +15,7 @@ describe("model / cell-output-value", () => {
 
         const theDisplayType = "string";
         const theData = "hello";
-        const cellOutputValue = new CellOutputValue(theDisplayType, theData);
+        const cellOutputValue = new CellOutputValue(theDisplayType, undefined, theData);
         expect(cellOutputValue.serialize()).toEqual({
             displayType: theDisplayType,
             data: theData,
