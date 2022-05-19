@@ -10,7 +10,7 @@ export interface ICellOutputValueViewModel {
     //
     // Get the display type of the value.
     //
-    getDisplayType(): string;
+    getDisplayType(): string | undefined;
 
     //
     // Get the data for the value.
@@ -42,7 +42,7 @@ export class CellOutputValueViewModel implements ICellOutputValueViewModel {
     //
     // Get the display type of the value.
     //
-    getDisplayType(): string {
+    getDisplayType(): string | undefined {
         return this.value.getDisplayType();
     }
 

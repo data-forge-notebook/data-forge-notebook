@@ -9,7 +9,7 @@ export interface ICellOutputValue {
     //
     // Get the display type of the value.
     //
-    getDisplayType(): string;
+    getDisplayType(): string | undefined;
 
     //
     // Get the data for the value.
@@ -28,14 +28,14 @@ export class CellOutputValue implements ICellOutputValue {
     //
     // Type of the value for display formatting.
     //
-    displayType: string;
+    displayType: string | undefined;
 
     //
     // The actual value.
     //
     data: any;
 
-    constructor(displayType: string, data: any) {
+    constructor(displayType: string | undefined, data: any) {
         this.displayType = displayType;
         this.data = data;
     }
@@ -43,7 +43,7 @@ export class CellOutputValue implements ICellOutputValue {
     //
     // Get the display type of the value.
     //
-    getDisplayType(): string {
+    getDisplayType(): string | undefined {
         return this.displayType;
     }
 

@@ -75,15 +75,18 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
             }
         `;
 
+        const what = this.props.model.getValue() && this.props.model.getValue().getDisplayType() || "unset"
+
         if (this.state.height === undefined) {
             // Do an initial render to determine the default height.
             return (
                 <ErrorBoundary
-                    what={`cell output - type: ${this.props.model.getValue().getDisplayType()}`}
+                    what={`cell output - type: ${what}`}
                     >
                     <OutputBorder ref={this.outputContainerElement}>
                         <PluggableVisualization
                             config={{
+                                displayType: this.props.model.getValue().getDisplayType(),
                                 data: this.props.model.getValue().getData(),
                             }}
                             />
@@ -107,11 +110,9 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
             outputScrollerStyle.overflow = "hidden";
         }
 
-        const what = this.props.model.getValue() && this.props.model.getValue().getDisplayType() || "unknown"
-
         return (
             <ErrorBoundary
-                what={`cell output - type: ${this.props.model.getValue().getDisplayType()}`}
+                what={`cell output - type: ${what}`}
                 >
                 <div className="output-hover-region pos-relative">
                     <OutputBorder className="pos-relative">
@@ -158,6 +159,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     >
                                     <PluggableVisualization
                                         config={{
+                                            displayType: this.props.model.getValue().getDisplayType(),
                                             data: this.props.model.getValue().getData(),
                                         }}
                                         />

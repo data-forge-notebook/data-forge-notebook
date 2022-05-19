@@ -7,14 +7,14 @@ export const IPluginRepo_ID = "IPluginRepo";
 export interface IPluginConfig {
 
     //
-    // Optional URL where the plugin should be loaded from.
+    // Identifies the data or the plugin used to render it.
     //
-    url?: string;
+    displayType?: string;
 
     //
     // Data to be rendered by the plugin.
     //
-    data?: any;
+    data: any;
 }
 
 export interface IPluginRepo {

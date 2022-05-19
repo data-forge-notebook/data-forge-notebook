@@ -11,7 +11,7 @@ export interface ISerializedCellOutputValue1 {
     //
     // Type of the value for display formatting.
     //
-    displayType: string;
+    displayType: string | undefined;
 
     //
     // The actual value.
