@@ -4,3 +4,167 @@ body {
     user-select: none;
     background-color: white;
 }
+
+.centered-container {
+    width: calc(100% - 25px);
+    margin-left: 20px;
+}
+
+@media (min-width: 640px) {
+    .centered-container {
+        width: unset;
+        max-width: 640px;
+        margin-left: unset;
+    }
+}
+
+@media (min-width: 768px) {
+    .centered-container {
+        max-width: 768px;
+        margin: auto;
+    }
+}
+
+@media (min-width: 1024px) {
+    .centered-container {
+        max-width: 1024px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .centered-container {
+        max-width: 1280px;
+    }
+}
+
+@keyframes cell-border-pulse {
+    0%   { border-color: rgba(0, 0, 255, 0.3); }
+    50%  { border-color: rgba(0, 0, 255, 1); }
+    100% { border-color: rgba(0, 0, 255, 0.6); }
+}
+
+.selected-cell-handle {
+    border-left: 4px transparent solid;
+    background-color: transparent;
+    transition: border 0.2s ease-in-out;
+}
+
+.cell-container:hover .selected-cell-handle {
+    border-left: 4px rgba(0, 0, 255, 0.3) solid !important;
+}
+
+.selected-cell-handle.focused {
+    border-left: 4px rgba(0, 0, 255, 0.6) solid !important;
+    animation: cell-border-pulse 0.75s ease-out !important;
+}
+
+.cell-container:hover .selected-cell-handle.focused {
+    border-left: 4px rgba(0, 0, 255, 0.8) solid !important;
+}
+
+.cell-handle {
+    border-left: 1px rgba(0, 0, 0, 0.2) solid;
+    border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
+    border-top: 1px rgba(0, 0, 0, 0.2) solid;
+}
+
+.cell-container:hover .cell-handle {
+    border-left: 1px rgba(0, 0, 255, 0.3) dashed;
+    border-bottom: 1px rgba(0, 0, 255, 0.3) dashed;
+    border-top: 1px rgba(0, 0, 255, 0.3) dashed;
+}
+
+.cell-handle.focused {
+    border-left: 1px rgba(0, 0, 255, 0.6) dashed;
+    border-bottom: 1px rgba(0, 0, 255, 0.6) dashed;
+    border-top: 1px rgba(0, 0, 255, 0.6) dashed;
+}
+
+.cell-container:hover .cell-handle.focused {
+    border-left: 1px rgba(0, 0, 255, 0.8) dashed;
+    border-bottom: 1px rgba(0, 0, 255, 0.8) dashed;
+    border-top: 1px rgba(0, 0, 255, 0.8) dashed;
+}
+
+.cell-border {    
+    border-top: 1px dashed transparent;
+    border-right: 1px dashed transparent;
+    border-bottom: 1px dashed transparent;
+    transition: border 0.2s ease-in-out;
+}
+
+.cell-container:hover .cell-border {
+    border-top: 1px dashed rgba(0, 0, 255, 0.3);
+    border-right: 1px dashed rgba(0, 0, 255, 0.3);
+    border-bottom: 1px dashed rgba(0, 0, 255, 0.3);
+    transition: border 0.2s ease-in-out;
+}
+
+.cell-border.focused {
+    border-top: 1px dashed rgba(0, 0, 255, 0.6) !important;
+    border-right: 1px dashed rgba(0, 0, 255, 0.6) !important;
+    border-bottom: 1px dashed rgba(0, 0, 255, 0.6) !important;
+    animation: cell-border-pulse 0.75s ease-out !important;
+}            
+
+.cell-container:hover .cell-border.focused {
+    border-top: 1px dashed rgba(0, 0, 255, 0.8) !important;
+    border-right: 1px dashed rgba(0, 0, 255, 0.8) !important;
+    border-bottom: 1px dashed rgba(0, 0, 255, 0.8) !important;
+    transition: border 0.2s ease-in-out;
+}   
+
+.cell-border.empty {
+    border-top: 1px dashed rgba(0, 0, 0, 0.2) !important;
+    border-right: 1px dashed rgba(0, 0, 0, 0.2) !important;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.2) !important;
+    transition: border 0.2s ease-in-out;
+}          
+
+.cell-msg {
+    display: none;
+}
+
+.cell-container:hover .cell-msg {
+    display: block;
+}
+
+.cell-border.focused .cell-msg {
+    display: block;
+}
+
+/*
+Hover classes:
+
+    cell-hover-region   - The region that can be hovered to show hidden content.
+    cell-hover-content  - Content displayed on hover.
+*/
+
+.cell-hover-content {
+    display: none;
+}
+
+.cell-hover-region:hover .cell-hover-content {
+    display: block;
+}
+
+.dragging .cell-hover-content {
+    display: none !important;
+}
+
+.output-hover-content {
+    display: none;
+}
+
+.output-hover-region:hover .output-hover-content {
+    display: block;
+}
+
+.dragging .output-hover-content {
+    display: none !important;
+}
+
+.pos-relative {
+    position: relative;
+}
+

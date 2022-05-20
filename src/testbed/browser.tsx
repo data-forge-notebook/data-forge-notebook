@@ -5,17 +5,19 @@ import { NotebookEditor } from "..";
 
 function App() {
     return (
-        <div>
-            <h1>Data-Forge Notebook: Browser testing environment</h1>
-            <p>
-                The code for DFN is incremently being open sourced and 
-                there isn't much here yet.
-            </p>
-            <p>
-                Watch this code repository grow week by week!
-            </p>
+        <>
+            <div className="centered-container mb-30">
+                <h1>Data-Forge Notebook: Browser testing environment</h1>
+                <p>
+                    The code for DFN is incremently being open sourced and 
+                    there isn't much here yet.
+                </p>
+                <p>
+                    Watch this code repository grow week by week!
+                </p>
+            </div>
             <NotebookEditor />
-        </div>
+        </>
     );
 }
 
