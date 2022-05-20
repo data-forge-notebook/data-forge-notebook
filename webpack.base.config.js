@@ -85,6 +85,7 @@ module.exports = function (env) {
             new webpack.EnvironmentPlugin({
                 // Configure environment variables here.
                 ENVIRONMENT: env,
+                ...process.env,
             }),
     
             new ForkTsCheckerWebpackPlugin(),

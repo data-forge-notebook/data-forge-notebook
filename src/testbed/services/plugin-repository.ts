@@ -20,7 +20,7 @@ export class PluginRepo implements IPluginRepo {
             if (config.plugin.startsWith("http://")) {
 
                 //
-                // Delegate plugin loading to a server.
+                // Delegate plugin loading to a web server.
                 // You can load local plugins this way.
                 //
                 return {
@@ -31,10 +31,26 @@ export class PluginRepo implements IPluginRepo {
 
         if (config.displayType) {
             if (config.displayType === "string" || config.displayType === "text") { //TODO: Can I delegate these rules to the plugin? A plugin registry would be handy ;)
+                if (process.env.DISPLAY_TEXT !== undefined) {
+                    // Overrides the text plugin to reference a locally hosted plugin.
+                    console.log(`Using "text" plugin override: ${process.env.DISPLAY_TEXT}`);
+                    return {
+                        url: process.env.DISPLAY_TEXT, 
+                    };
+                }
+
                 return {
                     inline: textDataPlugin,
                 };
             }
+        }
+
+        if (process.env.DISPLAY_DEFAULT !== undefined) {
+            // Overrides the default/data plugin to reference a locally hosted plugin.
+            console.log(`Using default plugin override: ${process.env.DISPLAY_DEFAULT}`);
+            return {
+                url: process.env.DISPLAY_DEFAULT, 
+            };
         }
 
         return {
