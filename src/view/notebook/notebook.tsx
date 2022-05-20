@@ -96,10 +96,11 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
                             droppableId={this.props.model.getInstanceId()}
                             type="cell"
                             >
-                            {(provided, snapshot) => ( 
+                            {(provided) => ( 
                                 <div 
                                     className="flex flex-col"
                                     ref={provided.innerRef}
+                                    {...provided.droppableProps}
                                     >
                                     {cells.map((cell, index) => (
                                         <Draggable

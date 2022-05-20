@@ -27,6 +27,11 @@ export interface ILazyProps {
     forceMount: boolean;
 
     //
+    // Placeholder element to render.
+    //
+    renderPlaceholder?: () => JSX.Element;
+
+    //
     // Event raised when the lazy component is mounted.
     //
     onMounted: () => void;
@@ -164,11 +169,15 @@ export class Lazy extends React.Component<ILazyProps, ILazyState> {
                 placeholderStyle.border = "1px solid red";
             }
             //#endif dev
-            return <div
-                id={this.props.id}
-                ref={this.lazyElement}
-                style={placeholderStyle}
-                />;
+            return (
+                <div
+                    id={this.props.id}
+                    ref={this.lazyElement}
+                    style={placeholderStyle}
+                    >
+                    {this.props.renderPlaceholder && this.props.renderPlaceholder()}
+                </div>
+            );
         }
 
         return (

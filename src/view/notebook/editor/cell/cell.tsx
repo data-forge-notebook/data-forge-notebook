@@ -237,9 +237,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     }
 
     render () {
-        const canExecute = this.props.model.getCellType() === CellType.Code;
-        const isSelected = this.props.model.isSelected();
-
         return (
             <div 
                 ref={this.cellContainerElement}
@@ -251,38 +248,68 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                     height={this.props.model.getHeight()}
                     forceMount={this.props.model.isSelected()}
                     onMounted={this._onHeightChanged}
+                    renderPlaceholder={this.renderCellPlaceholder}
                     >
-                    <div 
-                        className="centered-container cell-container pos-relative"
-                        >
-                        <div>
-                            <CellHandle
-                                cell={this}
-                                cellContainerElement={this.innerCellContainerElement}
-                                isSelected={isSelected}
-                                dragHandleProps={this.props.dragHandleProps}
-                                />
-
-                            <div 
-                                ref={this.innerCellContainerElement}
-                                className={classnames(
-                                    "cell-border",
-                                    "inline-block", 
-                                    "align-top",
-                                    {
-                                        focused: isSelected,
-                                        empty: this.props.model.getText() === "",
-                                    }
-                                )}
-                                style={{
-                                    width: "calc(100% - 16px)",                                    
-                                }}
-                                >
-                                {this.renderCellType()}
-                            </div>
-                        </div>
-                    </div>
+                    {this.renderCellBody()}
                 </Lazy>
+            </div>
+        );
+    }
+
+    //
+    // Renders a placeholder for the cell, displayed before the cell is scrolled into view.
+    //
+    private renderCellPlaceholder = (): JSX.Element => {
+        const isSelected = this.props.model.isSelected();
+        return (
+            <div
+                className="centered-container cell-container pos-relative"
+                >
+                <div>
+                    <CellHandle
+                        cell={this}
+                        cellContainerElement={this.innerCellContainerElement}
+                        isSelected={isSelected}
+                        dragHandleProps={this.props.dragHandleProps} />
+                </div>
+            </div>
+        );
+    }
+
+    //
+    // Renders the body of the cell.
+    //
+    private renderCellBody(): JSX.Element {
+        const isSelected = this.props.model.isSelected();
+        return (
+            <div
+                className="centered-container cell-container pos-relative"
+                >
+                <div>
+                    <CellHandle
+                        cell={this}
+                        cellContainerElement={this.innerCellContainerElement}
+                        isSelected={isSelected}
+                        dragHandleProps={this.props.dragHandleProps} />
+
+                    <div
+                        ref={this.innerCellContainerElement}
+                        className={classnames(
+                            "cell-border",
+                            "inline-block",
+                            "align-top",
+                            {
+                                focused: isSelected,
+                                empty: this.props.model.getText() === "",
+                            }
+                        )}
+                        style={{
+                            width: "calc(100% - 16px)",
+                        }}
+                    >
+                        {this.renderCellType()}
+                    </div>
+                </div>
             </div>
         );
     }
