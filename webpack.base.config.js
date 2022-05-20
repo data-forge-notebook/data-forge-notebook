@@ -13,6 +13,12 @@ module.exports = function (env) {
         default: "web",
     };
 
+    const defaultEnv = {
+        DISPLAY_TEXT: "", // Default is to not override.
+        DISPLAY_DEFAULT: "",
+    }
+    const processEnv = Object.assign(defaultEnv, process.env);
+
     return {
         entry: {
             'index': `./src/testbed/${env}.tsx`,
@@ -85,7 +91,7 @@ module.exports = function (env) {
             new webpack.EnvironmentPlugin({
                 // Configure environment variables here.
                 ENVIRONMENT: env,
-                ...process.env,
+                ...processEnv,
             }),
     
             new ForkTsCheckerWebpackPlugin(),

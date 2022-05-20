@@ -31,7 +31,7 @@ export class PluginRepo implements IPluginRepo {
 
         if (config.displayType) {
             if (config.displayType === "string" || config.displayType === "text") { //TODO: Can I delegate these rules to the plugin? A plugin registry would be handy ;)
-                if (process.env.DISPLAY_TEXT !== undefined) {
+                if (process.env.DISPLAY_TEXT) {
                     // Overrides the text plugin to reference a locally hosted plugin.
                     console.log(`Using "text" plugin override: ${process.env.DISPLAY_TEXT}`);
                     return {
@@ -45,7 +45,7 @@ export class PluginRepo implements IPluginRepo {
             }
         }
 
-        if (process.env.DISPLAY_DEFAULT !== undefined) {
+        if (process.env.DISPLAY_DEFAULT) {
             // Overrides the default/data plugin to reference a locally hosted plugin.
             console.log(`Using default plugin override: ${process.env.DISPLAY_DEFAULT}`);
             return {
