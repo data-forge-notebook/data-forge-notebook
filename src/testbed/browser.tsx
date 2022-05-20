@@ -9,12 +9,21 @@ function App() {
             <div className="centered-container mb-30">
                 <h1>Data-Forge Notebook: Browser testing environment</h1>
                 <p>
-                    The code for DFN is incremently being open sourced and 
-                    there isn't much here yet.
+                    This is the browser testing environment for DFN v2.
+                    This interface also runs on the desktop using Electron.
+                    What you see here is a hard coded JavaScript notebook.
+                    You can't edit this yet, but it is starting to look like a real notebok!
+                </p>
+                <p className="mt-2">
+                    Checkout <a target="_blank" href="https://github.com/data-forge-notebook/editor-core/">the open source code repo</a> to follow development of DFN v2.
                 </p>
                 <p>
-                    Watch this code repository grow week by week!
+                    To edit and evaluate JavaScript notebooks, use <a target="_blank" href="https://www.data-forge-notebook.com/">use Data-Forge Notebook v1</a>.
                 </p>
+                <p>
+                    Follow <a target="_blank" href="https://twitter.com/codecapers">the developer on Twitter</a> for more frequent updates.
+                </p>
+                
             </div>
             <NotebookEditor />
         </>
