@@ -19,7 +19,7 @@
     "storybook": "start-storybook -p 6006",
     "sb": "npm run storybook",
     "build-storybook": "build-storybook",
-    "clean": "rm -rf ./dist ts-build tsconfig.tsbuildinfo",
+    "clean": "pnpm run clean-plugins && rm -rf .parcel-cache ./dist ts-build tsconfig.tsbuildinfo",
     "compile": "tsc --incremental",
     "c": "npm run compile",
     "compile:watch": "tsc --incremental --watch",
@@ -33,7 +33,8 @@
     "test:watch": "jest --watch",
     "tw": "npm run test:watch",
     "build-plugins": "pnpm -r --workspace-concurrency=1 run build",
-    "serve-plugins": "pnpm -r run start:dev"
+    "serve-plugins": "pnpm -r run start:dev",
+    "clean-plugins": "pnpm -r run clean"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
