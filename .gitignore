@@ -104,3 +104,4 @@ dist
 .tern-port
 ts-build
 *.bak
+.parcel-cache

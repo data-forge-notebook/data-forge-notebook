@@ -68,6 +68,7 @@
       "dist",
       "examples",
       "test",
-      "prod-build"
+      "prod-build",
+      "plugins"
   ]
 }
