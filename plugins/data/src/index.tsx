@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { StructuredData } from "./structured-data";
-import { connect, IVizConfig } from "./host-communication-bridge";
+import { IVizConfig, connect } from "host-bridge";
 
 interface IAppState {
     //

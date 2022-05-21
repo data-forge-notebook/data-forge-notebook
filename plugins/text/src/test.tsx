@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { IVizConfig } from "./host-communication-bridge";
 import { Text } from "./text";
+import { IVizConfig } from "host-bridge";
 
 interface IAppState {
     //

@@ -45,7 +45,7 @@ async function handlePluginErrors(
     fn: () => Promise<void>,
     onSuccess: () => void,
     onFail: () => void
-    ): Promise<void> {
+        ): Promise<void> {
 
     try {
         await fn();
@@ -64,7 +64,6 @@ async function handlePluginErrors(
 // Connects the communication bridge to the visualization host.
 //
 export function connect(options: IConnectOptions) {
-
     window.addEventListener("message", async event => {
 
         const payload = event.data as IIncomingEvent;
@@ -89,5 +88,4 @@ export function connect(options: IConnectOptions) {
             );
         }
     });   
-
 }

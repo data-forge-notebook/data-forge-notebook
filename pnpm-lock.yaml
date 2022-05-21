@@ -125,12 +125,21 @@ importers:
       webpack-cli: 4.9.2_nu6lqtvx5bk2436aupxfqxamey
       webpack-dev-server: 4.7.4_spmstbzrmxjdafr7ccogoqrx6e
 
+  packages/host-bridge:
+    specifiers:
+      '@types/node': ^16.11.7
+      typescript: ^4.6.4
+    devDependencies:
+      '@types/node': 16.11.36
+      typescript: 4.6.4
+
   plugins/data:
     specifiers:
       '@babel/core': ^7.17.2
       '@types/react': ^17.0.37
       '@types/react-dom': ^17.0.11
       fs-extra: ^10.1.0
+      host-bridge: workspace:*
       inliner: ^1.13.1
       live-server: ^1.2.1
       parcel: ^2.3.1
@@ -139,6 +148,7 @@ importers:
       react-json-tree: ^0.16.1
       typescript: ^4.5.2
     dependencies:
+      host-bridge: link:../../packages/host-bridge
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-json-tree: 0.16.2_adlholpkqbiq5amp2fy4vkqcli
@@ -158,6 +168,7 @@ importers:
       '@types/react': ^17.0.37
       '@types/react-dom': ^17.0.11
       fs-extra: ^10.1.0
+      host-bridge: workspace:*
       inliner: ^1.13.1
       live-server: ^1.2.1
       parcel: ^2.3.1
@@ -165,6 +176,7 @@ importers:
       react-dom: ^17.0.2
       typescript: ^4.5.2
     dependencies:
+      host-bridge: link:../../packages/host-bridge
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     devDependencies:
@@ -4864,6 +4876,10 @@ packages:
 
   /@types/node/14.18.12:
     resolution: {integrity: sha512-q4jlIR71hUpWTnGhXWcakgkZeHa3CCjcQcnuzU8M891BAWA2jHiziiWEPEkdS5pFsz7H9HJiy8BrK7tBRNrY7A==}
+    dev: true
+
+  /@types/node/16.11.36:
+    resolution: {integrity: sha512-FR5QJe+TaoZ2GsMHkjuwoNabr+UrJNRr2HNOo+r/7vhcuntM6Ee/pRPOnRhhL2XE9OOvX9VLEq+BcXl3VjNoWA==}
     dev: true
 
   /@types/node/17.0.21:
@@ -15906,6 +15922,12 @@ packages:
 
   /typescript/4.6.2:
     resolution: {integrity: sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
+  /typescript/4.6.4:
+    resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true

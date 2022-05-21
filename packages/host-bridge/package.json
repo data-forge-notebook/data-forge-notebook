@@ -1,0 +1,24 @@
+{
+    "name": "host-bridge",
+    "version": "0.0.1",
+    "description": "This library creates a communication bridge between a visualization plugin and the visualization host.",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "scripts": {
+        "c": "npm run clean",
+        "clean": "rm -rf build/*",
+        "b": "npm run build",
+        "build": "tsc --incremental",
+        "bw": "npm run build:watch",
+        "build:watch": "tsc  --incremental --watch"
+    },
+    "keywords": [],
+    "author": "ashley@codecapers.com.au",
+    "license": "MIT",
+    "dependencies": {
+    },
+    "devDependencies": {
+        "@types/node": "^16.11.7",
+       "typescript": "^4.6.4"
+    }
+}
