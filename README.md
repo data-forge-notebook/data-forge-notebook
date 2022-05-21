@@ -36,6 +36,22 @@ This runs the whole notebook editor in the browser.
 npm start
 ```
 
+It is runs in "dev" mode with live reload enabled.
+
+The plugins (which are complete web pages in their own right) and also served in "dev" mode from the `./plugins` directory. You can edit the code for the plugins, but you might have to manually refresh the browser to see the changes.
+
+## Build a static web page
+
+This builds the browser shell to a static web page:
+
+```bash
+npm run build
+```
+
+The static web page is generated to `./dist/browser`.
+
+The plugins are automatically built and inlined into the package.
+
 ## Run the Electron shell
 
 This runs the whole notebook editor in Electron (with a static build):
@@ -47,7 +63,7 @@ npm run electron
 To run in Electron with live reload:
 
 ```bash
-npm run electron:live
+npm run electron:dev
 ```
 
 ## Run the testbed
@@ -69,7 +85,7 @@ npm run storybook
 ## Build the TypeScript code
 
 ```bash
-npm run build
+npm run compile
 ```
 
 Compiled JavaScript code is output to `ts-build`.
@@ -79,12 +95,3 @@ Compiled JavaScript code is output to `ts-build`.
 ```bash
 npm tests
 ```
-
-## Test a local plugin
-
-Clone a plugin repo, for example
-[the structured data plugin](https://github.com/data-forge-notebook/output-plugin-structured-data).
-
-Install dependencies (`npm install`) and then run the web server for the local plugin (usually `npm start` or `npm run start:dev`).
-
-Open `editor-core/src/testbed/services/plugin-repository.ts` and set `pluginUrl` to the local URL for the plugin web server (e.g.  http://127.0.0.1:5000).
