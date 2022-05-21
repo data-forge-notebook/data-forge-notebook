@@ -11,7 +11,7 @@
     "s": "npm run start",
     "build": "parcel build index.html --log-level=none --public-url . --no-source-maps && npm run module-hack && npm run create-output-directory && inliner dist/index.html > out/index.html",
     "b": "npm run build",
-    "tsc": "tsc",
+    "compile": "tsc --incremental",
     "clean": "rm -rf dist out/* .parcel-cache",
     "create-output-directory": "node create-output-dir.js",
     "module-hack": "node module-hack.js"

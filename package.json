@@ -23,7 +23,8 @@
     "compile": "tsc --incremental",
     "c": "npm run compile",
     "compile:watch": "tsc --incremental --watch",
-    "bw": "npm run compile:watch",
+    "cw": "npm run compile:watch",
+    "compile-all": "pnpm run compile-plugins && pnpm run compile",
     "electron": "concurrently --names=\"build main,build electron\" \"npm run compile\" \"npm run build-electron\" && cross-env ENTRY=../../dist/electron/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron ts-build/testbed/electron-main.js",
     "e": "npm run electron",
     "electron:dev": "npm run compile && concurrently --names=\"serve-plugins,serve,electron\" --kill-others \"pnpm run serve-plugins\" \"cross-env DISPLAY_TEXT=http://localhost:5000 cross-env DISPLAY_DEFAULT=http://localhost:5001 npm run serve-electron\" \"cross-env ENTRY=http://localhost:8080/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron  ts-build/testbed/electron-main.js\"",
@@ -39,6 +40,7 @@
     "build-plugins": "pnpm run build-plugins-in-place && pnpm run copy-plugins",
     "serve-plugins": "pnpm -r run start:dev",
     "clean-plugins": "pnpm -r run clean",
+    "compile-plugins": "pnpm -r run compile",
     "create-plugins-directory": "node create-plugins-dir.js"
   },
   "devDependencies": {
