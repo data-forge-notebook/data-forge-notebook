@@ -5,7 +5,7 @@
   "main": "ts-build/index.js",
   "scripts": {
     "serve-browser": "webpack serve --open browser.html --config webpack.browser.config.js",
-    "start": "concurrently \"pnpm run serve-plugins\" \"cross-env DISPLAY_TEXT=http://localhost:5000 cross-env DISPLAY_DEFAULT=http://localhost:5001 pnpm run serve-browser\" --kill-others",
+    "start": "npm run build-plugins && concurrently \"pnpm run serve-plugins\" \"cross-env DISPLAY_TEXT=http://localhost:5000 cross-env DISPLAY_DEFAULT=http://localhost:5001 pnpm run serve-browser\" --kill-others",
     "s": "npm run start",
     "testbed": "webpack serve --open testbed.html --config webpack.testbed.config.js",
     "tb": "npm run testbed",
