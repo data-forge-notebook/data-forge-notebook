@@ -4,13 +4,13 @@
 
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import * as React from 'react';
-import { IPluginConfig, IPluginContent, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
+import { IPluginRequest, IPluginContent, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
 
 export interface IPluggableVisualizationProps {
     //
     // Plugin configuration.
     //
-    config: IPluginConfig;
+    config: IPluginRequest;
 }
 
 export interface IPluggableVisualizationState {

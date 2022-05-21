@@ -4,7 +4,7 @@
 
 export const IPluginRepo_ID = "IPluginRepo";
 
-export interface IPluginConfig {
+export interface IPluginRequest {
 
     //
     // Identifies the data or the plugin used to render it.
@@ -42,5 +42,5 @@ export interface IPluginRepo {
     //
     // Inspect the data and retreive a plugin.
     //
-    getPlugin(config: IPluginConfig): Promise<IPluginContent>;
+    getPlugin(pluginRequest: IPluginRequest): Promise<IPluginContent>;
 }
