@@ -123,7 +123,7 @@ importers:
       webpack-cli: 4.9.2_nu6lqtvx5bk2436aupxfqxamey
       webpack-dev-server: 4.7.4_spmstbzrmxjdafr7ccogoqrx6e
 
-  plugins/structured-data:
+  plugins/data:
     specifiers:
       '@babel/core': ^7.17.2
       '@types/react': ^17.0.37
