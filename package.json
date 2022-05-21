@@ -34,11 +34,12 @@
     "tw": "npm run test:watch",
     "copy-text-plugin": "cp ./plugins/text/out/index.html ./src/testbed/services/plugins/text.txt",
     "copy-data-plugin": "cp ./plugins/data/out/index.html ./src/testbed/services/plugins/data.txt",
-    "copy-plugins": "mkdir ./src/testbed/services/plugins && pnpm run copy-text-plugin && pnpm run copy-data-plugin",
+    "copy-plugins": "pnpm run create-plugins-directory && pnpm run copy-text-plugin && pnpm run copy-data-plugin",
     "build-plugins-in-place": "pnpm -r --workspace-concurrency=1 run build",
     "build-plugins": "pnpm run build-plugins-in-place && pnpm run copy-plugins",
     "serve-plugins": "pnpm -r run start:dev",
-    "clean-plugins": "pnpm -r run clean"
+    "clean-plugins": "pnpm -r run clean",
+    "create-plugins-directory": "node create-plugins-dir.js"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
@@ -71,6 +72,7 @@
     "file-loader": "^6.2.0",
     "fork-ts-checker-notifier-webpack-plugin": "^6.0.0",
     "fork-ts-checker-webpack-plugin": "^7.2.1",
+    "fs-extra": "^10.1.0",
     "jest": "^27.5.1",
     "msw": "^0.39.1",
     "source-map-loader": "^3.0.1",
