@@ -5,7 +5,7 @@
 import { InjectableSingleton } from "@codecapers/fusion";
 import { IPluginConfig, IPluginContent, IPluginRepo, IPluginRepo_ID } from "../../services/plugin-repository";
 
-const structureDataPlugin = require("./plugins/structured-data.txt");
+const structureDataPlugin = require("./plugins/data.txt");
 const textDataPlugin = require("./plugins/text.txt");
 
 @InjectableSingleton(IPluginRepo_ID)
