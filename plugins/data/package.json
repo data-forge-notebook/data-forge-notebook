@@ -9,7 +9,7 @@
     "st": "npm run start:test",
     "start": "npm run build && live-server out --cors --port=5001 --no-browser",
     "s": "npm run start",
-    "build": "parcel build index.html --public-url . --no-source-maps && npm run module-hack && npm run create-output-directory && inliner dist/index.html > out/index.html",
+    "build": "parcel build index.html --public-url . --no-source-maps && npm run module-hack && npm run create-output-directory && cd dist && cat index.html | inliner > ../out/index.html",
     "b": "npm run build",
     "compile": "tsc --incremental",
     "clean": "rm -rf tsconfig.tsbuildinfo dist out/* .parcel-cache",
