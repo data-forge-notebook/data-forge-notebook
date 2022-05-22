@@ -33,8 +33,8 @@ function buildPlugin(pluginName) {
     
     //TODO: Only build if any file is later than the output.
     
-    const buildCmd = `pnpm -r --filter ${pluginName} run build`;
     try {
+        const buildCmd = `pnpm -r --filter ${pluginName} run build`;
         const result = execSync(buildCmd);
         // console.log(result.toString());
     }
