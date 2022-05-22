@@ -8,9 +8,9 @@ import { IPluginRequest, IPluginContent, IPluginRepo, IPluginRepo_ID } from '../
 
 export interface IPluggableVisualizationProps {
     //
-    // Plugin configuration.
+    // Determines the plugin that is requested for visualization.
     //
-    config: IPluginRequest;
+    pluginRequest: IPluginRequest;
 }
 
 export interface IPluggableVisualizationState {
@@ -46,7 +46,7 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
         //
         // Loads the plugin to render the data.
         //        
-        const pluginContent = await this.pluginRepo.getPlugin(this.props.config);
+        const pluginContent = await this.pluginRepo.getPlugin(this.props.pluginRequest);
 
         this.setState({
             pluginContent: pluginContent,
@@ -62,11 +62,12 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
         //
         this.iframeRef.current?.contentWindow?.postMessage({
             name: "config",
-            data: this.props.config,
+            data: this.props.pluginRequest,
         }, "*");
     }
 
     render() {
+
         if (this.state.pluginContent?.url) {
             return (
                 <>

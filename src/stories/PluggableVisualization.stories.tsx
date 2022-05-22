@@ -9,7 +9,7 @@ export default {
 
 export const VisualizeStructuredData = () => 
     <PluggableVisualization
-        config={{
+        pluginRequest={{
             data: {
                 some: "data",
                 array: [1, 2, 3],

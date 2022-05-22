@@ -33,7 +33,7 @@ function App() {
                 <hr />
                 <h1>Pluggable visualization test run:</h1>     
                 <PluggableVisualization
-                    config={{
+                    pluginRequest={{
                         data: {
                             some: "data",
                             array: [1, 2, 3],

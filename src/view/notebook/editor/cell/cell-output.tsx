@@ -75,7 +75,13 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
             }
         `;
 
-        const what = this.props.model.getValue() && this.props.model.getValue().getDisplayType() || "unset"
+        const outputValue = this.props.model.getValue();
+        const what = outputValue.getDisplayType() || "unset";
+        const pluginRequest = {
+            displayType: outputValue.getDisplayType(),
+            plugin: outputValue.getPlugin(),
+            data: outputValue.getData(),
+        };
 
         if (this.state.height === undefined) {
             // Do an initial render to determine the default height.
@@ -85,11 +91,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                     >
                     <OutputBorder ref={this.outputContainerElement}>
                         <PluggableVisualization
-                            config={{
-                                displayType: this.props.model.getValue().getDisplayType(),
-                                plugin: this.props.model.getValue().getPlugin(),
-                                data: this.props.model.getValue().getData(),
-                            }}
+                            pluginRequest={pluginRequest}
                             />
                     </OutputBorder>
                 </ErrorBoundary>
@@ -107,6 +109,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
             height: "100%",
             overflow: "auto",
         };
+        
         if (isOutputFullHeight) {
             outputScrollerStyle.overflow = "hidden";
         }
@@ -159,11 +162,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     ref={this.outputContainerElement}
                                     >
                                     <PluggableVisualization
-                                        config={{
-                                            displayType: this.props.model.getValue().getDisplayType(),
-                                            plugin: this.props.model.getValue().getPlugin(),
-                                            data: this.props.model.getValue().getData(),
-                                        }}
+                                        pluginRequest={pluginRequest}
                                         />
                                 </div>
                             </div>
