@@ -37,24 +37,6 @@ describe("view-model / cell-output", () => {
         expect(cellOutput.isFresh()).toBe(false);
     });
 
-    test("initial height defaults to 400", () => {
-        const mockModel: any = { 
-            getValue: () => {}, 
-            getHeight: () => undefined,
-        };
-        const cellOutput = new CellOutputViewModel(mockModel);
-        expect(cellOutput.getInitialHeight()).toEqual(400);
-    });
-
-    test("initial height comes from saved height", () => {
-        const mockModel: any = { 
-            getValue: () => {}, 
-            getHeight: () => 250,
-        };
-        const cellOutput = new CellOutputViewModel(mockModel);
-        expect(cellOutput.getInitialHeight()).toEqual(250);
-    });
-
     test("getting the height returns model height", () => {
         const mockModel: any = { 
             getValue: () => {}, 

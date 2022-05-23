@@ -1,6 +1,6 @@
 import { ICellOutputValueViewModel, CellOutputValueViewModel } from "./cell-output-value";
 import { IEventSource, BasicEventHandler, EventSource } from "../lib/event-source";
-import { ICellOutput, CellOutput } from "../model/cell-output";
+import { ICellOutput } from "../model/cell-output";
 import { ISerializedCellOutput1 } from "../model/serialization/serialized1";
 
 //
@@ -38,17 +38,6 @@ export interface ICellOutputViewModel {
     // Mark the output as out of data.
     //
     markStale(): void;
-
-    //
-    // Returns true if the output sizes to the full height of its container.
-    //
-    isOutputFullHeight(): boolean;
-
-    //
-    // Get the inital height.
-    // If height is undefined this defaults based on the type of the value.
-    //
-    getInitialHeight(): number;
 
     //
     // Get the height of the output, if set.
@@ -133,23 +122,6 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     //
     markStale(): void {
         this.fresh = false;
-    }
-
-    //
-    // Returns true if the output sizes to the full height of its container.
-    //
-    isOutputFullHeight(): boolean {
-        return true; // TODO: Can I delegate this to the output plugin?
-    }
-
-    //
-    // Get the inital height.
-    // If height is undefined this defaults based on the type of the value.
-    //
-    getInitialHeight(): number {
-        // TODO: Can I delegate this to the output plugin?
-        const savedHeight = this.getHeight();
-        return savedHeight !== undefined && savedHeight || 400;
     }
 
     //

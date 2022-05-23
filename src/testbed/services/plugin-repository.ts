@@ -3,28 +3,8 @@
 //
 
 import { InjectableSingleton } from "@codecapers/fusion";
-import { IPluginRequest, IPluginContent, IPluginRepo, IPluginRepo_ID } from "../../services/plugin-repository";
+import { IPluginRequest, IPluginRepo, IPluginRepo_ID, IPluginConfig } from "../../services/plugin-repository";
 import * as path from "path";
-
-//
-// The config for a particular plugin.
-//
-interface IPluginConfig {
-    //
-    // The name of the plugin.
-    //
-    name: string;
-
-    //
-    // The display type that this plugin matches.
-    //
-    displayType: string | [string];
-
-    //
-    // The content for the plugin.
-    //
-    content: string;
-}
 
 //
 // A lookup table of plugins.
@@ -39,6 +19,7 @@ interface IPluginMap {
 function loadEmbeddedPlugins(): IPluginMap {
     const plugins: IPluginMap = {};
 
+    // https://webpack.js.org/configuration/module/#module-contexts
     const jsonContext = require.context("./plugins", true, /\.\/.*\.json$/);
     for (const key of jsonContext.keys()) {
         const pluginName = path.basename(key, ".json");
@@ -74,70 +55,85 @@ if (defaultPlugin === undefined) {
     throw new Error(`Default plugin not found, you need a plugin with displayType = "*"`);
 }
 
+
 @InjectableSingleton(IPluginRepo_ID)
 export class PluginRepo implements IPluginRepo {
 
     //
-    // Inspect the data and retreive a plugin.
+    // Inspect the data and retreive the configuration for a plugin.
     //
-    async getPlugin(pluginRequest: IPluginRequest): Promise<IPluginContent> {
-
-        if (pluginRequest.plugin) {
-            if (pluginRequest.plugin.startsWith("http://")) {
-
-                //
-                // Delegate plugin loading to a web server.
-                // You can load local plugins this way.
-                //
-                return {
-                    url: pluginRequest.plugin,
-                };
-            }
-        }
-
-        if (pluginRequest.displayType) {
-            if (pluginRequest.displayType === "string" || pluginRequest.displayType === "text") {
-                if (process.env.DISPLAY_TEXT) {
-                    // Overrides the text plugin to reference a locally hosted plugin.
-                    console.log(`Using "text" plugin override: ${process.env.DISPLAY_TEXT}`);
-                    return {
-                        url: process.env.DISPLAY_TEXT, 
-                    };
-                }
-            }
-        }
+    private matchPlugin(pluginRequest: IPluginRequest): IPluginConfig | undefined {
 
         if (pluginRequest.displayType) {
             for (const plugin of plugins) {
                 if (typeof(plugin.displayType) === "string") {
                     if (pluginRequest.displayType === plugin.displayType) {
-                        return {
-                            inline: plugin.content,
-                        };
+                        return plugin;
                     }
                 }
                 else {
                     for (const pluginDisplayType of plugin.displayType) {
                         if (pluginRequest.displayType === pluginDisplayType) {
-                            return {
-                                inline: plugin.content,
-                            };
+                            return plugin;
                         }
                     }
                 }
             }
         }
 
-        if (process.env.DISPLAY_DEFAULT) {
-            // Overrides the default/data plugin to reference a locally hosted plugin.
-            console.log(`Using default plugin override: ${process.env.DISPLAY_DEFAULT}`);
-            return {
-                url: process.env.DISPLAY_DEFAULT, 
-            };
-        }
+        return undefined;
+    }
 
-        return {
-            inline: defaultPlugin.content,
-        };
+    //
+    // Inspect the data and retreive a plugin.
+    //
+    async getPlugin(pluginRequest: IPluginRequest): Promise<IPluginConfig> {
+
+        console.log(`Requesting plugin content:`);
+        console.log(pluginRequest);
+
+        let matchedPlugin = this.matchPlugin(pluginRequest);
+        if (!matchedPlugin) {
+            console.log(`Didn't match any plugin, returning default plugin:`);
+            console.log(defaultPlugin);
+
+            matchedPlugin = defaultPlugin;
+
+            if (process.env.DISPLAY_DEFAULT) {
+                // Overrides the default/data plugin to reference a locally hosted plugin.
+                console.log(`Using default plugin override: ${process.env.DISPLAY_DEFAULT}`);
+                matchedPlugin = Object.assign({}, matchedPlugin); // Don't overwrite underlying plugin.
+                matchedPlugin.url = process.env.DISPLAY_DEFAULT;
+            }
+        }
+        else {
+            console.log(`Matched plugin request against plugin ${matchedPlugin.name}:`);
+            console.log(matchedPlugin);
+
+            if (pluginRequest.displayType) {
+                if (pluginRequest.displayType === "string" || pluginRequest.displayType === "text") {
+                    if (process.env.DISPLAY_TEXT) {
+                        // Overrides the text plugin to reference a locally hosted plugin.
+                        console.log(`Using "text" plugin override: ${process.env.DISPLAY_TEXT}`);
+                        matchedPlugin = Object.assign({}, matchedPlugin); // Don't overwrite underlying plugin.
+                        matchedPlugin.url = process.env.DISPLAY_TEXT;
+                    }
+                }
+            }
+        }
+        
+        if (pluginRequest.plugin) {
+            if (pluginRequest.plugin.startsWith("http://")) {
+                console.log(`Plugin is overriden and delegated to ${pluginRequest.plugin}`);
+                //
+                // Delegate plugin loading to a web server.
+                // You can load local plugins this way.
+                //
+                matchedPlugin = Object.assign({}, matchedPlugin); // Don't overwrite underlying plugin.
+                matchedPlugin.url = pluginRequest.plugin;
+            }
+        }
+        
+        return matchedPlugin;
     }
 }

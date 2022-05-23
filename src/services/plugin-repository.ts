@@ -23,24 +23,45 @@ export interface IPluginRequest {
 }
 
 //
-// Defines the content of a plugin.
+// The config for a particular plugin.
 //
-export interface IPluginContent {
+export interface IPluginConfig {
+    //
+    // The name of the plugin.
+    //
+    name: string;
+
+    //
+    // The display type that this plugin matches.
+    //
+    displayType: string | [string];
+
+    //
+    // Default height for the plugin.
+    //
+    defaultHeight?: number;
+
+    //
+    // Set to true if the plugin should automatically be stretched to the full height of the resizable cell output.
+    //
+    isFullHeight?: boolean;
+
     //
     // Set if the plugin is loaded directly from a web server.
     //
     url?: string;
 
     //
-    // Set if the plugin is loaded from inline content.
+    // The content for the plugin.
     //
-    inline?: string;
+    content: string;
 }
 
 export interface IPluginRepo {
 
     //
-    // Inspect the data and retreive a plugin.
+    // Inspect the data and retreive the content for a plugin.
     //
-    getPlugin(pluginRequest: IPluginRequest): Promise<IPluginContent>;
+    getPlugin(pluginRequest: IPluginRequest): Promise<IPluginConfig>;
+
 }

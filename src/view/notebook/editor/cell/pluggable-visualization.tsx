@@ -4,27 +4,24 @@
 
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import * as React from 'react';
-import { IPluginRequest, IPluginContent, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
+import { IPluginRequest, IPluginRepo, IPluginRepo_ID, IPluginConfig } from '../../../../services/plugin-repository';
 
 export interface IPluggableVisualizationProps {
     //
     // Determines the plugin that is requested for visualization.
     //
     pluginRequest: IPluginRequest;
+
+    //
+    // Determines the plugin that is requested for visualization.
+    //
+    pluginConfig?: IPluginConfig;
 }
 
 export interface IPluggableVisualizationState {
-    //
-    // The content for the visualization plugin, once loaded.
-    //
-    pluginContent?: IPluginContent;
 }
 
-@InjectableClass()
 export class PluggableVisualization extends React.Component<IPluggableVisualizationProps, IPluggableVisualizationState> {
-
-    @InjectProperty(IPluginRepo_ID)
-    pluginRepo!: IPluginRepo;
 
     //
     // Reference to the iframe that is the container for the output plugin.
@@ -39,18 +36,6 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
         this.iframeRef = React.createRef<HTMLIFrameElement>();
 
         this.onLoad = this.onLoad.bind(this);
-    }
-
-    async componentDidMount() {
-
-        //
-        // Loads the plugin to render the data.
-        //        
-        const pluginContent = await this.pluginRepo.getPlugin(this.props.pluginRequest);
-
-        this.setState({
-            pluginContent: pluginContent,
-        });
     }
 
     //
@@ -68,7 +53,7 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
 
     render() {
 
-        if (this.state.pluginContent?.url) {
+        if (this.props.pluginConfig?.url) {
             return (
                 <>
                     <iframe 
@@ -79,7 +64,7 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
                         }}
                         onLoad={this.onLoad}
                         ref={this.iframeRef}
-                        src={this.state.pluginContent?.url}
+                        src={this.props.pluginConfig?.url}
     
                         title="Visualization plugin"
                         sandbox="allow-scripts"
@@ -88,7 +73,7 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
             )
         }
 
-        if (this.state.pluginContent?.inline) {
+        if (this.props.pluginConfig?.content) {
             return (
                 <>
                     <iframe 
@@ -100,7 +85,7 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
                         onLoad={this.onLoad}
                         ref={this.iframeRef}
     
-                        srcDoc={this.state.pluginContent?.inline}
+                        srcDoc={this.props.pluginConfig?.content}
     
                         title="Visualization plugin"
                         sandbox="allow-scripts"
