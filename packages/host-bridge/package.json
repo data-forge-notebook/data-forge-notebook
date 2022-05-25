@@ -8,7 +8,7 @@
         "clean": "rm -rf tsconfig.tsbuildinfo build/*",
         "c": "npm run compile",
         "compile": "tsc --incremental",
-        "cw": "npm run build:watch",
+        "cw": "npm run compile:watch",
         "compile:watch": "tsc  --incremental --watch"
     },
     "keywords": [],
