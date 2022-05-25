@@ -11,9 +11,10 @@ import { ICellOutputViewModel } from '../../../../view-model/cell-output';
 import { ErrorBoundary } from '../../../../lib/error-boundary';
 import { handleAsyncErrors } from '../../../../lib/async-handler';
 import { PluggableVisualization } from './pluggable-visualization';
-import { IPluginConfig, IPluginRepo, IPluginRepo_ID, IPluginRequest } from '../../../../services/plugin-repository';
+import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { updateState } from '../../../../lib/update-state';
+import { IPluginRequest } from 'host-bridge';
 
 export interface ICellOutputProps {
     model: ICellOutputViewModel;
@@ -51,12 +52,8 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
     @InjectProperty(IPluginRepo_ID)
     pluginRepo!: IPluginRepo;
 
-    private outputContainerElement: React.RefObject<HTMLDivElement>;
-
     constructor(props: ICellOutputProps) {
         super(props);
-
-        this.outputContainerElement = React.createRef<HTMLDivElement>();
 
         this.state = {
             height: this.props.model.getHeight(), // Get the saved height.
@@ -74,23 +71,35 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         await updateState(this, {
             pluginConfig: pluginConfig,
         });
+    }
 
-        if (this.state.height === undefined) {
-
-            // No saved height.
-            if (pluginConfig.defaultHeight !== undefined) {
-                // Use default height for the plugin.
-                await updateState(this, {
-                    height: await pluginConfig.defaultHeight,
-                });
-            }
-            else if (this.outputContainerElement.current) {
-                // Default the height based on the UI.
-                this.setState({
-                    height: Math.min(MAX_INITIAL_HEIGHT, this.outputContainerElement.current.clientHeight + DRAG_HANDLE_HEIGHT), // Adding some pixels here to account for the height of the drag handle.
-                });
-            }
+    //
+    // Sets the initial output height from the content, if the height is not already set.
+    //
+    private setHeightFromContent = async (contentHeight: number): Promise<void> => {
+        if (this.state.height !== undefined) {
+            // Height already set, nothing to be done.
+            return;
         }
+
+        //
+        // There is no saved height for this output, use the default plugin height or the content height.
+        //
+
+        if (this.state.pluginConfig?.defaultHeight !== undefined) {
+            // Use default height for the plugin.
+            await updateState(this, {
+                height: this.state.pluginConfig.defaultHeight,
+            });
+        }
+        else {
+            // Default the height based on the UI.
+            await updateState(this, {
+                height: Math.min(MAX_INITIAL_HEIGHT, contentHeight + DRAG_HANDLE_HEIGHT), // Adding some pixels here to account for the height of the drag handle.
+            });
+        }
+
+        this.props.onHeightChanged();
     }
 
     render() {
@@ -123,10 +132,11 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                 <ErrorBoundary
                     what={`cell output - type: ${what}`}
                     >
-                    <OutputBorder ref={this.outputContainerElement}>
+                    <OutputBorder>
                         <PluggableVisualization
                             pluginRequest={this.state.pluginRequest}
                             pluginConfig={this.state.pluginConfig}
+                            onResize={this.setHeightFromContent}
                             />
                     </OutputBorder>
                 </ErrorBoundary>
@@ -148,6 +158,10 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         if (isOutputFullHeight) {
             outputScrollerStyle.overflow = "hidden";
         }
+
+        //
+        // After the plugin is initially size up, render a different version that allows the user to resize it.
+        //
 
         return (
             <ErrorBoundary
@@ -192,18 +206,19 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                             }}
                             >
                             <div style={outputScrollerStyle} >
-                                <div 
-                                    style={outputWrapperStyle}
-                                    ref={this.outputContainerElement}
-                                    >
+                                <div style={outputWrapperStyle} >
+                                    {/*
+                                        Note: No need to handle plugin resize event here, because it's only required when the plugin
+                                        is initially rendered, which is handled above.
+                                    */}
                                     <PluggableVisualization
                                         pluginRequest={this.state.pluginRequest}
                                         pluginConfig={this.state.pluginConfig}
                                         />
                                 </div>
                             </div>
-
                         </Resizable>
+
                         <div className="output-hover-content">
                             <div
                                 className="flex flex-col items-center w-full" 

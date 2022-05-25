@@ -2,9 +2,9 @@
 // Renders a user pluggable visualization for a cell output.
 //
 
-import { InjectableClass, InjectProperty } from '@codecapers/fusion';
+import { connnectPlugin, IPluginRequest } from 'host-bridge';
 import * as React from 'react';
-import { IPluginRequest, IPluginRepo, IPluginRepo_ID, IPluginConfig } from '../../../../services/plugin-repository';
+import { IPluginConfig } from '../../../../services/plugin-repository';
 
 export interface IPluggableVisualizationProps {
     //
@@ -16,6 +16,11 @@ export interface IPluggableVisualizationProps {
     // Determines the plugin that is requested for visualization.
     //
     pluginConfig?: IPluginConfig;
+
+    //
+    // Event raised when the plugin size has changed.
+    //
+    onResize?: (height: number) => Promise<void>;
 }
 
 export interface IPluggableVisualizationState {
@@ -42,13 +47,24 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
     // Event raised when the iframe has loaded.
     //
     private onLoad() {
+        if (!this.iframeRef.current) {
+            throw new Error(`Iframe not mounted!`);
+        }
+
         //
         // Configures the plugin that is running within the iframe.
         //
-        this.iframeRef.current?.contentWindow?.postMessage({
-            name: "config",
-            data: this.props.pluginRequest,
-        }, "*");
+        connnectPlugin(
+            this.iframeRef.current,
+            this.props.pluginRequest, 
+            {
+                onResize: async (height: number) => {
+                    if (this.props.onResize) {
+                        await this.props.onResize(height);
+                    }
+                },
+            }
+        );
     }
 
     render() {

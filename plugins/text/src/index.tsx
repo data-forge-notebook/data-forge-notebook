@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Text } from "./text";
-import { IVizConfig, connect } from "host-bridge";
+import { IPluginRequest, connectHost } from "host-bridge";
 
 interface IAppState {
     //
     // Plugin configuration.
     //
-    config?: IVizConfig;
+    config?: IPluginRequest;
 }
 
 class App extends React.Component<{}, IAppState> {
@@ -20,7 +20,7 @@ class App extends React.Component<{}, IAppState> {
 
     async componentDidMount() {
         // Connects to the visualization host.
-        await connect({
+        const host = await connectHost({
             // Configures the plugin.
             configure: async (config) => {
                 this.setState({

@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Text } from "./text";
-import { IVizConfig } from "host-bridge";
+import { IPluginRequest } from "host-bridge";
 
 interface IAppState {
     //
     // Plugin configuration.
     //
-    config?: IVizConfig;
+    config?: IPluginRequest;
 }
 
 class App extends React.Component<{}, IAppState> {

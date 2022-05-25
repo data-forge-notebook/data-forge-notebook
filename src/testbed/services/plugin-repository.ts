@@ -3,8 +3,9 @@
 //
 
 import { InjectableSingleton } from "@codecapers/fusion";
-import { IPluginRequest, IPluginRepo, IPluginRepo_ID, IPluginConfig } from "../../services/plugin-repository";
+import { IPluginRepo, IPluginRepo_ID, IPluginConfig } from "../../services/plugin-repository";
 import * as path from "path";
+import { IPluginRequest } from "host-bridge";
 
 //
 // A lookup table of plugins.
