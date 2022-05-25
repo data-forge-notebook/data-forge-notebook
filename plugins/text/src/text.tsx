@@ -10,16 +10,20 @@ export interface ITextProps {
 export class Text extends React.Component<ITextProps, {}> {
     
     render () {
+        let text = this.props.text;
         if (this.props.text !== undefined && typeof(this.props.text) !== "string") {
-            return (
-                <pre>
-                    {JSON.stringify(this.props.text, null, 4)}
-                </pre>
-            );
+            text = JSON.stringify(text, null, 4);
         }
 
         return (
-            <pre>
+            <pre
+                style={{ 
+                    marginTop: "0px",
+                    marginBottom: "0px",
+                    paddingTop: "12px",
+                    paddingBottom: "12px",
+                }}  
+                >
                 {this.props.text}
             </pre>
         );
