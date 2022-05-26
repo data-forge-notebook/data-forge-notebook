@@ -32,7 +32,7 @@
     "t": "npm run test",
     "test:watch": "jest --watch",
     "tw": "npm run test:watch",
-    "serve-plugins": "pnpm -r run start:dev",
+    "serve-plugins": "node ./scripts/serve-plugins.js",
     "clean-plugins": "pnpm -r run clean",
     "compile-plugins": "pnpm -r run compile",
     "build-plugins": "node ./scripts/build-plugins.js"

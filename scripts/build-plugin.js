@@ -1,7 +1,7 @@
 //
 // This script builds a single plugin and copies it output to the `plugins` subdirectory.
 // 
-// To buid a single plugin:
+// To build a single plugin:
 //
 //   node ./scripts/build-plugin.js <plugin-name>
 //
