@@ -14,18 +14,6 @@ const fs = require("fs-extra");
 const { servePlugin } = require("./serve-plugin");
 const { execSync } = require("child_process");
 
-console.log(`Compiling sub projects...`);
-try {
-    const result = execSync(`pnpm -r run compile`);
-    // console.log(result.toString());
-}
-catch (err) {
-    console.error(`Failed with code ${err.status}`);
-    console.error(err.output.toString());
-    process.exit(1);
-}
-console.log(`Compiled sub projects.`);
-
 const pluginDirs = fs.readdirSync("./plugins");
 
 const pluginOverrides = {};
@@ -37,6 +25,7 @@ for (const pluginDir of pluginDirs) {
     };
 
     servePlugin(pluginDir, nextPort);
+    ++nextPort;
 }
 
 const pluginsFile = `./src/testbed/services/plugins/plugins.json`;

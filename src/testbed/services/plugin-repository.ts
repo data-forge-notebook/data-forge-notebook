@@ -15,17 +15,41 @@ interface IPluginMap {
 }
 
 //
+// Defines a plugin override from a local web server.
+//
+interface IPluginOverride {
+    //
+    // The port number the plugin is available on.
+    //
+    portNo: number;
+}
+
+//
+// A look up table of plugin overrides.
+//
+interface IPluginOverrideMap {
+    [index: string]: IPluginOverride;
+}
+
+//
 // Loads embedded plugins.
 //
 function loadEmbeddedPlugins(): IPluginMap {
+    let pluginManifest: IPluginOverrideMap = {};
     const plugins: IPluginMap = {};
 
     // https://webpack.js.org/configuration/module/#module-contexts
     const jsonContext = require.context("./plugins", true, /\.\/.*\.json$/);
     for (const key of jsonContext.keys()) {
         const pluginName = path.basename(key, ".json");
-        plugins[pluginName] = jsonContext(key);
-        plugins[pluginName].name = pluginName;
+        if (pluginName === "plugins") {
+            // This is the plugin manifest.
+            pluginManifest = jsonContext(key);
+        }
+        else {
+            plugins[pluginName] = jsonContext(key);
+            plugins[pluginName].name = pluginName;
+        }
     }
 
     const textContext = require.context("./plugins", true, /\.\/.*\.txt$/);
@@ -40,8 +64,16 @@ function loadEmbeddedPlugins(): IPluginMap {
         }
     }
 
+    for (const [ pluginName, pluginConfig ] of Object.entries(pluginManifest)) {
+        const plugin = plugins[pluginName];
+        plugin.url = `http://localhost:${pluginConfig.portNo}`;
+    }
+
     for (const plugin of Object.values(plugins)) {
-        if (plugin.content === "undefined") {
+        if (plugin.url)  {
+            console.log(`Serving plugin ${plugin.name} from ${plugin.url}`);
+        }
+        else if (plugin.content === undefined) {
             console.error(`No content found for plugin ${plugin.name}.`);
         }
     }
@@ -55,7 +87,6 @@ const defaultPlugin = plugins.filter(plugin => plugin.displayType === "*")[0];
 if (defaultPlugin === undefined) {
     throw new Error(`Default plugin not found, you need a plugin with displayType = "*"`);
 }
-
 
 @InjectableSingleton(IPluginRepo_ID)
 export class PluginRepo implements IPluginRepo {
@@ -99,28 +130,10 @@ export class PluginRepo implements IPluginRepo {
             console.log(defaultPlugin);
 
             matchedPlugin = defaultPlugin;
-
-            if (process.env.DISPLAY_DEFAULT) {
-                // Overrides the default/data plugin to reference a locally hosted plugin.
-                console.log(`Using default plugin override: ${process.env.DISPLAY_DEFAULT}`);
-                matchedPlugin = Object.assign({}, matchedPlugin); // Don't overwrite underlying plugin.
-                matchedPlugin.url = process.env.DISPLAY_DEFAULT;
-            }
         }
         else {
             console.log(`Matched plugin request against plugin ${matchedPlugin.name}:`);
             console.log(matchedPlugin);
-
-            if (pluginRequest.displayType) {
-                if (pluginRequest.displayType === "string" || pluginRequest.displayType === "text") {
-                    if (process.env.DISPLAY_TEXT) {
-                        // Overrides the text plugin to reference a locally hosted plugin.
-                        console.log(`Using "text" plugin override: ${process.env.DISPLAY_TEXT}`);
-                        matchedPlugin = Object.assign({}, matchedPlugin); // Don't overwrite underlying plugin.
-                        matchedPlugin.url = process.env.DISPLAY_TEXT;
-                    }
-                }
-            }
         }
         
         if (pluginRequest.plugin) {

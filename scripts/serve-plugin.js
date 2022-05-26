@@ -30,11 +30,6 @@ function servePlugin(pluginName, portNo) {
 
     console.log(`Serving plugin "${pluginName}" on port ${portNo}...`);
 
-    const contentFile = `./plugins/${pluginName}/out/index.html`;
-    const outputContentFile = `./src/testbed/services/plugins/${pluginName}.txt`;
-    fs.copyFileSync(contentFile, outputContentFile);
-    console.log(`Copied ${contentFile} ->  ${outputContentFile}`);
-    
     const pluginConfigFile = `./plugins/${pluginName}/plugin.json`;
     const outputPluginConfig = `./src/testbed/services/plugins/${pluginName}.json`;
     fs.copyFileSync(pluginConfigFile, outputPluginConfig);

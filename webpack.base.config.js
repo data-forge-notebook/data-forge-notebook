@@ -14,9 +14,7 @@ module.exports = function (env) {
     };
 
     const defaultEnv = {
-        DISPLAY_TEXT: "", // Default is to not override.
-        DISPLAY_DEFAULT: "",
-    }
+    };
     const processEnv = Object.assign(defaultEnv, process.env);
 
     return {
