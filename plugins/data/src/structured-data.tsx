@@ -37,12 +37,21 @@ export class StructuredData extends React.Component<IStructuredDataProps, {}> {
     
     render () {
         return (
-            <JSONTree 
-                data={this.props.data} 
-                theme={theme}
-                invertTheme={true}
-                hideRoot={true}
-                />
+            <div
+                style={{ 
+                    marginTop: "0px",
+                    marginBottom: "0px",
+                    paddingTop: "2px",
+                    paddingBottom: "2px",
+                }}  
+                >
+                <JSONTree 
+                    data={this.props.data} 
+                    theme={theme}
+                    invertTheme={true}
+                    hideRoot={true}
+                    />
+            </div>
         );
     }
 };
