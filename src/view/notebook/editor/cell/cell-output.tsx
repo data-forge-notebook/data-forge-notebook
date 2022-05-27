@@ -27,7 +27,7 @@ export interface ICellOutputProps {
 
 export interface ICellOutputState {
     //
-    // Height of the output, but only if it has been resized by the user.
+    // Height of the output.
     //
     height?: number;
 
@@ -44,7 +44,7 @@ export interface ICellOutputState {
 
 const MIN_OUTPUT_HEIGHT = 30;
 const MAX_INITIAL_HEIGHT = 200;
-const DRAG_HANDLE_HEIGHT = 4;
+const DRAG_HANDLE_HEIGHT = 10;
 
 @InjectableClass()
 export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputState> {
@@ -127,7 +127,9 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         const what = outputValue.getDisplayType() || "unset";
 
         if (this.state.height === undefined) {
-            // Do an initial render to determine the default height.
+            //
+            // Do an initial render to determine the initial height.
+            //
             return (
                 <ErrorBoundary
                     what={`cell output - type: ${what}`}
@@ -144,17 +146,13 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         }
 
         const height = Math.max(this.state.height, MIN_OUTPUT_HEIGHT);
-        const outputWrapperStyle: any = {};
-        const isOutputFullHeight = this.state.pluginConfig?.isFullHeight || false;
-        if (isOutputFullHeight) {
-            outputWrapperStyle.height = "100%";
-        }
 
         const outputScrollerStyle: any = {
             height: "100%",
             overflow: "auto",
         };
 
+        const isOutputFullHeight = this.state.pluginConfig?.isFullHeight || false;
         if (isOutputFullHeight) {
             outputScrollerStyle.overflow = "hidden";
         }
@@ -206,16 +204,15 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                             }}
                             >
                             <div style={outputScrollerStyle} >
-                                <div style={outputWrapperStyle} >
-                                    {/*
-                                        Note: No need to handle plugin resize event here, because it's only required when the plugin
-                                        is initially rendered, which is handled above.
-                                    */}
-                                    <PluggableVisualization
-                                        pluginRequest={this.state.pluginRequest}
-                                        pluginConfig={this.state.pluginConfig}
-                                        />
-                                </div>
+                                {/*
+                                    Note: No need to handle plugin resize event here, because it's only required when the plugin
+                                    is initially rendered, which is handled above.
+                                */}
+                                <PluggableVisualization
+                                    pluginRequest={this.state.pluginRequest}
+                                    pluginConfig={this.state.pluginConfig}
+                                    height={isOutputFullHeight ? "100%" : `${this.state.height-DRAG_HANDLE_HEIGHT}px`}
+                                    />
                             </div>
                         </Resizable>
 
