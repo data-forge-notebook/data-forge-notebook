@@ -8,7 +8,7 @@ import { JSONTree } from 'react-json-tree';
 const theme = {
     scheme: 'monokai',
     author: 'wimer hazenberg (http://www.monokai.nl)',
-    base00: '#272822',
+    base00: '#FBFBFB',
     base01: '#383830',
     base02: '#49483e',
     base03: '#75715e',
@@ -48,7 +48,7 @@ export class StructuredData extends React.Component<IStructuredDataProps, {}> {
                 <JSONTree 
                     data={this.props.data} 
                     theme={theme}
-                    invertTheme={true}
+                    invertTheme={false}
                     hideRoot={true}
                     />
             </div>
