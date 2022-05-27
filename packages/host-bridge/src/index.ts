@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 //
 // Requests/configures the plugin.
 //
@@ -31,7 +33,7 @@ export interface IHostConnectOptions {
 }
 
 //
-// Defines an event coming in from the visualization host.
+// Defines an event coming in from a visualization plugin.
 //
 interface IPluginEvent<T> {
     //
@@ -42,7 +44,12 @@ interface IPluginEvent<T> {
     //
     // Identifies the source of the event.
     //
-    source: string;
+    source: "viz-plugin";
+
+    // 
+    // Identifies the plugin that sent the event.
+    //
+    pluginId: string;
 
     //
     // Data accompanying the event.
@@ -50,6 +57,25 @@ interface IPluginEvent<T> {
     data?: T;
 }
 
+//
+// Defines an event coming in from the visualization host.
+//
+interface IHostEvent<T> {
+    //
+    // Names the event.
+    //
+    name: string;
+
+    //
+    // Identifies the source of the event.
+    //
+    source: "viz-host";
+
+    //
+    // Data accompanying the event.
+    //
+    data?: T;
+}
 //
 // Defines the configuration event.
 //
@@ -59,6 +85,11 @@ interface IConfigEventData {
     // Configuration for the plugin.
     //
     config: IPluginRequest;
+
+    //
+    // ID for the plugin.
+    //
+    pluginId: string;
 }
 
 //
@@ -119,6 +150,7 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
     //
     let host: MessageEventSource;
     let origin: string;
+    let pluginId: string;
 
     //
     // Posts a message to the visualization host.
@@ -131,6 +163,7 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
         const event: IPluginEvent<EventDataT> = {
             name: eventName,
             source: "viz-plugin",
+            pluginId: pluginId,
             data: eventData,
         };
         host.postMessage(event, { targetOrigin: origin });
@@ -151,18 +184,20 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
         host = event.source;
         origin = event.origin;
 
-        const pluginEvent = event.data as IPluginEvent<any>;
-        if (pluginEvent.source !== "viz-host") {
+        if (event.data.source !== "viz-host") {
             // Ignore messages that have not come from the visualization host.
             return;
         }
 
+        const pluginEvent = event.data as IHostEvent<any>;
         if (pluginEvent.name === "config") {
-            const configPluginEvent = pluginEvent as IPluginEvent<IConfigEventData>;
+            const configPluginEvent = pluginEvent as IHostEvent<IConfigEventData>;
             const eventData = configPluginEvent.data;
             if (eventData === undefined) {
                 throw new Error(`Event data not supplied.`);
             }
+
+            pluginId = eventData.pluginId;
 
             // Host is requesting configuration of the plugin.
             await handleErrors(
@@ -212,12 +247,13 @@ export function connnectPlugin(iframe: HTMLIFrameElement, pluginRequest: IPlugin
     }
 
     const pluginWindow = iframe.contentWindow;
+    const pluginId = uuidv4();
 
     //
     // Posts a message to the plugin.
     //
     function postMessage<EventDataT>(eventName: string, eventData?: EventDataT) {
-        const event: IPluginEvent<EventDataT> = {
+        const event: IHostEvent<EventDataT> = {
             name: eventName,
             source: "viz-host",
             data: eventData,
@@ -229,10 +265,16 @@ export function connnectPlugin(iframe: HTMLIFrameElement, pluginRequest: IPlugin
     // Listen to messages incoming from the iframe.
     //
     window.addEventListener("message", async event => {
+
         const pluginEvent: IPluginEvent<any> = event.data;
         if (pluginEvent.source !== "viz-plugin") {
             // Ignore messages not from the plugin.
             return;
+        }
+
+        if (pluginEvent.pluginId !== pluginId) {
+            // Ignore message not from the specific plugin.
+            return; 
         }
 
         if (pluginEvent.name === "on-resize") {
@@ -252,7 +294,10 @@ export function connnectPlugin(iframe: HTMLIFrameElement, pluginRequest: IPlugin
     //
     // Configures the plugin that is running within the iframe.
     //
-    postMessage<IConfigEventData>("config", { config: pluginRequest });
+    postMessage<IConfigEventData>("config", { 
+        config: pluginRequest,
+        pluginId: pluginId,
+    });
 
     return {
 
