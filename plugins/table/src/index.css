@@ -1,0 +1,21 @@
+/* https://css-tricks.com/idea-simple-responsive-spreadsheet/ */
+
+table {
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    background-color: #F9F9F9;
+}
+
+td, th {
+    white-space: nowrap;
+    border: 1px solid #ddd;
+    padding: 7px;
+}
+
+th {
+    background-color: #eee;
+}
+
+tbody tr td:first-of-type {
+    background-color: #eee;
+}    
