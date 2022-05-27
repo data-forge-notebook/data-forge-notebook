@@ -11,8 +11,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "# Examples of visualization\r\n\r\nThere's many ways to visualize your data in Data-Forge Notebook, lets look at a few here.",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
-            "errors": [],
-            "height": 115
+            "errors": []
         },
         {
             "id": "ea3ea260-2e9c-11e9-9f0a-97b474081a71",
@@ -20,8 +19,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Plain ole' console logging\r\n\r\nUse `console.log` to output whatever you want:",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
@@ -38,8 +36,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 106
+            "errors": []
         },
         {
             "id": "dd75ede0-2e9c-11e9-9f0a-97b474081a71",
@@ -47,8 +44,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## JavaScript array\r\n\r\nWe can use the `display` function for formatted data visualization. \r\n\r\nWe can use it to visualize JavaScript arrays:",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
-            "errors": [],
-            "height": 131
+            "errors": []
         },
         {
             "id": "1b752e00-a804-11e8-b3eb-53e94e633165",
@@ -70,8 +66,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 199
+            "errors": []
         },
         {
             "id": "e33a5ea0-2e9c-11e9-9f0a-97b474081a71",
@@ -79,8 +74,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## JavaScript object\r\n\r\nWe can also use the `display` function to visualize JavaScript objects:",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
@@ -99,8 +93,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 159
+            "errors": []
         },
         {
             "id": "02b6d330-2e9d-11e9-9f0a-97b474081a71",
@@ -108,8 +101,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## JavaScript object as table\r\n\r\nWe can use `display.table` to visualize a JavaScript object as tabular data:",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "c6a99850-2e9c-11e9-9f0a-97b474081a71",
@@ -140,8 +132,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 182
+            "errors": []
         },
         {
             "id": "466a7d20-f3cd-11e9-97b7-a975ba8f6456",
@@ -149,8 +140,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## JavaScript array as table\r\n\r\nWe can also use `display.table` to visualize a JavaScript array as tabular data.",
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "6570d750-f3cd-11e9-97b7-a975ba8f6456",
@@ -181,8 +171,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 182
+            "errors": []
         },
         {
             "id": "6743dc40-fb65-11e9-b87a-47633ef72d4e",
@@ -190,8 +179,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## JSON data\r\n\r\nUse `display.json` to render textual JSON data without having to parse it.",
             "lastEvaluationDate": "2019-10-31T08:36:01.792+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "74ae4f00-fb65-11e9-b87a-47633ef72d4e",
@@ -207,8 +195,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 267
+            "errors": []
         },
         {
             "id": "092f78c0-2e9d-11e9-9f0a-97b474081a71",
@@ -216,8 +203,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## HTML!\r\n\r\nThen there's `display.html` that we can use to render formatted HTML:",
             "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "2c625ee0-a804-11e8-b3eb-53e94e633165",
@@ -233,8 +219,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 244
+            "errors": []
         },
         {
             "id": "29b4e360-fb65-11e9-b87a-47633ef72d4e",
@@ -242,8 +227,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Markdown!\r\n\r\nUse `display.markdown` to render formatted markdown to cell output.",
             "lastEvaluationDate": "2019-10-31T08:36:01.792+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "3f1b1940-fb65-11e9-b87a-47633ef72d4e",
@@ -259,8 +243,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 169
+            "errors": []
         },
         {
             "id": "abc0e040-f4ab-11e9-bc75-6b676fbda00a",
@@ -268,8 +251,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Preformatted text\r\n\r\nUse `display.text` to print pre-formatted text to cell output.",
             "lastEvaluationDate": "2019-10-22T19:10:51.480+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "c01509e0-f4ab-11e9-bc75-6b676fbda00a",
@@ -285,8 +267,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 143
+            "errors": []
         },
         {
             "id": "0ee8ed00-2e9d-11e9-9f0a-97b474081a71",
@@ -294,8 +275,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Preview data from CSV file\r\n\r\nUse the [datakit](https://www.npmjs.com/package/datakit) library to read CSV and preview with the `display.table` function.",
             "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "31ae9260-a804-11e8-b3eb-53e94e633165",
@@ -356,8 +336,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 289
+            "errors": []
         },
         {
             "id": "c5c26fb0-1335-11ea-ba9f-279dfd8c67c3",
@@ -365,8 +344,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Preview data from JSON file\r\n\r\nUse the [datakit](https://www.npmjs.com/package/datakit) library to read JSON and preview with the `display.table` function.",
             "lastEvaluationDate": "2019-11-30T15:55:19.803+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "d0e47910-1335-11ea-ba9f-279dfd8c67c3",
@@ -413,8 +391,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 229
+            "errors": []
         },
         {
             "id": "fc067e40-f3cd-11e9-97b7-a975ba8f6456",
@@ -422,8 +399,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Charts: Plot any ole JavaScript data!\r\n\r\nEasily create charts from JavaScript data using the function `display.plot`.\r\n\r\n### Plot arrays of numbers",
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
-            "errors": [],
-            "height": 147
+            "errors": []
         },
         {
             "id": "f879ae00-f3cd-11e9-97b7-a975ba8f6456",
@@ -476,8 +452,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 491
+            "errors": []
         },
         {
             "id": "21231020-1332-11ea-b4ba-813ffa5b9c8b",
@@ -485,8 +460,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "### Plot arrays of JavaScript objects",
             "lastEvaluationDate": "2019-11-30T15:33:11.656+10:00",
             "output": [],
-            "errors": [],
-            "height": 65
+            "errors": []
         },
         {
             "id": "24ef35e0-f3ce-11e9-97b7-a975ba8f6456",
@@ -549,8 +523,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 491
+            "errors": []
         },
         {
             "id": "67178a70-1332-11ea-b4ba-813ffa5b9c8b",
@@ -558,8 +531,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Plot by column!",
             "lastEvaluationDate": "2019-11-30T15:33:11.656+10:00",
             "output": [],
-            "errors": [],
-            "height": 73
+            "errors": []
         },
         {
             "id": "48cae350-1332-11ea-b4ba-813ffa5b9c8b",
@@ -622,8 +594,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 546
+            "errors": []
         },
         {
             "id": "13bac060-2e9d-11e9-9f0a-97b474081a71",
@@ -631,8 +602,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Load and plot CSV and JSON data!\r\n\r\nEasily load and plot CSV and JSON data with help of [datakit](https://www.npmjs.com/package/daki) on npm.",
             "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "3736bd70-a804-11e8-b3eb-53e94e633165",
@@ -801,8 +771,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 508
+            "errors": []
         },
         {
             "id": "913a48b0-1332-11ea-b4ba-813ffa5b9c8b",
@@ -971,8 +940,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 508
+            "errors": []
         },
         {
             "id": "f61e2630-675a-11ea-94da-357be68abebe",
@@ -980,8 +948,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Visualize geographic data\r\n\r\nUse the `display.geo` function to plot geographic coordinates and GeoJSON!",
             "lastEvaluationDate": "2020-03-16T17:53:11.948+10:00",
             "output": [],
-            "errors": [],
-            "height": 102
+            "errors": []
         },
         {
             "id": "f1491e80-675a-11ea-94da-357be68abebe",
@@ -1017,8 +984,7 @@ export const testNotebook: ISerializedNotebook1 = {
                     }
                 }
             ],
-            "errors": [],
-            "height": 622
+            "errors": []
         },
         {
             "id": "53a712d0-8845-11e9-94c3-054beaa0f30f",
@@ -1026,8 +992,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## More charts!\r\n\r\nWant to see more charts?\r\n\r\n[Click here to see the charts example](http://open-example=charts.notebook).",
             "lastEvaluationDate": "2019-06-06T20:25:48.286+10:00",
             "output": [],
-            "errors": [],
-            "height": 131
+            "errors": []
         },
         {
             "id": "0ce2bcc0-9cd3-11ea-89b4-d59a11d5b26f",
@@ -1035,8 +1000,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## More maps!\r\n\r\nWant to see more maps?\r\n\r\n[See the maps example](http://open-example=maps.notebook)",
             "lastEvaluationDate": "2020-05-23T18:55:16.762+10:00",
             "output": [],
-            "errors": [],
-            "height": 131
+            "errors": []
         },
         {
             "id": "8864e670-f3cd-11e9-97b7-a975ba8f6456",
@@ -1045,7 +1009,6 @@ export const testNotebook: ISerializedNotebook1 = {
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
             "errors": [],
-            "height": 225
         }
     ]
 }
