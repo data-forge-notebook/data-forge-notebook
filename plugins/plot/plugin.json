@@ -1,4 +1,5 @@
 {
     "displayType": [ "chart", "plot" ],
-    "defaultHeight": 400
+    "defaultHeight": 400,
+    "isFullHeight": true
 }
