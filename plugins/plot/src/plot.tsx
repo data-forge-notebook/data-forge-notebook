@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { IChartDef } from "@plotex/chart-def";
 import * as apex from "@plotex/lib-apex";
+import { deepCompare } from 'host-bridge';
 
 export interface IPlotProps {
     //
@@ -29,6 +30,13 @@ export class Plot extends React.Component<IPlotProps, {}> {
         await this.generateChart();
     }
 
+    componentDidUpdate(prevProps: IPlotProps) {
+        if (!deepCompare(this.props.data, prevProps.data)) {
+            this.generateChart();
+        }
+    }
+
+
     componentWillUnmount() {
         this.destroyChart();
     }
@@ -36,6 +44,11 @@ export class Plot extends React.Component<IPlotProps, {}> {
     private async generateChart(): Promise<void> {
 
         this.destroyChart();
+
+        if (!this.props.data) {
+            // No chart data to render.
+            return;
+        }
 
         try {
             const plotDef = Object.assign({}, this.props.data);
@@ -66,12 +79,6 @@ export class Plot extends React.Component<IPlotProps, {}> {
     }   
     
     render () {
-        if (!this.props.data) {
-            return (
-                <div>Plot data not provided</div>
-            );
-        }
-
         // Apex Charts has two container divs because it modifies the style of both!
         return (
             <div
