@@ -16,6 +16,28 @@ import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { updateState } from '../../../../lib/update-state';
 import { IPluginRequest } from 'host-bridge';
 
+//
+// The border of the output.
+//
+const OutputBorder = styled.div`
+    font-family: 'Source Code Pro', monospace !important;
+    font-size: 0.85em;
+    border: 1px dashed #F8F8F8;
+    border-top: 1px dashed rgba(0, 0, 0, 0);
+    overflow: hidden;
+    transition: border 0.2s ease-in-out;
+    padding: 6px;
+    padding-bottom: 0px;
+    background-color: #FDFDFD;
+    user-select: text;
+    height: 100%;
+
+    :hover {
+        border: 1px dashed rgba(0, 0, 0, 0.1);
+        transition: border 0.2s ease-in-out;
+    }
+`;
+
 export interface ICellOutputProps {
     model: ICellOutputViewModel;
 
@@ -103,26 +125,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
     }
 
     render() {
-
-        const OutputBorder = styled.div`
-            font-family: 'Source Code Pro', monospace !important;
-            font-size: 0.85em;
-            border: 1px dashed #F8F8F8;
-            border-top: 1px dashed rgba(0, 0, 0, 0);
-            overflow: hidden;
-            transition: border 0.2s ease-in-out;
-            padding: 6px;
-            padding-bottom: 0px;
-            background-color: #FDFDFD;
-            user-select: text;
-            height: 100%;
-
-            :hover {
-                border: 1px dashed rgba(0, 0, 0, 0.1);
-                transition: border 0.2s ease-in-out;
-            }
-        `;
-
         const outputValue = this.props.model.getValue();
         const what = outputValue.getDisplayType() || "unset";
 
