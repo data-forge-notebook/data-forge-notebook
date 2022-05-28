@@ -31,6 +31,21 @@ export interface ICodeCellProps {
 export interface ICodeCellState {
 }
 
+const OutputsBorder = styled.div`
+    border-top: 1px dashed #F8F8F8;
+    transition: border 0.2s ease-in-out;
+
+    :hover {
+        border-top: 1px dashed transparent;
+        transition: border 0.2s ease-in-out;
+    }
+`;
+
+const ErrorsBorder = styled.div`
+    border-top: 1px dashed red;
+    transition: border 0.2s ease-in-out;
+`;
+
 export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> {
 
     //
@@ -104,21 +119,6 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
         else if (humanizedDuration) {
             lastEvaluationMsg = "Evaluated " + humanizedDuration;
         }
-
-        const OutputsBorder = styled.div`
-            border-top: 1px dashed #F8F8F8;
-            transition: border 0.2s ease-in-out;
-
-            :hover {
-                border-top: 1px dashed transparent;
-                transition: border 0.2s ease-in-out;
-            }
-        `;
-
-        const ErrorsBorder = styled.div`
-            border-top: 1px dashed red;
-            transition: border 0.2s ease-in-out;
-            `;
 
         const errors = this.props.model.getErrors();
         const outputs = this.props.model.getOutput();
