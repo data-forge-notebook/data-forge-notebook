@@ -6,7 +6,7 @@ import { NotebookEditor } from "..";
 function App() {
     return (
         <>
-            <div className="centered-container mb-30">
+            <div className="centered-container pb-4">
                 <h1>Data-Forge Notebook v2: Browser testing environment</h1>
                 <p>
                     This is the browser testing environment for DFN v2.
@@ -15,14 +15,27 @@ function App() {
                     You can't edit this yet, but full editing and code evaluation capabiltites matching <a target="_blank" href="https://www.data-forge-notebook.com/">DFN v1</a> aren't far away!
                 </p>
                 <p className="mt-2">
-                    <a target="_blank" href="https://github.com/data-forge-notebook/editor-core/">The code for DFN v2 is open source</a>.
+                    <a target="_blank" href="https://github.com/data-forge-notebook/editor-core/">DFN v2 is being open sourced through 2022</a>.
                 </p>
                 <p>
                     <a target="_blank" href="https://twitter.com/codecapers">Follow on Twitter</a> for updates.
                 </p>
                 
             </div>
+
             <NotebookEditor />
+
+            <div className="centered-container pb-32">
+                <h2>More coming soon!</h2>
+
+                <p>
+                    <a target="_blank" href="https://www.data-forge-notebook.com/">DFN v1</a> supports more visualizations and these are coming to v2 soon!
+                </p>
+                
+                <p>
+                    <a target="_blank" href="https://twitter.com/codecapers">Follow on Twitter</a> for updates.
+                </p>
+            </div>
         </>
     );
 }
