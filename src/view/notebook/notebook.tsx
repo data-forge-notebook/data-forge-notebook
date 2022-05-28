@@ -139,7 +139,7 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
                 {/* Blank space at end of notebook. */ }
                 <div 
                     style={{
-                        height: "250px"
+                        height: "50px"
                     }}
                     >
                 </div>
