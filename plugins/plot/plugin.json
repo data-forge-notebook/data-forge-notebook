@@ -1,3 +1,4 @@
 {
-    "displayType": [ "chart", "plot" ]
+    "displayType": [ "chart", "plot" ],
+    "defaultHeight": 400
 }
