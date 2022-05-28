@@ -37,7 +37,6 @@ function servePlugin(pluginName, portNo) {
 
     try {
         const serveCmd = `pnpm -r --filter ${pluginName} run start:dev --port=${portNo}`;
-        console.log(`CMD: ${serveCmd}`); //fio:
         exec(serveCmd, (err, stdout, stderr) => {
             console.log(`Serving plugin finished.`);
             console.log(`== STDOUT ==`);
