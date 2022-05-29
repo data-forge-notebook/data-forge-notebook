@@ -25,7 +25,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
             "cellType": CellType.Code,
             "cellScope": CellScope.Local,
-            "code": "const data = \"Whatever you want to log!\";\r\nconsole.log(data);",
+            "code": "let data = \"Whatever you want to log!\";\r\nconsole.log(data);",
             "lastEvaluationDate": "2020-06-22T17:23:59.889+10:00",
             "output": [
                 {
@@ -50,7 +50,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
             "cellType": CellType.Code,
             "cellScope": CellScope.Local,
-            "code": "const data = { array: [1, 2, 3, 4], object: { A: 1, B: \"hello\" } };\r\ndisplay(data);",
+            "code": "data = { array: [1, 2, 3, 4], object: { A: 1, B: \"hello\" } };\r\ndisplay(data);",
             "lastEvaluationDate": "2020-06-22T17:24:08.138+10:00",
             "output": [
                 {
@@ -85,7 +85,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "31ae9260-a804-11e8-b3eb-53e94e633165",
             "cellType": CellType.Code,
             "cellScope": CellScope.Local,
-            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay.table(data.slice(0, 5));",
+            "code": "const datakit = require('datakit');\r\ndata = await datakit.readCsv(\"./example.csv\");\r\ndisplay.table(data.slice(0, 5));",
             "lastEvaluationDate": "2020-06-22T17:24:12.040+10:00",
             "output": [
                 {
@@ -154,7 +154,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "24ef35e0-f3ce-11e9-97b7-a975ba8f6456",
             "cellType": CellType.Code,
             "cellScope": CellScope.Local,
-            "code": "const data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay.plot(data);",
+            "code": "data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay.plot(data);",
             "lastEvaluationDate": "2020-06-22T17:24:12.895+10:00",
             "output": [
                 {
@@ -225,7 +225,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "48cae350-1332-11ea-b4ba-813ffa5b9c8b",
             "cellType": CellType.Code,
             "cellScope": CellScope.Global,
-            "code": "const data = {\r\n    D1: [30, 10, 50, 15],\r\n    D2: [300, 20, 10, 150],\r\n};\r\ndisplay.plot(data);",
+            "code": "data = {\r\n    D1: [30, 10, 50, 15],\r\n    D2: [300, 20, 10, 150],\r\n};\r\ndisplay.plot(data);",
             "lastEvaluationDate": "2020-06-22T17:24:13.179+10:00",
             "output": [
                 {
@@ -296,7 +296,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "3736bd70-a804-11e8-b3eb-53e94e633165",
             "cellType": CellType.Code,
             "cellScope": CellScope.Local,
-            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay.plot(data);",
+            "code": "data = await datakit.readCsv(\"./example.csv\");\r\ndisplay.plot(data);",
             "lastEvaluationDate": "2020-06-22T17:24:13.431+10:00",
             "output": [
                 {
