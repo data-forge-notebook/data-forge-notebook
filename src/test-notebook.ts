@@ -2,7 +2,7 @@ import { CellScope, CellType } from "./model/cell";
 import { ISerializedNotebook1 } from "./model/serialization/serialized1";
 
 export const testNotebook: ISerializedNotebook1 = {
-    "version": 2,
+    "version": 3,
     "language": "javascript",
     "cells": [
         {
@@ -11,7 +11,8 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "# Examples of visualization\r\n\r\nThere's many ways to visualize your data in Data-Forge Notebook, lets look at a few here.",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
-            "errors": []
+            "errors": [],
+            "height": 115
         },
         {
             "id": "ea3ea260-2e9c-11e9-9f0a-97b474081a71",
@@ -19,7 +20,8 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Plain ol' console logging\r\n\r\nUse `console.log` to output whatever you want:",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
-            "errors": []
+            "errors": [],
+            "height": 102
         },
         {
             "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
@@ -30,21 +32,23 @@ export const testNotebook: ISerializedNotebook1 = {
             "output": [
                 {
                     "value": {
-                        // "plugin": "http://localhost:5000",
                         "displayType": "string",
                         "data": "Whatever you want to log!\n"
-                    }
+                    },
+                    "height": 49
                 }
             ],
-            "errors": []
+            "errors": [],
+            "height": 252
         },
         {
             "id": "e33a5ea0-2e9c-11e9-9f0a-97b474081a71",
             "cellType": CellType.Markdown,
-            "code": "## JavaScript arrays and objects\r\n\r\Use the `display` function to visualize JavaScript data structures:",
+            "code": "## JavaScript arrays and objects\r\n\rUse the `display` function to visualize JavaScript data structures:",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
-            "errors": []
+            "errors": [],
+            "height": 102
         },
         {
             "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
@@ -68,10 +72,12 @@ export const testNotebook: ISerializedNotebook1 = {
                                 "B": "hello"
                             }
                         }
-                    }
+                    },
+                    "height": 74
                 }
             ],
-            "errors": []
+            "errors": [],
+            "height": 252
         },
         {
             "id": "0ee8ed00-2e9d-11e9-9f0a-97b474081a71",
@@ -79,7 +85,8 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Visualize data from CSV or JSON files\r\n\r\nUse [datakit](https://www.npmjs.com/package/datakit) to read data files and visualize with the `display.table` function.",
             "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
             "output": [],
-            "errors": []
+            "errors": [],
+            "height": 102
         },
         {
             "id": "31ae9260-a804-11e8-b3eb-53e94e633165",
@@ -137,10 +144,12 @@ export const testNotebook: ISerializedNotebook1 = {
                                 "Weight (lbs)"
                             ]
                         }
-                    }
+                    },
+                    "height": 218
                 }
             ],
-            "errors": []
+            "errors": [],
+            "height": 336
         },
         {
             "id": "fc067e40-f3cd-11e9-97b7-a975ba8f6456",
@@ -148,7 +157,8 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Charts: Plot any ol' JavaScript data!\r\n\r\nEasily create charts from JavaScript data using the function `display.plot`.",
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
-            "errors": []
+            "errors": [],
+            "height": 102
         },
         {
             "id": "24ef35e0-f3ce-11e9-97b7-a975ba8f6456",
@@ -208,10 +218,12 @@ export const testNotebook: ISerializedNotebook1 = {
                                 "y2": []
                             }
                         }
-                    }
+                    },
+                    "height": 400
                 }
             ],
-            "errors": []
+            "errors": [],
+            "height": 499
         },
         {
             "id": "67178a70-1332-11ea-b4ba-813ffa5b9c8b",
@@ -219,7 +231,8 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Plot by column!",
             "lastEvaluationDate": "2019-11-30T15:33:11.656+10:00",
             "output": [],
-            "errors": []
+            "errors": [],
+            "height": 73
         },
         {
             "id": "48cae350-1332-11ea-b4ba-813ffa5b9c8b",
@@ -279,10 +292,12 @@ export const testNotebook: ISerializedNotebook1 = {
                                 "y2": []
                             }
                         }
-                    }
+                    },
+                    "height": 400
                 }
             ],
-            "errors": []
+            "errors": [],
+            "height": 556
         },
         {
             "id": "13bac060-2e9d-11e9-9f0a-97b474081a71",
@@ -290,7 +305,8 @@ export const testNotebook: ISerializedNotebook1 = {
             "code": "## Plot CSV and JSON files!\r\n\r\nEasily load and plot CSV and JSON data with [datakit](https://www.npmjs.com/package/datakit).",
             "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
             "output": [],
-            "errors": []
+            "errors": [],
+            "height": 102
         },
         {
             "id": "3736bd70-a804-11e8-b3eb-53e94e633165",
@@ -456,10 +472,12 @@ export const testNotebook: ISerializedNotebook1 = {
                                 "y2": []
                             }
                         }
-                    }
+                    },
+                    "height": 400
                 }
             ],
-            "errors": []
+            "errors": [],
+            "height": 499
         }
     ]
-}
+};
