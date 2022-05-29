@@ -218,14 +218,14 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                             </div>
                         </Resizable>
 
-                        <div className="output-hover-content">
+                        <div className="output-hover-content" >
                             <div
                                 className="flex flex-col items-center w-full" 
                                 style={{ 
                                     pointerEvents: "none",
                                     height: `${DRAG_HANDLE_HEIGHT}px`,
                                     position: "absolute",
-                                    bottom: "5px",
+                                    bottom: "3px",
                                 }}
                                 >
                                 <Icon 
