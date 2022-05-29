@@ -99,7 +99,7 @@ module.exports = function (env) {
                 patterns: [
                     {
                         from: `./src/testbed/${env}.html`,
-                        to: outputDir,
+                        to: `${outputDir}/index.html`,
                     },
                     {
                         from: `./node_modules/normalize.css/normalize.css`,
