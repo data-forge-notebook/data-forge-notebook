@@ -20,18 +20,18 @@ function initializeMonaco() {
     monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
 
     monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
-        noSemanticValidation: false,
-        noSyntaxValidation: false,
-    	noSuggestionDiagnostics: false,
+        noSemanticValidation: true, //TODO: Want to enable this diagnostic options in the future.
+        noSyntaxValidation: true,
+    	noSuggestionDiagnostics: true,
 
     	// https://stackoverflow.com/questions/55116965/is-it-possible-to-remove-certain-errors-from-monaco-editor/71145347#71145347
     	diagnosticCodesToIgnore: [1375, 1378], // Allow "await" at the top level.
     });
     
     monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-        noSemanticValidation: false,
-        noSyntaxValidation: false,
-    	noSuggestionDiagnostics: false,
+        noSemanticValidation: true,
+        noSyntaxValidation: true,
+    	noSuggestionDiagnostics: true,
 
     	// https://stackoverflow.com/questions/55116965/is-it-possible-to-remove-certain-errors-from-monaco-editor/71145347#71145347
     	diagnosticCodesToIgnore: [1375, 1378], // Allow "await" at the top level.
