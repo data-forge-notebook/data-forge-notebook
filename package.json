@@ -4,10 +4,10 @@
   "author": "ashley@codecapers.com.au",
   "main": "ts-build/index.js",
   "scripts": {
-    "serve-browser": "webpack serve --open browser.html --config webpack.browser.config.js",
+    "serve-browser": "webpack serve --open index.html --config webpack.browser.config.js",
     "start": "pnpm run compile-plugins && concurrently \"pnpm run serve-plugins\" \"pnpm run serve-browser\" --kill-others",
     "s": "npm run start",
-    "testbed": "webpack serve --open testbed.html --config webpack.testbed.config.js",
+    "testbed": "webpack serve --open index.html --config webpack.testbed.config.js",
     "tb": "npm run testbed",
     "build-browser": "webpack --config webpack.browser.config.js",
     "bb": "npm run build-browser",
