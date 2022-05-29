@@ -12,7 +12,7 @@ function App() {
                     This is the browser testing environment for DFN v2.
                     This user interface also runs on the desktop using Electron.
                     What you see here is a hard coded JavaScript notebook.
-                    You can't edit this yet, but full editing and code evaluation capabiltites matching <a target="_blank" href="https://www.data-forge-notebook.com/">DFN v1</a> aren't far away!
+                    You can't edit this yet, but full editing and code evaluation capabilities matching <a target="_blank" href="https://www.data-forge-notebook.com/">DFN v1</a> aren't far away!
                 </p>
                 <p className="mt-2">
                     <a target="_blank" href="https://github.com/data-forge-notebook/editor-core/">DFN v2 is being open sourced through 2022</a>.
