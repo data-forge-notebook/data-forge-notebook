@@ -21,21 +21,23 @@
 
 const minimist = require('minimist');
 const fs = require("fs-extra");
-const { execSync } = require("child_process");
+const path = require("path");
+const { exec } = require("child_process");
 
 //
 // Builds a named plugiun.
 //
-function buildPlugin(pluginName) {
-    fs.ensureDirSync("./src/testbed/services/plugins");
+async function buildPlugin(pluginName, pluginsDir, outputDir) {
 
+    await fs.ensureDir(outputDir);
+    
     console.log(`Building plugin "${pluginName}"...`);
     
     //TODO: Only build if any file is later than the output.
     
     try {
         const buildCmd = `pnpm -r --filter ${pluginName} run build`;
-        const result = execSync(buildCmd);
+        const result = await exec(buildCmd);
         // console.log(result.toString());
     }
     catch (err) {
@@ -45,14 +47,14 @@ function buildPlugin(pluginName) {
     }
     console.log(`Built plugin "${pluginName}".`);
     
-    const contentFile = `./plugins/${pluginName}/out/index.html`;
-    const outputContentFile = `./src/testbed/services/plugins/${pluginName}.txt`;
-    fs.copyFileSync(contentFile, outputContentFile);
+    const contentFile = path.join(pluginsDir, `${pluginName}/out/index.html`);
+    const outputContentFile = path.join(outputDir, `${pluginName}.txt`);
+    await fs.copyFile(contentFile, outputContentFile);
     console.log(`Copied ${contentFile} ->  ${outputContentFile}`);
     
-    const pluginConfigFile = `./plugins/${pluginName}/plugin.json`;
-    const outputPluginConfig = `./src/testbed/services/plugins/${pluginName}.json`;
-    fs.copyFileSync(pluginConfigFile, outputPluginConfig);
+    const pluginConfigFile = path.join(pluginsDir, `${pluginName}/plugin.json`);
+    const outputPluginConfig = path.join(outputDir, `${pluginName}.json`);
+    await fs.copyFile(pluginConfigFile, outputPluginConfig);
     console.log(`Copied ${pluginConfigFile} ->  ${outputPluginConfig}`);
 }
 
@@ -64,7 +66,15 @@ if (require.main === module) {
     }
 
     const pluginName = argv._[0];
-    buildPlugin(pluginName);
+    const projectDir = path.dirname(__dirname);
+    const pluginsDir = path.join(projectDir, "plugins");
+    const outputDir = path.join(projectDir, "src/testbed/services/plugins");
+    buildPlugin(pluginName, pluginsDir, outputDir)
+        .catch(err => {
+            console.error(`Failed to build plugin ${pluginName}.`);
+            console.error(err);
+            process.exit(1);
+        });
 }
 else {
     module.exports = {
