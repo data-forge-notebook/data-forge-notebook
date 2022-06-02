@@ -22,7 +22,33 @@
 const minimist = require('minimist');
 const fs = require("fs-extra");
 const path = require("path");
-const { exec } = require("child_process");
+const child_process = require("child_process");
+
+function exec(cmd) {
+    return new Promise((resolve, reject) => {
+        child_process.exec(cmd, (err, stdout, stderr) => {
+            if (stdout) {
+                console.log(`=== STDOUT ===`);
+                console.log(stdout);
+            }
+
+            if (stderr) {
+                console.log(`=== STDERR ===`);
+                console.log(stderr);
+            }
+
+            if (err) {
+                console.error(`=== ERROR ===`);
+                console.error(err);
+
+                reject(err);
+            }
+            else {
+                resolve();
+            }
+        });
+    });
+}
 
 //
 // Builds a named plugiun.
@@ -37,11 +63,10 @@ async function buildPlugin(pluginName, pluginsDir, outputDir) {
     
     try {
         const buildCmd = `pnpm -r --filter ${pluginName} run build`;
-        const result = await exec(buildCmd);
-        // console.log(result.toString());
+        await exec(buildCmd);
     }
     catch (err) {
-        console.error(`Failed with code ${err.status}`);
+        console.error(`Failed with code ${err.code}`);
         console.error(err.output.toString());
         process.exit(1);
     }
