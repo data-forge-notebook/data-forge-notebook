@@ -15,12 +15,11 @@ const path = require("path");
 const { buildPlugin } = require("./build-plugin");
 
 async function main () {
-    const outputDir = process.env.PLUGINS_OUTPUT;
-    if (!outputDir) {
-        throw new Error(`Plugins output directory not set through environment variable PLUGINS_OUTPUT.`);
-    }
-
     const projectDir = path.dirname(__dirname);
+    const outputDir = path.join(projectDir, `packages/plugins/data`);
+
+    console.log(`Writing plugins to ${outputDir}`);
+
     const pluginsDir = path.join(projectDir, "plugins");
     const plugins = await fs.readdir(pluginsDir);
     const buildPlugins = plugins.map(pluginDir => buildPlugin(pluginDir, pluginsDir, outputDir));

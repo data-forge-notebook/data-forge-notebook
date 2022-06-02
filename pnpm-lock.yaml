@@ -51,6 +51,7 @@ importers:
       msw: ^0.39.1
       normalize.css: ^8.0.0
       path-browserify: ^1.0.1
+      plugins: workspace:*
       re-resizable: ^6.9.9
       react: ^17.0.2
       react-beautiful-dnd: ^13.1.0
@@ -79,6 +80,7 @@ importers:
       monaco-editor: 0.32.1
       normalize.css: 8.0.1
       path-browserify: 1.0.1
+      plugins: link:packages/plugins
       re-resizable: 6.9.9_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-beautiful-dnd: 13.1.0_sfoxds7t5ydpegc3knd667wn6m
@@ -141,6 +143,9 @@ importers:
     devDependencies:
       '@types/node': 16.11.36
       typescript: 4.6.4
+
+  packages/plugins:
+    specifiers: {}
 
   plugins/data:
     specifiers:
@@ -8429,7 +8434,7 @@ packages:
     dev: true
 
   /etag/1.8.1:
-    resolution: {integrity: sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=}
+    resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
     dev: true
 
@@ -10515,7 +10520,7 @@ packages:
     dev: true
 
   /is-wsl/1.1.0:
-    resolution: {integrity: sha1-HxbkqiKwTRM2tmGIpmrzxgDDpm0=}
+    resolution: {integrity: sha512-gfygJYZ2gLTDlmbWMI0CE2MwnFzSN/2SZfkMlItC4K/JBlsWVDB0bO6XhqcY13YXE7iMcAJnzTCJjPiTeJJ0Mw==}
     engines: {node: '>=4'}
     dev: true
 
@@ -12702,7 +12707,7 @@ packages:
     dev: true
 
   /object-assign/4.1.1:
-    resolution: {integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=}
+    resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
 
   /object-copy/0.1.0:
@@ -13658,7 +13663,7 @@ packages:
     dev: true
 
   /proxy-middleware/0.15.0:
-    resolution: {integrity: sha1-o/3xvvtzD5UZZYcqwvYHTGFHelY=}
+    resolution: {integrity: sha512-EGCG8SeoIRVMhsqHQUdDigB2i7qU7fCsWASwn54+nPutYO8n4q6EiwMzyfWlC+dzRFExP+kvcnDFdBDHoZBU7Q==}
     engines: {node: '>=0.8.0'}
     dev: true
 

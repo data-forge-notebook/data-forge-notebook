@@ -13,7 +13,7 @@
     "build-electron": "pnpm run compile-plugins && pnpm run build-plugins && webpack --config webpack.electron.config.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "clean": "pnpm run clean-plugins && rm -rf ./src/testbed/servces/plugins .parcel-cache ./dist ts-build tsconfig.tsbuildinfo",
+    "clean": "pnpm run clean-plugins && rm -rf ./packages/plugins/data .parcel-cache ./dist ts-build tsconfig.tsbuildinfo",
     "compile": "pnpm run compile-plugins && tsc --incremental",
     "compile:watch": "tsc --incremental --watch",
     "electron": "concurrently --names=\"build main,build electron\" \"npm run compile\" \"npm run build-electron\" && cross-env ENTRY=../../dist/electron/electron.html cross-env ELECTRON_DISABLE_SECURITY_WARNINGS=true electron ts-build/testbed/electron-main.js",
@@ -101,6 +101,7 @@
     "react-markdown": "^8.0.3",
     "styled-components": "^5.3.5",
     "uuid": "^8.3.2",
-    "host-bridge": "workspace:*"
+    "host-bridge": "workspace:*",
+    "plugins": "workspace:*"
   }
 }

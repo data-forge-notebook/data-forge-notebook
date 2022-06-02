@@ -39,7 +39,7 @@ function loadEmbeddedPlugins(): IPluginMap {
     const plugins: IPluginMap = {};
 
     // https://webpack.js.org/configuration/module/#module-contexts
-    const jsonContext = require.context("./plugins", true, /\.\/.*\.json$/);
+    const jsonContext = require.context("plugins/data", true, /\.\/.*\.json$/);
     for (const key of jsonContext.keys()) {
         const pluginName = path.basename(key, ".json");
         if (pluginName === "plugins") {
@@ -52,7 +52,7 @@ function loadEmbeddedPlugins(): IPluginMap {
         }
     }
 
-    const textContext = require.context("./plugins", true, /\.\/.*\.txt$/);
+    const textContext = require.context("plugins/data", true, /\.\/.*\.txt$/);
     for (const key of textContext.keys()) {
         const pluginName = path.basename(key, ".txt");
         const plugin = plugins[pluginName];
