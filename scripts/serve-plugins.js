@@ -11,10 +11,15 @@
 //
 
 const fs = require("fs-extra");
+const path = require("path");
 const { servePlugin } = require("./serve-plugin");
-const { execSync } = require("child_process");
 
 const pluginDirs = fs.readdirSync("./plugins");
+
+const projectDir = path.dirname(__dirname);
+const outputDir = path.join(projectDir, `packages/plugins/data`);
+
+console.log(`Writing plugins to ${outputDir}`);
 
 const pluginOverrides = {};
 let nextPort = 8000;
@@ -24,10 +29,10 @@ for (const pluginDir of pluginDirs) {
         portNo: nextPort,
     };
 
-    servePlugin(pluginDir, nextPort);
+    servePlugin(pluginDir, nextPort, outputDir);
     ++nextPort;
 }
 
-const pluginsFile = `./src/testbed/services/plugins/plugins.json`;
+const pluginsFile = path.join(outputDir, `plugins.json`);
 fs.writeFileSync(pluginsFile, JSON.stringify(pluginOverrides, null, 4));
 console.log(`Wrote plugins file ${pluginsFile}`);

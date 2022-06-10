@@ -20,18 +20,19 @@
 
 const minimist = require('minimist');
 const fs = require("fs-extra");
+const path = require("path");
 const { exec } = require("child_process");
 
 //
 // Servers a named plugiun.
 //
-function servePlugin(pluginName, portNo) {
-    fs.ensureDirSync("./src/testbed/services/plugins");
+function servePlugin(pluginName, portNo, outputDir) {
+    fs.ensureDirSync(outputDir);
 
     console.log(`Serving plugin "${pluginName}" on port ${portNo}...`);
 
     const pluginConfigFile = `./plugins/${pluginName}/plugin.json`;
-    const outputPluginConfig = `./src/testbed/services/plugins/${pluginName}.json`;
+    const outputPluginConfig = path.join(outputDir, `${pluginName}.json`);
     fs.copyFileSync(pluginConfigFile, outputPluginConfig);
     console.log(`Copied ${pluginConfigFile} ->  ${outputPluginConfig}`);
 

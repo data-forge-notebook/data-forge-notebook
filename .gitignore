@@ -105,7 +105,6 @@ dist
 ts-build
 *.bak
 .parcel-cache
-src/testbed/services/plugins
 out
 
 packages/plugins/data/
