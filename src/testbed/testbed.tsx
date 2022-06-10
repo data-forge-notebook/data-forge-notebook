@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import "./services/plugin-repository";
 import { Button } from "@blueprintjs/core";
 import { MonacoEditor } from "../components/monaco-editor";
 import { PluggableVisualization } from "../view/notebook/editor/cell/pluggable-visualization";
