@@ -39,13 +39,13 @@ export interface IFindDetails {
     notifyMatchNotFound(searchDirection: SearchDirection, doSelection: boolean): Promise<void>;
 }
 
-export type FocusedEventHandler = (sender: IMonacoEditorViewModel) => void;
-export type SetCaretPositionEventHandler = (sender: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition) => void;
+export type FocusedEventHandler = (sender: IMonacoEditorViewModel) => Promise<void>;
+export type SetCaretPositionEventHandler = (sender: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition) => Promise<void>;
 export type FindNextMatchEventHandler = (startingPosition: IEditorCaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails) => Promise<void>;
 export type SelectTextEventHandler = (range: ITextRange) => Promise<void>;
 export type ReplaceTextEventHandler = (range: ITextRange, replaceText: string) => Promise<void>;
-export type EditorSelectionChangingEventHandler = (sender: IMonacoEditorViewModel, willBeSelected: boolean) => void;
-export type EditorSelectionChangedEventHandler = (sender: IMonacoEditorViewModel) => void;
+export type EditorSelectionChangingEventHandler = (sender: IMonacoEditorViewModel, willBeSelected: boolean) => Promise<void>;
+export type EditorSelectionChangedEventHandler = (sender: IMonacoEditorViewModel) => Promise<void>;
 
 
 //

@@ -1,12 +1,12 @@
-import { IMonacoEditorViewModel, ITextRange, FocusedEventHandler, SetCaretPositionEventHandler, SelectTextEventHandler, ReplaceTextEventHandler, SearchDirection, FindNextMatchEventHandler, EditorSelectionChangedEventHandler, IFindDetails } from "./monaco-editor";
+import { IMonacoEditorViewModel, ITextRange, FocusedEventHandler, SetCaretPositionEventHandler, SelectTextEventHandler, ReplaceTextEventHandler, SearchDirection, FindNextMatchEventHandler, EditorSelectionChangedEventHandler, IFindDetails, EditorSelectionChangingEventHandler } from "./monaco-editor";
 import { IEditorCaretPosition } from "./editor-caret-position";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { IEventSource, BasicEventHandler, EventSource } from "../lib/event-source";
 import { ICell, CellType } from "../model/cell";
 import { ISerializedCell1 } from "../model/serialization/serialized1";
 
-export type ScrollIntoViewEventHandler = (scrollReason: string) => void;
-export type CellModifiedEventHandler = (sender: IMonacoEditorViewModel) => void;
+export type ScrollIntoViewEventHandler = (scrollReason: string) => Promise<void>;
+export type CellModifiedEventHandler = (cell: ICellViewModel) => Promise<void>;
 
 //
 // View-model for a cell.
@@ -302,13 +302,13 @@ export class CellViewModel implements ICellViewModel {
 
         this.selected = false;
 
-        await this.onEditorSelectionChanged.raise(this, 0);
+        await this.onEditorSelectionChanged.raise(this);
     }
 
     //
     // Event raised when the selection is about to change.
     //
-    onEditorSelectionChanging: IEventSource<EditorSelectionChangedEventHandler> = new EventSource<EditorSelectionChangedEventHandler>();
+    onEditorSelectionChanging: IEventSource<EditorSelectionChangingEventHandler> = new EventSource<EditorSelectionChangingEventHandler>();
 
     //
     // Event raised when the selection for this cell has changed.
@@ -392,7 +392,7 @@ export class CellViewModel implements ICellViewModel {
     // Notify listeners that the cells has been modified.
     //
     async notifyModified(): Promise<void> {
-        await this.onModified.raise();  
+        await this.onModified.raise(this);  
     }
 
     //

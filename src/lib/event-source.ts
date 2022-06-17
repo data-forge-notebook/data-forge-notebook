@@ -1,14 +1,13 @@
-import { handleAsyncErrors } from "./async-handler";
-
 // https://gist.github.com/ashleydavis/ee0ef4d216f5b4fc9a6bc7c72197e9c4
 
-export type BasicEventHandler = () => void;
-export type SenderEventHandler<SenderT> = (sender: SenderT) => void;
+export type GenericHandler = (...args: any[]) => Promise<any>;
+export type BasicEventHandler = () => Promise<void>;
+export type SenderEventHandler<SenderT> = (sender: SenderT) => Promise<void>;
 
 //
 // Simulate C# style events in JS.
 //
-export interface IEventSource<HandlerType extends Function> {
+export interface IEventSource<HandlerType extends GenericHandler> {
     //
     // Attach a handler for this event.
     //
@@ -22,19 +21,13 @@ export interface IEventSource<HandlerType extends Function> {
     //
     // Raise the event.
     //
-    raise(...args: any[]): Promise<void>;
-
-    //
-    // Raise the event.
-    //
-    raiseSync(...args: any[]): void;
+    readonly raise: HandlerType;
 };
-
 
 //
 // Simulate C# style events in JS.
 //
-export class EventSource<HandlerType extends Function> implements IEventSource<HandlerType> {
+export class EventSource<HandlerType extends GenericHandler> implements IEventSource<HandlerType> {
 
     //
     // Registered handlers for the event.
@@ -69,17 +62,8 @@ export class EventSource<HandlerType extends Function> implements IEventSource<H
         /* #endif */
     }
 
-    //
-    // Raise the event.
-    //
-    async raise(...args: any[]): Promise<void> {
-        await this.raiseInternal(args);
-    }
+    readonly raise: HandlerType = ((...args: any[]): Promise<any> => {
+        return this.raiseInternal(args);
+    }) as HandlerType;
 
-    //
-    // Raise the event.
-    //
-    raiseSync(...args: any[]): void {
-        handleAsyncErrors(() => this.raiseInternal(args));
-    }
 }

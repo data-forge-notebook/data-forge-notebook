@@ -215,7 +215,7 @@ describe('view-model / notebook', () => {
         const { notebook, cell } = createNotebookWithCell();
 
         await expectEventRaised(notebook, "onModified", async () => {
-            await cell.onModified.raise();
+            await cell.onModified.raise(cell);
         });
     });
 

@@ -570,7 +570,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             
             this.updatingCode = true;
             try {
-                this.props.model.setText(updatedCode);
+                await this.props.model.setText(updatedCode);
             }
             finally {
                 this.updatingCode = false;
@@ -581,7 +581,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised to give this editor the focus.
     //
-    private onSetFocus(cell: IMonacoEditorViewModel): void {
+    private async onSetFocus(cell: IMonacoEditorViewModel): Promise<void> {
         if (this.editor) {
             this.editor.focus();
         }
@@ -599,7 +599,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }
 
-    private onSetCaretPosition(viewModel: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition): void {
+    private async onSetCaretPosition(viewModel: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition): Promise<void> {
         if (this.editor) {
             if (caretPosition) {
                 this.editor.setPosition(caretPosition);
@@ -607,7 +607,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }
 
-    private onTextChanged(): void {
+    private async onTextChanged(): Promise<void> {
         if (!this.updatingCode) {
             if (this.editor) {
                 const updatedCode = this.props.model.getText();

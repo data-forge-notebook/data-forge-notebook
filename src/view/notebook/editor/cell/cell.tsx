@@ -181,7 +181,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     // Scroll the notebook so the cell is visible.
     //
-    private onScrollIntoView(scrollReason: string): void {
+    private async onScrollIntoView(scrollReason: string): Promise<void> {
         const element = this.cellContainerElement.current;
         if (element) {
             if (!isElementPartiallyInViewport(element, 0)) {
