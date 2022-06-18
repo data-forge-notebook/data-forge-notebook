@@ -47,41 +47,17 @@ const ErrorsBorder = styled.div`
 `;
 
 export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> {
-
-    //
-    // Debounced version of onCodeChanged event handler.
-    //
-    onCodeChangedDebounced: _.DebouncedFunc<any>;
-   
+  
     constructor (props: any) {
         super(props)
 
         this.state = {};
-
-        this.onFlushChanges = asyncHandler(this, this.onFlushChanges);
-        this.onCodeChangedDebounced = debounceAsync(this, this.onCodeChanged, 1000);
     }
     
     componentDidMount() {
-        this.props.model.onTextChanged.attach(this.onCodeChangedDebounced);
-        this.props.model.onFlushChanges.attach(this.onFlushChanges);
     }
-
 
     componentWillUnmount() {
-        this.props.model.onTextChanged.detach(this.onCodeChangedDebounced);
-        this.props.model.onFlushChanges.detach(this.onFlushChanges);
-    }
-
-    //
-    // Event raised to flush changes through the model.
-    //
-    async onFlushChanges(): Promise<void> {
-        this.onCodeChangedDebounced.cancel();
-    }
-
-    async onCodeChanged(): Promise<void> {
-        //TODO: Check code for automatic npm install.
     }
 
     //
