@@ -34,7 +34,7 @@ export function handleAsyncErrors(fn: () => Promise<void>): void {
 // Debounce an async function and handle any errors.
 // This waits until the event handler has not been invoked for 'wait' milliseconds before triggering the underlying event handler.
 //
-export function debounceAsync(self: any, fn: () => Promise<void>, wait: number): DebouncedFunc<any> {
+export function debounceAsync(self: any, fn: () => Promise<void>, wait: number) {
     return _.debounce(asyncHandler(self, fn), wait);
 }
 
@@ -42,6 +42,6 @@ export function debounceAsync(self: any, fn: () => Promise<void>, wait: number):
 // Throttle an async function and handle any errors.
 // This triggers the underlying event handler at most only every 'wait' millseconds regardless of how many times the event handler itself is triggered.
 //
-export function throttleAsync(self: any, fn: () => Promise<void>, wait: number): DebouncedFunc<any> {
+export function throttleAsync(self: any, fn: () => Promise<void>, wait: number) {
     return _.throttle(asyncHandler(self, fn), wait);
 }
