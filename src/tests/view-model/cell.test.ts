@@ -1,3 +1,4 @@
+import { sleep } from "../../lib/sleep";
 import { CellType } from "../../model/cell";
 import { CellViewModel } from "../../view-model/cell";
 import { IEditorCaretPosition } from "../../view-model/editor-caret-position";
@@ -69,6 +70,7 @@ describe("view-model / cell", () => {
 
         await expectEventRaised(cell, "onTextChanged", async () => {
             await cell.setText("some text!");
+            await sleep(1000); // The event is debounced!
         });
     });
 

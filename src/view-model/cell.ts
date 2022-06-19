@@ -1,9 +1,10 @@
-import { IMonacoEditorViewModel, ITextRange, FocusedEventHandler, SetCaretPositionEventHandler, SelectTextEventHandler, ReplaceTextEventHandler, SearchDirection, FindNextMatchEventHandler, EditorSelectionChangedEventHandler, IFindDetails, EditorSelectionChangingEventHandler } from "./monaco-editor";
+import { IMonacoEditorViewModel, ITextRange, FocusedEventHandler, SetCaretPositionEventHandler, SelectTextEventHandler, ReplaceTextEventHandler, SearchDirection, FindNextMatchEventHandler, EditorSelectionChangedEventHandler, IFindDetails, EditorSelectionChangingEventHandler, TextChangedEventHandler } from "./monaco-editor";
 import { IEditorCaretPosition } from "./editor-caret-position";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { IEventSource, BasicEventHandler, EventSource } from "../lib/event-source";
 import { ICell, CellType } from "../model/cell";
 import { ISerializedCell1 } from "../model/serialization/serialized1";
+import { debounceAsync } from "../lib/async-handler";
 
 export type ScrollIntoViewEventHandler = (scrollReason: string) => Promise<void>;
 export type CellModifiedEventHandler = (cell: ICellViewModel) => Promise<void>;
@@ -140,6 +141,11 @@ export class CellViewModel implements ICellViewModel {
     }
 
     //
+    // Debounced version of onCodeChanged event handler.
+    //
+    private notifyTextChanged = debounceAsync(this, () => this.onTextChanged.raise(this), 1000);
+
+    //
     // Set the text for the cell.
     // Marks the text as dirty if changed.
     //
@@ -147,7 +153,7 @@ export class CellViewModel implements ICellViewModel {
 
         if (this.cell.setText(text)) {
             await this.notifyModified();
-			await this.onTextChanged.raise();
+            await this.notifyTextChanged();
             return true;
         }
 
@@ -157,7 +163,7 @@ export class CellViewModel implements ICellViewModel {
     //
     // Event raised when the code in this cell has changed.
     //
-    onTextChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+    onTextChanged: IEventSource<TextChangedEventHandler> = new EventSource<TextChangedEventHandler>();
     
     //
     // Gets the height of the cell (if recorded).
@@ -380,6 +386,8 @@ export class CellViewModel implements ICellViewModel {
     // Notify the model it is about to be saved.
     //
     async flushChanges(): Promise<void> {
+        this.notifyTextChanged.flush();
+        
         await this.onFlushChanges.raise();
     }
 

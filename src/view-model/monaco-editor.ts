@@ -46,7 +46,7 @@ export type SelectTextEventHandler = (range: ITextRange) => Promise<void>;
 export type ReplaceTextEventHandler = (range: ITextRange, replaceText: string) => Promise<void>;
 export type EditorSelectionChangingEventHandler = (sender: IMonacoEditorViewModel, willBeSelected: boolean) => Promise<void>;
 export type EditorSelectionChangedEventHandler = (sender: IMonacoEditorViewModel) => Promise<void>;
-
+export type TextChangedEventHandler = (sender: IMonacoEditorViewModel) => Promise<void>;
 
 //
 // Range of text in the editor.
@@ -94,7 +94,7 @@ export interface IMonacoEditorViewModel {
     //
     // Event raised when the text in this editor has changed.
     //
-    onTextChanged: IEventSource<BasicEventHandler>;
+    onTextChanged: IEventSource<TextChangedEventHandler>;
 
     //
     // Returns true if this editor is currently selected.

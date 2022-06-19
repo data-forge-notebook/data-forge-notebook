@@ -10,6 +10,7 @@ import * as path from "path";
 import { MarkdownCellViewModel } from "./markdown-cell";
 import { CellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel } from "./cell-output";
+export type TextChangedEventHandler = (cell: ICellViewModel) => Promise<void>;
 
 //
 // Creates a cell view-model based on cell type.
@@ -223,6 +224,10 @@ export interface INotebookViewModel {
     // Event raised before the model is saved.
     //
     onFlushChanges: IEventSource<BasicEventHandler>;
+	//
+    // Event raised when the text in this editor has changed.
+    //
+    onTextChanged: IEventSource<TextChangedEventHandler>;
 }
 
 export class NotebookViewModel implements INotebookViewModel {
@@ -282,12 +287,14 @@ export class NotebookViewModel implements INotebookViewModel {
         cell.onEditorSelectionChanging.attach(this.onEditorSelectionChanging);
         cell.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
         cell.onModified.attach(this.onCellModified);
+        cell.onTextChanged.attach(this._onTextChanged);
     }
 
     private unhookCellEvents(cell: ICellViewModel): void {
         cell.onEditorSelectionChanging.detach(this.onEditorSelectionChanging);
         cell.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
         cell.onModified.detach(this.onCellModified);
+        cell.onTextChanged.detach(this._onTextChanged);
     }
 
     private async onEditorSelectionChanging(cell: IMonacoEditorViewModel, willBeSelected: boolean): Promise<void> {
@@ -305,10 +312,16 @@ export class NotebookViewModel implements INotebookViewModel {
             return;
         }
 
-        this.selectedCell = cell as ICellViewModel; //TODO: Is it possible to get rid of this cast?
+        this.selectedCell = cell as ICellViewModel; //TODO: Is it possible to get rid of this cast? And others like it.
         await this.onSelectedCellChanged.raise();
     }
 
+    //
+    // Event raised when the text in a cell has changed.
+    //
+    private _onTextChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
+        await this.onTextChanged.raise(cell as ICellViewModel);
+    }
     //
     // Handles onCellModified from cells and bubbles the event upward.
     //
@@ -716,4 +729,8 @@ export class NotebookViewModel implements INotebookViewModel {
     // Event raised before the model is saved.
     //
     onFlushChanges: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+    //
+    // Event raised when the text in this editor has changed.
+    //
+    onTextChanged: IEventSource<TextChangedEventHandler> = new EventSource<TextChangedEventHandler>();
 }

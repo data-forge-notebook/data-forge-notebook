@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { CellType } from "../../model/cell";
 import { CellModifiedEventHandler, ICellViewModel } from "../../view-model/cell";
-import { EditorSelectionChangedEventHandler } from "../../view-model/monaco-editor";
+import { EditorSelectionChangedEventHandler, TextChangedEventHandler } from "../../view-model/monaco-editor";
 import { NotebookViewModel } from "../../view-model/notebook";
 import { EventSource } from "../../lib/event-source";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
@@ -31,6 +31,7 @@ describe('view-model / notebook', () => {
             onEditorSelectionChanging: new EventSource<EditorSelectionChangedEventHandler>(),
             onEditorSelectionChanged: new EventSource<EditorSelectionChangedEventHandler>(),
             onModified: new EventSource<CellModifiedEventHandler>(),
+            onTextChanged: new EventSource<TextChangedEventHandler>(),
             getModel: () => fields.model || {},
             flushChanges: () => {},
             select: jest.fn(),
