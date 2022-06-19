@@ -3,8 +3,15 @@ import { NotebookUI } from "./view/notebook/notebook";
 import { NotebookViewModel } from "./view-model/notebook";
 import { testNotebook } from "./test-notebook";
 import "./testbed/services/plugin-repository";
+import { registerSingleton } from "@codecapers/fusion";
+import { INotebookRepositoryId } from "./services/notebook-repository";
 
-const notebookViewModel = NotebookViewModel.deserialize("test.notebook", false, false, "/a/path", "v16", testNotebook);
+registerSingleton(INotebookRepositoryId, {
+
+});
+
+const mockId: any = {};
+const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
 
 export function NotebookEditor() {
     return (

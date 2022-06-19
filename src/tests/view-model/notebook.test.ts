@@ -6,10 +6,15 @@ import { NotebookViewModel } from "../../view-model/notebook";
 import { EventSource } from "../../lib/event-source";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
 import { INotebook } from "../../model/notebook";
+import { disableInjector } from "@codecapers/fusion";
 
 describe('view-model / notebook', () => {
 
     const defaultNodejsVersion = "v16";
+
+    beforeAll(() => {
+        disableInjector();
+    });
 
     //
     // Creates a mock cell model.
@@ -61,7 +66,8 @@ describe('view-model / notebook', () => {
     //
     function createNotebookViewModel(mockNotebookModel: INotebook, mockCells: ICellViewModel[]) {
         
-        const notebook = new NotebookViewModel(mockNotebookModel, mockCells, false, false, defaultNodejsVersion);
+        const mockId: any = {};
+        const notebook = new NotebookViewModel(mockId, mockNotebookModel, mockCells, false, false, defaultNodejsVersion);
         return notebook;
     }
     
@@ -127,8 +133,6 @@ describe('view-model / notebook', () => {
         expect(notebook.getInstanceId()).toEqual(instanceId);
         expect(notebook.getLanguage()).toEqual(language);
         expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getFileName()).toEqual(fileName);
-        expect(notebook.getContainingPath()).toEqual(path);
         expect(notebook.isUnsaved()).toBe(false);
         expect(notebook.isReadOnly()).toBe(false);
 
@@ -717,11 +721,10 @@ describe('view-model / notebook', () => {
 
     test("can deserialize", () => {
 
-        const theFileName = "something.notebook";
-        const thePath = "/a/path";
+        const mockId: any = {};
         const theLanguage = "javascript";
         const theNodeJsVersion = "v10.0.0";
-        const notebook = NotebookViewModel.deserialize(theFileName, false, false, thePath, "v16", {
+        const notebook = NotebookViewModel.deserialize(mockId, false, false, "v16", {
             version: 3,
             nodejs: theNodeJsVersion,
             language: theLanguage,
@@ -730,8 +733,7 @@ describe('view-model / notebook', () => {
         expect(notebook.getInstanceId().length).toBeGreaterThan(0);
         expect(notebook.getLanguage()).toEqual(theLanguage);
         expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getFileName()).toEqual(theFileName);
-        expect(notebook.getContainingPath()).toEqual(thePath);
+        expect(notebook.getStorageId()).toEqual(mockId);
         expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
     });
 

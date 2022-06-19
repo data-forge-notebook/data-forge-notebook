@@ -10,6 +10,8 @@ import * as path from "path";
 import { MarkdownCellViewModel } from "./markdown-cell";
 import { CellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel } from "./cell-output";
+import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "../services/notebook-repository";
+import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 export type TextChangedEventHandler = (cell: ICellViewModel) => Promise<void>;
 
 //
@@ -42,6 +44,11 @@ export function cellViewModelFactory(cell: ICell): ICellViewModel {
 // The view-model for the entire notebook.
 //
 export interface INotebookViewModel {
+
+    //
+    // Get the storage id for the notebook, set to undefined when the notebook has not been saved.
+    //
+    getStorageId(): INotebookStorageId;
 
     //
     // Get the ID for this notebook instance.
@@ -140,22 +147,6 @@ export interface INotebookViewModel {
     getSelectedCellIndex(): number | undefined;
 
     //
-    // Get the name of the file the notebook has been saved to or 'undefined' for new notebooks.
-    //
-    getFileName(): string;
-    
-    //
-    // Get the path that contains the notebook undefined for new notebooks that have never been saved.
-    //
-    getContainingPath(): string;
-   
-    //
-    // Get the full path and file name.
-    // For unsaved files only returns the file name.
-    //
-    getFilePath(): string;
-    
-    //
     // Returns true if the notebook has never been saved.
     //
     isUnsaved(): boolean;
@@ -206,6 +197,16 @@ export interface INotebookViewModel {
     serialize(): ISerializedNotebook1;
 
     //
+    // Save the notebook to the current filename.
+    //
+    save(): Promise<void>;
+
+    //
+    // Save the notebook to a particular file.
+    //
+    saveAs(newStorageId: INotebookStorageId): Promise<void>;
+
+    //
     // Clear all the outputs from the notebook.
     //
     clearOutputs(): Promise<void>;
@@ -230,8 +231,17 @@ export interface INotebookViewModel {
     onTextChanged: IEventSource<TextChangedEventHandler>;
 }
 
+@InjectableClass()
 export class NotebookViewModel implements INotebookViewModel {
 
+    @InjectProperty(INotebookRepositoryId)
+    notebookRepository!: INotebookRepository;
+
+    //
+    // Identifies the notebook in storage.
+    //
+    private storageId: INotebookStorageId;
+    
     //
     // The model underlying the view-model.
     //
@@ -267,7 +277,8 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     private readOnly: boolean;
 
-    constructor(notebook: INotebook, cells: ICellViewModel[], unsaved: boolean, readOnly: boolean, defaultNodeJsVersion: string) {
+    constructor(notebookStorageId: INotebookStorageId, notebook: INotebook, cells: ICellViewModel[], unsaved: boolean, readOnly: boolean, defaultNodeJsVersion: string) {
+        this.storageId = notebookStorageId;
         this.notebook = notebook;
         this.defaultNodejsVersion = defaultNodeJsVersion;
         this.cells = cells;
@@ -322,6 +333,7 @@ export class NotebookViewModel implements INotebookViewModel {
     private _onTextChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
         await this.onTextChanged.raise(cell as ICellViewModel);
     }
+    
     //
     // Handles onCellModified from cells and bubbles the event upward.
     //
@@ -329,6 +341,13 @@ export class NotebookViewModel implements INotebookViewModel {
         await this.notifyModified();
     }
   
+    //
+    // Get the storage id for the notebook, set to undefined when the notebook has not been saved.
+    //
+    getStorageId(): INotebookStorageId {
+        return this.storageId;
+    }
+
     //
     // Get the ID for this notebook instance.
     // This is not serialized and not persistant.
@@ -586,33 +605,6 @@ export class NotebookViewModel implements INotebookViewModel {
     }
 
     //
-    // Get the name of the file the notebook has been saved to or 'undefined' for new notebooks.
-    //
-    getFileName(): string {
-        return this.notebook.getFileName();
-    }
-    
-    //
-    // Get the path that contains the notebook undefined for new notebooks that have never been saved.
-    //
-    getContainingPath(): string {
-        return this.notebook.getContainingPath();
-    }
-
-    //
-    // Get the full path and file name.
-    // For unsaved files only returns the file name.
-    //
-    getFilePath(): string {
-        if (this.isUnsaved()) {
-            return this.getFileName();
-        }
-        else {
-            return path.join(this.getContainingPath()!, this.getFileName());
-        }
-    }
-
-    //
     // Returns true if the notebook has never been saved.
     //
     isUnsaved(): boolean {
@@ -690,10 +682,47 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Deserialize the model from a previously serialized data structure.
     //
-    static deserialize(fileName: string, unsaved: boolean, readOnly: boolean, containingPath: string, defaultNodejsVersion: string, input: ISerializedNotebook1): INotebookViewModel {
-        const notebook = Notebook.deserialize(fileName, containingPath, input);
+    static deserialize(notebookStorageId: INotebookStorageId, unsaved: boolean, readOnly: boolean, defaultNodejsVersion: string, input: ISerializedNotebook1): INotebookViewModel {
+        const notebook = Notebook.deserialize(input);
         const cells = notebook.getCells().map(cell => cellViewModelFactory(cell));
-        return new NotebookViewModel(notebook, cells, unsaved, readOnly, defaultNodejsVersion);
+        return new NotebookViewModel(notebookStorageId, notebook, cells, unsaved, readOnly, defaultNodejsVersion);
+    }
+
+    //
+    // Save the notebook to the current filename.
+    //
+    async save(): Promise<void> {
+
+        if (this.isReadOnly()) {
+            throw new Error("The file for this notebook is readonly, it can't be saved this way.");
+        }
+
+        await this.flushChanges();
+
+        if (this.isUnsaved()) {
+            throw new Error("Notebook has never been saved before, use saveAs function for the first save.");
+        }
+        const serialized = this.serialize();
+        await this.notebookRepository.writeNotebook(serialized, this.storageId);
+
+        this.clearModified();
+    }
+
+    //
+    // Save the notebook to a new location.
+    //
+    async saveAs(newNotebookId: INotebookStorageId): Promise<void> {
+
+        await this.flushChanges();
+
+        const serialized = this.notebook.serialize();
+
+        this.unsaved = false;
+        await this.notebookRepository.writeNotebook(serialized, newNotebookId);
+        this.storageId = newNotebookId;
+        this.readOnly = false;
+
+        this.clearModified();
     }
 
     //

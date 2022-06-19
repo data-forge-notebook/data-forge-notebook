@@ -47,26 +47,6 @@ export interface INotebook {
     findCell(cellId: string): ICell | null;
         
     //
-    // Get file name for the notebook or 'untitled' for new notebooks.
-    //
-    getFileName(): string;
-    
-    //
-    // Sets the filename.
-    //
-    setFileName(fileName: string): void;
-
-    //
-    // Get the path that contains the notebook undefined for new notebooks that have never been saved.
-    //
-    getContainingPath(): string;
-
-    //
-    // Sets the containing path for the notebook.
-    //
-    setContainingPath(path: string): void;
-
-    //
     // Gets the Nodejs version for this notebook.
     //
     getNodejsVersion(): string | undefined;
@@ -80,11 +60,6 @@ export interface INotebook {
     // Serialize to a data structure suitable for serialization.
     //
     serialize (): ISerializedNotebook1;
-
-    //
-    // Make a deep copy.
-    //
-    clone(): INotebook;
 }
 
 export class Notebook implements INotebook {
@@ -95,16 +70,6 @@ export class Notebook implements INotebook {
     //
     private instanceId: string = uuid();
     
-    //
-    // The file name for the notebook or 'untitled' for new notebooks.
-    //
-    private fileName: string;
-
-    //
-    // The path that contains the notebook undefined for new notebooks that have never been saved.
-    //
-    private containingPath: string;
-
     //
     // The Nodejs version for this notebook.
     //
@@ -120,10 +85,8 @@ export class Notebook implements INotebook {
     //
     private cells: ICell[];
 
-    constructor(fileName: string, containingPath: string, nodejsVersion: string | undefined, language: string, cells: ICell[]) {
+    constructor(nodejsVersion: string | undefined, language: string, cells: ICell[]) {
         this.nodejsVersion = nodejsVersion;
-        this.fileName = fileName;
-        this.containingPath = containingPath;
         this.language = language;
         this.cells = cells;
     }
@@ -204,34 +167,6 @@ export class Notebook implements INotebook {
     }    
 
     //
-    // Get the file name for the notebook or 'untitled' for new notebooks.
-    //
-    getFileName(): string {
-        return this.fileName;
-    }
-
-    //
-    // Sets the filename.
-    //
-    setFileName(fileName: string): void {
-        this.fileName = fileName;
-    }
-    
-    //
-    // Get the path that contains the notebook undefined for new notebooks that have never been saved.
-    //
-    getContainingPath(): string {
-        return this.containingPath;
-    }
-
-    //
-    // Sets the containing path for the notebook.
-    //
-    setContainingPath(path: string): void {
-        this.containingPath = path;
-    }
-
-    //
     // Gets the Nodejs version for this notebook.
     //
     getNodejsVersion(): string | undefined {
@@ -260,7 +195,7 @@ export class Notebook implements INotebook {
     //
     // Deserialize the model from a previously serialized data structure.
     //
-    static deserialize(fileName: string, containingPath: string, input: ISerializedNotebook1): INotebook {
+    static deserialize(input: ISerializedNotebook1): INotebook {
         let language: string;
         let cells: ICell[];
         if (input.sheet) {
@@ -273,13 +208,6 @@ export class Notebook implements INotebook {
             cells = input.cells && input.cells.map(cell => Cell.deserialize(cell)) || [];
         }
 
-        return new Notebook(fileName, containingPath, input.nodejs, language, cells);
-    }
-
-    //
-    // Make a deep copy.
-    //
-    clone(): INotebook {
-        return Notebook.deserialize(this.fileName, this.containingPath, this.serialize());
+        return new Notebook(input.nodejs, language, cells);
     }
 }

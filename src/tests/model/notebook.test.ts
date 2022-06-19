@@ -5,25 +5,19 @@ describe("model / notebook", () => {
 
     test("can construct", () => {
 
-        const theFileName = "something.notebook";
-        const thePath = "/a/path";
         const theLanguage = "javascript";
         const theNodeJsVersion = "v10.0.0";
-        const notebook = new Notebook(theFileName, thePath, theNodeJsVersion, theLanguage, []);
+        const notebook = new Notebook(theNodeJsVersion, theLanguage, []);
         expect(notebook.getInstanceId().length).toBeGreaterThan(0);
         expect(notebook.getLanguage()).toEqual(theLanguage);
         expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getFileName()).toEqual(theFileName);
-        expect(notebook.getContainingPath()).toEqual(thePath);
         expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
     });
 
     test("can serialize", () => {
-        const theFileName = "something.notebook";
-        const thePath = "/a/path";
         const theLanguage = "javascript";
         const theNodeJsVersion = "v10.0.0";
-        const notebook = new Notebook(theFileName, thePath, theNodeJsVersion, theLanguage, []);
+        const notebook = new Notebook(theNodeJsVersion, theLanguage, []);
         expect(notebook.serialize()).toEqual({
             version: 3,
             language: theLanguage,
@@ -33,12 +27,9 @@ describe("model / notebook", () => {
     });
 
     test("can deserialize", () => {
-        
-        const theFileName = "something.notebook";
-        const thePath = "/a/path";
         const theLanguage = "javascript";
         const theNodeJsVersion = "v10.0.0";
-        const notebook = Notebook.deserialize(theFileName, thePath, {
+        const notebook = Notebook.deserialize({
             version: 3,
             nodejs: theNodeJsVersion,
             language: theLanguage,
@@ -47,15 +38,13 @@ describe("model / notebook", () => {
         expect(notebook.getInstanceId().length).toBeGreaterThan(0);
         expect(notebook.getLanguage()).toEqual(theLanguage);
         expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getFileName()).toEqual(theFileName);
-        expect(notebook.getContainingPath()).toEqual(thePath);
         expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
     });
 
     test("can deserialize with cells", () => {
         
         const serializedCell: any = {};
-        const notebook = Notebook.deserialize("", "", {
+        const notebook = Notebook.deserialize({
             version: 3,
             language: "",
             cells: [
@@ -68,7 +57,7 @@ describe("model / notebook", () => {
 
     test("can add first cell", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell: any = {};
         notebook.addCell(0, mockCell);
@@ -78,7 +67,7 @@ describe("model / notebook", () => {
 
     test("can add second cell", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -90,7 +79,7 @@ describe("model / notebook", () => {
 
     test("can add second cell at start", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -102,7 +91,7 @@ describe("model / notebook", () => {
 
     test("can add cell in the middle", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -116,7 +105,7 @@ describe("model / notebook", () => {
 
     test("can delete cell", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell1: any = {
             getId: () => "A1",
@@ -137,7 +126,7 @@ describe("model / notebook", () => {
 
     test("can move cell to end", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -152,7 +141,7 @@ describe("model / notebook", () => {
 
     test("can move cell to start", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -167,7 +156,7 @@ describe("model / notebook", () => {
 
     test("can move cell to middle", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -182,7 +171,7 @@ describe("model / notebook", () => {
 
     test("can find cell by id", () => {
         
-        const notebook = new Notebook("", "", "", "", []);
+        const notebook = new Notebook("", "", []);
 
         const mockCell1: any = {
             getId: () => "A1",
@@ -200,17 +189,4 @@ describe("model / notebook", () => {
         const cell = notebook.findCell("A2");
         expect(cell).toEqual(mockCell2);
     });
-
-    test("can clone a notebook", () => {
-
-        const theNodeJsVersion = "v10.0.0";
-        const notebook = new Notebook("", "", theNodeJsVersion, "", []);
-        const clone = notebook.clone();
-
-        const newNodejsVersion = "v12.0.0";
-        clone.setNodejsVersion(newNodejsVersion);
-        expect(clone.getNodejsVersion()).toEqual(newNodejsVersion); // Clone has changed.
-        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion); // Original has not changed.
-    });
-
 });
