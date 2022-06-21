@@ -6,7 +6,8 @@ const path = require("path");
 
 module.exports = function (env) {
 
-    const outputDir = path.resolve(__dirname, "dist", env);
+    const outputDir = path.resolve(process.cwd(), "dist", env);
+    console.log(`Output: ${outputDir}`);
 
     const targets = {
         electron: "web",

@@ -2,7 +2,7 @@ import * as React from "react";
 import { NotebookUI } from "./view/notebook/notebook";
 import { NotebookViewModel } from "./view-model/notebook";
 import { testNotebook } from "./test-notebook";
-import "./testbed/services/plugin-repository";
+import "./services/impl/plugin-repository";
 import { registerSingleton } from "@codecapers/fusion";
 import { INotebookRepositoryId } from "./services/notebook-repository";
 

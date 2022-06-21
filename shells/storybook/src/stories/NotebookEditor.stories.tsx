@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentMeta } from '@storybook/react';
-import { NotebookEditor } from '..';
+import { NotebookEditor } from 'notebook-editor';
 
 export default {
   title: 'Notebook Editor',

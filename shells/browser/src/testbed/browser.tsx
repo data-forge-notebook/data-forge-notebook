@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { NotebookEditor } from "..";
+import { NotebookEditor } from "notebook-editor";
 
 function App() {
     return (
