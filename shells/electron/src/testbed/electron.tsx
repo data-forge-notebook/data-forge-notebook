@@ -2,6 +2,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { NotebookEditor } from "notebook-editor";
 
+import "../services/file";
+import "../services/dialogs";
+import "../services/notebook-repository";
+
 function App() {
     return (
         <div>

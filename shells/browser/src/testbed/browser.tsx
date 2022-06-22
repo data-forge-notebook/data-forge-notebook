@@ -1,6 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { NotebookEditor } from "notebook-editor";
+import { registerSingleton } from "@codecapers/fusion";
+import { INotebookRepositoryId, NotebookEditor } from "notebook-editor";
+
+registerSingleton(INotebookRepositoryId, {
+    // Mock repository for now.
+});
 
 function App() {
     return (

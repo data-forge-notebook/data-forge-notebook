@@ -10,7 +10,7 @@ module.exports = function (env) {
     console.log(`Output: ${outputDir}`);
 
     const targets = {
-        electron: "web",
+        electron: "electron-renderer",
         default: "web",
     };
 
