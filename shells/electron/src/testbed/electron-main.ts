@@ -15,6 +15,7 @@ const createWindow = () => {
         height: 600,
         webPreferences: {
             nodeIntegration: true,
+            nodeIntegrationInWorker: true, // Enabled this to prevent errors in Monaco Editor workers.
             contextIsolation: false,
             webviewTag: true,
         },
