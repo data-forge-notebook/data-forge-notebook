@@ -1,10 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { registerSingleton } from "@codecapers/fusion";
-import { INotebookRepositoryId, NotebookEditor } from "notebook-editor";
+import { IConfirmationDialogId, INotebookRepositoryId, NotebookEditor } from "notebook-editor";
 
 registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.
+});
+
+registerSingleton(IConfirmationDialogId, {
+    // Mock confirmation dialog service.
 });
 
 function App() {

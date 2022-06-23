@@ -485,6 +485,7 @@ importers:
       '@testing-library/jest-dom': ^5.16.2
       '@testing-library/react': ^12.1.4
       '@types/chai': 4.0.4
+      '@types/fs-extra': ^9.0.13
       '@types/jest': ^27.4.1
       '@types/lodash': ^4.14.179
       '@types/marked': ^4.0.3
@@ -565,6 +566,7 @@ importers:
       '@testing-library/jest-dom': 5.16.4
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
       '@types/chai': 4.0.4
+      '@types/fs-extra': 9.0.13
       '@types/jest': 27.5.1
       '@types/lodash': 4.14.182
       '@types/marked': 4.0.3
@@ -5464,6 +5466,12 @@ packages:
       '@types/express-serve-static-core': 4.17.28
       '@types/qs': 6.9.7
       '@types/serve-static': 1.13.10
+    dev: true
+
+  /@types/fs-extra/9.0.13:
+    resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
+    dependencies:
+      '@types/node': 17.0.21
     dev: true
 
   /@types/glob/7.2.0:

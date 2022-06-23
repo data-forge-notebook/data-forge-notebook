@@ -3,11 +3,16 @@
 //
 
 import { InjectableSingleton } from "@codecapers/fusion";
-import * as fs from "fs";
+import * as fs from "fs-extra";
 
 export const IFileId = "IFile";
 
 export interface IFile   {
+
+    //
+    // Creates the requested directory if it doesn't already exist.
+    //
+    ensureDir(dirPath: string): Promise<void>;
 
     //
     // Determines if the specified file exists.
@@ -43,6 +48,13 @@ export interface IFile   {
 
 @InjectableSingleton(IFileId)
 export class File implements IFile {
+
+    //
+    // Creates the requested directory if it doesn't already exist.
+    //
+    async ensureDir(dirPath: string): Promise<void> {
+        await fs.ensureDir(dirPath);
+    }
 
     //
     // Determines if the specified file exists.

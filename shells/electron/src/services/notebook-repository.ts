@@ -1,7 +1,8 @@
 import { InjectProperty, InjectableSingleton } from "@codecapers/fusion";
 import * as path from "path";
+import * as os from "os";
 import { IFile, IFileId } from "./file";
-import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "notebook-editor";
+import { INotebookRepository, INotebookRepositoryId, INotebookStorageId, IIdGenerator, IIdGeneratorId } from "notebook-editor";
 import { IDialogs, IDialogsId } from "./dialogs";
 import { ISerializedNotebook1 } from "notebook-editor/ts-build/model/serialization/serialized1";
 
@@ -87,6 +88,9 @@ export class NotebookRepository implements INotebookRepository {
     @InjectProperty(IDialogsId)
     dialogs!: IDialogs;
 
+    @InjectProperty(IIdGeneratorId)
+    idGenerator!: IIdGenerator;
+
     //
     // Check if the requested notebook is already in storage.
     //
@@ -114,10 +118,21 @@ export class NotebookRepository implements INotebookRepository {
     }
 
     //
+    // Makes the id for a new untititled notebook.
+    //
+    async makeUntitledNotebookId(): Promise<INotebookStorageId> {
+        const tmpDir = path.join(os.tmpdir(), "dfntmp");
+        const untitledProjectsPath = path.join(tmpDir, "untitled");
+        const newUntitledProjectPath = path.join(untitledProjectsPath, this.idGenerator.genId());
+        await this.file.ensureDir(newUntitledProjectPath);
+        return new NotebookStorageId("untitled", newUntitledProjectPath);
+    }
+
+    //
     // Shows a dialog to allow the user to choose a notebook to open.
     //
-    async showNotebookOpenDialog(openFilePath?: string, settingsKey?: string, directoryPath?: string): Promise<INotebookStorageId | undefined> {
-        const filePath = openFilePath ? openFilePath : await this.dialogs.showFileOpenDialog(settingsKey, directoryPath);
+    async showNotebookOpenDialog(openFilePath?: string, directoryPath?: string): Promise<INotebookStorageId | undefined> {
+        const filePath = openFilePath ? openFilePath : await this.dialogs.showFileOpenDialog(directoryPath);
         if (!filePath) {
             // User cancelled.
             return undefined;
@@ -132,7 +147,7 @@ export class NotebookRepository implements INotebookRepository {
     async showNotebookSaveAsDialog(existingNotebookId: INotebookStorageId | undefined, specifiedLocation?: string): Promise<INotebookStorageId | undefined> {
         const existingId = existingNotebookId as NotebookStorageId;
         const defaultPath = existingId ? existingId.getContainingPath() : undefined;
-        const filePath = specifiedLocation || await this.dialogs.showFileSaveAsDialog("Save notebook", existingId.getFileName(), defaultPath, "Notebook file", "notebook", "notebook-path");
+        const filePath = specifiedLocation || await this.dialogs.showFileSaveAsDialog("Save notebook", existingId.getFileName(), defaultPath, "Notebook file", "notebook");
         if (!filePath) {
             return undefined;
         }

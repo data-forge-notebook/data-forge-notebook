@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import { NotebookEditor } from "notebook-editor";
 
 import "../services/file";
+import "../services/confirmation-dialog";
 import "../services/dialogs";
 import "../services/notebook-repository";
 

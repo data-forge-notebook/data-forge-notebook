@@ -2,7 +2,7 @@
 // The main file for the Electron entry point.
 //
 
-const { app, BrowserWindow } = require('electron');
+import { app, BrowserWindow } from "electron";
 
 const ENTRY = process.env.ENTRY;
 if (!ENTRY) {

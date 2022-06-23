@@ -37,9 +37,14 @@ export interface INotebookRepository {
     readNotebook(notebookId: INotebookStorageId): Promise<{ data: ISerializedNotebook1, readOnly: boolean }>;
 
     //
+    // Makes the id for a new untititled notebook.
+    //
+    makeUntitledNotebookId(): Promise<INotebookStorageId>;
+
+    //
     // Shows a dialog to allow the user to choose a notebook to open.
     //
-    showNotebookOpenDialog(openFilePath?: string, settingsKey?: string, directoryPath?: string): Promise<INotebookStorageId | undefined>;
+    showNotebookOpenDialog(openFilePath?: string, directoryPath?: string): Promise<INotebookStorageId | undefined>;
 
     //
     // Shows a dialog to allow the user to save their notebook to a new location.

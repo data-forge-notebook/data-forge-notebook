@@ -18,27 +18,17 @@ export interface IDialogs {
     //
     // Show the open file dialog.
     //
-    showFileOpenDialog(settingsKey?: string, defaultPath?: string): Promise<string | null>;
+    showFileOpenDialog(defaultPath?: string): Promise<string | null>;
 
     //
     // Show the save as dialog.
     //
-    showFileSaveAsDialog(title: string, defaultFileName: string, defaultDirPath: string | undefined, fileType: string, ext: string, settingsKey: string): Promise<string | undefined>;
+    showFileSaveAsDialog(title: string, defaultFileName: string, defaultDirPath: string | undefined, fileType: string, ext: string): Promise<string | undefined>;
 }
 
 @InjectableSingleton(IDialogsId)
 export class Dialogs implements IDialogs {
 
-    //fio:
-    // @InjectProperty("ILog")
-    // log!: ILog;
-
-    // @InjectProperty("ISettings")
-    // settings!: ISettings;
-
-    // @InjectProperty("IPaths")
-    // paths!: IPathsService;
-   
     //
     // Show the open file dialog.
     //
@@ -73,7 +63,7 @@ export class Dialogs implements IDialogs {
     //
     // Show the save as dialog.
     //
-    async showFileSaveAsDialog(title: string, defaultFileName: string, defaultDirPath: string | undefined, fileType: string, ext: string, settingsKey: string): Promise<string | undefined> {
+    async showFileSaveAsDialog(title: string, defaultFileName: string, defaultDirPath: string | undefined, fileType: string, ext: string): Promise<string | undefined> {
         if (ext.startsWith(".")) {
             throw new Error(`showFileSaveAsDialog: File ext ${ext} shouldn't start with a period!`);
         }
