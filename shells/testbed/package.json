@@ -7,7 +7,7 @@
         "compile:watch": "tsc --incremental --watch",
         "test": "jest --passWithNoTests",
         "test:watch": "jest --watch --passWithNoTests",
-        "serve": "webpack serve --open index.html --config webpack.testbed.config.js",
+        "serve": "webpack serve --open index.html --config webpack.config.js",
         "s": "pnpm run start",
         "c": "pnpm run compile",
         "cw": "pnpm run compile:watch",
