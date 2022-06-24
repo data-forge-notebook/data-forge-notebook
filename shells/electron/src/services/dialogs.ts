@@ -3,9 +3,8 @@
 //
 import * as path from "path";
 import { InjectableSingleton } from "@codecapers/fusion";
-import * as electron from "electron";
 
-const remote = (electron as any).remote || electron;
+const remote = require("@electron/remote");
 const app = remote.app;
 const dialog = remote.dialog;
 

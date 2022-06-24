@@ -2,18 +2,18 @@ import { InjectableClass } from "@codecapers/fusion";
 import * as React from "react";
 import { asyncHandler } from "../../lib/async-handler";
 import { forceUpdate } from "../../lib/force-update";
-import { IAppViewModel } from "../../view-model/notebook-editor";
+import { INotebookEditorViewModel } from "../../view-model/notebook-editor";
 import { NotebookUI } from "./notebook";
 
-export interface IEditorProps {
-    model: IAppViewModel;
+export interface INotebookEditorProps {
+    model: INotebookEditorViewModel;
 }
 
-export interface IEditorState {
+export interface INotebookEditorState {
 }
 
 @InjectableClass()
-export class EditorUI extends React.Component<IEditorProps, IEditorState> {
+export class NotebookEditor extends React.Component<INotebookEditorProps, INotebookEditorState> {
 
     constructor (props: any) {
         super(props);

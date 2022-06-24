@@ -1,5 +1,5 @@
-import { CellScope, CellType } from "./model/cell";
-import { ISerializedNotebook1 } from "./model/serialization/serialized1";
+import { CellScope, CellType } from "notebook-editor/src/model/cell";
+import { ISerializedNotebook1 } from "notebook-editor/src/model/serialization/serialized1";
 
 export const testNotebook: ISerializedNotebook1 = {
     "version": 3,

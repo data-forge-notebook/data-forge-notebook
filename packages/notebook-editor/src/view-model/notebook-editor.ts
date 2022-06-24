@@ -25,7 +25,7 @@ enum SaveChoice {
 //
 // View-mmodel for the app.
 //
-export interface IAppViewModel {
+export interface INotebookEditorViewModel {
     
     //
     // Returns true after a notebook has been opened.
@@ -96,7 +96,7 @@ export interface IAppViewModel {
 }
 
 @InjectableClass()
-export class AppViewModel implements IAppViewModel {
+export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
     @InjectProperty(IIdGeneratorId)
     idGenerator!: IIdGenerator;

@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { registerSingleton } from "@codecapers/fusion";
-import { IConfirmationDialogId, INotebookRepositoryId, NotebookEditor } from "notebook-editor";
+import { IConfirmationDialogId, INotebookRepositoryId, NotebookEditor, NotebookEditorViewModel, NotebookViewModel } from "notebook-editor";
+import { testNotebook } from "./test-notebook";
 
 registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.
@@ -10,6 +11,10 @@ registerSingleton(INotebookRepositoryId, {
 registerSingleton(IConfirmationDialogId, {
     // Mock confirmation dialog service.
 });
+
+const mockId: any = {};
+const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
+const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 
 function App() {
     return (
@@ -31,7 +36,7 @@ function App() {
                 
             </div>
 
-            <NotebookEditor />
+            <NotebookEditor model={notebookEditorViewModel} />
 
             <div className="centered-container pb-32">
                 <h2>More coming soon!</h2>

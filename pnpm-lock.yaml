@@ -473,6 +473,7 @@ importers:
       '@blueprintjs/core': ^3.10.0
       '@blueprintjs/icons': ^3.4.0
       '@codecapers/fusion': 1.0.15
+      '@electron/remote': ^2.0.8
       '@storybook/addon-actions': ^6.4.19
       '@storybook/addon-docs': ^6.4.19
       '@storybook/addon-essentials': ^6.4.19
@@ -536,6 +537,7 @@ importers:
       '@blueprintjs/core': 3.54.0_sfoxds7t5ydpegc3knd667wn6m
       '@blueprintjs/icons': 3.33.0
       '@codecapers/fusion': 1.0.15
+      '@electron/remote': 2.0.8_electron@17.4.6
       chai: 4.1.2
       classnames: 2.3.1
       humanize-duration: 3.27.2
@@ -2572,6 +2574,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@electron/remote/2.0.8_electron@17.4.6:
+    resolution: {integrity: sha512-P10v3+iFCIvEPeYzTWWGwwHmqWnjoh8RYnbtZAb3RlQefy4guagzIwcWtfftABIfm6JJTNQf4WPSKWZOpLmHXw==}
+    peerDependencies:
+      electron: '>= 13.0.0'
+    dependencies:
+      electron: 17.4.6
+    dev: false
 
   /@emotion/is-prop-valid/1.1.2:
     resolution: {integrity: sha512-3QnhqeL+WW88YjYbQL5gUIkthuMw7a0NGbZ7wfFVk2kg/CK5w8w5FFa0RzWjyY1+sujN0NWbtSHH6OJmWHtJpQ==}

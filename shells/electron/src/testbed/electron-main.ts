@@ -2,7 +2,10 @@
 // The main file for the Electron entry point.
 //
 
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu, MenuItemConstructorOptions, ipcMain } from "electron";
+
+const remote = require("@electron/remote/main");
+remote.initialize();
 
 const ENTRY = process.env.ENTRY;
 if (!ENTRY) {
@@ -29,6 +32,11 @@ const createWindow = () => {
         console.log(`Loading file ${ENTRY}`);
         win.loadFile(ENTRY);
     }
+
+    remote.enable(win.webContents);
+
+    createApplicationMenu();
+
 }
 
 app.whenReady().then(() => {
@@ -46,3 +54,69 @@ app.on('window-all-closed', () => {
         app.quit();
     }
 });
+
+//
+// Creates the application menu.
+//
+function createApplicationMenu() {
+    const menus: MenuItemConstructorOptions[] = [
+        {
+            label: "&File",
+            submenu: [
+                {
+                    label: "New notebook",
+                    click: () => {
+                        BrowserWindow.getFocusedWindow()!.webContents.send("new-notebook");
+                    },
+                },
+                {
+                    label: "Open notebook",
+                    click: () => {
+                        BrowserWindow.getFocusedWindow()!.webContents.send("open-notebook");
+                    },
+                },
+                {
+                    label: "Reload notebook",
+                    click: () => {
+                        BrowserWindow.getFocusedWindow()!.webContents.send("reload-notebook");
+                    },
+                },
+                {
+                    label: "Save notebook",
+                    click: () => {
+                        BrowserWindow.getFocusedWindow()!.webContents.send("save-notebook");
+                    },
+                },
+                {
+                    label: "Save notebook as",
+                    click: () => {
+                        BrowserWindow.getFocusedWindow()!.webContents.send("save-notebook-as");
+                    },
+                },
+            ],
+        },
+    ];
+
+    const devMenu = {
+        label: "Development",
+        submenu: [
+            {
+                label: "Reload",
+                accelerator: "F5",
+                click: () => {
+                    BrowserWindow.getFocusedWindow()!.webContents.reloadIgnoringCache();
+                }
+            },
+            {
+                label: "Toggle DevTools",
+                accelerator: "Alt+CmdOrCtrl+I",
+                click: () => {
+                    BrowserWindow.getFocusedWindow()!.webContents.toggleDevTools();
+                }
+            },
+        ]
+    };
+    menus.push(devMenu);
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
+}
