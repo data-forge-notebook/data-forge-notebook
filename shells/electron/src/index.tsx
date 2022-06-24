@@ -5,10 +5,10 @@ import { ipcRenderer } from "electron";
 import { testNotebook } from "./test-notebook";
 import { handleAsyncErrors } from "notebook-editor/build/lib/async-handler"; //TODO: MOVE
 
-import "../services/file";
-import "../services/confirmation-dialog";
-import "../services/dialogs";
-import "../services/notebook-repository";
+import "./services/file";
+import "./services/confirmation-dialog";
+import "./services/dialogs";
+import "./services/notebook-repository";
 
 const mockId: any = {};
 const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
