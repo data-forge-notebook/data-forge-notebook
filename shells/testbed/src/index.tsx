@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Button } from "@blueprintjs/core";
-import { MonacoEditor } from "notebook-editor/ts-build/components/monaco-editor";
-import { PluggableVisualization } from "notebook-editor/ts-build/view/notebook/editor/cell/pluggable-visualization";
-import { CodeCellViewModel } from "notebook-editor/ts-build/view-model/code-cell";
-import { Cell, CellScope, CellType } from "notebook-editor/ts-build/model/cell";
+import { MonacoEditor } from "notebook-editor/build/components/monaco-editor";
+import { PluggableVisualization } from "notebook-editor/build/view/notebook/editor/cell/pluggable-visualization";
+import { CodeCellViewModel } from "notebook-editor/build/view-model/code-cell";
+import { Cell, CellScope, CellType } from "notebook-editor/build/model/cell";
 
 function App() {
     return (

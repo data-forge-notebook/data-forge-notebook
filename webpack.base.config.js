@@ -6,7 +6,7 @@ const path = require("path");
 
 module.exports = function (env) {
 
-    const outputDir = path.resolve(process.cwd(), "dist", env);
+    const outputDir = path.resolve(process.cwd(), "dist");
     console.log(`Output: ${outputDir}`);
 
     const targets = {
@@ -20,7 +20,7 @@ module.exports = function (env) {
 
     return {
         entry: {
-            'index': `./src/testbed/${env}.tsx`,
+            'index': `./src/index.tsx`,
             'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
             'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
             'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
@@ -99,8 +99,8 @@ module.exports = function (env) {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: `./src/testbed/${env}.html`,
-                        to: `${outputDir}/index.html`,
+                        from: `./src/index.html`,
+                        to: outputDir,
                     },
                     {
                         from: `./node_modules/normalize.css/normalize.css`,
@@ -115,7 +115,7 @@ module.exports = function (env) {
                         to: outputDir,
                     },
                     {
-                        from: `./src/testbed/styles`,
+                        from: `./src/styles`,
                         to: outputDir,
                     },
                 ],
