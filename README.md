@@ -113,7 +113,7 @@ pnpm run storybook
 pnpm run compile
 ```
 
-Compiled JavaScript code is output to `ts-build`.
+Compiled JavaScript code is output to the `build` subdirectory for each project.
 
 ## Run automated tests
 

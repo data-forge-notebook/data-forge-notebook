@@ -7,7 +7,7 @@ import "../src/styles/index.css";
 import { registerSingleton } from "@codecapers/fusion";
 import { INotebookRepositoryId, IConfirmationDialogId } from "notebook-editor";
 
-import "notebook-editor/ts-build/services/impl/plugin-repository";
+import "notebook-editor/build/services/impl/plugin-repository";
 
 registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.

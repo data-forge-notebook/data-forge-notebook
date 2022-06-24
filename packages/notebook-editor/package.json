@@ -1,8 +1,8 @@
 {
     "name": "notebook-editor",
-    "main": "ts-build/index.js",
+    "main": "build/index.js",
     "scripts": {
-        "clean": "rm -rf ts-build tsconfig.tsbuildinfo",
+        "clean": "rm -rf build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
         "test": "jest",

@@ -5,7 +5,7 @@
     "main": "build/index.js",
     "types": "build/index.d.ts",
     "scripts": {
-        "clean": "rm -rf tsconfig.tsbuildinfo build/*",
+        "clean": "rm -rf tsconfig.tsbuildinfo build",
         "c": "npm run compile",
         "compile": "tsc --incremental",
         "cw": "npm run compile:watch",

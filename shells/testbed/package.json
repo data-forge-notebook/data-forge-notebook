@@ -2,7 +2,7 @@
     "name": "testbed",
     "scripts": {
         "start": "pnpm run serve",
-        "clean": "rm -rf ./dist ts-build tsconfig.tsbuildinfo",
+        "clean": "rm -rf ./dist build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
         "test": "jest --passWithNoTests",

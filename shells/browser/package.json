@@ -2,7 +2,7 @@
     "name": "browser",
     "scripts": {
         "start": "pnpm run serve",
-        "clean": "rm -rf .parcel-cache ./dist ts-build tsconfig.tsbuildinfo",
+        "clean": "rm -rf .parcel-cache ./dist build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
         "test": "jest --passWithNoTests",

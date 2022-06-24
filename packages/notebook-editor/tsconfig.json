@@ -15,7 +15,7 @@
     "declaration": true,                      /* Generates corresponding '.d.ts' file. */
     "sourceMap": true,                        /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    "outDir": "./ts-build",                   /* Redirect output structure to the directory. */
+    "outDir": "./build",                      /* Redirect output structure to the directory. */
     "rootDir": "./src",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     "removeComments": false,                  /* Do not emit comments to output. */
     // "noEmit": true,                        /* Do not emit outputs. */
@@ -65,7 +65,7 @@
   },
   "exclude": [
       "node_modules",
-      "ts-build",
+      "build",
       "dist",
       "examples",
       "test",
