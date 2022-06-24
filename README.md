@@ -10,6 +10,31 @@ Data-Forge Notebook is being open sourced in this code repository in 2022.
 
 [Follow the developer on Twitter for more frequent news and updates](https://twitter.com/codecapers)
 
+[Data-Forge Notebook v1 available here](https://www.data-forge-notebook.com/)
+
+## Project structure
+
+A birds eye view of this project:
+
+```
+└───editor-core ------------ The DFN v2 monorepo.
+    ├───packages --------------- Packages shared within the monorepo.
+    │   ├───host-bridge ------------ Communication between the DFN and plugins.
+    │   ├───notebook-editor -------- Implements the notebook editor.
+    │   └───plugins ---------------- Contains compiled plugins.
+    ├───plugins ---------------- Visualization plugins.
+    │   ├───data ------------------- Visualizes structured data.
+    │   ├───plot ------------------- Plots charts.
+    │   ├───table ------------------ Renders data in a table.
+    │   └───text ------------------- Displays text data.
+    ├───scripts ---------------- Scripts for building and serving plugins.
+    └───shells ----------------- Various implementations of DFN.
+        ├───browser ---------------- Runs DFN in the browser.
+        ├───electron --------------- Runs DFN in Electron.
+        ├───storybook -------------- Showcases UI components in Storybook.
+        └───testbed ---------------- A custom testbed for UI components.
+```
+
 ## Setup 
 
 Clone this repo locally, open a terminal and change to the local directory.
@@ -33,7 +58,7 @@ pnpm install
 This runs the whole notebook editor in the browser.
 
 ```bash
-npm start
+pnpm start
 ```
 
 It is runs in "dev" mode with live reload enabled.
@@ -45,10 +70,10 @@ The plugins (which are complete web pages in their own right) and also served in
 This builds the browser shell to a static web page:
 
 ```bash
-npm run build
+pnpm run build-browser
 ```
 
-The static web page is generated to `./dist/browser`.
+The static web page is generated to `./shells/browser/dist/browser`.
 
 The plugins are automatically built and inlined into the package.
 
@@ -57,13 +82,13 @@ The plugins are automatically built and inlined into the package.
 This runs the whole notebook editor in Electron (with a static build):
 
 ```bash
-npm run electron
+pnpm run electron:static
 ```
 
 To run in Electron with live reload:
 
 ```bash
-npm run electron:dev
+pnpm run electron:dev
 ```
 
 ## Run the testbed
@@ -71,7 +96,7 @@ npm run electron:dev
 The testbed is used for testing selected UI components.
 
 ```bash
-npm run testbed
+pnpm run testbed
 ```
 
 ## Run Storybook
@@ -79,19 +104,19 @@ npm run testbed
 Storybox showcases various configurations for UI components.
 
 ```bash
-npm run storybook
+pnpm run storybook
 ```
 
 ## Build the TypeScript code
 
 ```bash
-npm run compile
+pnpm run compile
 ```
 
 Compiled JavaScript code is output to `ts-build`.
 
-## Run automated test
+## Run automated tests
 
 ```bash
-npm tests
+pnpm test
 ```
