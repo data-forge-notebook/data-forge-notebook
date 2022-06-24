@@ -93,7 +93,7 @@ if (require.main === module) {
     const pluginName = argv._[0];
     const projectDir = path.dirname(__dirname);
     const pluginsDir = path.join(projectDir, "plugins");
-    const outputDir = path.join(projectDir, "src/testbed/services/plugins");
+    const outputDir = path.join(projectDir, `packages/plugins/data`);
     buildPlugin(pluginName, pluginsDir, outputDir)
         .catch(err => {
             console.error(`Failed to build plugin ${pluginName}.`);
