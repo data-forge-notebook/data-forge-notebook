@@ -8,12 +8,12 @@ import { NumberSize, Resizable } from "re-resizable";
 import { Icon } from '@blueprintjs/core';
 import { Direction } from 're-resizable/lib/resizer';
 import { ICellOutputViewModel } from '../../../../view-model/cell-output';
-import { ErrorBoundary } from '../../../../lib/error-boundary';
-import { handleAsyncErrors } from '../../../../lib/async-handler';
+import { ErrorBoundary } from 'browser-utils';
+import { handleAsyncErrors } from 'utils';
 import { PluggableVisualization } from './pluggable-visualization';
 import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
-import { updateState } from '../../../../lib/update-state';
+import { updateState } from 'browser-utils';
 import { IPluginRequest } from 'host-bridge';
 
 //

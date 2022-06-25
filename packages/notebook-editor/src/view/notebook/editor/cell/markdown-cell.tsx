@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { IMarkdownCellViewModel } from '../../../../view-model/markdown-cell';
 import { IMonacoEditorViewModel } from '../../../../view-model/monaco-editor';
-import { asyncHandler, handleAsyncErrors } from '../../../../lib/async-handler';
-import { forceUpdate } from '../../../../lib/force-update';
+import { asyncHandler, handleAsyncErrors } from 'utils';
+import { forceUpdate } from 'browser-utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
 import ReactMarkdown from 'react-markdown';
 

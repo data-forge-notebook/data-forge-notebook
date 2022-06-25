@@ -1,10 +1,10 @@
 import { IMonacoEditorViewModel, ITextRange, FocusedEventHandler, SetCaretPositionEventHandler, SelectTextEventHandler, ReplaceTextEventHandler, SearchDirection, FindNextMatchEventHandler, EditorSelectionChangedEventHandler, IFindDetails, EditorSelectionChangingEventHandler, TextChangedEventHandler } from "./monaco-editor";
 import { IEditorCaretPosition } from "./editor-caret-position";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { IEventSource, BasicEventHandler, EventSource } from "../lib/event-source";
+import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { ICell, CellType } from "../model/cell";
 import { ISerializedCell1 } from "../model/serialization/serialized1";
-import { debounceAsync } from "../lib/async-handler";
+import { debounceAsync } from "utils";
 
 export type ScrollIntoViewEventHandler = (scrollReason: string) => Promise<void>;
 export type CellModifiedEventHandler = (cell: ICellViewModel) => Promise<void>;

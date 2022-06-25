@@ -4,8 +4,8 @@
 
 import * as React from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { asyncHandler } from '../../../../lib/async-handler';
-import { updateState } from '../../../../lib/update-state';
+import { asyncHandler } from 'utils';
+import { updateState } from 'browser-utils';
 import { CellUI } from './cell';
 const classnames = require("classnames");
 

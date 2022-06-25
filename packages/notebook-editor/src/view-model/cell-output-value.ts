@@ -1,4 +1,4 @@
-import { IEventSource, BasicEventHandler, EventSource } from "../lib/event-source";
+import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { ICellOutputValue } from "../model/cell-output-value";
 
 //

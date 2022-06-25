@@ -2,8 +2,8 @@ import * as React from 'react';
 import { INotebookViewModel } from "../../view-model/notebook";
 import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { CellUI } from './editor/cell/cell';
-import { asyncHandler } from '../../lib/async-handler';
-import { forceUpdate } from '../../lib/force-update';
+import { asyncHandler } from 'utils';
+import { forceUpdate } from 'browser-utils';
 
 export interface INotebookProps {
     model: INotebookViewModel;

@@ -3,7 +3,7 @@ import { CellType } from "../../model/cell";
 import { CellModifiedEventHandler, ICellViewModel } from "../../view-model/cell";
 import { EditorSelectionChangedEventHandler, TextChangedEventHandler } from "../../view-model/monaco-editor";
 import { NotebookViewModel } from "../../view-model/notebook";
-import { EventSource } from "../../lib/event-source";
+import { EventSource } from "utils";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
 import { INotebook } from "../../model/notebook";
 import { disableInjector } from "@codecapers/fusion";

@@ -1,4 +1,4 @@
-import { asyncHandler } from "../lib/async-handler";
+import { asyncHandler } from "utils";
 import { CellScope, ICell } from "../model/cell";
 import { ICellError } from "../model/cell-error";
 import { ICellOutput } from "../model/cell-output";

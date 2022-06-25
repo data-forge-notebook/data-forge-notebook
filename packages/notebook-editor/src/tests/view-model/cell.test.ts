@@ -1,4 +1,4 @@
-import { sleep } from "../../lib/sleep";
+import { sleep } from "utils";
 import { CellType } from "../../model/cell";
 import { CellViewModel } from "../../view-model/cell";
 import { IEditorCaretPosition } from "../../view-model/editor-caret-position";

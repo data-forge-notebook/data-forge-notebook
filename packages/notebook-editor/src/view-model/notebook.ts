@@ -2,7 +2,7 @@ import { ICellViewModel } from "./cell";
 import { INotebookCaretPosition } from "./notebook-caret-position";
 import { IMonacoEditorViewModel } from "./monaco-editor";
 import { CodeCellViewModel } from "./code-cell";
-import { IEventSource, BasicEventHandler, EventSource } from "../lib/event-source";
+import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { CellType, ICell } from "../model/cell";
 import { INotebook, Notebook } from "../model/notebook";
 import { ISerializedNotebook1 } from "../model/serialization/serialized1";

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as monaco from 'monaco-editor';
 import { Spinner } from '@blueprintjs/core';
 import * as _ from 'lodash';
-import { asyncHandler, debounceAsync, handleAsyncErrors, throttleAsync } from '../lib/async-handler';
+import { asyncHandler, debounceAsync, handleAsyncErrors, throttleAsync } from 'utils';
 import { IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from '../view-model/monaco-editor';
 import { IEditorCaretPosition } from '../view-model/editor-caret-position';
 

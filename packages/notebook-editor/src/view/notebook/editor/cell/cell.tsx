@@ -9,12 +9,12 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 import { CellHandle } from './cell-handle';
 import { IMonacoEditorViewModel } from '../../../../view-model/monaco-editor';
-import { EventSource, BasicEventHandler } from '../../../../lib/event-source';
-import { asyncHandler, throttleAsync } from '../../../../lib/async-handler';
-import { forceUpdate } from '../../../../lib/force-update';
-import { isElementPartiallyInViewport } from '../../../../lib/viewport';
+import { EventSource, BasicEventHandler } from 'utils';
+import { asyncHandler, throttleAsync } from 'utils';
+import { forceUpdate } from 'browser-utils';
+import { isElementPartiallyInViewport } from 'browser-utils';
 import { CellType } from '../../../../model/cell';
-import { Lazy } from '../../../../lib/lazy';
+import { Lazy } from 'browser-utils';
 const classnames = require("classnames");
 
 export interface ICellProps {

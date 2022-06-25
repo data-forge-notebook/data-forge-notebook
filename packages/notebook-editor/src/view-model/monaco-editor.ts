@@ -1,4 +1,4 @@
-import { BasicEventHandler, IEventSource } from "../lib/event-source";
+import { BasicEventHandler, IEventSource } from "utils";
 import { IEditorCaretPosition } from "./editor-caret-position";
 
 //

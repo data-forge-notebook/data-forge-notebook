@@ -6,7 +6,7 @@ import { ICodeCellViewModel } from '../../../../view-model/code-cell';
 import { CellOutputUI } from './cell-output';
 import styled from 'styled-components';
 import { Switch, Position, Tooltip } from '@blueprintjs/core';
-import { asyncHandler, debounceAsync, handleAsyncErrors } from '../../../../lib/async-handler';
+import { asyncHandler, debounceAsync, handleAsyncErrors } from 'utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
 import { CellScope } from '../../../../model/cell';
 

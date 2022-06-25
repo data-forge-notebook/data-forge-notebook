@@ -1,5 +1,5 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { BasicEventHandler, IEventSource, EventSource } from "../lib/event-source";
+import { BasicEventHandler, IEventSource, EventSource } from "utils";
 import { CellScope, CellType } from "../model/cell";
 import { notebookVersion } from "../model/notebook";
 import { ISerializedNotebook1 } from "../model/serialization/serialized1";
