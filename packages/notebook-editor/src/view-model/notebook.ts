@@ -689,6 +689,18 @@ export class NotebookViewModel implements INotebookViewModel {
     }
 
     //
+    // Saves the notebook.
+    //
+    private async _save(notebookId: INotebookStorageId): Promise<void> {
+        await this.flushChanges();
+
+        const serialized = this.serialize();
+        await this.notebookRepository.writeNotebook(serialized, notebookId);
+
+        this.clearModified();
+    }
+
+    //
     // Save the notebook to the current filename.
     //
     async save(): Promise<void> {
@@ -697,16 +709,11 @@ export class NotebookViewModel implements INotebookViewModel {
             throw new Error("The file for this notebook is readonly, it can't be saved this way.");
         }
 
-        await this.flushChanges();
-
         if (this.isUnsaved()) {
             throw new Error("Notebook has never been saved before, use saveAs function for the first save.");
         }
-        
-        const serialized = this.serialize();
-        await this.notebookRepository.writeNotebook(serialized, this.storageId);
 
-        this.clearModified();
+        await this._save(this.storageId);
     }
 
     //
@@ -714,16 +721,11 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     async saveAs(newNotebookId: INotebookStorageId): Promise<void> {
 
-        await this.flushChanges();
-
-        const serialized = this.notebook.serialize();
+        await this._save(newNotebookId);
 
         this.unsaved = false;
-        await this.notebookRepository.writeNotebook(serialized, newNotebookId);
         this.storageId = newNotebookId;
         this.readOnly = false;
-
-        this.clearModified();
     }
 
     //
