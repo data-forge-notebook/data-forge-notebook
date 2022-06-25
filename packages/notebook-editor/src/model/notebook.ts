@@ -183,7 +183,7 @@ export class Notebook implements INotebook {
     //
     // Serialize to a data structure suitable for serialization.
     //
-    serialize (): ISerializedNotebook1 {
+    serialize(): ISerializedNotebook1 {
         return {
             version: notebookVersion,
             nodejs: this.nodejsVersion,

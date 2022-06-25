@@ -702,6 +702,7 @@ export class NotebookViewModel implements INotebookViewModel {
         if (this.isUnsaved()) {
             throw new Error("Notebook has never been saved before, use saveAs function for the first save.");
         }
+        
         const serialized = this.serialize();
         await this.notebookRepository.writeNotebook(serialized, this.storageId);
 
