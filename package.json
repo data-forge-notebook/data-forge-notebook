@@ -11,7 +11,7 @@
     "build-electron": "pnpm run compile && pnpm run build-plugins && pnpm --filter electron run build",
     "clean": "pnpm --stream -r run clean",
     "compile": "pnpm --stream -r run compile",
-    "compile:watch": "pnpm --stream -r run compile:watch",
+    "compile:watch": "pnpm --stream -r --parallel run compile:watch",
     "test": "pnpm --stream -r test",
     "test:watch": "pnpm --stream -r run test:watch",
     "serve-plugins": "node ./scripts/serve-plugins.js",
