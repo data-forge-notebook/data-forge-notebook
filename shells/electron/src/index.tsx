@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import { NotebookEditor, NotebookViewModel, NotebookEditorViewModel } from "notebook-editor";
 import { ipcRenderer } from "electron";
 import { testNotebook } from "./test-notebook";
-import { handleAsyncErrors } from "notebook-editor/build/lib/async-handler"; //TODO: MOVE
+import { handleAsyncErrors } from "utils";
 
 import "./services/file";
 import "./services/confirmation-dialog";

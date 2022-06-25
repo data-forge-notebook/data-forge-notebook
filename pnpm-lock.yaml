@@ -554,6 +554,7 @@ importers:
       ts-jest: ^27.1.3
       ts-loader: ^9.2.7
       typescript: ^4.6.2
+      utils: workspace:*
       uuid: ^8.3.2
       webpack: ^5.70.0
       webpack-cli: ^4.9.2
@@ -578,6 +579,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-markdown: 8.0.3_adlholpkqbiq5amp2fy4vkqcli
       styled-components: 5.3.5_sfoxds7t5ydpegc3knd667wn6m
+      utils: link:../../packages/utils
       uuid: 8.3.2
     devDependencies:
       '@babel/core': 7.17.5
