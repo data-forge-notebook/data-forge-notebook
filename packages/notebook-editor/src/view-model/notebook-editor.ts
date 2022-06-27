@@ -16,7 +16,7 @@ type OpenNotebookChangedEventHandler = (isReload: boolean) => Promise<void>;
 //
 // Registers the choice the makers to save, don't save or cancel when closing a notebook that is modified but not saved.
 //
-enum SaveChoice {
+export enum SaveChoice {
     Save = "Save",
     DontSave = "Don't save",
     Cancel = "Cancel",
@@ -143,7 +143,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Internal function to set a new notebook and rebind/raise appropriate events.
     //
-    async setNotebook(createNotebook: () => Promise<INotebookViewModel>, isReload: boolean): Promise<void> {
+    private async setNotebook(createNotebook: () => Promise<INotebookViewModel>, isReload: boolean): Promise<void> {
 
         if (this.notebook) {
             await this.onOpenNotebookWillChange.raise();
@@ -171,9 +171,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         const choice = await this.confirmationDialog.show({
             title: title,
-            options: ["Save", "Don't save", "Cancel"],
+            options: [SaveChoice.Save, SaveChoice.DontSave, SaveChoice.Cancel],
             msg: 
-                "Do you want to save changes that you made to " + this.notebook.getStorageId().toString() +
+                "Do you want to save changes that you made to " + this.notebook.getStorageId().asPath() +
                 "\r\nIf you don't save your changes will be lost.",
         }) as SaveChoice;
 
@@ -254,7 +254,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     async openSpecificNotebook(notebookId: INotebookStorageId): Promise<INotebookViewModel | undefined> {
 
-        if (this.notebook && !await this.promptSave("Open notebook")) {
+        if (!await this.promptSave("Open notebook")) {
             // User has an unsaved notebook that they want to save.
             return undefined;
         }
@@ -279,11 +279,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return this.notebook!;
         }
         catch (err) {
-            console.error("Error opening notebook: " + notebookId.toString());
+            console.error("Error opening notebook: " + notebookId.asPath());
             console.error(err & err.stack || err);
             
-            const msg = "Failed to open notebook: " + path.basename(notebookId.toString())
-                + "\r\nFrom directory: " + path.dirname(notebookId.toString())
+            const msg = "Failed to open notebook: " + path.basename(notebookId.asPath())
+                + "\r\nFrom directory: " + path.dirname(notebookId.asPath())
                 + "\r\nError: " + (err && (err.message || err.stack || err.toString()) || "unknown");
             alert(msg); //TODO: Need a proper notification for this.
 

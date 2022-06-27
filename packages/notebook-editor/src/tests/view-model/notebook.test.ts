@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { CellType } from "../../model/cell";
 import { CellModifiedEventHandler, ICellViewModel } from "../../view-model/cell";
 import { EditorSelectionChangedEventHandler, TextChangedEventHandler } from "../../view-model/monaco-editor";
 import { NotebookViewModel } from "../../view-model/notebook";
