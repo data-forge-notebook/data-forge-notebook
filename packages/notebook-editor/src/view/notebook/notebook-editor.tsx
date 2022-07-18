@@ -10,6 +10,15 @@ export interface INotebookEditorProps {
 }
 
 export interface INotebookEditorState {
+    //
+    // Set to true to display settings.
+    //
+    isSettingsOpen: boolean;
+
+    //
+    // Records the initial tab to display in the settings dialog.
+    //
+    initialSettingsTab?: string;
 }
 
 @InjectableClass()
@@ -19,9 +28,6 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
         super(props);
 
         this.state = {
-            isRecentNotebooksPickerOpen: false,
-            isExampleBrowserOpen: false,
-            isCommandPaletteOpen: false,
             isSettingsOpen: false,
         };
 

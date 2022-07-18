@@ -78,9 +78,34 @@ export interface ICellViewModel extends IMonacoEditorViewModel {
     // Event raised when the cell's errors have changed.
     //
     onErrorsChanged: IEventSource<BasicEventHandler>;
+
+    //
+    // The notebook has started executing.
+    //
+    notifyNotebookEvalStarted(): void;
+
+    //
+    // Start asynchonrous evaluation of the cell's code.
+    //
+    notifyCodeEvalStarted(): Promise<void>;
+
+    //
+    // Notify the cell that code evaluation has compled.
+    //
+    notifyCodeEvalComplete(): Promise<void>;
+
+    //
+    // Event raised when the cell has started evaluation.
+    //
+    onEvalStarted: IEventSource<BasicEventHandler>;
+    
+    //
+    // Event raised when the cell has completed evaluation.
+    //
+    onEvalCompleted: IEventSource<BasicEventHandler>;
+
 }
 
-@InjectableClass()
 export class CellViewModel implements ICellViewModel {
 
     //
@@ -429,4 +454,35 @@ export class CellViewModel implements ICellViewModel {
     // Event raised when the cell's errors have changed.
     //
     onErrorsChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+    //
+    // The notebook has started executing.
+    //
+    notifyNotebookEvalStarted(): void {
+        // Only implemented for code cells.
+    }
+
+    //
+    // Start asynchonrous evaluation of the cell's code.
+    //
+    async notifyCodeEvalStarted(): Promise<void> {
+        // Only implemented for code cells.
+    }
+
+    //
+    // Notify the cell that code evaluation has compled.
+    //
+    async notifyCodeEvalComplete(): Promise<void> {
+        // Only implemented for code cells.
+    }
+
+    //
+    // Event raised when the cell has started evaluation.
+    //
+    onEvalStarted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+    
+    //
+    // Event raised when the cell has completed evaluation.
+    //
+    onEvalCompleted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }

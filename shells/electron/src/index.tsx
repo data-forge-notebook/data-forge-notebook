@@ -3,12 +3,15 @@ import * as ReactDOM from "react-dom";
 import { NotebookEditor, NotebookViewModel, NotebookEditorViewModel } from "notebook-editor";
 import { ipcRenderer } from "electron";
 import { testNotebook } from "./test-notebook";
-import { handleAsyncErrors } from "utils";
+import { ConsoleLog, handleAsyncErrors, ILogId } from "utils";
+import { registerSingleton } from "@codecapers/fusion";
 
 import "./services/file";
 import "./services/confirmation-dialog";
 import "./services/dialogs";
 import "./services/notebook-repository";
+
+registerSingleton(ILogId, new ConsoleLog())
 
 const mockId: any = {};
 const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);

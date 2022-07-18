@@ -12,6 +12,11 @@ describe('view-model / notebook-editor', () => {
     function createNotebookEditor() {
         const notebookEditor = new NotebookEditorViewModel();
 
+        const mockLog: any = {
+            info: () => {},
+        };
+        notebookEditor.log = mockLog;
+
         const mockNotebookId: any = { a: "notebook id", asPath: () => "/a/path" };
         const mockRepository: any = {
             makeUntitledNotebookId: () => mockNotebookId,

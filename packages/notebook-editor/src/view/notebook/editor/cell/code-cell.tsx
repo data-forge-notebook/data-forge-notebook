@@ -9,6 +9,7 @@ import { Switch, Position, Tooltip } from '@blueprintjs/core';
 import { asyncHandler, debounceAsync, handleAsyncErrors } from 'utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
 import { CellScope } from '../../../../model/cell';
+import { forceUpdate } from 'browser-utils';
 
 export interface ICodeCellProps {
 
@@ -52,12 +53,22 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
         super(props)
 
         this.state = {};
+
+        this.needUpdate = asyncHandler(this, this.needUpdate);
     }
     
     componentDidMount() {
+        this.props.model.onEvalStarted.attach(this.needUpdate);
+        this.props.model.onEvalCompleted.attach(this.needUpdate);
     }
 
     componentWillUnmount() {
+        this.props.model.onEvalStarted.detach(this.needUpdate);
+        this.props.model.onEvalCompleted.detach(this.needUpdate);
+    }
+
+    async needUpdate(): Promise<void> {  //TODO: Only really need to rerender the output or errors for the control! Or render the play/stop button!!
+        await forceUpdate(this);
     }
 
     //
@@ -78,14 +89,18 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
     }
     
     render () {
-        const inError = this.props.model.inError();
+        const cellExecuting = this.props.model.isExecuting();
+        const inError = !cellExecuting && this.props.model.inError();
 
         let lastEvaluationMsg = "Not evaluated";
         const lastEvaluationDate = this.props.model.getLastEvaluationDate();
         const lastEvaluationDuration = lastEvaluationDate !== undefined ? moment().diff(lastEvaluationDate!) : undefined;
         const humanizedDuration = lastEvaluationDuration !== undefined ? this.humanizeDuration(lastEvaluationDuration!) : undefined;
 
-        if (inError) {
+        if (cellExecuting) {
+            lastEvaluationMsg = "Evaluating...";
+        }
+        else if (inError) {
             lastEvaluationMsg = "Errored";
 
             if (humanizedDuration) {
@@ -114,6 +129,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                             minHeight={40}
                             language={this.props.language}
                             model={this.props.model} 
+                            working={cellExecuting}
                             onHeightChanged={() => this.props.onHeightChanged()}
                             />
                     </div>

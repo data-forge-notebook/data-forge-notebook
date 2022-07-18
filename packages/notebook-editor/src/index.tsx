@@ -7,3 +7,5 @@ export { IIdGenerator, IIdGeneratorId } from "./services/id-generator";
 export { IConfirmationDialogId, IConfirmationDialog, IConfirmOptions } from "./services/confirmation-dialog";
 
 import "./services/impl/plugin-repository";
+import "./services/impl/date-provider";
+import "./services/impl/notification";

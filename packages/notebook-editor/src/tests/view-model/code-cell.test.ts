@@ -1,3 +1,4 @@
+import { disableInjector } from "@codecapers/fusion";
 import { EventSource, BasicEventHandler } from "utils";
 import { CellScope } from "../../model/cell";
 import { ICellErrorViewModel } from "../../view-model/cell-error";
@@ -7,6 +8,10 @@ import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
 
 describe("view-model / code-cell", () => {
     
+    beforeAll(() => {
+        disableInjector();
+    });
+
 	//
     // Creates a cell view model for testing.
     //

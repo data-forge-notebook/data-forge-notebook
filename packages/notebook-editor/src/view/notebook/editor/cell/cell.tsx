@@ -84,8 +84,10 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
         this.recordCellHeight = this.recordCellHeight.bind(this);
         this.onScrollIntoView = this.onScrollIntoView.bind(this);
         this.onCellFocused = asyncHandler(this, this.onCellFocused);
+        this.needUpdate = asyncHandler(this, this.needUpdate);
         this.onErrorAddedThrottled = throttleAsync(this, this.onErrorAdded, 500);
         this.onOutputChangedThrottled = throttleAsync(this, this.onOutputChanged, 500);        
+        this.onEvalCompleted = asyncHandler(this, this.onEvalCompleted);
     }
 
     componentDidMount() {
@@ -93,6 +95,9 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
         this.props.model.onScrollIntoView.attach(this.onScrollIntoView);
         this.props.model.onErrorsChanged.attach(this.onErrorAddedThrottled);
         this.props.model.onOutputChanged.attach(this.onOutputChangedThrottled);
+        this.props.model.onEvalCompleted.attach(this.onEvalCompleted);
+        this.props.notebookModel.onEvalStarted.attach(this.needUpdate);
+        this.props.notebookModel.onEvalCompleted.attach(this.needUpdate);
         this.props.model.onFlushChanges.attach(this.onFlushChanges);
 
         if (this.props.model.getHeight() === undefined) {
@@ -110,6 +115,9 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
         this.props.model.onScrollIntoView.detach(this.onScrollIntoView);
         this.props.model.onErrorsChanged.detach(this.onErrorAddedThrottled);
         this.props.model.onOutputChanged.detach(this.onOutputChangedThrottled);
+        this.props.model.onEvalCompleted.detach(this.onEvalCompleted);
+        this.props.notebookModel.onEvalStarted.detach(this.needUpdate);
+        this.props.notebookModel.onEvalCompleted.detach(this.needUpdate);
         this.props.model.onFlushChanges.detach(this.onFlushChanges);
     }
 
@@ -123,6 +131,10 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     async onFlushChanges(): Promise<void> {
         this.onOutputChangedThrottled.cancel();
+    }
+
+    async needUpdate(): Promise<void> {  //TODO: Only really need to rerender the output or errors for the control! Or render the play/stop button!!
+        await forceUpdate(this);
     }
 
     //
@@ -164,6 +176,15 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     // Output was added to the cell.
     //
     async onOutputChanged(): Promise<void> {
+        await forceUpdate(this);
+
+        await this._onHeightChanged();
+    }
+
+    //
+    // Redraw and measure cell height after evaluation completed because errors or outputs might have been cleared.
+    //
+    async onEvalCompleted(): Promise<void> {
         await forceUpdate(this);
 
         await this._onHeightChanged();
@@ -237,6 +258,10 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     }
 
     render () {
+        const canExecute = this.props.model.getCellType() === CellType.Code;
+        const isNotebookExecuting = this.props.notebookModel.isExecuting();
+        const isSelected = this.props.model.isSelected();
+
         return (
             <div 
                 ref={this.cellContainerElement}
@@ -290,7 +315,8 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                         cell={this}
                         cellContainerElement={this.innerCellContainerElement}
                         isSelected={isSelected}
-                        dragHandleProps={this.props.dragHandleProps} />
+                        dragHandleProps={this.props.dragHandleProps} 
+                        />
 
                     <div
                         ref={this.innerCellContainerElement}

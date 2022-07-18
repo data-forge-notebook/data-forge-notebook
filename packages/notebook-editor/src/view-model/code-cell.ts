@@ -1,7 +1,9 @@
+import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { asyncHandler } from "utils";
 import { CellScope, ICell } from "../model/cell";
 import { ICellError } from "../model/cell-error";
 import { ICellOutput } from "../model/cell-output";
+import { IDateProvider, IDateProviderId } from "../services/date-provider";
 import { ICellViewModel, CellViewModel } from "./cell";
 import { ICellErrorViewModel, CellErrorViewModel } from "./cell-error";
 import { ICellOutputViewModel, CellOutputViewModel } from "./cell-output";
@@ -10,6 +12,11 @@ import { ICellOutputViewModel, CellOutputViewModel } from "./cell-output";
 // View-model for a code cell.
 //
 export interface ICodeCellViewModel extends ICellViewModel {
+
+    //
+    // Returns true when the code is currently executing.
+    //
+    isExecuting(): boolean;
 
     //
     // Gets the date when this code last evaluated.
@@ -82,8 +89,17 @@ export interface ICodeCellViewModel extends ICellViewModel {
     clearStaleErrors(): void;
 }
 
+@InjectableClass()
 export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
 
+    @InjectProperty(IDateProviderId)
+    dateProvider!: IDateProvider;
+
+    //
+    // Set to true when the code is currently executing.
+    //
+    private executing: boolean = false;
+    
     //
     // The output of code for the cell.
     //
@@ -121,6 +137,13 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     }
 
     //
+    // Returns true when the code is currently executing.
+    //
+    isExecuting(): boolean {
+        return this.executing;
+    }
+
+    //
     // Gets the date when this code last evaluated.
     //
     getLastEvaluationDate(): Date | undefined {
@@ -151,6 +174,45 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         }
     }
     
+    //
+    // The notebook has started executing.
+    //
+    notifyNotebookEvalStarted(): void {
+        this.resetOutputs();
+        this.resetErrors();
+    }
+
+    //
+    // Start asynchonrous evaluation of the cell's code.
+    //
+    async notifyCodeEvalStarted(): Promise<void> {
+        this.executing = true;
+        await this.onEvalStarted.raise();
+    }
+
+    //
+    // Notify the cell that code evaluation has compled.
+    //
+    async notifyCodeEvalComplete(): Promise<void> {
+
+        if (this.executing) {
+            // Was actually executing, update the last eval date.
+            this.cell.setLastEvaluationDate(this.dateProvider.now());
+
+            // Only clear output and errors if the cell was executing.
+            // This has to be done in the if-stmt here so that running a single code cell 
+            // doesn't cause outputs and errors to be stripped from all cells.
+            this.clearStaleOutputs();
+            this.clearStaleErrors();
+        }
+
+        //
+        // This code gets executed whether the cell was evaluted or not.
+        //
+        this.executing = false;
+        await this.onEvalCompleted.raise();
+    }
+
     //
     // Get the output for the cell.
     //

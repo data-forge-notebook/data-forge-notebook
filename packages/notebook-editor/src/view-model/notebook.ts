@@ -2,7 +2,7 @@ import { ICellViewModel } from "./cell";
 import { INotebookCaretPosition } from "./notebook-caret-position";
 import { IMonacoEditorViewModel } from "./monaco-editor";
 import { CodeCellViewModel } from "./code-cell";
-import { IEventSource, BasicEventHandler, EventSource } from "utils";
+import { IEventSource, BasicEventHandler, EventSource, ILog, ILogId } from "utils";
 import { CellType, ICell } from "../model/cell";
 import { INotebook, Notebook } from "../model/notebook";
 import { ISerializedNotebook1 } from "../model/serialization/serialized1";
@@ -117,6 +117,11 @@ export interface INotebookViewModel {
     getLastCell(): ICellViewModel | undefined;
 
     //
+    // Returns true if any cell in the notebook is executing.
+    //
+    isExecuting (): boolean;
+
+    //
     // Event raised when the cells have changed.
     //
     onCellsChanged: IEventSource<BasicEventHandler>;
@@ -225,7 +230,33 @@ export interface INotebookViewModel {
     // Event raised before the model is saved.
     //
     onFlushChanges: IEventSource<BasicEventHandler>;
-	//
+
+    //
+    // Returns true if the notebook is currently executing.
+    //
+    isExecuting(): boolean;
+
+    //
+    // Start asynchronous evaluation of the notebook.
+    //
+    notifyCodeEvalStarted (): Promise<void>;
+
+    //
+    // Stop asynchronous evaluation of the notebook.
+    //
+    notifyCodeEvalComplete(): Promise<void>;
+
+    //
+    // Event raised when the notebook has started evaluation.
+    //
+    onEvalStarted: IEventSource<BasicEventHandler>;
+    
+    //
+    // Event raised when the notebook has completed evaluation.
+    //
+    onEvalCompleted: IEventSource<BasicEventHandler>;
+
+    //
     // Event raised when the text in this editor has changed.
     //
     onTextChanged: IEventSource<TextChangedEventHandler>;
@@ -234,6 +265,9 @@ export interface INotebookViewModel {
 @InjectableClass()
 export class NotebookViewModel implements INotebookViewModel {
 
+    @InjectProperty(ILogId)
+    log!: ILog;
+    
     @InjectProperty(INotebookRepositoryId)
     notebookRepository!: INotebookRepository;
 
@@ -241,7 +275,7 @@ export class NotebookViewModel implements INotebookViewModel {
     // Identifies the notebook in storage.
     //
     private storageId: INotebookStorageId;
-    
+
     //
     // The model underlying the view-model.
     //
@@ -253,6 +287,11 @@ export class NotebookViewModel implements INotebookViewModel {
     private cells: ICellViewModel[];
 
     //
+    // Set to true when the notebook is executing.
+    //
+    private executing: boolean = false;
+    
+    //
     // The currently selected cell.
     //
     private selectedCell: ICellViewModel | undefined;
@@ -261,7 +300,7 @@ export class NotebookViewModel implements INotebookViewModel {
     // Set to true when the notebook is modified but not saved.
     //
     private modified: boolean;
-   
+    
     //
     // Caches the default Node.js version.
     //
@@ -333,7 +372,7 @@ export class NotebookViewModel implements INotebookViewModel {
     private _onTextChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
         await this.onTextChanged.raise(cell as ICellViewModel);
     }
-    
+
     //
     // Handles onCellModified from cells and bubbles the event upward.
     //
@@ -708,24 +747,32 @@ export class NotebookViewModel implements INotebookViewModel {
         if (this.isReadOnly()) {
             throw new Error("The file for this notebook is readonly, it can't be saved this way.");
         }
+        
+        this.log.info("Saving notebook: " + this.storageId.toString());
 
         if (this.isUnsaved()) {
             throw new Error("Notebook has never been saved before, use saveAs function for the first save.");
         }
 
         await this._save(this.storageId);
+        
+        this.log.info("Saved notebook: " + this.storageId.toString());
     }
 
     //
     // Save the notebook to a new location.
     //
     async saveAs(newNotebookId: INotebookStorageId): Promise<void> {
+    
+		this.log.info("Saving notebook as: " + newNotebookId.toString());
 
-        await this._save(newNotebookId);
+		await this._save(newNotebookId);
 
         this.unsaved = false;
         this.storageId = newNotebookId;
         this.readOnly = false;
+        
+        this.log.info("Saved notebook as: " + newNotebookId.asPath());
     }
 
     //
@@ -761,6 +808,49 @@ export class NotebookViewModel implements INotebookViewModel {
     // Event raised before the model is saved.
     //
     onFlushChanges: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+    //
+    // Returns true if the notebook is currently executing.
+    //
+    isExecuting(): boolean {
+        return this.executing;
+    }
+
+    //
+    // Start asynchronous evaluation of the notebook.
+    //
+    async notifyCodeEvalStarted (): Promise<void> {
+        this.executing = true;
+        for (const cell of this.getCells()) {
+            cell.notifyNotebookEvalStarted();
+        }
+        
+        await this.onEvalStarted.raise(); //TODO: Raising this event can potentially be moved up to the notebook view model.
+    }
+
+    //
+    // Stop asynchronous evaluation of the notebook.
+    //
+    async notifyCodeEvalComplete(): Promise<void> {
+        this.executing = false;
+
+        for (const cell of this.getCells()) {
+            await cell.notifyCodeEvalComplete(); // Make sure all cells are no longer marked as executing.
+        }
+
+        await this.onEvalCompleted.raise(); //TODO: Raising this event can potentially be moved up to the notebook view model.
+    }
+
+    //
+    // Event raised when the notebook has started evaluation.
+    //
+    onEvalStarted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+    
+    //
+    // Event raised when the notebook has completed evaluation.
+    //
+    onEvalCompleted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
     //
     // Event raised when the text in this editor has changed.
     //
