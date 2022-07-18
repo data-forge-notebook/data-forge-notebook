@@ -1,6 +1,6 @@
 import { disableInjector } from "@codecapers/fusion";
 import { EventSource, BasicEventHandler } from "utils";
-import { CellScope } from "../../model/cell";
+import { CellScope } from "model";
 import { ICellErrorViewModel } from "../../view-model/cell-error";
 import { ICellOutputViewModel } from "../../view-model/cell-output";
 import { CodeCellViewModel, ICodeCellViewModel } from "../../view-model/code-cell";

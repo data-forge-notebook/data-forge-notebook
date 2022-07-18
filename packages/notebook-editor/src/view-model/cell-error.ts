@@ -1,4 +1,4 @@
-import { ICellError } from "../model/cell-error";
+import { ICellError } from "model";
 
 //
 // View-model for an error from a cell.

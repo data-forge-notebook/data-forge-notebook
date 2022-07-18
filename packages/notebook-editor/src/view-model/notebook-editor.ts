@@ -1,8 +1,8 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { BasicEventHandler, IEventSource, EventSource, ILogId, ILog } from "utils";
-import { CellScope, CellType } from "../model/cell";
-import { notebookVersion } from "../model/notebook";
-import { ISerializedNotebook1 } from "../model/serialization/serialized1";
+import { CellScope, CellType } from "model";
+import { notebookVersion } from "model";
+import { ISerializedNotebook1 } from "model";
 import { IIdGenerator, IIdGeneratorId } from "../services/id-generator";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "../services/notebook-repository";
 import { INotebookViewModel, NotebookViewModel } from "./notebook";

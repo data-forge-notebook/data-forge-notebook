@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { Switch, Position, Tooltip } from '@blueprintjs/core';
 import { asyncHandler, debounceAsync, handleAsyncErrors } from 'utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
-import { CellScope } from '../../../../model/cell';
+import { CellScope } from 'model';
 import { forceUpdate } from 'browser-utils';
 
 export interface ICodeCellProps {

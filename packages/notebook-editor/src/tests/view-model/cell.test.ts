@@ -1,5 +1,5 @@
 import { sleep } from "utils";
-import { CellType } from "../../model/cell";
+import { CellType } from "model";
 import { CellViewModel } from "../../view-model/cell";
 import { IEditorCaretPosition } from "../../view-model/editor-caret-position";
 import { IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from "../../view-model/monaco-editor";

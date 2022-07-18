@@ -1,8 +1,8 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { asyncHandler } from "utils";
-import { CellScope, ICell } from "../model/cell";
-import { ICellError } from "../model/cell-error";
-import { ICellOutput } from "../model/cell-output";
+import { CellScope, ICell } from "model";
+import { ICellError } from "model";
+import { ICellOutput } from "model";
 import { IDateProvider, IDateProviderId } from "../services/date-provider";
 import { ICellViewModel, CellViewModel } from "./cell";
 import { ICellErrorViewModel, CellErrorViewModel } from "./cell-error";

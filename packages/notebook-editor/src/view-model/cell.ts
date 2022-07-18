@@ -2,8 +2,8 @@ import { IMonacoEditorViewModel, ITextRange, FocusedEventHandler, SetCaretPositi
 import { IEditorCaretPosition } from "./editor-caret-position";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
-import { ICell, CellType } from "../model/cell";
-import { ISerializedCell1 } from "../model/serialization/serialized1";
+import { ICell, CellType } from "model";
+import { ISerializedCell1 } from "model";
 import { debounceAsync } from "utils";
 
 export type ScrollIntoViewEventHandler = (scrollReason: string) => Promise<void>;

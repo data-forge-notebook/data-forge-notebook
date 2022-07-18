@@ -1,5 +1,5 @@
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
-import { ICell } from "../model/cell";
+import { ICell } from "model";
 import { ICellViewModel, CellViewModel } from "./cell";
 
 //

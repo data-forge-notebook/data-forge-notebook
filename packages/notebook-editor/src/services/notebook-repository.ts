@@ -1,4 +1,4 @@
-import { ISerializedNotebook1 } from "../model/serialization/serialized1";
+import { ISerializedNotebook1 } from "model";
 
 //
 // ID for the notebook repository service.

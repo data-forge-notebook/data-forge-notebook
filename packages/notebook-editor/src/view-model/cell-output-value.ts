@@ -1,5 +1,5 @@
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
-import { ICellOutputValue } from "../model/cell-output-value";
+import { ICellOutputValue } from "model";
 
 //
 // View-model for output from a cell.

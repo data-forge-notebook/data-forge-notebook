@@ -13,7 +13,7 @@ import { EventSource, BasicEventHandler } from 'utils';
 import { asyncHandler, throttleAsync } from 'utils';
 import { forceUpdate } from 'browser-utils';
 import { isElementPartiallyInViewport } from 'browser-utils';
-import { CellType } from '../../../../model/cell';
+import { CellType } from 'model';
 import { Lazy } from 'browser-utils';
 const classnames = require("classnames");
 

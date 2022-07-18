@@ -1,7 +1,7 @@
 import { ICellOutputValueViewModel, CellOutputValueViewModel } from "./cell-output-value";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
-import { ICellOutput } from "../model/cell-output";
-import { ISerializedCellOutput1 } from "../model/serialization/serialized1";
+import { ICellOutput } from "model";
+import { ISerializedCellOutput1 } from "model";
 
 //
 // View-model for output from a cell.

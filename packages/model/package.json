@@ -1,5 +1,5 @@
 {
-    "name": "notebook-editor",
+    "name": "model",
     "main": "build/index.js",
     "scripts": {
         "clean": "rm -rf build tsconfig.tsbuildinfo",
@@ -54,7 +54,6 @@
         "serialize-error": "^11.0.0",
         "styled-components": "^5.3.5",
         "utils": "workspace:*",
-        "uuid": "^8.3.2",
-        "model": "workspace:*"
+        "uuid": "^8.3.2"
     }
 }

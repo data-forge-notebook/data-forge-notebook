@@ -4,7 +4,7 @@ import { EditorSelectionChangedEventHandler, TextChangedEventHandler } from "../
 import { NotebookViewModel } from "../../view-model/notebook";
 import { EventSource } from "utils";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
-import { INotebook } from "../../model/notebook";
+import { INotebook } from "model";
 import { disableInjector } from "@codecapers/fusion";
 
 describe('view-model / notebook', () => {
