@@ -1,0 +1,32 @@
+{
+    "name": "evaluation-engine",
+    "version": "1.0.0",
+    "description": "A code library that provides code evaluation for Data-Forge Notebook",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "scripts": {
+        "start": "node ./build/index.js",
+        "s": "npm start",
+        "start:dev": "nodemon",
+        "sd": "npm run start:dev",
+        "c": "npm run clean",
+        "clean": "rm -rf build/*",
+        "b": "npm run build",
+        "build": "tsc --incremental",
+        "bw": "npm run build:watch",
+        "build:watch": "tsc  --incremental --watch",
+        "t": "npm run test",
+        "test": "jest",
+        "tw": "npm run test:watch",
+        "test:watch": "jest --watch"
+    },
+    "devDependencies": {
+        "@types/jest": "^27.5.1",
+        "@types/node": "^16.11.7",
+        "jest": "^28.1.0",
+        "nodemon": "^2.0.16",
+        "ts-jest": "^28.0.2",
+        "ts-node": "^10.7.0",
+        "typescript": "^4.6.4"
+    }
+}
