@@ -90,6 +90,7 @@
         "react-markdown": "^8.0.3",
         "styled-components": "^5.3.5",
         "uuid": "^8.3.2",
-        "utils": "workspace:*"
+        "utils": "workspace:*",
+        "model": "workspace:*"
     }
 }
