@@ -4,7 +4,7 @@ import * as os from "os";
 import { IFile, IFileId } from "./file";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId, IIdGenerator, IIdGeneratorId } from "notebook-editor";
 import { IDialogs, IDialogsId } from "./dialogs";
-import { ISerializedNotebook1 } from "notebook-editor/build/model/serialization/serialized1";
+import { ISerializedNotebook1 } from "model";
 
 //
 // Identifies a notebook in storage.

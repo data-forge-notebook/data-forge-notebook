@@ -972,6 +972,7 @@ importers:
       jest: ^27.5.1
       lodash: ^4.17.21
       minimist: ^1.2.6
+      model: workspace:*
       moment: ^2.29.1
       monaco-editor: ^0.32.1
       msw: ^0.39.1
@@ -1001,6 +1002,7 @@ importers:
       classnames: 2.3.1
       humanize-duration: 3.27.2
       lodash: 4.17.21
+      model: link:../../packages/model
       moment: 2.29.3
       monaco-editor: 0.32.1
       normalize.css: 8.0.1
