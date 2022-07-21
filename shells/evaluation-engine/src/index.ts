@@ -290,6 +290,9 @@ app.post("/evaluate", (req, res) => {
 
     const body = req.body;
 
+    // Kill any existing workers before starting a new evaluation.
+    killWorkers(body.notebookId);
+
     forkEvalWorker({
         cmd: "eval-notebook",
         notebookId: body.notebookId,
