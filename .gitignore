@@ -108,3 +108,4 @@ build
 out
 
 packages/plugins/data/
+shells/evaluation-engine/tmp

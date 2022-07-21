@@ -1,0 +1,97 @@
+@base_url = http://localhost:4000
+
+###
+# Retreives stats for the evaluation engine.
+#
+
+GET {{base_url}}/stats
+
+###
+# Retrieves messages for a notebook.
+#
+
+POST {{base_url}}/messages
+Content-Type: application/json
+
+{
+    "notebookId": "39032580-411c-11ec-bb7c-779e2f5f3720"
+}
+
+
+###
+# Evaluates a notebook.
+#
+
+POST {{base_url}}/evaluate
+Content-Type: application/json
+
+{
+    "notebookId": "39032580-411c-11ec-bb7c-779e2f5f3720",
+    "notebook": {
+        "version": 2,
+        "nodejs": "14.17.4",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "39032581-411c-11ec-bb7c-779e2f5f3720",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "console.log('Hello!');"
+            }
+        ]
+    }
+}
+
+###
+# Evaluate a long running notebook.
+#
+
+POST {{base_url}}/evaluate
+Content-Type: application/json
+
+{
+    "notebookId": "39032580-411c-11ec-bb7c-779e2f5f3720",
+    "notebook": {
+        "version": 2,
+        "nodejs": "14.17.4",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "39032581-411c-11ec-bb7c-779e2f5f3720",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "console.log('Long running...');\r\nsetTimeout(() => console.log(`Done`), 2 * 60 * 1000);"
+            }
+        ]
+    }
+}
+
+###
+# Stops evaluation for a particular notebook.
+#
+
+POST {{base_url}}/stop-evaluation
+Content-Type: application/json
+
+{
+    "notebookId": "39032580-411c-11ec-bb7c-779e2f5f3720"
+}
+
+###
+# Test run that starts a worker that exits straight away with an error code of 1.
+#
+
+POST {{base_url}}/test-death
+
+###
+# Test run that starts a worker process that runs for 10 minutes.
+#
+
+POST {{base_url}}/test-long
+
+###
+# Test run that starts a worker that immediately throws an exception to abort.
+#
+
+POST {{base_url}}/test-exception
+

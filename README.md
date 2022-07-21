@@ -20,6 +20,8 @@ A birds eye view of this project:
 └───editor-core ------------ The DFN v2 monorepo.
     ├───packages --------------- Packages shared within the monorepo.
     │   ├───host-bridge ------------ Communication between the DFN and plugins.
+    │   ├───evaluation-engine ------ Implements the code evaluation engine.
+    │   ├───model ------------------ The data model for a notebook.
     │   ├───notebook-editor -------- Implements the notebook editor.
     │   └───plugins ---------------- Contains compiled plugins.
     ├───plugins ---------------- Visualization plugins.
@@ -31,6 +33,7 @@ A birds eye view of this project:
     └───shells ----------------- Various implementations of DFN.
         ├───browser ---------------- Runs DFN in the browser.
         ├───electron --------------- Runs DFN in Electron.
+        ├───evaluation-engine ------ HTTP server for the code evaluation engine.
         ├───storybook -------------- Showcases UI components in Storybook.
         └───testbed ---------------- A custom testbed for UI components.
 ```
