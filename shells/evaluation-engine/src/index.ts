@@ -223,9 +223,11 @@ app.use(bodyParser.json());
 //
 // Gets stats about the server.
 //
-app.get("/stats", (req, res) => {
+app.get("/status", (req, res) => {
+    const notebookIds = Object.keys(workers);
     res.json({
-        numWorkers: Object.keys(workers).length,
+        numEvaluations: notebookIds.length,
+        notebooksIds: notebookIds,
     });
 });
 
