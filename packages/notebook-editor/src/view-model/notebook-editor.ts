@@ -476,12 +476,4 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     onEvaluationCompleted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
-    //
-    // Load the notebook from a file.
-    //
-    private async loadNotebookFile(storageId: INotebookStorageId, defaultNodejsVersion: string): Promise<INotebookViewModel> {
-        const { data, readOnly } = await this.notebookRepository.readNotebook(storageId);
-        return NotebookViewModel.deserialize(storageId, false, readOnly, defaultNodejsVersion, data);
-    }
-
 }
