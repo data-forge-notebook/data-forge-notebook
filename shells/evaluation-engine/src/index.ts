@@ -18,11 +18,12 @@ cluster.setupPrimary({
 
 // 
 // Look up table for workers.
+// Workers are indexed by notebook id.
 //
 const workers: { [index: string]: any} = {};
 
 //
-// Look up table for messages.
+// Look up table for messages indexed by notebook id.
 //
 const messages: any = {};
 
@@ -136,12 +137,12 @@ function killWorkers(notebookId: string): void {
 //
 // Event raised on worker completion.
 //
-function onWorkerCompletion(workerId: string): void {
-    console.log(`Worker ${workerId} completed.`);
-    delete workers[workerId];
+function onWorkerCompletion(notebookId: string): void {
+    console.log(`Worker ${notebookId} completed.`);
+    delete workers[notebookId];
     setTimeout(() => { // Give the client 1 minute to retreive messages before cleaning them up.
-        delete messages[workerId];
-        console.log(`Cleaned up messages for worker ${workerId}`);
+        delete messages[notebookId];
+        console.log(`Cleaned up messages for worker ${notebookId}`);
     }, 1 * 60 * 1000);
 }
 
