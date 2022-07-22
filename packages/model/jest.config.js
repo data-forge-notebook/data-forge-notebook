@@ -86,9 +86,6 @@ module.exports = {
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   modulePathIgnorePatterns: [
       "<rootDir>/build",
-      "<rootDir>/dist",
-      "<rootDir>/plugins",
-      "<rootDir>/packages",
   ],
 
   // Activates notifications for test results
@@ -143,7 +140,7 @@ module.exports = {
 
   // The test environment that will be used for testing
   // https://testing-library.com/docs/react-testing-library/setup#jest-27
-  testEnvironment: "jest-environment-jsdom",
+  testEnvironment: "node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},

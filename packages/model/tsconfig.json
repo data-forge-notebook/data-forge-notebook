@@ -62,12 +62,6 @@
   },
   "exclude": [
       "node_modules",
-      "build",
-      "dist",
-      "examples",
-      "test",
-      "prod-build",
-      "plugins",
-      "packages"
+      "build"
   ]
 }
