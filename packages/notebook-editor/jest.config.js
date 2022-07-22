@@ -143,7 +143,7 @@ module.exports = {
 
   // The test environment that will be used for testing
   // https://testing-library.com/docs/react-testing-library/setup#jest-27
-  testEnvironment: "jest-environment-jsdom",
+  testEnvironment: "node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
