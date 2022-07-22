@@ -1,6 +1,6 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { BasicEventHandler, IEventSource, EventSource, ILogId, ILog } from "utils";
-import { CellScope, CellType } from "model";
+import { CellError, CellOutput, CellScope, CellType } from "model";
 import { notebookVersion } from "model";
 import { ISerializedNotebook1 } from "model";
 import { IIdGenerator, IIdGeneratorId } from "../services/id-generator";
@@ -9,6 +9,10 @@ import { INotebookViewModel, NotebookViewModel } from "./notebook";
 import * as path from "path";
 import { IConfirmationDialog, IConfirmationDialogId } from "../services/confirmation-dialog";
 import { INotification, INotificationId } from "../services/notification";
+import { IEvaluatorClient, IEvaluatorId } from "../services/evaluator-client";
+import { ICodeCellViewModel } from "./code-cell";
+import { CellOutputViewModel } from "./cell-output";
+import { CellErrorViewModel } from "./cell-error";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -27,6 +31,17 @@ export enum SaveChoice {
 // View-mmodel for the app.
 //
 export interface INotebookEditorViewModel {
+
+    //
+    // Mounts the UI.
+    //
+    mount(): void;
+
+    // 
+    // Unmounts the UI.
+    //
+    unmount(): void;
+
     //
     // Returns true when the app has a global task in progress.
     //
@@ -62,7 +77,7 @@ export interface INotebookEditorViewModel {
     //
     setNotebook(notebook: INotebookViewModel, isReload: boolean): Promise<void>;
 
-   //
+    //
     // Prompt the user as to whether they should save their notebook.
     //
     promptSave(title: string): Promise<boolean>;
@@ -138,6 +153,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     @InjectProperty(IConfirmationDialogId)
     confirmationDialog!: IConfirmationDialog;
 
+    @InjectProperty(IEvaluatorId)
+    evaluator!: IEvaluatorClient;
+
     //
     // The currently open notebook.
     //
@@ -155,6 +173,20 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             this.notebook = notebook;
             this.notebook.onModified.attach(this.notifyModified);
         }
+    }
+
+    //
+    // Mounts the UI.
+    //
+    mount(): void {
+        this.evaluator.onEvaluationEvent.attach(this.onEvaluatorEvent);
+    }
+
+    // 
+    // Unmounts the UI.
+    //
+    unmount(): void {
+        this.evaluator.onEvaluationEvent.detach(this.onEvaluatorEvent);
     }
 
     //
@@ -440,6 +472,149 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         }
 
         await this.internalOpenNotebook(this.getOpenNotebook().getStorageId(), true);
+    }
+
+    //
+    // Checks if the current notebook can be evaluated.
+    //
+    private async checkCanEvaluateNotebook(): Promise<boolean> {
+        if (this.isWorking()) {
+            this.notification.warn("Already working!");
+            return false;
+        }
+
+        if (!this.isNotebookOpen()) {
+            this.notification.warn("You must create or open a notebook before evaluating it.");
+            return false;
+        }
+
+        const notebook = this.getOpenNotebook();
+        if (notebook.isReadOnly()) {
+            this.notification.error("The file for this notebook is readonly, please save it to a different location and copy any data files that it uses. Then you can run it.");
+            return false;
+        }
+
+        return true;
+    }
+
+    //
+    // Evaluates the current notebook.
+    //
+    async evaluateNotebook(): Promise<void> {
+
+        if (!await this.checkCanEvaluateNotebook()) {
+            return;
+        }
+
+        //
+        // Don't wait for evaluation engine to notify that evaluation has started, start it immediately.
+        //
+        const notebook = this.getOpenNotebook();
+        await notebook.notifyCodeEvalStarted();
+
+        await notebook.flushChanges();
+
+        this.evaluator.evalNotebook(notebook.getInstanceId(), notebook.serialize());
+    }
+
+    //
+    // Event handlers for the evaluation engine.
+    //
+    private evaluatorEventHandlers: { [index: string]: (args: any) => Promise<void> } = {
+
+        "cell-eval-started": async (args: any): Promise<void> => {
+            const cell = this.getOpenNotebook().findCell(args.cellId);
+            if (cell) {
+                await cell.notifyCodeEvalStarted();
+            }
+            else {
+                this.log.error("cell-eval-started: Failed to find cell " + args.cellId);
+            }
+        },
+
+        "output-capped": async () => {
+            this.notification.warn("Output and errors from code have been capped to 1000 items, perhaps you have an infinite loop in your code?");
+        },
+
+        "receive-display": async (args: any): Promise<void> => {
+            for (const cellOutput of args.outputs) {
+                const cell = this.getOpenNotebook().findCell(cellOutput.cellId) as ICodeCellViewModel;
+                if (cell) {
+                    const outputs = JSON.parse(cellOutput.outputs);
+                    for (const output of outputs) {
+                        cell.addOutput(new CellOutputViewModel(CellOutput.deserialize(output)));
+                    }
+                }
+                else {
+                    this.log.error("receive-display: Failed to find cell " + cellOutput.cellId);
+                }
+            }
+        },
+
+        "receive-error": async (args: any): Promise<void> => {
+            this.reportError(args.cellId, args.error);
+        },
+
+        "notebook-eval-completed": async (args: any): Promise<void> => {
+            await this.onEvaluationFinished();
+        },
+
+        "cell-eval-completed": async (args: any): Promise<void> => {
+            const cell = this.getOpenNotebook().findCell(args.cellId);
+            if (cell) {
+                await cell.notifyCodeEvalComplete();
+            }
+            else {
+                this.log.error("cell-eval-completed: Failed to find cell " + args.cellId);
+            }
+        },
+    };
+
+    //
+    // Report an error to a particular cell.
+    //
+    private reportError(cellId: string | undefined, error: string) {
+        const cell = cellId && this.getOpenNotebook().findCell(cellId) as ICodeCellViewModel;
+        if (cell) {
+            cell.addError(new CellErrorViewModel(new CellError(error)));
+        }
+        else {
+            //
+            // Just add the error to the first code cell.
+            //
+            for (const cell of this.getOpenNotebook().getCells()) {
+                if (cell.getCellType() === CellType.Code) {
+                    (cell as ICodeCellViewModel).addError(new CellErrorViewModel(new CellError(error)));
+                    return;
+                }
+            }
+
+            this.log.error("receive-error: Failed to find cell " + cellId + ", error = " + error);
+        }
+    }
+
+    //
+    // Event raised when an event is recieved from the evaluator.
+    //
+    private onEvaluatorEvent = async (args: any): Promise<void> => {
+        const event = args.event as string;
+        const eventHandler = this.evaluatorEventHandlers[event];
+        if (eventHandler) {
+            await eventHandler(args);
+        }
+        else {
+            this.log.error(`Not handling evaluation event ${event}.`);
+        }
+    }
+
+    //
+    // Notification that code evaluation has completed.
+    //
+    private async onEvaluationFinished(): Promise<void> {
+
+        await this.getOpenNotebook().notifyCodeEvalComplete();
+
+        await this.onEvaluationCompleted.raise();
     }
 
     //

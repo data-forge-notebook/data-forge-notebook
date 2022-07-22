@@ -10,6 +10,7 @@ import "./services/file";
 import "./services/confirmation-dialog";
 import "./services/dialogs";
 import "./services/notebook-repository";
+import "./services/evaluator-client";
 
 registerSingleton(ILogId, new ConsoleLog())
 
@@ -60,10 +61,14 @@ ipcRenderer.on("save-notebook", () => {
     });
 });
 
-
 ipcRenderer.on("save-notebook-as", () => {
     handleAsyncErrors(async () => {
         await notebookEditorViewModel.saveNotebookAs();
     });
 });
 
+ipcRenderer.on("evaluate-notebook", () => {
+    handleAsyncErrors(async () => {
+        await notebookEditorViewModel.evaluateNotebook();
+    });
+});

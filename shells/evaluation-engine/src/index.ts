@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
+import * as cors from "cors";
 import * as path from "path";
 import { NOTEBOOK_TIMEOUT_MS } from "./config";
 import * as fs from "fs-extra";
@@ -218,6 +219,7 @@ function onNotebookEvent(event: any): void {
 const port = process.env.PORT || 3000;
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 //
@@ -240,8 +242,13 @@ app.post("/messages", (req, res) => {
     const notebookId = body.notebookId;
 
     res.json({
-        messages: messages[notebookId],
+        messages: messages[notebookId] || [],
     }); 
+
+    //
+    // Remove pending messages that have been retreived by the client.
+    //
+    messages[notebookId] = [];
 });
 
 //

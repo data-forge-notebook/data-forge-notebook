@@ -93,6 +93,12 @@ function createApplicationMenu() {
                         BrowserWindow.getFocusedWindow()!.webContents.send("save-notebook-as");
                     },
                 },
+                {
+                    label: "Evaluate notebook",
+                    click: () => {
+                        BrowserWindow.getFocusedWindow()!.webContents.send("evaluate-notebook");
+                    },
+                },
             ],
         },
     ];

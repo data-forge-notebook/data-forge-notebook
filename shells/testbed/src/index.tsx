@@ -6,6 +6,8 @@ import { PluggableVisualization } from "notebook-editor/build/view/notebook/edit
 import { CodeCellViewModel } from "notebook-editor/build/view-model/code-cell";
 import { Cell, CellScope, CellType } from "model";
 
+import "notebook-editor/build/services/impl/date-provider";
+
 function App() {
     return (
         <div>

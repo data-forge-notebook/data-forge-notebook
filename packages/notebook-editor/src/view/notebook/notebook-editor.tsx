@@ -45,10 +45,14 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
 
     async componentDidMount() {
         this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
+
+        this.props.model.mount();
     }
 
     componentWillUnmount(): void {
         this.props.model.onOpenNotebookChanged.detach(this.onOpenNotebookChanged);
+
+        this.props.model.unmount();
     }
 
     render () {

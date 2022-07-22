@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { registerSingleton } from "@codecapers/fusion";
-import { IConfirmationDialogId, INotebookRepositoryId, NotebookEditor, NotebookEditorViewModel, NotebookViewModel } from "notebook-editor";
+import { EvaluationEventHandler, IConfirmationDialogId, IEvaluatorId, INotebookRepositoryId, NotebookEditor, NotebookEditorViewModel, NotebookViewModel } from "notebook-editor";
 import { testNotebook } from "./test-notebook";
-import { ILogId, ConsoleLog } from "utils";
+import { EventSource, ILogId, ConsoleLog } from "utils";
 
 registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.
@@ -11,6 +11,11 @@ registerSingleton(INotebookRepositoryId, {
 
 registerSingleton(IConfirmationDialogId, {
     // Mock confirmation dialog service.
+});
+
+registerSingleton(IEvaluatorId, {
+    // Mock evaluation engine.
+    onEvaluationEvent: new EventSource<EvaluationEventHandler>(),
 });
 
 registerSingleton(ILogId, new ConsoleLog())
