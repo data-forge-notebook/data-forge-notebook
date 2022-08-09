@@ -12,7 +12,7 @@ import "./services/dialogs";
 import "./services/notebook-repository";
 import "./services/evaluator-client";
 
-registerSingleton(ILogId, new ConsoleLog())
+registerSingleton(ILogId, new ConsoleLog());
 
 const mockId: any = {};
 const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
