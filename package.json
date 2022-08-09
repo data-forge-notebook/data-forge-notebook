@@ -4,8 +4,8 @@
   "author": "ashley@codecapers.com.au",
   "scripts": {
     "evaluation-engine": "cross-env PORT=9000 pnpm --filter evaluation-engine-shell run start:dev",
-    "start": "pnpm run compile && concurrently \"pnpm run serve-plugins\" \"cross-env EVALUATION_ENGINE_URL=http://localhost:9000 pnpm --filter browser run serve\" --kill-others",
-    "testbed": "pnpm run compile && concurrently \"pnpm run serve-plugins\" \"pnpm --filter testbed run serve\" --kill-others",
+    "start": "pnpm run compile && concurrently --names=\"serve-plugins,browser\" \"pnpm run serve-plugins\" \"cross-env EVALUATION_ENGINE_URL=http://localhost:9000 pnpm --filter browser run serve\" --kill-others",
+    "testbed": "pnpm run compile && concurrently --names=\"serve-plugins,testbed\" \"pnpm run serve-plugins\" \"pnpm --filter testbed run serve\" --kill-others",
     "electron:static": "pnpm run compile && pnpm run build-plugins && concurrently --names=\"evaluation-engine,electron\" --kill-others \"pnpm run evaluation-engine\" \"cross-env EVALUATION_ENGINE_URL=http://localhost:9000 pnpm --filter electron electron:static\"",
     "electron:dev": "pnpm run compile && concurrently --names=\"evaluation-engine,serve-plugins,electron\" --kill-others \"pnpm run evaluation-engine\" \"pnpm run serve-plugins\" \"cross-env EVALUATION_ENGINE_URL=http://localhost:9000 pnpm --filter electron run electron:dev\"",
     "build-browser": "pnpm run compile && pnpm run build-plugins && pnpm --filter browser run build",
