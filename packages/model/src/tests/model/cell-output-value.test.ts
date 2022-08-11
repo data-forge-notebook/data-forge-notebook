@@ -6,9 +6,11 @@ describe("model / cell-output-value", () => {
 
         const theDisplayType = "string";
         const theData = "hello";
-        const cellOutputValue = new CellOutputValue(theDisplayType, undefined, theData);
+        const thePlugin = "a-plugin";
+        const cellOutputValue = new CellOutputValue(theDisplayType, thePlugin, theData);
         expect(cellOutputValue.getDisplayType()).toEqual(theDisplayType);
         expect(cellOutputValue.getData()).toEqual(theData);
+        expect(cellOutputValue.getPlugin()).toEqual(thePlugin)
     });
 
     test("can serialize", () => {

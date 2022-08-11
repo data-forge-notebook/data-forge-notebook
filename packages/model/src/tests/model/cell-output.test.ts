@@ -7,6 +7,7 @@ describe("model / cell-output", () => {
 
         const mockValue: any = {};        
         const cellOutput = new CellOutput(mockValue, undefined);
+        expect(cellOutput.getInstanceId()).toBeDefined();
         expect(cellOutput.getValue()).toBe(mockValue);
         expect(cellOutput.getHeight()).toBe(undefined);
     });
