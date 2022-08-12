@@ -13,6 +13,7 @@ import { IEvaluatorClient, IEvaluatorId } from "../services/evaluator-client";
 import { ICodeCellViewModel } from "./code-cell";
 import { CellOutputViewModel } from "./cell-output";
 import { CellErrorViewModel } from "./cell-error";
+import { ICommander, ICommanderId } from "../services/commander";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -112,6 +113,11 @@ export interface INotebookEditorViewModel {
     // Reloads the current notebook.
     //
     reloadNotebook(): Promise<void>;
+
+    //
+    // Evaluates the current notebook.
+    //
+    evaluateNotebook(): Promise<void>;
     
     //
     // Notify the app that a notebook was modified.
@@ -156,6 +162,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     @InjectProperty(IEvaluatorId)
     evaluator!: IEvaluatorClient;
 
+    @InjectProperty(ICommanderId)
+    commander!: ICommander;
+
     //
     // The currently open notebook.
     //
@@ -180,6 +189,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     mount(): void {
         this.evaluator.onEvaluationEvent.attach(this.onEvaluatorEvent);
+
+        //
+        // Allows commands to be run against this notebook editor.
+        //
+        this.commander.setNotebookEditor(this);
     }
 
     // 

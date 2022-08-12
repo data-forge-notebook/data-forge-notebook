@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { NotebookEditor, NotebookViewModel, NotebookEditorViewModel } from "notebook-editor";
+import { NotebookEditor, NotebookViewModel, NotebookEditorViewModel, ICommander, ICommanderId } from "notebook-editor";
 import { ipcRenderer } from "electron";
 import { testNotebook } from "./test-notebook";
 import { ConsoleLog, handleAsyncErrors, ILogId } from "utils";
-import { registerSingleton } from "@codecapers/fusion";
+import { instantiateSingleton, registerSingleton } from "@codecapers/fusion";
 
 import "./services/file";
 import "./services/confirmation-dialog";
@@ -23,6 +23,7 @@ function App() {
         <div>
             <h1>Data-Forge Notebook: Electron testing environment</h1>
             <p>
+         
                 The code for DFN is incremently being open sourced and 
                 there isn't much here yet.
             </p>
@@ -69,6 +70,7 @@ ipcRenderer.on("save-notebook-as", () => {
 
 ipcRenderer.on("evaluate-notebook", () => {
     handleAsyncErrors(async () => {
-        await notebookEditorViewModel.evaluateNotebook();
+        const commander = instantiateSingleton<ICommander>(ICommanderId)
+        commander.invokeNamedCommand("eval-notebook");
     });
 });

@@ -1,5 +1,5 @@
-import { InjectableClass } from "@codecapers/fusion";
 import * as React from "react";
+import { InjectableClass } from "@codecapers/fusion";
 import { asyncHandler } from "utils";
 import { forceUpdate } from "browser-utils";
 import { INotebookEditorViewModel } from "../../view-model/notebook-editor";
