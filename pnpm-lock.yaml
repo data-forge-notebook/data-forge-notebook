@@ -246,6 +246,7 @@ importers:
       '@types/styled-components': ^5.1.25
       '@types/uuid': ^8.3.4
       '@types/webpack-env': ^1.17.0
+      axios: ^0.18.1
       browser-utils: workspace:*
       classnames: ^2.3.1
       host-bridge: workspace:*
@@ -262,6 +263,7 @@ importers:
       react: ^17.0.2
       react-beautiful-dnd: ^13.1.0
       react-dom: ^17.0.2
+      react-fps-stats: ^0.1.1
       react-markdown: ^8.0.3
       serialize-error: ^11.0.0
       styled-components: ^5.3.5
@@ -273,6 +275,7 @@ importers:
       '@blueprintjs/core': 3.54.0_sfoxds7t5ydpegc3knd667wn6m
       '@blueprintjs/icons': 3.33.0
       '@codecapers/fusion': 1.0.15
+      axios: 0.18.1
       browser-utils: link:../browser-utils
       classnames: 2.3.1
       host-bridge: link:../host-bridge
@@ -288,6 +291,7 @@ importers:
       react: 17.0.2
       react-beautiful-dnd: 13.1.0_sfoxds7t5ydpegc3knd667wn6m
       react-dom: 17.0.2_react@17.0.2
+      react-fps-stats: 0.1.4_react@17.0.2
       react-markdown: 8.0.3_adlholpkqbiq5amp2fy4vkqcli
       serialize-error: 11.0.0
       styled-components: 5.3.5_sfoxds7t5ydpegc3knd667wn6m
@@ -7629,7 +7633,7 @@ packages:
       mississippi: 3.0.0
       mkdirp: 0.5.5
       move-concurrently: 1.0.1
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 2.7.1
       ssri: 6.0.2
       unique-filename: 1.1.1
@@ -15311,17 +15315,6 @@ packages:
         optional: true
     dev: true
 
-  /promise-inflight/1.0.1_bluebird@3.7.2:
-    resolution: {integrity: sha1-mEcocL8igTL8vdhoEputEsPAKeM=}
-    peerDependencies:
-      bluebird: '*'
-    peerDependenciesMeta:
-      bluebird:
-        optional: true
-    dependencies:
-      bluebird: 3.7.2
-    dev: true
-
   /promise.allsettled/1.0.5:
     resolution: {integrity: sha512-tVDqeZPoBC0SlzJHzWGZ2NKAguVq2oiYj7gbggbiTvH2itHohijTp7njOUA0aQ/nl+0lr/r6egmhoYu63UZ/pQ==}
     engines: {node: '>= 0.4'}
@@ -15644,6 +15637,15 @@ packages:
       react-dom: 17.0.2_react@17.0.2
       react-is: 17.0.2
     dev: true
+
+  /react-fps-stats/0.1.4_react@17.0.2:
+    resolution: {integrity: sha512-yEwZCuNnRoTxkss65khAANsisGGhXgdQfET98sBS631qRrvYJuWV2VWx4ndndKN2SNZDNDofAN1LCueBRIikmw==}
+    peerDependencies:
+      prop-types: ^15.6.2
+      react: ^16.5.2
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /react-inspector/5.1.1_react@17.0.2:
     resolution: {integrity: sha512-GURDaYzoLbW8pMGXwYPDBIv6nqei4kK7LPRZ9q9HCZF54wqXz/dnylBp/kfE9XmekBhHvLDdcYeyIwSrvtOiWg==}

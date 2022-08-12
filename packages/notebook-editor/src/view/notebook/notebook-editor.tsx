@@ -4,6 +4,7 @@ import { asyncHandler } from "utils";
 import { forceUpdate } from "browser-utils";
 import { INotebookEditorViewModel } from "../../view-model/notebook-editor";
 import { NotebookUI } from "./notebook";
+import { Toolbar } from "../toolbar";
 
 export interface INotebookEditorProps {
     model: INotebookEditorViewModel;
@@ -58,9 +59,23 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     render () {
         return (
             <div 
-                className="border" 
+                className="pos-relative border" 
                 >
                 <div>
+                    <div
+                        style={{ 
+                            position: "sticky", 
+                            left: 0, 
+                            right: 0, 
+                            top: 0,
+                            zIndex: 2000,
+                        }}
+                        >
+                        <Toolbar 
+                            model={this.props.model} 
+                            />
+                    </div>
+
                     <div 
                         className="flex flex-col"
                         style={{ 

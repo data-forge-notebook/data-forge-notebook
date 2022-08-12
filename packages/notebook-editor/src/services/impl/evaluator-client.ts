@@ -1,8 +1,8 @@
 import { InjectableSingleton } from "@codecapers/fusion";
 import axios from "axios";
 import { ISerializedNotebook1 } from "model";
-import { EvaluationEventHandler, IEvaluatorClient, IEvaluatorId } from "notebook-editor";
 import { IEventSource, EventSource } from "utils";
+import { EvaluationEventHandler, IEvaluatorClient, IEvaluatorId } from "../evaluator-client";
 
 const baseUrl = process.env.EVALUATION_ENGINE_URL as string;
 
@@ -136,7 +136,8 @@ export class EvaluatorClient implements IEvaluatorClient {
     }
 
     //
-    // Event raised on a message from the evaluation engin.
+    // Event raised on a message from the evaluation engine.
     //
     onEvaluationEvent: IEventSource<EvaluationEventHandler> = new EventSource<EvaluationEventHandler>();
+    
 }

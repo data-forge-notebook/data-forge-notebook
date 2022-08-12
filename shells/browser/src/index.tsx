@@ -13,11 +13,6 @@ registerSingleton(IConfirmationDialogId, {
     // Mock confirmation dialog service.
 });
 
-registerSingleton(IEvaluatorId, {
-    // Mock evaluation engine.
-    onEvaluationEvent: new EventSource<EvaluationEventHandler>(),
-});
-
 registerSingleton(ILogId, new ConsoleLog())
 
 const mockId: any = {};

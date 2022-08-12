@@ -12,5 +12,6 @@ export * from "./services/commander";
 import "./services/impl/plugin-repository";
 import "./services/impl/date-provider";
 import "./services/impl/notification";
+import "./services/impl/evaluator-client";
 
 import "./actions/eval-notebook-action";
