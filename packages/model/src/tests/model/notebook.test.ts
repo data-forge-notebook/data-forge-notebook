@@ -41,6 +41,20 @@ describe("model / notebook", () => {
         expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
     });
 
+    test("can deserialize with undefined cells", () => {
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = Notebook.deserialize({
+            version: 3,
+            nodejs: theNodeJsVersion,
+            language: undefined,
+            cells: undefined,
+        } as any);
+        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
+        expect(notebook.getLanguage()).toEqual("javascript");
+        expect(notebook.getCells()).toEqual([]);
+        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+    });
+
     test("can deserialize with cells", () => {
         
         const serializedCell: any = {};
@@ -53,6 +67,40 @@ describe("model / notebook", () => {
         });
         expect(notebook.getCells().length).toEqual(1);
         expect(notebook.getCells()[0]).toBeDefined();
+    });
+
+    test("can deserialize with sheet", () => {
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = Notebook.deserialize({
+            version: 2,
+            nodejs: theNodeJsVersion,
+            sheet: {
+                id: "1234",
+                language: undefined,
+                cells: [],
+            },
+        } as any);
+        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
+        expect(notebook.getLanguage()).toEqual("javascript");
+        expect(notebook.getCells()).toEqual([]);
+        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+    });
+
+    test("can deserialize with sheet and undeifned cells", () => {
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = Notebook.deserialize({
+            version: 2,
+            nodejs: theNodeJsVersion,
+            sheet: {
+                id: "1234",
+                language: undefined,
+                cells: undefined,
+            },
+        } as any);
+        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
+        expect(notebook.getLanguage()).toEqual("javascript");
+        expect(notebook.getCells()).toEqual([]);
+        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
     });
 
     test("can add first cell", () => {
@@ -103,6 +151,13 @@ describe("model / notebook", () => {
         expect(notebook.getCells()).toEqual([ mockCell1, mockCell3, mockCell2 ]);
     });
 
+    test("throws when adding a cell beyond the range", () => {
+
+        const notebook = new Notebook("", "", []);
+        expect(() => notebook.addCell(1, {} as any))
+            .toThrow();
+    });
+
     test("can delete cell", () => {
         
         const notebook = new Notebook("", "", []);
@@ -122,6 +177,13 @@ describe("model / notebook", () => {
         notebook.deleteCell("A2")
 
         expect(notebook.getCells()).toEqual([ mockCell1, mockCell3 ]);
+    });
+
+    test("throws when deleting a cell that doesn't exist", () => {
+
+        const notebook = new Notebook("", "", []);
+        expect(() => notebook.deleteCell("non-exist-cell"))
+            .toThrow();
     });
 
     test("can move cell to end", () => {
@@ -188,5 +250,22 @@ describe("model / notebook", () => {
         
         const cell = notebook.findCell("A2");
         expect(cell).toEqual(mockCell2);
+    });
+
+    test("returns undefined when finding a cell that doesn't exist", () => {
+
+        const notebook = new Notebook("", "", []);
+        expect(notebook.findCell("non-existing-cell")).toBeUndefined();
+    });
+
+    test("can set nodejs version", () => {
+
+        const notebook = new Notebook("", "", []);
+
+        expect(notebook.getNodejsVersion()).toBe("");
+
+        const theVersion = "v12";
+        notebook.setNodejsVersion(theVersion);
+        expect(notebook.getNodejsVersion()).toBe(theVersion);
     });
 });

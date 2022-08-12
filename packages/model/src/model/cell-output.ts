@@ -130,5 +130,4 @@ export class CellOutput implements ICellOutput {
     setHeight(height: number): void {
         this.height = height;
     }
-
 }

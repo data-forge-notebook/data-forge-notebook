@@ -24,11 +24,6 @@ export interface ICell {
     getId(): string;
 
     //
-    // Returns true when the cell is known to be in error.
-    //
-    inError(): boolean;
-
-    //
     // Get the type of the cell.
     //
     getCellType(): CellType;
@@ -200,14 +195,6 @@ export class Cell implements ICell {
     //
     getId(): string {
         return this.id;
-    }
-
-       
-    //
-    // Returns true when the cell is known to be in error.
-    //
-    inError(): boolean {
-        return this.errors && this.errors.length > 0;
     }
     
     //

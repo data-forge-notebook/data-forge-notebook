@@ -41,5 +41,4 @@ describe("model / cell-error", () => {
         cellError.markStale();
         expect(cellError.isFresh()).toEqual(false);
     });
-
 });

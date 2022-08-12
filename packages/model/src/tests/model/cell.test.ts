@@ -31,12 +31,28 @@ describe("model / cell", () => {
         expect(cell.getHeight()).toEqual(theHeight);
     });
 
+    test("setting the text to the same makes no change", () => {
+
+        const cell = new Cell("", CellType.Code, CellScope.Global, "hello", undefined, undefined, [], []);
+
+        expect(cell.setText("hello")).toBe(false);
+    });
+
+    test("setting the text to the different changes the text", () => {
+
+        const cell = new Cell("", CellType.Code, CellScope.Global, "hello", undefined, undefined, [], []);
+
+        const newText = "world";
+        expect(cell.setText(newText)).toBe(true);
+        expect(cell.getText()).toBe(newText);
+    });
+
     test("setting the text trims whitespace from the end", () => {
 
         const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
 
         const baseText = "Hello world";
-        cell.setText(`${baseText} `);
+        expect(cell.setText(`${baseText} `)).toBe(true);
         expect(cell.getText()).toEqual(baseText);
     });
 
@@ -318,5 +334,35 @@ describe("model / cell", () => {
 
         expect(cell.getErrors().length).toEqual(1);
         expect(cell.getErrors()[0]).toBeDefined();
+    });
+
+    test("can set cell scope", () => {
+        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        
+        const theScope = CellScope.Local;
+        expect(cell.getCellScope()).not.toBe(theScope);
+
+        cell.setCellScope(theScope);
+        expect(cell.getCellScope()).toBe(theScope);
+    });
+
+    test("can set last eval date", () => {
+        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        
+        expect(cell.getLastEvaluationDate()).toBeUndefined();
+
+        const theLastEvaluationDate = moment().toDate();
+        cell.setLastEvaluationDate(theLastEvaluationDate);
+        expect(cell.getLastEvaluationDate()).toEqual(theLastEvaluationDate);
+    });
+
+    test("can set height", () => {
+        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        
+        expect(cell.getHeight()).toBeUndefined();
+
+        const theHeight = 22;
+        cell.setHeight(theHeight);
+        expect(cell.getHeight()).toBe(theHeight);
     });
 });

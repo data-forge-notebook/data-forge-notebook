@@ -44,7 +44,7 @@ export interface INotebook {
     //
     // Find a cell by id.
     //
-    findCell(cellId: string): ICell | null;
+    findCell(cellId: string): ICell | undefined;
         
     //
     // Gets the Nodejs version for this notebook.
@@ -156,14 +156,14 @@ export class Notebook implements INotebook {
     //
     // Find a cell by id.
     //
-    findCell(cellId: string): ICell | null {
+    findCell(cellId: string): ICell | undefined {
         for (const cell of this.cells) {
             if (cell.getId() === cellId) {
                 return cell;
             }
         }
 
-        return null;
+        return undefined;
     }    
 
     //
