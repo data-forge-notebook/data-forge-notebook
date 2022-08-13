@@ -10,26 +10,40 @@ describe("commander", () => {
         disableInjector();
     });
    
-
     function createCommander() {
         const mockLog: any = {
-            error: () => {},
+            error: jest.fn(),
+            info: () => {},
+        };
+
+        const mockNotification: any = {
+            warn: jest.fn(),
         };
         
         const commander = new Commander();
         commander.log = mockLog;
+        commander.notification = mockNotification;
+
+        const mockNotebookEditor: any = {
+            isNotebookOpen: () => false,
+            isWorking: () => false,
+        };
+
+        commander.setNotebookEditor(mockNotebookEditor);
 
         //
         // Create a mock command.
         //
         const mockCommand: any = {
             getId: () => mockCommandId,
+            isNotebookCommand: () => false,
+            isCellCommand: () => false,
         };
 
         commands.splice(0, commands.length); // Remove all commands that might be there.
         commands.push(mockCommand);
 
-        return { commander, mockCommand };
+        return { commander, mockCommand, mockNotebookEditor, mockNotification, mockLog };
     }
 
     test("can get commands", () => {
@@ -47,29 +61,241 @@ describe("commander", () => {
         expect(command).toBe(mockCommand);
     });
 
+    test("throws when command is not found", () => {
+
+        const { commander, mockCommand } = createCommander();
+        expect(() => commander.findCommand("non-existing-command")).toThrow();
+    });
+
     test("can invoke global command", async () => {
 
-        const mockContext: any = {
-        };
-
-        const mockNotebookEditor: any = {
-            isNotebookOpen: () => false,
-        };
+        const { commander, mockCommand } = createCommander();
 
         const mockAction: any = {
             invoke: jest.fn(),
         };
+        mockCommand.resolveAction = () => mockAction;
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockAction.invoke).toHaveBeenCalledTimes(1);
+    });
+
+    test("error from command is logged and rethrown", async () => {
+
+        const { commander, mockCommand, mockLog } = createCommander();
+
+        const mockAction: any = {
+            invoke: () => {
+                throw new Error();
+            },
+        };
+        mockCommand.resolveAction = () => mockAction;
+
+        await expect(() => commander.invokeNamedCommand(mockCommandId))
+            .rejects
+            .toThrow();
+
+        expect(mockLog.error).toHaveBeenCalled();
+    });
+
+    test("can invoke notebook command", async () => {
 
         const { commander, mockCommand } = createCommander();
 
-        commander.setNotebookEditor(mockNotebookEditor);
+        mockCommand.isNotebookCommand = () => true;
 
-        mockCommand.isNotebookCommand = () => false;
-        mockCommand.isCellCommand = () => false;
+        const mockAction: any = {
+            invoke: jest.fn(),
+        };
         mockCommand.resolveAction = () => mockAction;
 
+        const mockNotebook: any = {
+            flushChanges: jest.fn(),
+        };
+        const mockContext: any = {
+            notebook: mockNotebook, 
+        };
         await commander.invokeNamedCommand(mockCommandId, mockContext);
 
         expect(mockAction.invoke).toHaveBeenCalledTimes(1);
+        expect(mockNotebook.flushChanges).toHaveBeenCalledTimes(1);
+    });
+
+    test("can invoke cell command", async () => {
+
+        const { commander, mockCommand } = createCommander();
+
+        mockCommand.isCellCommand = () => true;
+
+        const mockAction: any = {
+            invoke: jest.fn(),
+        };
+        mockCommand.resolveAction = () => mockAction;
+
+        const mockCell: any = {};
+        const mockContext: any = {
+            cell: mockCell,
+        };
+        await commander.invokeNamedCommand(mockCommandId, mockContext);
+
+        expect(mockAction.invoke).toHaveBeenCalledTimes(1);
+    });
+
+    test("can invoke command against current notebook", async () => {
+
+        const { commander, mockCommand, mockNotebookEditor } = createCommander();
+
+        mockCommand.isNotebookCommand = () => true;
+        
+        const mockAction: any = {
+            invoke: jest.fn(),
+        };
+        mockCommand.resolveAction = () => mockAction;
+
+        const mockNotebook: any = {
+            flushChanges: jest.fn(),
+        };
+        mockNotebookEditor.isNotebookOpen = () => true;
+        mockNotebookEditor.getOpenNotebook = () => mockNotebook;
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockAction.invoke).toHaveBeenCalledTimes(1);
+        expect(mockNotebook.flushChanges).toHaveBeenCalledTimes(1);
+    });
+
+    test("can't invoke notebook command when there is no notebook open", async () => {
+
+        const { commander, mockCommand, mockNotebookEditor, mockNotification } = createCommander();
+
+        mockCommand.isNotebookCommand = () => true;
+        
+        const mockAction: any = {
+            invoke: jest.fn(),
+        };
+        mockCommand.resolveAction = () => mockAction;
+
+        // Notebook is not open.
+        mockNotebookEditor.isNotebookOpen = () => false;
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockAction.invoke).not.toHaveBeenCalled();
+        expect(mockNotification.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("can invoke command against selected cell", async () => {
+
+        const { commander, mockCommand, mockNotebookEditor } = createCommander();
+
+        const mockCell: any = {};
+        const mockNotebook: any = {
+            getSelectedCell: () => mockCell,
+            flushChanges: jest.fn(),
+        };
+        Object.assign(mockNotebookEditor, {
+            isNotebookOpen: () => true,
+            getOpenNotebook: () => mockNotebook,
+        });
+
+        const mockAction: any = {
+            invoke: jest.fn(),
+        };
+        Object.assign(mockCommand, {
+            isCellCommand: () => true,
+            resolveAction: () => mockAction,
+        });
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockAction.invoke).toHaveBeenCalledTimes(1);
+        expect(mockNotebook.flushChanges).toHaveBeenCalledTimes(1);
+    });
+
+    test("can't invoke cell command when no cell is selected", async () => {
+
+        const { commander, mockCommand, mockNotebookEditor, mockNotification } = createCommander();
+
+        const mockNotebook: any = {
+            getSelectedCell: () => undefined, // No cell selected.
+            flushChanges: jest.fn(),
+        };
+        Object.assign(mockNotebookEditor, {
+            isNotebookOpen: () => true,
+            getOpenNotebook: () => mockNotebook,
+        });
+
+        const mockAction: any = {
+            invoke: jest.fn(),
+        };
+        Object.assign(mockCommand, {
+            isCellCommand: () => true,
+            resolveAction: () => mockAction,
+        });
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockAction.invoke).not.toHaveBeenCalled();
+        expect(mockNotebook.flushChanges).not.toHaveBeenCalled();
+        expect(mockNotification.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("won't invoke cell command when working", async () => {
+
+        const { commander, mockCommand, mockNotebookEditor, mockNotification } = createCommander();
+
+        const mockCell: any = {};
+        const mockNotebook: any = {
+            getSelectedCell: () => mockCell,
+            flushChanges: jest.fn(),
+        };
+        Object.assign(mockNotebookEditor, {
+            isNotebookOpen: () => true,
+            getOpenNotebook: () => mockNotebook,
+            isWorking: () => true,
+        });
+
+        const mockAction: any = {
+            invoke: jest.fn(),
+        };
+        Object.assign(mockCommand, {
+            isCellCommand: () => true,
+            resolveAction: () => mockAction,
+        });
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockAction.invoke).not.toHaveBeenCalled();
+        expect(mockNotebook.flushChanges).not.toHaveBeenCalled();
+        expect(mockNotification.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("won't invoke notebook command when working", async () => {
+
+        const { commander, mockCommand, mockNotebookEditor, mockNotification } = createCommander();
+
+        const mockNotebook: any = {
+            flushChanges: jest.fn(),
+        };
+        Object.assign(mockNotebookEditor, {
+            isNotebookOpen: () => true,
+            getOpenNotebook: () => mockNotebook,
+            isWorking: () => true,
+        });
+
+        const mockAction: any = {
+            invoke: jest.fn(),
+        };
+        Object.assign(mockCommand, {
+            isNotebookCommand: () => true,
+            resolveAction: () => mockAction,
+        });
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockAction.invoke).not.toHaveBeenCalled();
+        expect(mockNotebook.flushChanges).not.toHaveBeenCalled();
+        expect(mockNotification.warn).toHaveBeenCalledTimes(1);
     });
 });

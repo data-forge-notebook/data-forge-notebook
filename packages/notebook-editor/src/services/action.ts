@@ -109,10 +109,6 @@ export class ActionContext implements IActionContext {
     // Is there a notebook open?
     //
     hasNotebook(): boolean {
-        if (this.initializer.cell) {
-            return true;
-        }
-
         if (this.initializer.notebook) {
             return true;
         }
@@ -135,6 +131,10 @@ export class ActionContext implements IActionContext {
     // Is there cell available?
     //
     hasCell(): boolean {
+        if (this.initializer.cell) {
+            return true;
+        }
+
         return this.hasNotebook() && !!this.getSelectedCell();
     }
 
@@ -149,7 +149,6 @@ export class ActionContext implements IActionContext {
 
         throw new Error("Context doesn't relate to any cell.");
     }
-
 
     //
     // Get the currently selected cell, or undefined if none is selected.
