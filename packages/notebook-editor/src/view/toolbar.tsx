@@ -1,4 +1,4 @@
-import { ButtonGroup, Icon, Position, Spinner } from '@blueprintjs/core';
+import { ButtonGroup, Icon, Popover, PopoverInteractionKind, PopoverPosition, Position, Spinner } from '@blueprintjs/core';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { forceUpdate } from 'browser-utils';
 import * as React from 'react';
@@ -155,29 +155,47 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                     <div 
                         className="flex flex-row items-center justify-center ml-3"
                         >
-                        <div
-                            style={{
-                                outline: "none",
-                                cursor: "pointer",
-                                paddingTop: "2.5px",
-                                width: "20px",
-                                height: "20px",
-                            }}
-                            >
-                            {isExecuting
-                                && <Spinner
-                                    size={15}
-                                    />
-                                || <div
-                                    className="flex flex-col items-center justify-center"
-                                    style ={{
-                                        marginTop: "4px",
+                        <Popover
+                            autoFocus={false}
+                            interactionKind={PopoverInteractionKind.HOVER}
+                            hoverOpenDelay={50}
+                            hoverCloseDelay={1000}
+                            usePortal={false}
+                            position={PopoverPosition.BOTTOM}
+                            content={(
+                                <div
+                                    style={{
+                                        padding: "5px",
                                     }}
                                     >
-                                    <Icon icon="link" />
+                                    {isExecuting ? "Evaluating notebook" : "Idle"}
                                 </div>
-                            }
-                        </div>
+                            )}
+                            >
+                            <div
+                                style={{
+                                    outline: "none",
+                                    cursor: "pointer",
+                                    paddingTop: "2.5px",
+                                    width: "20px",
+                                    height: "20px",
+                                }}
+                                >
+                                {isExecuting
+                                    && <Spinner
+                                        size={15}
+                                        />
+                                    || <div
+                                        className="flex flex-col items-center justify-center"
+                                        style ={{
+                                            marginTop: "4px",
+                                        }}
+                                        >
+                                        <Icon icon="link" />
+                                    </div>
+                                }
+                            </div>
+                        </Popover>
                     </div>
                     
                     { /* #if debug */ }
