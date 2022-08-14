@@ -9,6 +9,7 @@ import { INotebookEditorViewModel } from "../view-model/notebook-editor";
 import { ActionContext, IActionContextInitializer } from "./action";
 import { commands, ICommand } from "./command";
 import { INotification, INotificationId } from "./notification";
+import { IUndoRedo, IUndoRedoId } from "./undoredo";
 
 export const ICommanderId = "ICommander";
 
@@ -46,6 +47,9 @@ export class Commander implements ICommander {
     @InjectProperty(ILogId)
     log!: ILog;
     
+    @InjectProperty(IUndoRedoId)
+    undoRedo!: IUndoRedo;
+
     @InjectProperty(INotificationId)
     notification!: INotification;
 
@@ -134,7 +138,21 @@ export class Commander implements ICommander {
             }
 
             const action = command.resolveAction();
-            await action.invoke(context);
+            const changes = await action.invoke(context);
+
+            if (changes) {
+                if (Array.isArray(changes)) {
+                    await this.undoRedo.applyChanges(changes);
+                }
+                else {
+                    //this.log.info(`Command ${command.getId()} created a change.`);
+                    await this.undoRedo.applyChanges([ changes ]);
+                    //this.log.info(`Change completed without error.`);
+                }
+            }
+            else {
+                //this.log.info(`Command ${command.getId()} completed without error.`);
+            }
         }
         catch (err) {
             this.log.error(`Command ${command.getId()} failed with error, passing error up the chain.`);

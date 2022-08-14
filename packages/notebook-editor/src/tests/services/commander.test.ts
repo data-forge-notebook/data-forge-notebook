@@ -19,10 +19,15 @@ describe("commander", () => {
         const mockNotification: any = {
             warn: jest.fn(),
         };
+
+        const mockUndoRedo: any = {
+            applyChanges: jest.fn(),
+        };
         
         const commander = new Commander();
         commander.log = mockLog;
         commander.notification = mockNotification;
+        commander.undoRedo = mockUndoRedo;
 
         const mockNotebookEditor: any = {
             isNotebookOpen: () => false,
@@ -43,7 +48,7 @@ describe("commander", () => {
         commands.splice(0, commands.length); // Remove all commands that might be there.
         commands.push(mockCommand);
 
-        return { commander, mockCommand, mockNotebookEditor, mockNotification, mockLog };
+        return { commander, mockCommand, mockNotebookEditor, mockNotification, mockLog, mockUndoRedo };
     }
 
     test("can get commands", () => {
@@ -297,5 +302,39 @@ describe("commander", () => {
         expect(mockAction.invoke).not.toHaveBeenCalled();
         expect(mockNotebook.flushChanges).not.toHaveBeenCalled();
         expect(mockNotification.warn).toHaveBeenCalledTimes(1);
+    });
+
+    test("command can return a change and have it applied", async () => {
+
+        const { commander, mockCommand, mockUndoRedo } = createCommander();
+
+        const mockChange: any = {};
+        const mockAction: any = {
+            invoke: async () => mockChange,
+        };
+        mockCommand.resolveAction = () => mockAction;
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockUndoRedo.applyChanges).toHaveBeenCalledTimes(1);
+        expect(mockUndoRedo.applyChanges).toHaveBeenCalledWith([ mockChange ]);
+    });
+
+    test("command can return changes and have them applied", async () => {
+
+        const { commander, mockCommand, mockUndoRedo } = createCommander();
+
+        const mockChange1: any = {};
+        const mockChange2: any = {};
+        const changes = [ mockChange1, mockChange2 ];
+        const mockAction: any = {
+            invoke: async () => changes,
+        };
+        mockCommand.resolveAction = () => mockAction;
+
+        await commander.invokeNamedCommand(mockCommandId);
+
+        expect(mockUndoRedo.applyChanges).toHaveBeenCalledTimes(1);
+        expect(mockUndoRedo.applyChanges).toHaveBeenCalledWith(changes);
     });
 });

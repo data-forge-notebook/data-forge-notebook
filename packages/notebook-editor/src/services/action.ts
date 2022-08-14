@@ -7,6 +7,7 @@ import { ICellViewModel } from "../view-model/cell";
 import { ICellOutputViewModel } from "../view-model/cell-output";
 import { INotebookViewModel } from "../view-model/notebook";
 import { INotebookEditorViewModel } from "../view-model/notebook-editor";
+import { IChange } from "./undoredo";
 
 //
 // The context in which an action is invoked.
@@ -186,7 +187,7 @@ export class ActionContext implements IActionContext {
 // Interface for actions the user can take in the application.
 //
 export interface IAction {
-    invoke(context: IActionContext): Promise<void>;
+    invoke(context: IActionContext): Promise<IChange[] | IChange | void>;
 }
 
 //
@@ -194,6 +195,6 @@ export interface IAction {
 // Useful for testing and mocking out new actions.
 //
 export class NullAction implements IAction {
-    async invoke(context: IActionContext): Promise<void> {
+    async invoke(context: IActionContext): Promise<IChange | void> {
     }
 }
