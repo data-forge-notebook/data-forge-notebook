@@ -27,8 +27,14 @@ const createWindow = () => {
     window.webContents.openDevTools();
 
     if (ENTRY.startsWith("http://")) {
-        console.log(`Loading URL ${ENTRY}`);
-        window.loadURL(ENTRY);
+        //
+        // Wait a short amount of time before loading
+        // so the webpack dev server has started.
+        //
+        setTimeout(() => {
+            console.log(`Loading URL ${ENTRY}`);
+            window.loadURL(ENTRY);
+        }, 100);
     }
     else {
         console.log(`Loading file ${ENTRY}`);
