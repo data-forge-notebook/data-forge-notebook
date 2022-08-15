@@ -13,7 +13,7 @@ if (!ENTRY) {
 }
 
 const createWindow = () => {
-    const win = new BrowserWindow({
+    const window = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -24,16 +24,18 @@ const createWindow = () => {
         },
     });
 
+    window.webContents.openDevTools();
+
     if (ENTRY.startsWith("http://")) {
         console.log(`Loading URL ${ENTRY}`);
-        win.loadURL(ENTRY);
+        window.loadURL(ENTRY);
     }
     else {
         console.log(`Loading file ${ENTRY}`);
-        win.loadFile(ENTRY);
+        window.loadFile(ENTRY);
     }
 
-    remote.enable(win.webContents);
+    remote.enable(window.webContents);
 
     createApplicationMenu();
 
