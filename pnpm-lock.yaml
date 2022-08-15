@@ -43,6 +43,7 @@ importers:
       humanize-duration: ^3.27.1
       jest: ^27.5.1
       lodash: ^4.17.21
+      minimist: ^1.2.6
       moment: ^2.29.1
       monaco-editor: ^0.32.1
       msw: ^0.39.1
@@ -117,6 +118,7 @@ importers:
       fork-ts-checker-webpack-plugin: 7.2.11_gp3atwgq76mgimstdygasg64n4
       fs-extra: 10.1.0
       jest: 27.5.1
+      minimist: 1.2.6
       msw: 0.39.2
       source-map-loader: 3.0.1_webpack@5.72.1
       style-loader: 3.3.1_webpack@5.72.1
