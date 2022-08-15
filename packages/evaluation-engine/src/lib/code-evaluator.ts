@@ -4,7 +4,6 @@ import { BasicEventHandler } from "utils";
 import { convertDisplayValue } from "./convert-value";
 import { CodeGenerator } from "./code-generator";
 import { ILog } from "utils";
-import { assert } from "chai";
 import * as vm from 'vm';
 import { formatErrorMessage, ErrorSource } from "./format-error-message";
 import { ISourceMap } from "./source-map";
@@ -412,7 +411,6 @@ export class CodeEvaluator implements ICodeEvaluator {
             throw new Error("Failed to resolve module: " + moduleName);
         }
 
-        assert.isFunction(originalRequire);
         return originalRequire(resolvedModuleName);
     }
 
