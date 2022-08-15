@@ -3,7 +3,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { MonacoEditor } from 'notebook-editor/build/components/monaco-editor';
-import { EventSource, BasicEventHandler } from 'notebook-editor/build/lib/event-source';
+import { EventSource, BasicEventHandler } from 'utils';
 import { FindNextMatchEventHandler, FocusedEventHandler, ReplaceTextEventHandler, EditorSelectionChangedEventHandler, SelectTextEventHandler, SetCaretPositionEventHandler } from 'notebook-editor/build/view-model/monaco-editor';
 
 //👇 This default export determines where your story goes in the story list

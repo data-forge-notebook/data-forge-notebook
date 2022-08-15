@@ -13,7 +13,7 @@ module.exports = {
         "builder": "webpack5"
     },
     // https://storybook.js.org/docs/react/builders/webpack
-    "webpackFinal": async (config, { configType }) => {
+    "webpackFinal": async (config: any) => {
         config.module.rules.push({
             test: /\.txt$/,
             type: 'asset/source',

@@ -9,7 +9,7 @@ export default {
 } as ComponentMeta<typeof NotebookEditor>;
 
 const mockId: any = {};
-const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
+const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook as any);
 const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 
 export const NotebookEditorData = () => 
