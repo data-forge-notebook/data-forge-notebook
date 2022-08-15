@@ -29,10 +29,10 @@
         "fs-extra": "^6.0.1",
         "lodash": "^4.17.10",
         "model": "workspace:*",
-        "sugar": "^2.0.4",
         "utils": "workspace:*",
         "inline-source-map": "^0.6.2",
-        "merge-source-map": "^1.1.0"
+        "merge-source-map": "^1.1.0",
+        "typy": "^3.3.0"
     },
     "devDependencies": {
         "@types/babel-traverse": "^6.25.5",

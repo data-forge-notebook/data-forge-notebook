@@ -1,8 +1,9 @@
 //
 // Format a value for display.
 //
-import * as Sugar from 'sugar';
+
 import { ISerializedCellOutputValue1 } from 'model';
+import { t } from "typy";
 
 //
 // Convert key/value pairs to a JavaScript object.
@@ -53,17 +54,17 @@ export function convertDisplayValue(value: any, hint?: string): ISerializedCellO
         };
     }
 
-    if (Sugar.Object.isArray(value) && hint === "table") {
+    if (t(value).isArray && hint === "table") {
         let rows = value as any[];
         let columnNames: string[] = [];
         if (value.length > 0) {
             const firstValue = value[0];
-            if (Sugar.Object.isArray(firstValue)) {
+            if (t(firstValue).isArray) {
                 columnNames = firstValue; // Use header as column names.
                 rows.shift(); // Remove header.
                 rows = rows.map(row => toObject(columnNames, row));
             }
-            else if (Sugar.Object.isObject(firstValue)) {
+            else if (t(firstValue).isObject) {
                 columnNames = Object.keys(firstValue); // Extract column names from fields.
             }
             else {
@@ -111,7 +112,7 @@ export function convertDisplayValue(value: any, hint?: string): ISerializedCellO
         };
     }
 
-    if (Sugar.Object.isArray(value)) {
+    if (t(value).isArray) {
         return {
             displayType: "array",
             data: value,

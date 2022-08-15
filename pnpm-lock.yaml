@@ -163,10 +163,10 @@ importers:
       merge-source-map: ^1.1.0
       model: workspace:*
       nodemon: ^2.0.16
-      sugar: ^2.0.4
       ts-jest: ^28.0.2
       ts-node: ^10.7.0
       typescript: ^4.6.4
+      typy: ^3.3.0
       utils: workspace:*
     dependencies:
       '@babel/core': 7.17.5
@@ -180,7 +180,7 @@ importers:
       lodash: 4.17.21
       merge-source-map: 1.1.0
       model: link:../model
-      sugar: 2.0.6
+      typy: 3.3.0
       utils: link:../utils
     devDependencies:
       '@types/babel__core': 7.1.7
@@ -213,7 +213,6 @@ importers:
       '@types/jest': 28.1.6
       '@types/node': ^16.11.7
       '@types/uuid': ^8.3.4
-      humanize-duration: ^3.27.1
       jest: 28.1.3
       moment: ^2.29.1
       ts-jest: 28.0.7
@@ -221,7 +220,6 @@ importers:
       uuid: ^8.3.2
     dependencies:
       '@codecapers/fusion': 1.0.15
-      humanize-duration: 3.27.2
       moment: 2.29.3
       uuid: 8.3.2
     devDependencies:
@@ -17223,18 +17221,6 @@ packages:
       supports-color: 5.5.0
     dev: false
 
-  /sugar-core/2.0.6:
-    resolution: {integrity: sha512-YmLFysR3Si6RImqL1+aB6JH81EXxvXn5iXhPf2PsjfoUYEwCxFDYCQY+zC3WqviuGWzxFaSkkJvkUE05Y03L5Q==}
-    engines: {node: '>= 0.8.23'}
-    dev: false
-
-  /sugar/2.0.6:
-    resolution: {integrity: sha512-s0P2/pjJtAD9VA44+2Gqm3NdC4v+08melA6YubOxzshu628krTbn95/M2GWMrI9rYspZMpYBIrChR46fjQ7xsQ==}
-    engines: {node: '>= 0.8.23'}
-    dependencies:
-      sugar-core: 2.0.6
-    dev: false
-
   /sumchecker/3.0.1:
     resolution: {integrity: sha512-MvjXzkz/BOfyVDkG0oFOtBxHX2u3gKbMHIF/dXblZsgD3BWOFLmHovIpZY7BykJdAjcqRCBi1WYBNdEC9yI7vg==}
     engines: {node: '>= 8.0'}
@@ -17959,6 +17945,10 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
+
+  /typy/3.3.0:
+    resolution: {integrity: sha512-Du53deMF9X9pSM3gVXDjLBq14BUfZWSGKfmmR1kTlg953RaIZehfc8fQuoAiW+SRO6bJsP+59mv1tsH8vwKghg==}
+    dev: false
 
   /uglify-js/2.8.29:
     resolution: {integrity: sha1-KcVzMUgFe7Th913zW3qcty5qWd0=}

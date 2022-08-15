@@ -23,7 +23,6 @@
     },
     "dependencies": {
         "@codecapers/fusion": "1.0.15",
-        "humanize-duration": "^3.27.1",
         "moment": "^2.29.1",
         "uuid": "^8.3.2"
     }
