@@ -16,6 +16,7 @@ const createWindow = () => {
     const window = new BrowserWindow({
         width: 800,
         height: 600,
+        show: false,
         webPreferences: {
             nodeIntegration: true,
             nodeIntegrationInWorker: true, // Enabled this to prevent errors in Monaco Editor workers.
@@ -24,7 +25,10 @@ const createWindow = () => {
         },
     });
 
-    window.webContents.openDevTools();
+    window.once('ready-to-show', () => {
+        window.webContents.openDevTools();    
+        window.show();
+    });
 
     if (ENTRY.startsWith("http://")) {
         //
