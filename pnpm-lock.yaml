@@ -439,15 +439,6 @@ importers:
       '@blueprintjs/core': ^3.10.0
       '@blueprintjs/icons': ^3.4.0
       '@codecapers/fusion': 1.0.15
-      '@storybook/addon-actions': ^6.4.19
-      '@storybook/addon-docs': ^6.4.19
-      '@storybook/addon-essentials': ^6.4.19
-      '@storybook/addon-interactions': ^6.4.19
-      '@storybook/addon-links': ^6.4.19
-      '@storybook/builder-webpack5': ^6.4.19
-      '@storybook/manager-webpack5': ^6.4.19
-      '@storybook/react': ^6.4.19
-      '@storybook/testing-library': ^0.0.9
       '@testing-library/jest-dom': ^5.16.2
       '@testing-library/react': ^12.1.4
       '@types/jest': ^27.4.1
@@ -519,15 +510,6 @@ importers:
       uuid: 8.3.2
     devDependencies:
       '@babel/core': 7.17.5
-      '@storybook/addon-actions': 6.5.5_sfoxds7t5ydpegc3knd667wn6m
-      '@storybook/addon-docs': 6.5.5_wknuwfcgxnuwnjymo6jsmgyvku
-      '@storybook/addon-essentials': 6.5.5_nchpmuhlmtgginkfwxb5pg5gae
-      '@storybook/addon-interactions': 6.5.5_gijiytti62m6htiauelbgwckoa
-      '@storybook/addon-links': 6.5.5_sfoxds7t5ydpegc3knd667wn6m
-      '@storybook/builder-webpack5': 6.5.5_xlev5rx6wtrhfed35p4vn3qasy
-      '@storybook/manager-webpack5': 6.5.5_xlev5rx6wtrhfed35p4vn3qasy
-      '@storybook/react': 6.5.5_ni4fbojpnsupc5lc56nn73ulkq
-      '@storybook/testing-library': 0.0.9_sfoxds7t5ydpegc3knd667wn6m
       '@testing-library/jest-dom': 5.16.4
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
       '@types/jest': 27.5.1
@@ -567,15 +549,6 @@ importers:
       '@blueprintjs/icons': ^3.4.0
       '@codecapers/fusion': 1.0.15
       '@electron/remote': ^2.0.8
-      '@storybook/addon-actions': ^6.4.19
-      '@storybook/addon-docs': ^6.4.19
-      '@storybook/addon-essentials': ^6.4.19
-      '@storybook/addon-interactions': ^6.4.19
-      '@storybook/addon-links': ^6.4.19
-      '@storybook/builder-webpack5': ^6.4.19
-      '@storybook/manager-webpack5': ^6.4.19
-      '@storybook/react': ^6.4.19
-      '@storybook/testing-library': ^0.0.9
       '@testing-library/jest-dom': ^5.16.2
       '@testing-library/react': ^12.1.4
       '@types/fs-extra': ^9.0.13
@@ -651,15 +624,6 @@ importers:
       uuid: 8.3.2
     devDependencies:
       '@babel/core': 7.17.5
-      '@storybook/addon-actions': 6.5.5_sfoxds7t5ydpegc3knd667wn6m
-      '@storybook/addon-docs': 6.5.5_wknuwfcgxnuwnjymo6jsmgyvku
-      '@storybook/addon-essentials': 6.5.5_nchpmuhlmtgginkfwxb5pg5gae
-      '@storybook/addon-interactions': 6.5.5_gijiytti62m6htiauelbgwckoa
-      '@storybook/addon-links': 6.5.5_sfoxds7t5ydpegc3knd667wn6m
-      '@storybook/builder-webpack5': 6.5.5_xlev5rx6wtrhfed35p4vn3qasy
-      '@storybook/manager-webpack5': 6.5.5_xlev5rx6wtrhfed35p4vn3qasy
-      '@storybook/react': 6.5.5_ni4fbojpnsupc5lc56nn73ulkq
-      '@storybook/testing-library': 0.0.9_sfoxds7t5ydpegc3knd667wn6m
       '@testing-library/jest-dom': 5.16.4
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
       '@types/fs-extra': 9.0.13
@@ -865,15 +829,6 @@ importers:
       '@blueprintjs/core': ^3.10.0
       '@blueprintjs/icons': ^3.4.0
       '@codecapers/fusion': 1.0.15
-      '@storybook/addon-actions': ^6.4.19
-      '@storybook/addon-docs': ^6.4.19
-      '@storybook/addon-essentials': ^6.4.19
-      '@storybook/addon-interactions': ^6.4.19
-      '@storybook/addon-links': ^6.4.19
-      '@storybook/builder-webpack5': ^6.4.19
-      '@storybook/manager-webpack5': ^6.4.19
-      '@storybook/react': ^6.4.19
-      '@storybook/testing-library': ^0.0.9
       '@testing-library/jest-dom': ^5.16.2
       '@testing-library/react': ^12.1.4
       '@types/jest': ^27.4.1
@@ -943,15 +898,6 @@ importers:
       uuid: 8.3.2
     devDependencies:
       '@babel/core': 7.17.5
-      '@storybook/addon-actions': 6.5.5_sfoxds7t5ydpegc3knd667wn6m
-      '@storybook/addon-docs': 6.5.5_wknuwfcgxnuwnjymo6jsmgyvku
-      '@storybook/addon-essentials': 6.5.5_nchpmuhlmtgginkfwxb5pg5gae
-      '@storybook/addon-interactions': 6.5.5_gijiytti62m6htiauelbgwckoa
-      '@storybook/addon-links': 6.5.5_sfoxds7t5ydpegc3knd667wn6m
-      '@storybook/builder-webpack5': 6.5.5_xlev5rx6wtrhfed35p4vn3qasy
-      '@storybook/manager-webpack5': 6.5.5_xlev5rx6wtrhfed35p4vn3qasy
-      '@storybook/react': 6.5.5_ni4fbojpnsupc5lc56nn73ulkq
-      '@storybook/testing-library': 0.0.9_sfoxds7t5ydpegc3knd667wn6m
       '@testing-library/jest-dom': 5.16.4
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
       '@types/jest': 27.5.1
