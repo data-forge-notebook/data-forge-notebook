@@ -39,37 +39,42 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 ipcRenderer.on("new-notebook", () => {
     handleAsyncErrors(async () => {
-        await notebookEditorViewModel.newNotebook("javascript")
+        const commander = instantiateSingleton<ICommander>(ICommanderId);
+        await commander.invokeNamedCommand("new-notebook");
     });
 });
 
 ipcRenderer.on("open-notebook", () => {
     handleAsyncErrors(async () => {
-        await notebookEditorViewModel.openNotebook();
+        const commander = instantiateSingleton<ICommander>(ICommanderId);
+        await commander.invokeNamedCommand("open-notebook");
     });
 });
 
 ipcRenderer.on("reload-notebook", () => {
     handleAsyncErrors(async () => {
-        await notebookEditorViewModel.reloadNotebook();
+        const commander = instantiateSingleton<ICommander>(ICommanderId);
+        await commander.invokeNamedCommand("reload-notebook");
     });
 });
 
 ipcRenderer.on("save-notebook", () => {
     handleAsyncErrors(async () => {
-        await notebookEditorViewModel.saveNotebook();
+        const commander = instantiateSingleton<ICommander>(ICommanderId);
+        await commander.invokeNamedCommand("save-notebook");
     });
 });
 
 ipcRenderer.on("save-notebook-as", () => {
     handleAsyncErrors(async () => {
-        await notebookEditorViewModel.saveNotebookAs();
+        const commander = instantiateSingleton<ICommander>(ICommanderId);
+        await commander.invokeNamedCommand("save-notebook-as");
     });
 });
 
 ipcRenderer.on("evaluate-notebook", () => {
     handleAsyncErrors(async () => {
-        const commander = instantiateSingleton<ICommander>(ICommanderId)
-        commander.invokeNamedCommand("eval-notebook");
+        const commander = instantiateSingleton<ICommander>(ICommanderId);
+        await commander.invokeNamedCommand("eval-notebook");
     });
 });

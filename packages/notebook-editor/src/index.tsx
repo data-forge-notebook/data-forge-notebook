@@ -15,3 +15,8 @@ import "./services/impl/notification";
 import "./services/impl/evaluator-client";
 
 import "./actions/eval-notebook-action";
+import "./actions/new-notebook-action";
+import "./actions/open-notebook-action";
+import "./actions/save-notebook-action";
+import "./actions/save-notebook-as-action";
+import "./actions/reload-notebook-action";
