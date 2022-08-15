@@ -130,6 +130,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                     }
 
                     <ButtonGroup className="ml-2">
+                        {makeButton(this.commander, "new-notebook", { pos: Position.BOTTOM })}
                         {makeButton(this.commander, "open-notebook", { pos: Position.BOTTOM })}
                         {isNotebookOpen &&
                             makeButton(this.commander, "reload-notebook", { pos: Position.BOTTOM })
