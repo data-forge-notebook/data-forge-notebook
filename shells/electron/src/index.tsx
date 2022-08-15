@@ -37,44 +37,9 @@ function App() {
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
-ipcRenderer.on("new-notebook", () => {
+ipcRenderer.on("invoke-command", (event: any, args: any) => {
     handleAsyncErrors(async () => {
         const commander = instantiateSingleton<ICommander>(ICommanderId);
-        await commander.invokeNamedCommand("new-notebook");
-    });
-});
-
-ipcRenderer.on("open-notebook", () => {
-    handleAsyncErrors(async () => {
-        const commander = instantiateSingleton<ICommander>(ICommanderId);
-        await commander.invokeNamedCommand("open-notebook");
-    });
-});
-
-ipcRenderer.on("reload-notebook", () => {
-    handleAsyncErrors(async () => {
-        const commander = instantiateSingleton<ICommander>(ICommanderId);
-        await commander.invokeNamedCommand("reload-notebook");
-    });
-});
-
-ipcRenderer.on("save-notebook", () => {
-    handleAsyncErrors(async () => {
-        const commander = instantiateSingleton<ICommander>(ICommanderId);
-        await commander.invokeNamedCommand("save-notebook");
-    });
-});
-
-ipcRenderer.on("save-notebook-as", () => {
-    handleAsyncErrors(async () => {
-        const commander = instantiateSingleton<ICommander>(ICommanderId);
-        await commander.invokeNamedCommand("save-notebook-as");
-    });
-});
-
-ipcRenderer.on("evaluate-notebook", () => {
-    handleAsyncErrors(async () => {
-        const commander = instantiateSingleton<ICommander>(ICommanderId);
-        await commander.invokeNamedCommand("eval-notebook");
+        await commander.invokeNamedCommand(args.commandId);
     });
 });

@@ -63,6 +63,10 @@ app.on('window-all-closed', () => {
     }
 });
 
+function invokeCommand(commandId: string): void {
+    BrowserWindow.getFocusedWindow()!.webContents.send("invoke-command", { commandId });
+}
+
 //
 // Creates the application menu.
 //
@@ -74,37 +78,37 @@ function createApplicationMenu() {
                 {
                     label: "New notebook",
                     click: () => {
-                        BrowserWindow.getFocusedWindow()!.webContents.send("new-notebook");
+                        invokeCommand("new-notebook");
                     },
                 },
                 {
                     label: "Open notebook",
                     click: () => {
-                        BrowserWindow.getFocusedWindow()!.webContents.send("open-notebook");
+                        invokeCommand("open-notebook");
                     },
                 },
                 {
                     label: "Reload notebook",
                     click: () => {
-                        BrowserWindow.getFocusedWindow()!.webContents.send("reload-notebook");
+                        invokeCommand("reload-notebook");
                     },
                 },
                 {
                     label: "Save notebook",
                     click: () => {
-                        BrowserWindow.getFocusedWindow()!.webContents.send("save-notebook");
+                        invokeCommand("save-notebook");
                     },
                 },
                 {
                     label: "Save notebook as",
                     click: () => {
-                        BrowserWindow.getFocusedWindow()!.webContents.send("save-notebook-as");
+                        invokeCommand("save-notebook-as");
                     },
                 },
                 {
                     label: "Evaluate notebook",
                     click: () => {
-                        BrowserWindow.getFocusedWindow()!.webContents.send("evaluate-notebook");
+                        invokeCommand("evaluate-notebook");
                     },
                 },
             ],
