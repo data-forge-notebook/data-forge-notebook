@@ -57,7 +57,6 @@
         "fork-ts-checker-webpack-plugin": "^7.2.1",
         "fs-extra": "^10.1.0",
         "jest": "^27.5.1",
-        "minimist": "^1.2.6",
         "msw": "^0.39.1",
         "source-map-loader": "^3.0.1",
         "style-loader": "^3.3.1",
