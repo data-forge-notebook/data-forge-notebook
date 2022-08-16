@@ -33,7 +33,6 @@
         "@types/fs-extra": "^9.0.13",
         "@types/jest": "^27.5.1",
         "@types/node": "^16.11.7",
-        "cross-env": "^7.0.3",
         "jest": "^28.1.0",
         "nodemon": "^2.0.16",
         "ts-jest": "^28.0.2",

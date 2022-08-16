@@ -421,7 +421,6 @@ importers:
       '@types/react-dom': ^17.0.13
       '@types/uuid': ^8.3.4
       classnames: ^2.3.1
-      cross-env: ^7.0.3
       electron: ^17.1.1
       fs-extra: ^10.1.0
       humanize-duration: ^3.27.1
@@ -472,7 +471,6 @@ importers:
       '@types/react-beautiful-dnd': 13.1.2
       '@types/react-dom': 17.0.13
       '@types/uuid': 8.3.4
-      cross-env: 7.0.3
       electron: 17.4.6
       fs-extra: 10.1.0
       jest: 27.5.1
@@ -571,7 +569,6 @@ importers:
       '@types/node': ^16.11.7
       body-parser: ^1.20.0
       cors: ^2.8.5
-      cross-env: ^7.0.3
       evaluation-engine: workspace:*
       express: 5.0.0-beta.1
       fs-extra: ^10.1.0
@@ -597,7 +594,6 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.5.1
       '@types/node': 16.11.36
-      cross-env: 7.0.3
       jest: 28.1.3_mzpgosmlhlns7dfabrqnftw2du
       nodemon: 2.0.19
       ts-jest: 28.0.7_5ohzrmm2xby2kpbdtr5cjigoti
@@ -627,7 +623,6 @@ importers:
       '@types/react-dom': ^17.0.13
       '@types/uuid': ^8.3.4
       classnames: ^2.3.1
-      cross-env: ^7.0.3
       electron: ^17.1.1
       fs-extra: ^10.1.0
       humanize-duration: ^3.27.1
@@ -685,7 +680,6 @@ importers:
       '@types/react-beautiful-dnd': 13.1.2
       '@types/react-dom': 17.0.13
       '@types/uuid': 8.3.4
-      cross-env: 7.0.3
       electron: 17.4.6
       fs-extra: 10.1.0
       jest: 27.5.1
@@ -707,7 +701,6 @@ importers:
       '@types/react-dom': ^17.0.13
       '@types/uuid': ^8.3.4
       classnames: ^2.3.1
-      cross-env: ^7.0.3
       fs-extra: ^10.1.0
       humanize-duration: ^3.27.1
       jest: ^27.5.1
@@ -755,7 +748,6 @@ importers:
       '@types/react-beautiful-dnd': 13.1.2
       '@types/react-dom': 17.0.13
       '@types/uuid': 8.3.4
-      cross-env: 7.0.3
       fs-extra: 10.1.0
       jest: 27.5.1
       msw: 0.39.2
