@@ -24,7 +24,6 @@ importers:
       copy-webpack-plugin: ^10.2.4
       cross-env: ^7.0.3
       css-loader: ^6.7.1
-      electron: ^17.1.1
       file-loader: ^6.2.0
       fork-ts-checker-notifier-webpack-plugin: ^6.0.0
       fork-ts-checker-webpack-plugin: ^7.2.1
@@ -90,7 +89,6 @@ importers:
       copy-webpack-plugin: 10.2.4_webpack@5.72.1
       cross-env: 7.0.3
       css-loader: 6.7.1_webpack@5.72.1
-      electron: 17.4.6
       file-loader: 6.2.0_webpack@5.72.1
       fork-ts-checker-notifier-webpack-plugin: 6.0.0_xaojkupv5aqaex4ayw7mcjqdzq
       fork-ts-checker-webpack-plugin: 7.2.11_gp3atwgq76mgimstdygasg64n4
@@ -432,7 +430,6 @@ importers:
       concurrently: ^7.0.0
       cross-env: ^7.0.3
       electron: ^17.1.1
-      file-loader: ^6.2.0
       fs-extra: ^10.1.0
       humanize-duration: ^3.27.1
       jest: ^27.5.1
@@ -487,7 +484,6 @@ importers:
       concurrently: 7.2.1
       cross-env: 7.0.3
       electron: 17.4.6
-      file-loader: 6.2.0
       fs-extra: 10.1.0
       jest: 27.5.1
       msw: 0.39.2
@@ -496,7 +492,6 @@ importers:
 
   shells/electron:
     specifiers:
-      '@babel/core': ^7.17.5
       '@blueprintjs/core': ^3.10.0
       '@blueprintjs/icons': ^3.4.0
       '@codecapers/fusion': 1.0.15
@@ -513,12 +508,10 @@ importers:
       '@types/react-dom': ^17.0.13
       '@types/uuid': ^8.3.4
       axios: ^0.18.1
-      babel-loader: ^8.2.3
       classnames: ^2.3.1
       concurrently: ^7.0.0
       cross-env: ^7.0.3
       electron: ^17.1.1
-      file-loader: ^6.2.0
       fs-extra: ^10.1.0
       humanize-duration: ^3.27.1
       jest: ^27.5.1
@@ -562,7 +555,6 @@ importers:
       utils: link:../../packages/utils
       uuid: 8.3.2
     devDependencies:
-      '@babel/core': 7.17.5
       '@testing-library/jest-dom': 5.16.4
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
       '@types/fs-extra': 9.0.13
@@ -574,15 +566,13 @@ importers:
       '@types/react-beautiful-dnd': 13.1.2
       '@types/react-dom': 17.0.13
       '@types/uuid': 8.3.4
-      babel-loader: 8.2.5_@babel+core@7.17.5
       concurrently: 7.2.1
       cross-env: 7.0.3
       electron: 17.4.6
-      file-loader: 6.2.0
       fs-extra: 10.1.0
       jest: 27.5.1
       msw: 0.39.2
-      ts-jest: 27.1.5_hgpo26hivvtv7vbzpsp7uegplu
+      ts-jest: 27.1.5_ibhx3ehxrt2kgmkik4bkzmyeei
       typescript: 4.6.4
 
   shells/evaluation-engine:
@@ -656,7 +646,6 @@ importers:
       concurrently: ^7.0.0
       cross-env: ^7.0.3
       electron: ^17.1.1
-      file-loader: ^6.2.0
       fs-extra: ^10.1.0
       humanize-duration: ^3.27.1
       jest: ^27.5.1
@@ -718,7 +707,6 @@ importers:
       concurrently: 7.2.1
       cross-env: 7.0.3
       electron: 17.4.6
-      file-loader: 6.2.0
       fs-extra: 10.1.0
       jest: 27.5.1
       msw: 0.39.2
@@ -743,8 +731,6 @@ importers:
       classnames: ^2.3.1
       concurrently: ^7.0.0
       cross-env: ^7.0.3
-      electron: ^17.1.1
-      file-loader: ^6.2.0
       fs-extra: ^10.1.0
       humanize-duration: ^3.27.1
       jest: ^27.5.1
@@ -796,8 +782,6 @@ importers:
       '@types/uuid': 8.3.4
       concurrently: 7.2.1
       cross-env: 7.0.3
-      electron: 17.4.6
-      file-loader: 6.2.0
       fs-extra: 10.1.0
       jest: 27.5.1
       msw: 0.39.2
@@ -7654,20 +7638,6 @@ packages:
       webpack: 5.72.1_webpack-cli@4.9.2
     dev: true
 
-  /babel-loader/8.2.5_@babel+core@7.17.5:
-    resolution: {integrity: sha512-OSiFfH89LrEMiWd4pLNqGz4CwJDtbs2ZVc+iGu2HrkRfPxId9F2anQj38IxWpmRfsUY0aBZYi1EFcd3mhtRMLQ==}
-    engines: {node: '>= 8.9'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      webpack: '>=2'
-    dependencies:
-      '@babel/core': 7.17.5
-      find-cache-dir: 3.3.2
-      loader-utils: 2.0.2
-      make-dir: 3.1.0
-      schema-utils: 2.7.1
-    dev: true
-
   /babel-loader/8.2.5_uwaygiumfr5ruezn5bfsw34234:
     resolution: {integrity: sha512-OSiFfH89LrEMiWd4pLNqGz4CwJDtbs2ZVc+iGu2HrkRfPxId9F2anQj38IxWpmRfsUY0aBZYi1EFcd3mhtRMLQ==}
     engines: {node: '>= 8.9'}
@@ -10533,16 +10503,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       escape-string-regexp: 1.0.5
-    dev: true
-
-  /file-loader/6.2.0:
-    resolution: {integrity: sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw==}
-    engines: {node: '>= 10.13.0'}
-    peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0
-    dependencies:
-      loader-utils: 2.0.2
-      schema-utils: 3.1.1
     dev: true
 
   /file-loader/6.2.0_webpack@4.46.0:

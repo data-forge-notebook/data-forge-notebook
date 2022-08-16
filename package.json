@@ -47,7 +47,6 @@
     "copy-webpack-plugin": "^10.2.4",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
-    "electron": "^17.1.1",
     "file-loader": "^6.2.0",
     "fork-ts-checker-notifier-webpack-plugin": "^6.0.0",
     "fork-ts-checker-webpack-plugin": "^7.2.1",
