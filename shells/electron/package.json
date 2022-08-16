@@ -24,8 +24,6 @@
         "tw": "pnpm run test:watch"
     },
     "devDependencies": {
-        "@testing-library/jest-dom": "^5.16.2",
-        "@testing-library/react": "^12.1.4",
         "@types/fs-extra": "^9.0.13",
         "@types/jest": "^27.4.1",
         "@types/lodash": "^4.14.179",

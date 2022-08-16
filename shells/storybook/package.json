@@ -16,8 +16,6 @@
         "@storybook/manager-webpack5": "^6.4.19",
         "@storybook/react": "^6.4.19",
         "@storybook/testing-library": "^0.0.9",
-        "@testing-library/jest-dom": "^5.16.2",
-        "@testing-library/react": "^12.1.4",
         "@types/jest": "^27.4.1",
         "@types/lodash": "^4.14.179",
         "@types/marked": "^4.0.3",
