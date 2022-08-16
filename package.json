@@ -54,6 +54,8 @@
   "dependencies": {
     "monaco-editor": "^0.32.1",
     "normalize.css": "^8.0.0",
-    "path-browserify": "^1.0.1"
+    "path-browserify": "^1.0.1",
+    "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/icons": "^3.4.0"
   }
 }

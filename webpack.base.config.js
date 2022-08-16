@@ -103,19 +103,19 @@ module.exports = function (env) {
                         to: outputDir,
                     },
                     {
-                        from: `./node_modules/normalize.css/normalize.css`,
+                        from: `${__dirname}/node_modules/normalize.css/normalize.css`,
                         to: outputDir,
                     },
                     {
-                        from: `./node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css`,
+                        from: `${__dirname}/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css`,
                         to: outputDir,
                     },
                     {
-                        from: `./node_modules/@blueprintjs/core/lib/css/blueprint.css`,
+                        from: `${__dirname}/node_modules/@blueprintjs/core/lib/css/blueprint.css`,
                         to: outputDir,
                     },
                     {
-                        from: `./src/styles`,
+                        from: `${__dirname}/styles`,
                         to: outputDir,
                     },
                 ],
