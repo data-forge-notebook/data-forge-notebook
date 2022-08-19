@@ -189,12 +189,3 @@ export class ActionContext implements IActionContext {
 export interface IAction {
     invoke(context: IActionContext): Promise<IChange[] | IChange | void>;
 }
-
-//
-// A mock action that specifically has no effect.
-// Useful for testing and mocking out new actions.
-//
-export class NullAction implements IAction {
-    async invoke(context: IActionContext): Promise<IChange | void> {
-    }
-}
