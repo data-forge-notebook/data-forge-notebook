@@ -81,17 +81,17 @@ export class ActionContext implements IActionContext {
 	//
 	// The notebook editor to run commands against.
 	//
-	notebookEditor: INotebookEditorViewModel;
+	private notebookEditor: INotebookEditorViewModel;
 
     //
     // Initial parameters for the action context.
     //
-    initializer: IActionContextInitializer;
+    private initializer: IActionContextInitializer;
 
     //
     // Optional parameters to the action.
     //
-    params: any;
+    private params: any;
 
     constructor(notebookEditor: INotebookEditorViewModel, initializer: IActionContextInitializer, params?: any) {
         this.notebookEditor = notebookEditor;
