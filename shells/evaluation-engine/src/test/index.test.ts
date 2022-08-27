@@ -16,7 +16,7 @@ function request() {
 
 describe("evaluation engine shell", () => {
 
-    jest.setTimeout(300000);
+    jest.setTimeout(30000);
 
     it("can get server status", async ()  => {
         const response = await request().get("/status");
