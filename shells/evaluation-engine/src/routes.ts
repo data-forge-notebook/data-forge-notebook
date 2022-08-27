@@ -1,21 +1,49 @@
 import * as express from "express";
 import { NOTEBOOK_TIMEOUT_MS } from "./config";
 import * as path from "path";
+import { PerformanceObserverCallback } from "perf_hooks";
 const cluster = require("cluster");
 
 const api: express.Router = express.Router();
 
-// https://nodejs.org/docs/latest-v14.x/api/cluster.html#cluster_cluster_settings
-cluster.setupPrimary({
-    exec: path.join(__dirname, "worker"),
-});
+const workerPath = path.join(__dirname, "worker");
+console.log(`Loading worker from ${workerPath}`);
 
+if (process.env.NODE_ENV === "test") {
+    console.log(`Running in test mode.`);
+
+    // When running under Jest need to explictily invoke ts-node when forking workers.
+    const tsNodePath = require.resolve("ts-node/dist/bin.js");
+    cluster.setupPrimary({
+        execArgv: [
+            tsNodePath,
+        ],
+        exec: workerPath,
+    });
+}
+else {
+    cluster.setupPrimary({
+        exec: workerPath,
+    });
+}
+
+interface IWorker {
+    //
+    // Handle for the worker process.
+    //
+    handle: any;
+
+    //
+    // Set to true when the worker has completed successfully.
+    //
+    success: boolean;
+}
 
 // 
 // Look up table for workers.
 // Workers are indexed by notebook id.
 //
-const workers: { [index: string]: any} = {};
+const workers: { [index: string]: IWorker } = {};
 
 //
 // Look up table for messages indexed by notebook id.
@@ -95,7 +123,7 @@ api.post("/test-long", (req, res) => {
 //
 api.post("/evaluate", (req, res) => {
     console.log(`Eval notebook:`);
-    console.log(req.body);
+    console.log(JSON.stringify(req.body, null, 4));
 
     const body = req.body;
 
@@ -133,14 +161,17 @@ function forkEvalWorker(msg: any): void {
 
     const notebookId = msg.notebookId;
 
-    const worker = cluster.fork({
+    const workerHandle = cluster.fork({
         "ID": notebookId,
         "INIT": JSON.stringify(msg),
     });
 
-    console.log(`Starting worker ${notebookId} (Node.js id ${worker.id})`);
+    console.log(`Starting worker ${notebookId} (Node.js id ${workerHandle.id})`);
 
-    workers[notebookId] = worker;
+    workers[notebookId] = {
+        handle: workerHandle,
+        success: false,
+    };
     messages[notebookId] = [];
 
     let notebookTimeout: NodeJS.Timeout | undefined = setTimeout(() => {
@@ -154,37 +185,46 @@ function forkEvalWorker(msg: any): void {
         //
         // Kill the worker.
         //
-        worker.kill();
+        workerHandle.kill();
 
         notebookTimeout = undefined;
         
     }, NOTEBOOK_TIMEOUT_MS);
 
-    worker.on("error", (err: any) => {
+    workerHandle.on("error", (err: any) => {
         console.error(`Error from worker:`);
         console.error(err);
     });
 
-    worker.on("exit", () => {
+    workerHandle.on("exit", () => {
         console.log(`Worker exited.`);
 
-        if (workers[notebookId]) {
+        const worker = workers[notebookId];
+        if (worker) {
             if (notebookTimeout) {
                 // Cancel the timeout.
                 clearTimeout(notebookTimeout);
                 notebookTimeout = undefined;
             }
 
-            //
-            // As far as we know the worker should still be running.
-            //
-            onUnexpectedWorkerCompletion(notebookId);
+            if (worker.success) {
+                //
+                // The work has already completed successfully.
+                //
+                onWorkerCompletion(notebookId);
+            }
+            else {
+                //
+                // As far as we know the worker should still be running.
+                //
+                onUnexpectedWorkerCompletion(notebookId);
+            }
         }
     });
 
-    worker.on("message", (message: any) => {
-        console.log("Worker message:");
-        console.log(message);
+    workerHandle.on("message", (message: any) => {
+        // console.log("Worker message:");
+        // console.log(message);
 
         if (message.workerId === undefined) {
             //
@@ -210,10 +250,13 @@ function forkEvalWorker(msg: any): void {
                 notebookTimeout = undefined;
             }
 
-            //
-            // Evaluation finished normally.
-            //
-            onWorkerCompletion(message.workerId);
+            const worker = workers[message.workerId];
+            if (worker) {
+                //
+                // Note that notebook evaluation has completed successfully.
+                //
+                worker.success = true;
+            }
         }
     });
 }
@@ -229,22 +272,33 @@ function killWorkers(notebookId: string): void {
 
         onWorkerCompletion(notebookId);
         
-        worker.kill();
+        worker.handle.kill();
     }
 }
-
-
 
 //
 // Event raised on worker completion.
 //
 function onWorkerCompletion(notebookId: string): void {
+
+    // the worker process has exited... there are no more messages coming
+    // if there are no messages remaining we are dont.
+
     console.log(`Worker ${notebookId} completed.`);
     delete workers[notebookId];
-    setTimeout(() => { // Give the client 1 minute to retreive messages before cleaning them up.
+
+    if (messages[notebookId] === undefined || messages[notebookId].length === 0) {
+        // No messages remaining.
+        // The worker has exited, so there is no possibility of new messages.
         delete messages[notebookId];
-        console.log(`Cleaned up messages for worker ${notebookId}`);
-    }, 1 * 60 * 1000);
+    }
+    else {
+        // Give the client 1 minute to retreive messages before cleaning them up.
+        setTimeout(() => { 
+            delete messages[notebookId];
+            console.log(`Cleaned up messages for worker ${notebookId}`);
+        }, 1 * 60 * 1000);
+    }
 }
 
 //
@@ -305,6 +359,12 @@ function onNotebookTimeout(notebookId: string): void {
 // Event raised from the worker for a notebook event.
 //
 function onNotebookEvent(event: any): void {
+
+    if (event.name === "debug-log") {
+        // Just ignore debug logs for now.
+        return;
+    }
+
     const notebookId = event.notebookId;
 
     if (messages[notebookId]) {

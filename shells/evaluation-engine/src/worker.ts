@@ -15,9 +15,13 @@ if (!workerId) {
 
 const msg = JSON.parse(process.env.INIT as string);
 
-console.log(`Started worker ${workerId}`);
-console.log(`With msg:`);
-console.log(msg);
+// console.log(`Started worker ${workerId} from ${__dirname}/${__filename}`);
+// console.log(`With args:`);
+// console.log(process.argv);
+// console.log(`With msg:`);
+// console.log(msg);
+// console.log(`With env:`);
+// console.log(process.env);
 
 const oldProcess = process;
 
