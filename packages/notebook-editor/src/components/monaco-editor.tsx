@@ -5,6 +5,9 @@ import * as _ from 'lodash';
 import { asyncHandler, debounceAsync, handleAsyncErrors, throttleAsync } from 'utils';
 import { IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from '../view-model/monaco-editor';
 import { IEditorCaretPosition } from '../view-model/editor-caret-position';
+import { InjectableClass, InjectProperty } from '@codecapers/fusion';
+import { IUndoRedo, IUndoRedoId } from '../services/undoredo';
+import { CellTextChange } from '../actions/cell-text-change';
 
 let monacoInitialised = false;
 
@@ -112,7 +115,12 @@ export interface IMonacoEditorProps {
 export interface IMonacoEditorState {
 }
 
+@InjectableClass()
 export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEditorState> {
+
+
+    @InjectProperty(IUndoRedoId)
+    undoRedo!: IUndoRedo;
 
     //
     // The HTML element that contains the text editor.
@@ -570,7 +578,8 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             
             this.updatingCode = true;
             try {
-                await this.props.model.setText(updatedCode);
+                //TODO: get rid of this cast.
+                await this.undoRedo.applyChanges([new CellTextChange(this.props.model as any, updatedCode)]); 
             }
             finally {
                 this.updatingCode = false;
