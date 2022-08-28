@@ -52,11 +52,13 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
     componentDidMount() {
         this.props.model.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
         this.props.model.onModeChanged.attach(this.onModeChanged);
+        this.props.model.onTextChanged.attach(this.onTextChanged);
     }
 
     componentWillUnmount() {
         this.props.model.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
         this.props.model.onModeChanged.detach(this.onModeChanged);
+        this.props.model.onTextChanged.detach(this.onTextChanged);
     }
 
     async onModeChanged(): Promise<void> {
@@ -93,6 +95,18 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
 
     async onEscapeKey() {
         await this.enterPreviewMode();
+    }
+
+    //
+    // Event raised when the text in the view model has changed.
+    //
+    private onTextChanged = async (): Promise<void> => {
+        if (!this.props.model.isEditing()) {
+            //
+            // When in preview mode and the text has changed, rerender the markdown.
+            //
+            await forceUpdate(this);
+        }
     }
     
     render () {
