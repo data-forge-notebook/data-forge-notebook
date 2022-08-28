@@ -304,7 +304,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             100
         );   
 
-        this.updateTextInModel = debounceAsync(this, this.updateCode, 100);
+        this.updateTextInModel = debounceAsync(this, this.updateCode, 500);
 
         this.onDidChangeModelContentDisposable = this.editor.onDidChangeModelContent(
             () => {
@@ -344,7 +344,6 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         this.props.model.onSelectText.attach(this.onSelectText);
         this.props.model.onDeselectText.attach(this.onDeselectText);
         this.props.model.onReplaceText.attach(this.onReplaceText);
-        
     }
 
     componentWillUnmount () {
@@ -616,6 +615,9 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }
 
+    //
+    // Event raised when the text in the view model has changed.
+    //
     private async onTextChanged(): Promise<void> {
         if (!this.updatingCode) {
             if (this.editor) {
@@ -687,7 +689,6 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         	this.editor.layout();
         }
     }    
-    
 
     shouldComponentUpdate (nextProps: IMonacoEditorProps, nextState: IMonacoEditorState) {
 
