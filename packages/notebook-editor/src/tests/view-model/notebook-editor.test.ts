@@ -1,4 +1,5 @@
 import { disableInjector } from "@codecapers/fusion";
+import { EventSource, BasicEventHandler } from "utils";
 import { INotebookStorageId } from "../../services/notebook-repository";
 import { NotebookEditorViewModel, SaveChoice } from "../../view-model/notebook-editor";
 import { expectEventRaised } from "../lib/utils";
@@ -9,8 +10,8 @@ describe('view-model / notebook-editor', () => {
         disableInjector();
     });
 
-    function createNotebookEditor() {
-        const notebookEditor = new NotebookEditorViewModel();
+    function createNotebookEditor(mockNotebook?: any) {
+        const notebookEditor = new NotebookEditorViewModel(mockNotebook);
 
         const mockLog: any = {
             info: () => {},
@@ -39,12 +40,28 @@ describe('view-model / notebook-editor', () => {
         const mockConfirmationDialog: any = {};
         notebookEditor.confirmationDialog = mockConfirmationDialog;
 
+        const mockUndoRedo: any = {
+            clearStack: jest.fn(),
+        };
+        notebookEditor.undoRedo = mockUndoRedo;
+
+        const mockEvaluator: any = {
+            onEvaluationEvent: new EventSource<BasicEventHandler>(),
+        };
+        notebookEditor.evaluator = mockEvaluator;
+
+        const mockCommander: any = {
+            setNotebookEditor: () => {},
+        };
+        notebookEditor.commander = mockCommander;
+
         return { 
             notebookEditor, 
             mockRepository,
             mockIdGenerator,
             mockConfirmationDialog,
             mockNotebookId,
+            mockUndoRedo,
         };
     }
 
@@ -320,6 +337,28 @@ describe('view-model / notebook-editor', () => {
         await expectEventRaised(notebookEditor, "onModified", async () => {
             await notebook.notifyModified();
         });
+    });
+
+    test("constructing the view model with a notebook clears the undo stack", () => {
+
+        const mockNotebook: any = {
+            onModified: new EventSource<BasicEventHandler>(),
+        };
+
+        const { notebookEditor, mockUndoRedo } = createNotebookEditor(mockNotebook);
+
+        notebookEditor.mount();
+
+        expect(mockUndoRedo.clearStack).toHaveBeenCalledTimes(1);
+        expect(mockUndoRedo.clearStack).toHaveBeenCalledWith(mockNotebook);
+    });
+
+    test("opening a new notebook clears the undo stack", async () => {
+
+        const { notebook, mockUndoRedo } = await createNotebookEditorWithNotebook();
+
+        expect(mockUndoRedo.clearStack).toHaveBeenCalledTimes(1);
+        expect(mockUndoRedo.clearStack).toHaveBeenCalledWith(notebook);
     });
 
 });

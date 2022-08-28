@@ -14,6 +14,7 @@ import { ICodeCellViewModel } from "./code-cell";
 import { CellOutputViewModel } from "./cell-output";
 import { CellErrorViewModel } from "./cell-error";
 import { ICommander, ICommanderId } from "../services/commander";
+import { IUndoRedo, IUndoRedoId } from "../services/undoredo";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -165,6 +166,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     @InjectProperty(ICommanderId)
     commander!: ICommander;
 
+    @InjectProperty(IUndoRedoId)
+    undoRedo!: IUndoRedo;
+
     //
     // The currently open notebook.
     //
@@ -175,7 +179,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     private working: number = 0;
 
-    constructor(notebook?: INotebookViewModel) {
+    constructor(notebook?: INotebookViewModel) { 
         this.notifyModified = this.notifyModified.bind(this);
         
         if (notebook) {
@@ -194,6 +198,10 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         // Allows commands to be run against this notebook editor.
         //
         this.commander.setNotebookEditor(this);
+
+        if (this.notebook) {
+            this.undoRedo.clearStack(this.getOpenNotebook());
+        }        
     }
 
     // 
@@ -653,6 +661,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     private async notifyOpenNotebookChanged(isReload: boolean): Promise<void> {
         await this.onOpenNotebookChanged.raise(isReload);
+
+        this.undoRedo.clearStack(this.getOpenNotebook());
     }
     
     //
