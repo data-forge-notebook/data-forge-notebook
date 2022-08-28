@@ -21,3 +21,7 @@ import "./actions/open-notebook-action";
 import "./actions/save-notebook-action";
 import "./actions/save-notebook-as-action";
 import "./actions/reload-notebook-action";
+
+import "./actions/undo-action";
+import "./actions/redo-action";
+    

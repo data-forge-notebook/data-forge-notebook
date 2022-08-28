@@ -155,8 +155,8 @@ export class UndoRedo implements IUndoRedo {
         const beforeCaretPosition = notebook.getCaretPosition();
 
         // console.log("!! Appying undoable change.");
-        //this.log.info(`Notebook modified state before is ${beforeModified}`);
-        //this.log.info(`Caret position before is ${format(beforeCaretPosition)}.`);
+        // this.log.info(`Notebook modified state before is ${beforeModified}`);
+        // this.log.info(`Caret position before is ${JSON.stringify(beforeCaretPosition)}.`);
         // console.log("!! Before");
         // this.dumpState();
 
@@ -167,8 +167,8 @@ export class UndoRedo implements IUndoRedo {
 
         const afterModified = notebook.isModified();
         const afterCaretPosition = notebook.getCaretPosition();
-        //this.log.info(`Notebook modified state after is ${afterModified}`);
-        //this.log.info(`Caret position after is ${format(afterCaretPosition)}.`);
+        // this.log.info(`Notebook modified state after is ${afterModified}`);
+        // this.log.info(`Caret position after is ${JSON.stringify(afterCaretPosition)}.`);
 
         // Clear future positions in the undo redo stack.
         this.undoRedoStack = this.undoRedoStack.slice(0, this.curPos); 
@@ -241,10 +241,10 @@ export class UndoRedo implements IUndoRedo {
 
         await notebook.setModified(changeRecord.isModifiedBefore);
 
-        //this.log.info(`Set notebook modifified state to ${changeRecord.isModifiedBefore}.`);
+        // this.log.info(`Set notebook modified state to ${changeRecord.isModifiedBefore}.`);
 
         if (changeRecord.caretPositionBefore) {
-            //this.log.info(`Set caret position to ${format(changeRecord.caretPositionBefore)}.`);
+            // this.log.info(`Set caret position to ${JSON.stringify(changeRecord.caretPositionBefore)}.`);
             const cell = notebook.getCellByIndex(changeRecord.caretPositionBefore.cellIndex);
             if (!cell) {
                 throw new Error(`Cell with index ${changeRecord.caretPositionBefore.cellIndex} doesn't exist!`);
@@ -280,10 +280,10 @@ export class UndoRedo implements IUndoRedo {
 
         await notebook.setModified(changeRecord.isModifiedAfter);
 
-        //this.log.info(`Set notebook modifified state to ${changeRecord.isModifiedAfter}.`);
+        // this.log.info(`Set notebook modified state to ${changeRecord.isModifiedAfter}.`);
 
         if (changeRecord.caretPositionAfter) {
-            //this.log.info(`Set caret position to ${format(changeRecord.caretPositionAfter)}.`);
+            // this.log.info(`Set caret position to ${format(changeRecord.caretPositionAfter)}.`);
             const cell = notebook.getCellByIndex(changeRecord.caretPositionAfter.cellIndex);
             if (!cell) {
                 throw new Error(`Cell with index ${changeRecord.caretPositionAfter.cellIndex} doesn't exist!`);
@@ -299,30 +299,33 @@ export class UndoRedo implements IUndoRedo {
     //
     // Debug function to dump state of undo stack.
     //
-    // dumpState(): void {
-    //     console.log(`    cur pos: ${this.curPos}`);
-    //     if (this.undoRedoStack.length === 0) {
-    //         console.log("    empty");
-    //         return;
-    //     }
+    dumpState(): void {
+        console.log(`    cur pos: ${this.curPos}`);
+        if (this.undoRedoStack.length === 0) {
+            console.log("    empty");
+            return;
+        }
 
-    //     let changeIndex = 0;
-    //     for (const changeRecord of this.undoRedoStack) {
-    //         let line: string = "    ";
-    //         if (changeIndex === this.curPos) {
-    //             line += ">> "
-    //         }
+        let changeIndex = 0;
+        for (const changeRecord of this.undoRedoStack) {
+            let line: string = "    ";
+            if (changeIndex === this.curPos) {
+                line += ">> "
+            }
 
-    //         line += `[${changeIndex}] ${changeRecord.changes.constructor.name} > ${changeRecord.changes.dumpState()}`;
-    //         console.log(line);
-    //         ++changeIndex;
-    //     }
+            line += `[${changeIndex}]\r\n`;
+            for (const change of changeRecord.changes) {
+                line += `${change.dumpState()}\r\n`;
+            }
+            console.log(line);
+            ++changeIndex;
+        }
 
-    //     if (this.curPos === this.undoRedoStack.length) {
-    //         console.log("    >> [end]");
-    //     }
-    //     else {
-    //         console.log("    [end]");
-    //     }
-    // }
+        if (this.curPos === this.undoRedoStack.length) {
+            console.log("    >> [end]");
+        }
+        else {
+            console.log("    [end]");
+        }
+    }
 }

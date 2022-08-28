@@ -47,7 +47,7 @@ export class CellTextChange implements IChange {
     // Dump the state of the change.
     //
     dumpState(): string {
-        return `Changed cell text from ${this.oldCellText} to ${this.newCellText}.`;
+        return `Changed cell text from "${this.oldCellText}" to "${this.newCellText}".`;
     }
     
 }

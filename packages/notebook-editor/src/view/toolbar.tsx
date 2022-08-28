@@ -7,9 +7,7 @@ import { ICommander, ICommanderId } from '../services/commander';
 import { INotebookEditorViewModel } from '../view-model/notebook-editor';
 import { makeButton } from './make-button';
 
-/* #if debug */
 const FPSStats = require("react-fps-stats").default;
-/* #endif */
 
 export interface IToolbarProps {
     model: INotebookEditorViewModel;
@@ -139,6 +137,14 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                             && makeButton(this.commander, "save-notebook", { pos: Position.BOTTOM })
                         }
                     </ButtonGroup>
+                    
+                    {this.props.model.isNotebookOpen()
+                        && <ButtonGroup className="ml-2">
+                            {makeButton(this.commander, "undo", { pos: Position.BOTTOM })}
+                            {makeButton(this.commander, "redo", { pos: Position.BOTTOM })}
+                        </ButtonGroup>
+                    }
+
 
                     <span className="flex-grow ml-2" />
 
@@ -199,14 +205,12 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         </Popover>
                     </div>
                     
-                    { /* #if debug */ }
                     <FPSStats 
                         top="auto"
                         left="auto"
                         right={0}
                         bottom={0}
                         />
-                    { /* #endif */ }
 
                 </div>
 
