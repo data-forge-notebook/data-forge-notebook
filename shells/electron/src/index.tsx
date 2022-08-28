@@ -10,6 +10,7 @@ import "./services/file";
 import "./services/confirmation-dialog";
 import "./services/dialogs";
 import "./services/notebook-repository";
+import "./services/platform";
 
 registerSingleton(ILogId, new ConsoleLog());
 

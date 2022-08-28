@@ -5,6 +5,8 @@ import { EvaluationEventHandler, IConfirmationDialogId, IEvaluatorId, INotebookR
 import { testNotebook } from "./test-notebook";
 import { EventSource, ILogId, ConsoleLog } from "utils";
 
+import "./services/platform";
+
 registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.
 });

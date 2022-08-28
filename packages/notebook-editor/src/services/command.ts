@@ -1,5 +1,11 @@
 import { InjectableClass } from "@codecapers/fusion";
 import { IAction } from "./action";
+import { IPlatform } from "./platform";
+
+//
+// A keyboard acceleator can be defined a string or as a function that returns a string (based on the platform).
+//
+type AcceleratorT = string | ((platform: IPlatform) => string) | undefined;
 
 //
 // Defines a command.
@@ -11,7 +17,7 @@ export interface ICommandDef {
     notebookCommand?: boolean;
     cellCommand?: boolean;
     label: string;
-    accelerator?: any;
+    accelerator?: AcceleratorT;
     icon?: string;
     stateIcon?: any;
 };
@@ -94,7 +100,7 @@ export interface ICommand {
     //
     // Gets the keyboard accelerator for the command.
     //
-    getAccelerator(): string | undefined;
+    getAccelerator(): AcceleratorT;
 }
 
 //
@@ -180,7 +186,7 @@ export class Command implements ICommand {
     //
     // Gets the keyboard accelerator for the command.
     //
-    getAccelerator(): string | undefined {
+    getAccelerator(): AcceleratorT {
         return this.def.accelerator;
     }    
 }
