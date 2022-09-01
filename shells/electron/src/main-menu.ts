@@ -12,6 +12,7 @@ import "notebook-editor/build/actions/undo-action";
 import "notebook-editor/build/actions/reload-notebook-action";
 import "notebook-editor/build/actions/save-notebook-action";
 import "notebook-editor/build/actions/save-notebook-as-action";
+import "notebook-editor/build/actions/toggle-hotkeys-action";
 
 const devMenuTemplate = {
     label: "Development",
@@ -122,6 +123,13 @@ export class MainMenu implements IMainMenu {
                 label: "&Run",
                 submenu: [
                     this.createMenu("eval-notebook"),
+                ],
+            },
+
+            {
+                label: "&Help",
+                submenu: [
+                    this.createMenu("toggle-hotkeys"),
                 ],
             },
         ];

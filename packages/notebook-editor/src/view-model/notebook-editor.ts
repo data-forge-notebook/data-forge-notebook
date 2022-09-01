@@ -15,6 +15,7 @@ import { CellOutputViewModel } from "./cell-output";
 import { CellErrorViewModel } from "./cell-error";
 import { ICommander, ICommanderId } from "../services/commander";
 import { IUndoRedo, IUndoRedoId } from "../services/undoredo";
+import { IHotkeysOverlayViewModel } from "../components/hotkeys-overlay";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -32,7 +33,7 @@ export enum SaveChoice {
 //
 // View-mmodel for the app.
 //
-export interface INotebookEditorViewModel {
+export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
 
     //
     // Mounts the UI.
@@ -178,6 +179,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // When greater than 0 the app is busy wth a global task.
     //
     private working: number = 0;
+
+    //
+    // Set to true when the hotkeys overlay is open.
+    //
+    private showHotkeysOverlay: boolean = false;
 
     constructor(notebook?: INotebookViewModel) { 
         this.notifyModified = this.notifyModified.bind(this);
@@ -675,4 +681,23 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     onEvaluationCompleted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
+    //
+    // Toggle the hotkeys overlay.
+    //
+    async toggleHotkeysOverlay(): Promise<void> {
+        this.showHotkeysOverlay = !this.showHotkeysOverlay;
+        await this.onHotkeysOverlayChanged.raise();
+    }
+
+    //
+    // Returns true when the hotkeys overlay is open.
+    //
+    isHotkeysOverlayOpen(): boolean {
+        return this.showHotkeysOverlay;
+    }
+
+    //
+    // Event raised when the hotkeys overlay is opened or closed.
+    //
+    onHotkeysOverlayChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }

@@ -356,6 +356,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         else {
             this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyY, () => this.invokeNamedCommand("redo"), "");
         }
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Slash, () => this.invokeNamedCommand("toggle-hotkeys"), "");
 
         if (this.props.onEscapeKey) {
             this.editor.addCommand(monaco.KeyCode.Escape, () => {

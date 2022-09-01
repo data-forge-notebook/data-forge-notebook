@@ -5,6 +5,7 @@ import { forceUpdate } from "browser-utils";
 import { INotebookEditorViewModel } from "../../view-model/notebook-editor";
 import { NotebookUI } from "./notebook";
 import { Toolbar } from "../toolbar";
+import { HotkeysOverlay } from "../../components/hotkeys-overlay";
 
 export interface INotebookEditorProps {
     model: INotebookEditorViewModel;
@@ -92,6 +93,9 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                         
                     </div>
                 </div>
+
+                <HotkeysOverlay model={this.props.model} />
+
             </div>
         );
     }
