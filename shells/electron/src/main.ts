@@ -2,7 +2,14 @@
 // The main file for the Electron entry point.
 //
 
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions, ipcMain } from "electron";
+import { registerSingleton } from "@codecapers/fusion";
+import { app, BrowserWindow } from "electron";
+import { ConsoleLog, ILogId } from "utils";
+import { IMainMenu, MainMenu } from "./main-menu";
+
+import "./services/platform";
+
+registerSingleton(ILogId, new ConsoleLog());
 
 const remote = require("@electron/remote/main");
 remote.initialize();
@@ -11,6 +18,14 @@ const ENTRY = process.env.ENTRY;
 if (!ENTRY) {
     throw new Error(`Env var ENTRY is not defined. This should specify the entry point for the Electron browser process.`);
 }
+import "./services/platform";
+
+registerSingleton(ILogId, new ConsoleLog());
+
+//
+// Represents the application's main menu.
+//
+const mainMenu: IMainMenu = new MainMenu();
 
 const createWindow = () => {
     const window = new BrowserWindow({
@@ -27,6 +42,7 @@ const createWindow = () => {
 
     window.once('ready-to-show', () => {
         window.webContents.openDevTools();    
+        mainMenu.buildEditorMenu();
         window.show();
     });
 
@@ -46,9 +62,6 @@ const createWindow = () => {
     }
 
     remote.enable(window.webContents);
-
-    createApplicationMenu();
-
 }
 
 app.whenReady().then(() => {
@@ -66,79 +79,3 @@ app.on('window-all-closed', () => {
         app.quit();
     }
 });
-
-function invokeCommand(commandId: string): void {
-    BrowserWindow.getFocusedWindow()!.webContents.send("invoke-command", { commandId });
-}
-
-//
-// Creates the application menu.
-//
-function createApplicationMenu() {
-    const menus: MenuItemConstructorOptions[] = [
-        {
-            label: "&File",
-            submenu: [
-                {
-                    label: "New notebook",
-                    click: () => {
-                        invokeCommand("new-notebook");
-                    },
-                },
-                {
-                    label: "Open notebook",
-                    click: () => {
-                        invokeCommand("open-notebook");
-                    },
-                },
-                {
-                    label: "Reload notebook",
-                    click: () => {
-                        invokeCommand("reload-notebook");
-                    },
-                },
-                {
-                    label: "Save notebook",
-                    click: () => {
-                        invokeCommand("save-notebook");
-                    },
-                },
-                {
-                    label: "Save notebook as",
-                    click: () => {
-                        invokeCommand("save-notebook-as");
-                    },
-                },
-                {
-                    label: "Evaluate notebook",
-                    click: () => {
-                        invokeCommand("evaluate-notebook");
-                    },
-                },
-            ],
-        },
-    ];
-
-    const devMenu = {
-        label: "Development",
-        submenu: [
-            {
-                label: "Reload",
-                accelerator: "F5",
-                click: () => {
-                    BrowserWindow.getFocusedWindow()!.webContents.reloadIgnoringCache();
-                }
-            },
-            {
-                label: "Toggle DevTools",
-                accelerator: "Alt+CmdOrCtrl+I",
-                click: () => {
-                    BrowserWindow.getFocusedWindow()!.webContents.toggleDevTools();
-                }
-            },
-        ]
-    };
-    menus.push(devMenu);
-
-    Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
-}

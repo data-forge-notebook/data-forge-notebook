@@ -2,12 +2,14 @@ import * as React from 'react';
 import * as monaco from 'monaco-editor';
 import { Spinner } from '@blueprintjs/core';
 import * as _ from 'lodash';
-import { asyncHandler, debounceAsync, handleAsyncErrors, throttleAsync } from 'utils';
+import { asyncHandler, debounceAsync, handleAsyncErrors, ILog, ILogId, throttleAsync } from 'utils';
 import { IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from '../view-model/monaco-editor';
 import { IEditorCaretPosition } from '../view-model/editor-caret-position';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
+import { ICommander, ICommanderId } from '../services/commander';
 import { IUndoRedo, IUndoRedoId } from '../services/undoredo';
 import { CellTextChange } from '../actions/cell-text-change';
+import { IPlatform, IPlatformId } from '../services/platform';
 
 let monacoInitialised = false;
 
@@ -118,6 +120,14 @@ export interface IMonacoEditorState {
 @InjectableClass()
 export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEditorState> {
 
+    @InjectProperty(ILogId)
+    log!: ILog;
+
+    @InjectProperty(ICommanderId)
+    commander!: ICommander;
+
+    @InjectProperty(IPlatformId)
+    platform!: IPlatform;
 
     @InjectProperty(IUndoRedoId)
     undoRedo!: IUndoRedo;
@@ -211,6 +221,14 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         // Throttling this update removes the initial 'bad scroll' on editor focus.
         this.onCursorPositionChanged = _.throttle(this.onCursorPositionChanged.bind(this), 100, { leading: false, trailing: true });
         this.onChangeCursorSelection = _.throttle(this.onChangeCursorSelection.bind(this), 300, { leading: false, trailing: true });
+    }
+
+    private invokeNamedCommand(commandId: string) {
+        this.commander.invokeNamedCommand(commandId, { cell: this.props.model as any }) //TODO: This cast to any is a bit dodgy.
+            .catch(err => {
+                this.log.error("Command " + commandId + " failed.");
+                this.log.error(err && err.stack || err);
+            });
     }
 
     componentWillMount() {
@@ -328,6 +346,16 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         handleAsyncErrors(() => this.updateEditorHeight());
         window.addEventListener("resize", this.onWindowResize); //TODO: There should be one event handler for all monaco eidtors and it should debounced.
 
+        //
+        // HACK to override Monaco editor keybindings.
+        //
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyZ, () => this.invokeNamedCommand("undo"), "");
+        if (this.platform.isMacOS()) {
+            this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyZ, () => this.invokeNamedCommand("redo"), "");
+        }
+        else {
+            this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyY, () => this.invokeNamedCommand("redo"), "");
+        }
 
         if (this.props.onEscapeKey) {
             this.editor.addCommand(monaco.KeyCode.Escape, () => {

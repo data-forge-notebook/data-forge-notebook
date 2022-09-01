@@ -38,9 +38,10 @@ function App() {
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
+const commander = instantiateSingleton<ICommander>(ICommanderId);
+
 ipcRenderer.on("invoke-command", (event: any, args: any) => {
     handleAsyncErrors(async () => {
-        const commander = instantiateSingleton<ICommander>(ICommanderId);
         await commander.invokeNamedCommand(args.commandId);
     });
 });

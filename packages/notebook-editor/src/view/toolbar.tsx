@@ -4,6 +4,7 @@ import { forceUpdate } from 'browser-utils';
 import * as React from 'react';
 import { asyncHandler } from 'utils';
 import { ICommander, ICommanderId } from '../services/commander';
+import { IPlatform, IPlatformId } from '../services/platform';
 import { INotebookEditorViewModel } from '../view-model/notebook-editor';
 import { makeButton } from './make-button';
 
@@ -22,6 +23,9 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     @InjectProperty(ICommanderId)
     commander!: ICommander;
     
+    @InjectProperty(IPlatformId)
+    platform!: IPlatform;
+
     constructor (props: IToolbarProps) {
         super(props);
 
@@ -119,6 +123,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                 { 
                                     pos: Position.BOTTOM,
                                 }, 
+                                this.platform,
                                 { 
                                     notebook                                         
                                 }, 
@@ -128,20 +133,20 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                     }
 
                     <ButtonGroup className="ml-2">
-                        {makeButton(this.commander, "new-notebook", { pos: Position.BOTTOM })}
-                        {makeButton(this.commander, "open-notebook", { pos: Position.BOTTOM })}
+                        {makeButton(this.commander, "new-notebook", { pos: Position.BOTTOM }, this.platform)}
+                        {makeButton(this.commander, "open-notebook", { pos: Position.BOTTOM }, this.platform)}
                         {isNotebookOpen &&
-                            makeButton(this.commander, "reload-notebook", { pos: Position.BOTTOM })
+                            makeButton(this.commander, "reload-notebook", { pos: Position.BOTTOM }, this.platform)
                         }
                         {isNotebookOpen
-                            && makeButton(this.commander, "save-notebook", { pos: Position.BOTTOM })
+                            && makeButton(this.commander, "save-notebook", { pos: Position.BOTTOM }, this.platform)
                         }
                     </ButtonGroup>
                     
                     {this.props.model.isNotebookOpen()
                         && <ButtonGroup className="ml-2">
-                            {makeButton(this.commander, "undo", { pos: Position.BOTTOM })}
-                            {makeButton(this.commander, "redo", { pos: Position.BOTTOM })}
+                            {makeButton(this.commander, "undo", { pos: Position.BOTTOM }, this.platform)}
+                            {makeButton(this.commander, "redo", { pos: Position.BOTTOM }, this.platform)}
                         </ButtonGroup>
                     }
 

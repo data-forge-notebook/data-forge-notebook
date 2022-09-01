@@ -8,6 +8,7 @@ export { IIdGenerator, IIdGeneratorId } from "./services/id-generator";
 export { IConfirmationDialogId, IConfirmationDialog, IConfirmOptions } from "./services/confirmation-dialog";
 export * from "./services/evaluator-client";
 export * from "./services/commander";
+export * from "./services/command";
 export * from "./services/platform";
 
 import "./services/impl/plugin-repository";

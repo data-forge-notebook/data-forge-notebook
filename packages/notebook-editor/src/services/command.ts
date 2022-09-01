@@ -194,12 +194,61 @@ export class Command implements ICommand {
 //
 // Format a tooltip for a command for display to the user.
 //
-export function formatTooltip(commandDef: ICommandDef, state?: string) {
+export function formatTooltip(commandDef: ICommandDef, platform: IPlatform, state?: string) {
     let tooltip = state 
         ? commandDef.stateDesc[state]
         : commandDef.desc;
     if (commandDef.accelerator) {
-        tooltip += " (" + commandDef.accelerator + ")";
+        tooltip += " (" + humanizeAccelerator(commandDef.accelerator!, platform) + ")";
     }
     return tooltip;
+}
+
+//
+// Expanded a keyboard accelerator depending on the platform.
+//
+export function expandAccelerator(accelerator: AcceleratorT, platform: IPlatform): string | undefined {
+    if (accelerator === undefined) {
+        return undefined; // Perfectly ok not to set an accelerator.
+    }
+    else if (typeof(accelerator) === "string") {
+        return accelerator;
+    }
+    else {
+        return accelerator(platform);
+    }
+}
+
+//
+// Map a keyname suitable for display to the user.
+//
+function mapKeyname(inputKeyname: string, platform: IPlatform): string {
+    const keynames: any = {
+        "Command": "Cmd",
+        "Cmd": "Cmd",
+        "Control": "Ctrl",
+        "Ctrl": "Ctrl",
+        "CommandOrControl": platform.isMacOS() ? "Cmd" : "Ctrl",
+        "CmdOrCtrl": platform.isMacOS() ? "Cmd" : "Ctrl",
+        "Alt": "Alt",
+        "Option": "Option",
+    };
+    const mappedKeyname = keynames[inputKeyname];
+    if (mappedKeyname) {
+        return mappedKeyname;
+    }
+
+    return inputKeyname;
+}
+
+//
+// Convert an accelerator to a human readable string.
+//
+export function humanizeAccelerator(def: AcceleratorT, platform: IPlatform): string | undefined {
+    const accelerator = expandAccelerator(def, platform);
+    if (accelerator === undefined) {
+        return undefined;
+    }
+    const acceleratorParts = accelerator.split("+");
+    return acceleratorParts.map(keyName => mapKeyname(keyName, platform)).join("+");
 }

@@ -4,6 +4,7 @@ import { asyncHandler } from 'utils';
 import { IActionContextInitializer } from '../services/action';
 import { commandTable, formatTooltip } from '../services/command';
 import { ICommander } from '../services/commander';
+import { IPlatform } from '../services/platform';
 
 export const BUTTON_TOOLTIP_DELAY = 1200;
 
@@ -28,6 +29,7 @@ export function makeButton(
         commander: ICommander, 
         commandId: string, 
         setup: IButtonSetup,
+        platform: IPlatform, //TODO: This should just be a component then platform could be dependency injected.
         contextInitializer?: IActionContextInitializer,
         state?: string
     ): JSX.Element | undefined {
@@ -56,7 +58,7 @@ export function makeButton(
     }
     return (
         <Tooltip
-            content={formatTooltip(commandDef, state)}
+            content={formatTooltip(commandDef, platform, state)}
             hoverOpenDelay={BUTTON_TOOLTIP_DELAY}
             position={setup.pos || Position.RIGHT}
             usePortal={false}

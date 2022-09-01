@@ -383,6 +383,7 @@ importers:
       '@types/node': ^16.11.7
       '@types/react': ^17.0.39
       '@types/react-dom': ^17.0.13
+      hotkeys-js: 3.9.5
       jest: ^27.5.1
       model: workspace:*
       notebook-editor: workspace:*
@@ -393,6 +394,7 @@ importers:
       utils: workspace:*
     dependencies:
       '@codecapers/fusion': 1.0.15
+      hotkeys-js: 3.9.5
       model: link:../../packages/model
       notebook-editor: link:../../packages/notebook-editor
       react: 17.0.2
@@ -11340,6 +11342,10 @@ packages:
   /hosted-git-info/2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
     dev: true
+
+  /hotkeys-js/3.9.5:
+    resolution: {integrity: sha512-T0G8CUZ6Q1IOgPnLK1hDXR8DqgKF/VWEsHvZgi6CM7Ub9oOAzvWuJ3Qhc/9nFQaR26MfFOZSwULHrtCnsUX7zA==}
+    dev: false
 
   /hpack.js/2.1.6:
     resolution: {integrity: sha1-h3dMCUnlE/QuhFdbPEVoH63ioLI=}

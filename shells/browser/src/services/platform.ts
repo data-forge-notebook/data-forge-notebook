@@ -40,7 +40,7 @@ export class Platform implements IPlatform {
     // Returns true when running on Windows.
     //
     isWindows(): boolean {
-        return false;
+        return true;
     }
 
     //

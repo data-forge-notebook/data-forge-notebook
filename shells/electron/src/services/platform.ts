@@ -3,7 +3,7 @@
 //
 
 import { InjectableSingleton } from "@codecapers/fusion";
-import { IPlatform, IPlatformId } from "notebook-editor";
+import { IPlatform, IPlatformId } from "notebook-editor/build/services/platform";
 import * as os from 'os';
 
 @InjectableSingleton(IPlatformId)

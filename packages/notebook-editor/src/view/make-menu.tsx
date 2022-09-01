@@ -4,6 +4,7 @@ import { asyncHandler } from 'utils';
 import { IActionContextInitializer } from '../services/action';
 import { commandTable, formatTooltip } from '../services/command';
 import { ICommander } from '../services/commander';
+import { IPlatform } from '../services/platform';
 
 export const MENU_TOOLTIP_DELAY = 1000;
 
@@ -25,6 +26,7 @@ function formatToolbarMenuText(text: string): string {
 export function makeMenuItem(
         commander: ICommander, 
         commandId: string, 
+        platform: IPlatform, //TODO: This should just be a component then platform could be dependency injected.
         contextInitializer?: IActionContextInitializer,
         state?: string
     ): JSX.Element | undefined {
@@ -58,7 +60,7 @@ export function makeMenuItem(
     return (
         <Tooltip
             position={Position.RIGHT}    
-            content={formatTooltip(commandDef, state)}
+            content={formatTooltip(commandDef, platform, state)}
             hoverOpenDelay={MENU_TOOLTIP_DELAY}
             usePortal={false}
             >
