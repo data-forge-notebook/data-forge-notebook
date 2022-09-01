@@ -2,6 +2,8 @@
 // A service for accessing details on the platform.
 //
 
+export const IPlatformId = "IPlatform";
+
 export interface IPlatform {
 
     //

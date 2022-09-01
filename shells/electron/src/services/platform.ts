@@ -3,10 +3,10 @@
 //
 
 import { InjectableSingleton } from "@codecapers/fusion";
-import { IPlatform } from "notebook-editor";
+import { IPlatform, IPlatformId } from "notebook-editor";
 import * as os from 'os';
 
-@InjectableSingleton("IPlatform")
+@InjectableSingleton(IPlatformId)
 export class Platform implements IPlatform {
 
     private static platform = os.platform();

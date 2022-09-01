@@ -3,9 +3,9 @@
 //
 
 import { InjectableSingleton } from "@codecapers/fusion";
-import { IPlatform } from "notebook-editor";
+import { IPlatform, IPlatformId } from "notebook-editor";
 
-@InjectableSingleton("IPlatform")
+@InjectableSingleton(IPlatformId)
 export class Platform implements IPlatform {
 
     //
