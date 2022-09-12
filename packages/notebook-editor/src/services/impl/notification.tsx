@@ -3,7 +3,6 @@ import { InjectableSingleton } from "@codecapers/fusion";
 import { Toaster, IToaster } from '@blueprintjs/core';
 import { IconName } from '@blueprintjs/icons';
 import { IAction, INotification, INotificationId, INotificationParams, Level } from '../notification';
-import { asyncHandler } from 'utils';
 import { serializeError } from 'serialize-error';
 
 function levelToIntent(level: Level | string) {
@@ -74,10 +73,10 @@ export class Notification implements INotification {
                                 <a
                                     role="button" 
                                     className="bp3-button"
-                                    onClick={asyncHandler(this, async () => {
+                                    onClick={async () => {
                                         this.toaster.dismiss(toastId);
                                         await action.callback();
-                                    })}    
+                                    }}
                                     >
                                     <span className="bp3-button-text">
                                         {action.text}
@@ -97,7 +96,7 @@ export class Notification implements INotification {
             action: params.actions && params.actions.length === 1 
                 && { 
                     text: params.actions[0].text, 
-                    onClick: asyncHandler(null, params.actions[0].callback),
+                    onClick: params.actions[0].callback,
                 } 
                 || undefined,
             timeout: params.duration,

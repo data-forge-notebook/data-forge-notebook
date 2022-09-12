@@ -6,7 +6,7 @@ import { ICodeCellViewModel } from '../../../../view-model/code-cell';
 import { CellOutputUI } from './cell-output';
 import styled from 'styled-components';
 import { Switch, Position, Tooltip } from '@blueprintjs/core';
-import { asyncHandler, debounceAsync, handleAsyncErrors } from 'utils';
+import { debounceAsync, handleAsyncErrors } from 'utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
 import { CellScope } from 'model';
 import { forceUpdate } from 'browser-utils';
@@ -53,8 +53,6 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
         super(props)
 
         this.state = {};
-
-        this.needUpdate = asyncHandler(this, this.needUpdate);
     }
     
     componentDidMount() {
@@ -67,7 +65,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
         this.props.model.onEvalCompleted.detach(this.needUpdate);
     }
 
-    async needUpdate(): Promise<void> {  //TODO: Only really need to rerender the output or errors for the control! Or render the play/stop button!!
+    private needUpdate = async (): Promise<void> => {  //TODO: Only really need to rerender the output or errors for the control! Or render the play/stop button!!
         await forceUpdate(this);
     }
 

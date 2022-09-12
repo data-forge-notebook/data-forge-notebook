@@ -1,6 +1,5 @@
 import { Button, IconName, Intent, Position, Tooltip } from '@blueprintjs/core';
 import * as React from 'react';
-import { asyncHandler } from 'utils';
 import { IActionContextInitializer } from '../services/action';
 import { commandTable, formatTooltip } from '../services/command';
 import { ICommander } from '../services/commander';
@@ -67,13 +66,13 @@ export function makeButton(
                 large={setup.size !== undefined && setup.size === ButtonSize.Large}
                 small={setup.size === undefined || setup.size === ButtonSize.Small}
                 minimal={setup.minimal === undefined || setup.minimal}
-                onClick={asyncHandler(null, async (event: React.SyntheticEvent) => {
+                onClick={async (event: React.SyntheticEvent) => {
                     event.stopPropagation();
                     await commander.invokeNamedCommand(commandId, contextInitializer);
                     if (setup.onClick) {
                         await setup.onClick();
                     }
-                })}
+                }}
                 icon={iconName !== undefined ? iconName as IconName : false}
                 intent={setup.intent}
                 >

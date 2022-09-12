@@ -4,7 +4,7 @@ import { DebouncedFunc } from 'lodash';
 //
 // A function that adapts an async handler to work with react.
 //
-export function asyncHandler (self: any, handler: (...args: any[]) => Promise<void>): (() => Promise<void>) {
+export function asyncHandler(self: any, handler: (...args: any[]) => Promise<void>): (() => Promise<void>) {
     return (...args: any[]): Promise<void> => {
         const promise = handler.apply(self, args);
         if (promise) {

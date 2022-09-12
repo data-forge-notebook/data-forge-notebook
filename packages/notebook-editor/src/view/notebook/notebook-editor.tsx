@@ -1,6 +1,5 @@
 import * as React from "react";
 import { InjectableClass } from "@codecapers/fusion";
-import { asyncHandler } from "utils";
 import { forceUpdate } from "browser-utils";
 import { INotebookEditorViewModel } from "../../view-model/notebook-editor";
 import { NotebookUI } from "./notebook";
@@ -32,12 +31,9 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
         this.state = {
             isSettingsOpen: false,
         };
-
-        this.componentDidMount = asyncHandler(this, this.componentDidMount);
-        this.onOpenNotebookChanged = asyncHandler(this, this.onOpenNotebookChanged);
     }
 
-    private async onOpenNotebookChanged(isReload: boolean): Promise<void> {
+    private onOpenNotebookChanged = async (isReload: boolean): Promise<void> => {
         await forceUpdate(this);
 
         if (!isReload) {
@@ -45,7 +41,7 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
 
         this.props.model.mount();

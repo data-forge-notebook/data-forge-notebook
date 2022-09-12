@@ -2,7 +2,6 @@ import { ButtonGroup, Icon, Popover, PopoverInteractionKind, PopoverPosition, Po
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { forceUpdate } from 'browser-utils';
 import * as React from 'react';
-import { asyncHandler } from 'utils';
 import { ICommander, ICommanderId } from '../services/commander';
 import { IPlatform, IPlatformId } from '../services/platform';
 import { INotebookEditorViewModel } from '../view-model/notebook-editor';
@@ -32,7 +31,6 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
         this.state = {
         };
 
-        this.componentDidMount = asyncHandler(this, this.componentDidMount);
         this.onOpenNotebookWillChange = this.onOpenNotebookWillChange.bind(this);
         this.onOpenNotebookChanged = this.onOpenNotebookChanged.bind(this);
         this.onCodeEvalStarted = this.onCodeEvalStarted.bind(this);
@@ -40,7 +38,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
         this.onNotebookModified = this.onNotebookModified.bind(this);
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.props.model.onOpenNotebookWillChange.attach(this.onOpenNotebookWillChange);
         this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
         this.props.model.onModified.attach(this.onNotebookModified);

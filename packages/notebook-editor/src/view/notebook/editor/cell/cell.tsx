@@ -10,7 +10,7 @@ import { INotebookViewModel } from '../../../../view-model/notebook';
 import { CellHandle } from './cell-handle';
 import { IMonacoEditorViewModel } from '../../../../view-model/monaco-editor';
 import { EventSource, BasicEventHandler } from 'utils';
-import { asyncHandler, throttleAsync } from 'utils';
+import { throttleAsync } from 'utils';
 import { forceUpdate } from 'browser-utils';
 import { isElementPartiallyInViewport } from 'browser-utils';
 import { CellType } from 'model';
@@ -78,16 +78,8 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
         this.cellContainerElement = React.createRef<HTMLDivElement>();
         this.innerCellContainerElement = React.createRef<HTMLDivElement>();
 
-        this.onFlushChanges = asyncHandler(this, this.onFlushChanges);
-        this.onEditorSelectionChanged = this.onEditorSelectionChanged.bind(this);
-        this._onHeightChanged = asyncHandler(this, this._onHeightChanged);
-        this.recordCellHeight = this.recordCellHeight.bind(this);
-        this.onScrollIntoView = this.onScrollIntoView.bind(this);
-        this.onCellFocused = asyncHandler(this, this.onCellFocused);
-        this.needUpdate = asyncHandler(this, this.needUpdate);
         this.onErrorAddedThrottled = throttleAsync(this, this.onErrorAdded, 500);
         this.onOutputChangedThrottled = throttleAsync(this, this.onOutputChanged, 500);        
-        this.onEvalCompleted = asyncHandler(this, this.onEvalCompleted);
     }
 
     componentDidMount() {
@@ -129,22 +121,22 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     // Event raised to flush changes through the model.
     //
-    async onFlushChanges(): Promise<void> {
+    private onFlushChanges = async (): Promise<void> => {
         this.onOutputChangedThrottled.cancel();
     }
 
-    async needUpdate(): Promise<void> {  //TODO: Only really need to rerender the output or errors for the control! Or render the play/stop button!!
+   private needUpdate = async (): Promise<void> => {  //TODO: Only really need to rerender the output or errors for the control! Or render the play/stop button!!
         await forceUpdate(this);
     }
 
     //
     // Event raised when this cell has been selected or unselected.
     //
-    async onEditorSelectionChanged(cell: IMonacoEditorViewModel): Promise<void> {
+    private onEditorSelectionChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
         await forceUpdate(this);
     }
 
-    private async onCellFocused(): Promise<void> {
+    private onCellFocused = async (): Promise<void> => {
         // Automatically select cell when focused.
         if (!this.props.model.isSelected()) {
             await this.props.model.select();
@@ -154,7 +146,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     // Event raised when the height of the code editor has changed.
     //
-    private async _onHeightChanged(): Promise<void> {
+    private _onHeightChanged = async (): Promise<void> => {
         this.recordCellHeight();
 
         //
@@ -166,7 +158,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     // Errors where added to the cell.
     //
-    async onErrorAdded(): Promise<void> {
+    private onErrorAdded = async (): Promise<void> => {
         await forceUpdate(this);
 
         await this._onHeightChanged();
@@ -175,7 +167,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     // Output was added to the cell.
     //
-    async onOutputChanged(): Promise<void> {
+    private onOutputChanged = async (): Promise<void> => {
         await forceUpdate(this);
 
         await this._onHeightChanged();
@@ -184,7 +176,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     // Redraw and measure cell height after evaluation completed because errors or outputs might have been cleared.
     //
-    async onEvalCompleted(): Promise<void> {
+    private onEvalCompleted = async (): Promise<void> => {
         await forceUpdate(this);
 
         await this._onHeightChanged();
@@ -202,7 +194,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     // Scroll the notebook so the cell is visible.
     //
-    private async onScrollIntoView(scrollReason: string): Promise<void> {
+    private onScrollIntoView = async (scrollReason: string): Promise<void> => {
         const element = this.cellContainerElement.current;
         if (element) {
             if (!isElementPartiallyInViewport(element, 0)) {
@@ -258,10 +250,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     }
 
     render () {
-        const canExecute = this.props.model.getCellType() === CellType.Code;
-        const isNotebookExecuting = this.props.notebookModel.isExecuting();
-        const isSelected = this.props.model.isSelected();
-
         return (
             <div 
                 ref={this.cellContainerElement}

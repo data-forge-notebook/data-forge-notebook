@@ -4,9 +4,9 @@
 
 import * as React from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { asyncHandler } from 'utils';
 import { updateState } from 'browser-utils';
 import { CellUI } from './cell';
+import { sleep } from 'utils';
 const classnames = require("classnames");
 
 export interface ICellHandleProps {
@@ -49,23 +49,21 @@ export class CellHandle extends React.Component<ICellHandleProps, ICellHandleSta
         this.state = {
             height: 0,
         };
-
-        this.onHeightChanged = asyncHandler(this, this.onHeightChanged);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.cell.onHeightChanged.attach(this.onHeightChanged);
 
-        setTimeout(() => {
-            this.onHeightChanged(); // Bit of a hack. But wait a moment before slaving the height.
-        }, 10);
+        await sleep(10); // Bit of a hack. But wait a moment before slaving the height.
+
+        await this.onHeightChanged(); 
     }
 
     componentWillUnmount() {
         this.props.cell.onHeightChanged.detach(this.onHeightChanged);
     }
 
-    private async onHeightChanged(): Promise<void> {
+    private onHeightChanged = async (): Promise<void> => {
         if (this.props.cellContainerElement.current) {
             await updateState(this, {
                 height: this.props.cellContainerElement.current.offsetHeight,

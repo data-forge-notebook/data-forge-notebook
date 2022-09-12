@@ -1,12 +1,9 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { asyncHandler } from "utils";
 import { CellScope, ICell } from "model";
-import { ICellError } from "model";
-import { ICellOutput } from "model";
 import { IDateProvider, IDateProviderId } from "../services/date-provider";
 import { ICellViewModel, CellViewModel } from "./cell";
-import { ICellErrorViewModel, CellErrorViewModel } from "./cell-error";
-import { ICellOutputViewModel, CellOutputViewModel } from "./cell-output";
+import { ICellErrorViewModel } from "./cell-error";
+import { ICellOutputViewModel } from "./cell-output";
 
 //
 // View-model for a code cell.
@@ -125,8 +122,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     constructor(cell: ICell, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
         super(cell)
 
-        this.onOutputModified = asyncHandler(this, this.onOutputModified);
-
         this.output = output;
 
         for (const output of this.output) {
@@ -223,7 +218,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Event raised when an output has been modified.
     //
-    private async onOutputModified(): Promise<void> {
+    private onOutputModified = async (): Promise<void> => {
         await this.notifyModified();
     }
 

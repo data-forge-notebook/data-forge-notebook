@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IMarkdownCellViewModel } from '../../../../view-model/markdown-cell';
 import { IMonacoEditorViewModel } from '../../../../view-model/monaco-editor';
-import { asyncHandler, handleAsyncErrors } from 'utils';
+import { handleAsyncErrors } from 'utils';
 import { forceUpdate } from 'browser-utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
 import ReactMarkdown from 'react-markdown';
@@ -41,12 +41,6 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
         this.markdownElement = React.createRef<HTMLDivElement>();
 
         this.state = {};
-
-        this.onBlur = asyncHandler(this, this.onBlur);
-        this.onMarkdownClick = asyncHandler(this, this.onMarkdownClick);
-        this.onEditorSelectionChanged = asyncHandler(this, this.onEditorSelectionChanged);
-        this.onModeChanged = asyncHandler(this, this.onModeChanged);
-        this.onEscapeKey = asyncHandler(this, this.onEscapeKey);
     }
 
     componentDidMount() {
@@ -61,7 +55,7 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
         this.props.model.onTextChanged.detach(this.onTextChanged);
     }
 
-    async onModeChanged(): Promise<void> {
+    private onModeChanged = async (): Promise<void> => {
         await forceUpdate(this);
         this.props.onHeightChanged();
     }
@@ -71,7 +65,7 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
         await this.props.model.enterPreviewMode();
     }
 
-    async onEditorSelectionChanged(cell: IMonacoEditorViewModel): Promise<void> {
+    private onEditorSelectionChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
         
         if (this.props.model.isSelected()) { //TODO: COULD BE DONE IN THE VIEW MODEL.
             await this.props.model.enterEditMode();
@@ -84,16 +78,16 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
         await forceUpdate(this); 
     }
 
-    private async onBlur(): Promise<void> {
+    private onBlur = async (): Promise<void> => {
         // Wait a moment before entering preview mode, this will be suppressed if the find dialog has just been opened.
         setTimeout(() => handleAsyncErrors(() => this.enterPreviewMode()), 500);
     }
 
-    private async onMarkdownClick(): Promise<void> {
+    private onMarkdownClick = async (): Promise<void> => {
         await this.props.model.enterEditMode();
     }
 
-    async onEscapeKey() {
+    private onEscapeKey = async () => {
         await this.enterPreviewMode();
     }
 

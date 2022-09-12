@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as monaco from 'monaco-editor';
 import { Spinner } from '@blueprintjs/core';
 import * as _ from 'lodash';
-import { asyncHandler, debounceAsync, handleAsyncErrors, ILog, ILogId, throttleAsync } from 'utils';
+import { debounceAsync, handleAsyncErrors, ILog, ILogId, throttleAsync } from 'utils';
 import { IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from '../view-model/monaco-editor';
 import { IEditorCaretPosition } from '../view-model/editor-caret-position';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
@@ -208,11 +208,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         this.onTextChanged = this.onTextChanged.bind(this);
         this.onFlushChanges = this.onFlushChanges.bind(this);
         this.props.model.caretPositionProvider = this.caretPositionProvider.bind(this);
-        this.onEditorSelectionChanged = asyncHandler(this, this.onEditorSelectionChanged);
         this.onFindNextMatch = this.onFindNextMatch.bind(this);
-        this.onSelectText = asyncHandler(this, this.onSelectText);
-        this.onDeselectText = asyncHandler(this, this.onDeselectText);
-        this.onReplaceText = asyncHandler(this, this.onReplaceText);
         
         // Throttle is used to not just to prevent too many updates, but also because
         // on the first cursor change after the Monaco Editor is focused the caret is
@@ -456,7 +452,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised when text should be selected.
     //
-    private async onSelectText(range: ITextRange): Promise<void> {
+    private onSelectText = async (range: ITextRange): Promise<void> => {
         if (this.editor) {
             this.editor.setSelection(range);
         }
@@ -465,7 +461,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised when text should be selected.
     //
-    private async onDeselectText(): Promise<void> {
+    private onDeselectText = async (): Promise<void> => {
         if (this.editor) {
             this.editor.setSelection({ // This seems like a very hacky way to clear the selection, but it works and I couldn't a more official way.
                 startLineNumber: 1, 
@@ -479,7 +475,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised when text should be replaced.
     //
-    private async onReplaceText(range: ITextRange, text: string): Promise<void> {
+    private onReplaceText = async (range: ITextRange, text: string): Promise<void> => {
         if (this.editorModel) {
             await this.onDeselectText();
             this.editorModel.applyEdits([{
@@ -493,7 +489,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised when the selected editor has changed.
     //
-    private async onEditorSelectionChanged(): Promise<void> {
+    private onEditorSelectionChanged = async (): Promise<void> => {
 
         if (!this.editor) {
             return;

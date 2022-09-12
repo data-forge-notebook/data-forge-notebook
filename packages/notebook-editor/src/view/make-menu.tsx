@@ -1,6 +1,5 @@
 import { IconName, MenuItem, Position, Tooltip } from '@blueprintjs/core';
 import * as React from 'react';
-import { asyncHandler } from 'utils';
 import { IActionContextInitializer } from '../services/action';
 import { commandTable, formatTooltip } from '../services/command';
 import { ICommander } from '../services/commander';
@@ -67,9 +66,9 @@ export function makeMenuItem(
             <MenuItem
                 icon={iconName as IconName}
                 text={text}
-                onClick={asyncHandler(null, async (event: React.SyntheticEvent) => {
+                onClick={async (event: React.SyntheticEvent) => {
                     await commander.invokeNamedCommand(commandId, contextInitializer);
-                })}
+                }}
                 />
         </Tooltip>
     );

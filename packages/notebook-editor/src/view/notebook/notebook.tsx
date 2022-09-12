@@ -2,7 +2,6 @@ import * as React from 'react';
 import { INotebookViewModel } from "../../view-model/notebook";
 import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { CellUI } from './editor/cell/cell';
-import { asyncHandler } from 'utils';
 import { forceUpdate } from 'browser-utils';
 
 export interface INotebookProps {
@@ -24,11 +23,6 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
         this.state = {
             isDragging: false,
         };
-
-        this.onDragStart = this.onDragStart.bind(this);
-        this.onDragUpdate = this.onDragUpdate.bind(this);
-        this.onDragEnd = asyncHandler(this, this.onDragEnd);
-        this.onCellsChanged = asyncHandler(this, this.onCellsChanged);
     }
 
     componentDidMount() {
@@ -39,18 +33,18 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
         this.props.model.onCellsChanged.detach(this.onCellsChanged);
     }
 
-    private async onCellsChanged(): Promise<void> {
+    private onCellsChanged = async (): Promise<void> => {
         await forceUpdate(this); 
     }
     
-    private onDragStart () {
+    private onDragStart = () => {
         this.setState({ isDragging: true });
     }
 
-    private onDragUpdate () {
+    private onDragUpdate = () => {
     }
 
-    private async onDragEnd (result: DropResult) {
+    private onDragEnd = async (result: DropResult) => {
 
         if (!result.destination) {
             this.setState({ isDragging: false });
