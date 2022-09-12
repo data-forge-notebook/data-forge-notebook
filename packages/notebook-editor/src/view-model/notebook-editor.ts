@@ -186,8 +186,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     private showHotkeysOverlay: boolean = false;
 
     constructor(notebook?: INotebookViewModel) { 
-        this.notifyModified = this.notifyModified.bind(this);
-        
         if (notebook) {
             this.notebook = notebook;
             this.notebook.onModified.attach(this.notifyModified);
@@ -648,7 +646,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Notify the app that a notebook was modified.
     //
-    async notifyModified(): Promise<void> {
+    notifyModified = async (): Promise<void> => {
         await this.onModified.raise();
     }
 

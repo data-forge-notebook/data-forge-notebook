@@ -28,14 +28,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     constructor (props: IToolbarProps) {
         super(props);
 
-        this.state = {
-        };
-
-        this.onOpenNotebookWillChange = this.onOpenNotebookWillChange.bind(this);
-        this.onOpenNotebookChanged = this.onOpenNotebookChanged.bind(this);
-        this.onCodeEvalStarted = this.onCodeEvalStarted.bind(this);
-        this.onCodeEvalCompleted = this.onCodeEvalCompleted.bind(this);
-        this.onNotebookModified = this.onNotebookModified.bind(this);
+        this.state = {};
     }
 
     componentDidMount() {
@@ -70,23 +63,23 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
         }
     }
 
-    private async onOpenNotebookWillChange(): Promise<void> {
+    private onOpenNotebookWillChange = async (): Promise<void> => {
         this.unhookNotebookEvents();
     }
 
-    private async onOpenNotebookChanged(): Promise<void> {
+    private onOpenNotebookChanged = async (): Promise<void> => {
         this.hookNotebookEvents();
     }
 
-    private async onCodeEvalStarted() {
+    private onCodeEvalStarted = async () => {
         await forceUpdate(this);
     }
 
-    private async onCodeEvalCompleted() {
+    private onCodeEvalCompleted = async () => {
         await forceUpdate(this);
     }
 
-    private async onNotebookModified() {
+    private onNotebookModified = async () => {
         await forceUpdate(this);
     }
 

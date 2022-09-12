@@ -69,8 +69,7 @@ export class Lazy extends React.Component<ILazyProps, ILazyState> {
 
         this.mounted = this.props.height === undefined;
 
-        this.testVisible = this.testVisible.bind(this);
-        this.testVisibleThrottled = _.throttle(this.testVisible.bind(this), 200, { leading: false, trailing: true });
+        this.testVisibleThrottled = _.throttle(this.testVisible, 200, { leading: false, trailing: true });
     }
 
     componentDidMount() {
@@ -128,7 +127,7 @@ export class Lazy extends React.Component<ILazyProps, ILazyState> {
     //
     // Tests if the component should be visible and if it should makes it visible.
     //
-    private testVisible(): boolean {
+    private testVisible = (): boolean => {
         if (this.lazyElement.current) {
             if (isElementPartiallyInViewport(this.lazyElement.current, LAZY_PADDING)) {
                 this.makeVisible();

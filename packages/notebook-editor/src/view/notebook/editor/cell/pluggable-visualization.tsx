@@ -44,14 +44,12 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
         this.state = {};
 
         this.iframeRef = React.createRef<HTMLIFrameElement>();
-
-        this.onLoad = this.onLoad.bind(this);
     }
 
     //
     // Event raised when the iframe has loaded.
     //
-    private onLoad() {
+    private onLoad = () => {
         if (!this.iframeRef.current) {
             throw new Error(`Iframe not mounted!`);
         }

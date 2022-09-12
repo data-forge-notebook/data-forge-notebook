@@ -321,9 +321,6 @@ export class NotebookViewModel implements INotebookViewModel {
         this.notebook = notebook;
         this.defaultNodejsVersion = defaultNodeJsVersion;
         this.cells = cells;
-        this.onEditorSelectionChanging = this.onEditorSelectionChanging.bind(this);
-        this.onEditorSelectionChanged = this.onEditorSelectionChanged.bind(this);
-        this.onCellModified = this.onCellModified.bind(this);
         this.modified = false;
         this.unsaved = unsaved;
         this.readOnly = readOnly;
@@ -347,7 +344,7 @@ export class NotebookViewModel implements INotebookViewModel {
         cell.onTextChanged.detach(this._onTextChanged);
     }
 
-    private async onEditorSelectionChanging(cell: IMonacoEditorViewModel, willBeSelected: boolean): Promise<void> {
+    private onEditorSelectionChanging = async (cell: IMonacoEditorViewModel, willBeSelected: boolean): Promise<void> => {
         if (willBeSelected) {
             // 
             // Make sure everything else is selected before applying the new selection.
@@ -356,7 +353,7 @@ export class NotebookViewModel implements INotebookViewModel {
         }
     }
 
-    private async onEditorSelectionChanged(cell: IMonacoEditorViewModel): Promise<void> {
+    private onEditorSelectionChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
         if (this.selectedCell === cell) {
             // Didn't change.
             return;
@@ -376,7 +373,7 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Handles onCellModified from cells and bubbles the event upward.
     //
-    private async onCellModified(cell: IMonacoEditorViewModel): Promise<void> {
+    private onCellModified = async (cell: IMonacoEditorViewModel): Promise<void> => {
         await this.notifyModified();
     }
   

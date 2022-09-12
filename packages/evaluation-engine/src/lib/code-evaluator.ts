@@ -7,10 +7,10 @@ import { ILog } from "utils";
 import * as vm from 'vm';
 import { formatErrorMessage, ErrorSource } from "./format-error-message";
 import { ISourceMap } from "./source-map";
-import { IFileLocation, IGeneratedCode } from "./language-code-generator";
+import { IFileLocation } from "./language-code-generator";
 import { ProjectGenerator } from "./project-generator";
 import { CellType } from "model";
-import { NullAsyncTracker, IAsyncTracker, AsyncTracker } from "./async-tracker";
+import { IAsyncTracker, AsyncTracker } from "./async-tracker";
 import { AsyncResource, executionAsyncId } from "async_hooks";
 import { handleAsyncErrors } from "utils";
 import * as fs from "fs";
@@ -252,15 +252,6 @@ export class CodeEvaluator implements ICodeEvaluator {
         this.fileName = fileName;
         this.projectPath = projectPath;
         this.numCells = numCells;
-
-        this.display = this.display.bind(this);
-        this.onUncaughtException = this.onUncaughtException.bind(this);
-        this.onUnhandledRejection = this.onUnhandledRejection.bind(this);
-        this.awaitNotebookCompleted = this.awaitNotebookCompleted.bind(this);
-        this.__capture_locals = this.__capture_locals.bind(this);
-        this.__auto_display = this.__auto_display.bind(this);        
-        this.__cell = this.__cell.bind(this);
-        this.__end = this.__end.bind(this);
     }
 
     // 
@@ -302,7 +293,7 @@ export class CodeEvaluator implements ICodeEvaluator {
         return this.cellIds[cellIndex];
     }
 
-    private display(...args: any[]): void {
+    private display = (...args: any[]): void => {
 
         // this.log.info(`Displaying ${args.join(',')} in async context ${executionAsyncId()} for cell ${this.getCurCellId()}.`);
 
@@ -345,7 +336,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Captures standard output while evaluating a notebook.
     //
-    private stdoutWriteOverride(...args: any[]): boolean {
+    private stdoutWriteOverride = (...args: any[]): boolean => {
 
         // this.log.info(`Stdout ${args[0]} in async context ${executionAsyncId()} for cell ${this.getCurCellId()}.`);
 
@@ -367,7 +358,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Captures standard error while evaluating a notebook.
     //
-    private stderrWriteOverride(...args: any[]): boolean {
+    private stderrWriteOverride = (...args: any[]): boolean =>{
 
         // this.log.info(`Stderr ${args[0]} in async context ${executionAsyncId()} for cell ${this.getCurCellId()}.`);
 
@@ -390,8 +381,8 @@ export class CodeEvaluator implements ICodeEvaluator {
         this.oldStdoutWrite = this.process.stdout.write;
         this.oldStderrWrite = this.process.stderr.write;
 
-        this.process.stdout.write = this.stdoutWriteOverride.bind(this);
-        this.process.stderr.write = this.stderrWriteOverride.bind(this);
+        this.process.stdout.write = this.stdoutWriteOverride;
+        this.process.stderr.write = this.stderrWriteOverride;
     }
 
     //
@@ -436,7 +427,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Handle an uncaught exception in the user's notebook.
     //
-    private onUncaughtException(err: Error): void {
+    private onUncaughtException = (err: Error): void => {
         this.reportErrorSync(ErrorSource.CodeEvaluation, this.getCurCellId(), err.message, undefined, err.stack);
         this.onFinished();
     }
@@ -444,7 +435,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Handle an unhandled rejected promise in the users' notebook.
     //
-    private onUnhandledRejection (err: any, promise: Promise<any>): void {
+    private onUnhandledRejection = (err: any, promise: Promise<any>): void => {
         this.reportErrorSync(ErrorSource.CodeEvaluation, this.getCurCellId(), err && err.message, undefined, err && err.stack);
         this.onFinished();
     };
@@ -487,7 +478,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // A function that starts an async checking loop to figure out when the notebook has completed.
     //
-    private awaitNotebookCompleted(): void {
+    private awaitNotebookCompleted = (): void => {
         if (this.notebookFinished) {
             // On finished has already been called.
             return;
@@ -554,7 +545,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Marks the end of execution for a notebook, excluding indirect async operations.
     //
-    private __end() {
+    private __end = () => {
         if (global.gc) {
             global.gc();
         }
@@ -564,7 +555,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Captures local variables at the end of cell execution.
     //
-    private __capture_locals(cellIndex: number, cellId: string, getLocals: () => any) {
+    private __capture_locals = (cellIndex: number, cellId: string, getLocals: () => any) => {
         this.localsFnCache[cellIndex] = getLocals; // Keep a copy of this function so we can update locals again after async code has completed.
         this.captureLocals(cellIndex, getLocals);
     }
@@ -572,7 +563,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Does an automatic display of the last value.
     //
-    private __auto_display(value: any): void {
+    private __auto_display = (value: any): void => {
         this.display(value);
     }
 
@@ -594,7 +585,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     // Marks the evaluation of a new cell.
     // This is called in the async context of the notebook, be careful not to create any new async operations here.
     //
-    private __cell(cellIndex: number, cellId: string, cellCode: Function): void { 
+    private __cell = (cellIndex: number, cellId: string, cellCode: Function): void => { 
 
         // fs.writeSync(1, `%% Now evaluating cell [${cellIndex}]:${cellId}, current async context is ${executionAsyncId()}.\n`);
 

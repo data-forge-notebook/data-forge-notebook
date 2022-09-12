@@ -202,21 +202,16 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
 
         this.state = {};
 
-        this.onWindowResize = _.throttle(this.onWindowResize.bind(this), 400, { leading: false, trailing: true });
-        this.onSetFocus = this.onSetFocus.bind(this);
-        this.onSetCaretPosition = this.onSetCaretPosition.bind(this);
-        this.onTextChanged = this.onTextChanged.bind(this);
-        this.onFlushChanges = this.onFlushChanges.bind(this);
-        this.props.model.caretPositionProvider = this.caretPositionProvider.bind(this);
-        this.onFindNextMatch = this.onFindNextMatch.bind(this);
+        this.onWindowResize = _.throttle(this.onWindowResize, 400, { leading: false, trailing: true });
+        this.props.model.caretPositionProvider = this.caretPositionProvider;
         
         // Throttle is used to not just to prevent too many updates, but also because
         // on the first cursor change after the Monaco Editor is focused the caret is
         // at the start of the editor, even when you clicked in the middle of the editor and this
         // causes screwy automatic scrolling of the notebook.
         // Throttling this update removes the initial 'bad scroll' on editor focus.
-        this.onCursorPositionChanged = _.throttle(this.onCursorPositionChanged.bind(this), 100, { leading: false, trailing: true });
-        this.onChangeCursorSelection = _.throttle(this.onChangeCursorSelection.bind(this), 300, { leading: false, trailing: true });
+        this.onCursorPositionChanged = _.throttle(this.onCursorPositionChanged, 100, { leading: false, trailing: true });
+        this.onChangeCursorSelection = _.throttle(this.onChangeCursorSelection, 300, { leading: false, trailing: true });
     }
 
     private invokeNamedCommand(commandId: string) {
@@ -426,7 +421,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised on request to find the next match.
     //
-    private async onFindNextMatch(startingPosition: IEditorCaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails): Promise<void> {
+    private onFindNextMatch = async (startingPosition: IEditorCaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails): Promise<void> => {
         if (this.editorModel) {
             if (searchDirection === SearchDirection.Backward && startingPosition.lineNumber === -1) {
                 // Need to search from the end of this cell.
@@ -508,7 +503,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Flush text changes prior to saving.
     //
-    private async onFlushChanges(): Promise<void> {
+    private onFlushChanges = async (): Promise<void> => {
         const position = this.editor && this.editor.getPosition();
         await this.updateTextInModel.flush();
         if (this.editor) {
@@ -538,7 +533,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised the caret position changes.
     //
-    private onCursorPositionChanged() {
+    private onCursorPositionChanged = () => {
         if (this.containerElement.current) {
             if (!this.caretElement) {
                 this.caretElement = this.containerElement.current!.querySelector("textarea.inputarea"); // Get Monaco's caret.
@@ -585,7 +580,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised when selection has changed.
     //
-    private onChangeCursorSelection(event: any) {
+    private onChangeCursorSelection = (event: any) => {
         if (this.editorModel) {
             const selectedText = this.editorModel.getValueInRange(event.selection);
             this.props.model.setSelectedText(selectedText);
@@ -614,7 +609,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised to give this editor the focus.
     //
-    private async onSetFocus(cell: IMonacoEditorViewModel): Promise<void> {
+    private onSetFocus = async (cell: IMonacoEditorViewModel): Promise<void> => {
         if (this.editor) {
             this.editor.focus();
         }
@@ -623,7 +618,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Allows the view model to retreive the caret position.
     //
-    private caretPositionProvider(): IEditorCaretPosition | null {
+    private caretPositionProvider = (): IEditorCaretPosition | null => {
         if (this.editor) {
             return this.editor.getPosition();
         }
@@ -632,7 +627,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }
 
-    private async onSetCaretPosition(viewModel: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition): Promise<void> {
+    private onSetCaretPosition = async (viewModel: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition): Promise<void> => {
         if (this.editor) {
             if (caretPosition) {
                 this.editor.setPosition(caretPosition);
@@ -643,7 +638,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised when the text in the view model has changed.
     //
-    private async onTextChanged(): Promise<void> {
+    private onTextChanged = async (): Promise<void> => {
         if (!this.updatingCode) {
             if (this.editor) {
                 const updatedCode = this.props.model.getText();
@@ -708,7 +703,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }
     
-    private onWindowResize(): void {
+    private onWindowResize = (): void => {
         //console.log("Detected window resize, updating editor height.");
         if (this.editor) {
         	this.editor.layout();
