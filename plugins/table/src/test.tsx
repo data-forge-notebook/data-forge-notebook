@@ -20,7 +20,7 @@ class App extends React.Component<{}, IAppState> {
                 data: {
                     columnNames: [ "A", "B" ],
 
-                    data: [
+                    rows: [
                         {
                             A: 1,
                             B: 10,
