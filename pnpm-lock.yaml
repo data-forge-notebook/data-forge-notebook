@@ -84,9 +84,9 @@ importers:
       '@babel/preset-env': ^7.10.2
       '@babel/types': 7.9.5
       '@codecapers/fusion': 1.0.15
-      '@types/babel__core': 7.1.7
       '@types/babel-traverse': ^6.25.5
       '@types/babel-types': ^7.0.7
+      '@types/babel__core': 7.1.7
       '@types/fs-extra': ^5.0.4
       '@types/jest': ^27.5.1
       '@types/lodash': ^4.14.150
@@ -122,9 +122,9 @@ importers:
       typy: 3.3.0
       utils: link:../utils
     devDependencies:
-      '@types/babel__core': 7.1.7
       '@types/babel-traverse': 6.25.7
       '@types/babel-types': 7.0.11
+      '@types/babel__core': 7.1.7
       '@types/fs-extra': 5.1.0
       '@types/jest': 27.5.1
       '@types/lodash': 4.14.182
@@ -8049,7 +8049,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001316
+      caniuse-lite: 1.0.30001414
       electron-to-chromium: 1.4.82
       escalade: 3.1.1
       node-releases: 2.0.2
@@ -8061,7 +8061,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001344
+      caniuse-lite: 1.0.30001414
       electron-to-chromium: 1.4.141
       escalade: 3.1.1
       node-releases: 2.0.5
@@ -8276,12 +8276,12 @@ packages:
     resolution: {integrity: sha512-W2lPwkBkMZwFlPCXhIlYgxu+7gC/NUlCtdK652DAJ1JdgV0sTrvuPFshNPrFa1TY2JOkLhgdeEBplB4ezEa+xg==}
     dev: false
 
-  /caniuse-lite/1.0.30001316:
-    resolution: {integrity: sha512-JgUdNoZKxPZFzbzJwy4hDSyGuH/gXz2rN51QmoR8cBQsVo58llD3A0vlRKKRt8FGf5u69P9eQyIH8/z9vN/S0Q==}
-    dev: true
-
   /caniuse-lite/1.0.30001344:
     resolution: {integrity: sha512-0ZFjnlCaXNOAYcV7i+TtdKBp0L/3XEU2MF/x6Du1lrh+SRX4IfzIVL4HNJg5pB2PmFb8rszIGyOvsZnqqRoc2g==}
+    dev: true
+
+  /caniuse-lite/1.0.30001414:
+    resolution: {integrity: sha512-t55jfSaWjCdocnFdKQoO+d2ct9C59UZg4dY3OnUlSZ447r8pUtIKdp0hpAzrGFultmTC+Us+KpKi4GZl/LXlFg==}
 
   /capture-exit/2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
