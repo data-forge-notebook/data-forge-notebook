@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start:dev": "cross-env TARGET=./src/index.tsx webpack serve --open index.html --config webpack.config.js",
+    "start:dev": "cross-env TARGET=./src/index.tsx webpack serve --config webpack.config.js",
     "sd": "npm run start:dev",
     "start:test": "cross-env TARGET=./src/test.tsx webpack serve --open index.html --config webpack.config.js",
     "st": "npm run start:test",
