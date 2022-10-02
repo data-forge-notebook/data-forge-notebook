@@ -66,9 +66,12 @@ if (require.main === module) {
         process.exit(1);
     }
 
+    const projectDir = path.dirname(__dirname);
+    const outputDir = path.join(projectDir, `packages/plugins/data`);
+
     const pluginName = argv._[0];
     const portNo = parseInt(argv._[1]);
-    servePlugin(pluginName, portNo);
+    servePlugin(pluginName, portNo, outputDir);
 }
 else {
     module.exports = {
