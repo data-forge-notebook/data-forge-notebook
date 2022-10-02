@@ -40,6 +40,7 @@ module.exports = {
             directory: outputDir,
         },
         hot: false,
+        allowedHosts: "all",
     },
 
     resolve: {

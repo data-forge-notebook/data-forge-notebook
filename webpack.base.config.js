@@ -45,6 +45,7 @@ module.exports = function (env) {
                 directory: outputDir,
             },
             hot: false,
+            allowedHosts: "all",
         },
     
         resolve: {
