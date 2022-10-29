@@ -1,10 +1,14 @@
 import * as React from "react";
-import { InjectableClass } from "@codecapers/fusion";
-import { forceUpdate } from "browser-utils";
+import { InjectableClass, InjectProperty } from "@codecapers/fusion";
+import { forceUpdate, updateState } from "browser-utils";
 import { INotebookEditorViewModel } from "../../view-model/notebook-editor";
 import { NotebookUI } from "./notebook";
 import { Toolbar } from "../toolbar";
 import { HotkeysOverlay } from "../../components/hotkeys-overlay";
+import FuzzyPicker from "../../lib/fuzzy-picker/fuzzy-picker";
+import { ICommander, ICommanderId } from "../../services/commander";
+import { humanizeAccelerator, ICommand } from "../../services/command";
+import { IPlatform, IPlatformId } from "../../services/platform";
 
 export interface INotebookEditorProps {
     model: INotebookEditorViewModel;
@@ -20,16 +24,28 @@ export interface INotebookEditorState {
     // Records the initial tab to display in the settings dialog.
     //
     initialSettingsTab?: string;
+
+    //
+    // Set to true to display the cmd palette.
+    //
+    isCommandPaletteOpen: boolean;
 }
 
 @InjectableClass()
 export class NotebookEditor extends React.Component<INotebookEditorProps, INotebookEditorState> {
+
+    @InjectProperty(ICommanderId)
+    commander!: ICommander;
+
+    @InjectProperty(IPlatformId)
+    platform!: IPlatform;
 
     constructor (props: any) {
         super(props);
 
         this.state = {
             isSettingsOpen: false,
+            isCommandPaletteOpen: false,
         };
     }
 
@@ -43,14 +59,42 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
 
     componentDidMount() {
         this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
+        this.props.model.onToggleCommandPalette.attach(this.toggleCommandPalette);
 
         this.props.model.mount();
     }
 
     componentWillUnmount(): void {
         this.props.model.onOpenNotebookChanged.detach(this.onOpenNotebookChanged);
+        this.props.model.onToggleCommandPalette.detach(this.toggleCommandPalette);
 
         this.props.model.unmount();
+    }
+
+    private closeCommandPalette = async (): Promise<void> => {
+        await updateState(this, { isCommandPaletteOpen: false });
+    }
+
+    private toggleCommandPalette = async (): Promise<void> => {
+        await updateState(this, { isCommandPaletteOpen: !this.state.isCommandPaletteOpen });
+    }
+
+    private invokeCommand = async (command: ICommand): Promise<void> => {
+        const notebook = this.props.model.isNotebookOpen() ? this.props.model.getOpenNotebook() : undefined;
+        const selectedCell = notebook ? notebook.getSelectedCell() : undefined;
+
+        if (selectedCell) {
+            await this.commander.invokeCommand(command, { cell: selectedCell });
+        }
+        else {
+            await this.commander.invokeCommand(command);
+        }
+
+        if (command.getId() !== "toggle-command-palette") {
+            // Always close the command palette after a command is executed.
+            // Unless the command itself was the one that opened the command palette.
+            await this.closeCommandPalette();
+        }
     }
 
     render () {
@@ -89,6 +133,33 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                         
                     </div>
                 </div>
+
+                <FuzzyPicker
+                        label="Commands"
+                        isOpen={this.state.isCommandPaletteOpen}
+                        onClose={this.closeCommandPalette}
+                        autoCloseOnEnter={true}
+                        onChange={this.invokeCommand}
+                        items={this.commander.getCommands()}
+                        showAllItems={true}
+                        renderItem={(command: ICommand) => 
+                            <div className="flex flex-row">
+                                <div className="flex flex-col flex-grow">
+                                    <div>{command.getLabel().replace(/&/g, "")}</div>
+                                    <div
+                                        style={{
+                                            fontSize: "0.8em",
+                                        }}
+                                        >
+                                        {command.getDesc()}
+                                    </div>
+                                </div>
+                                <div>{humanizeAccelerator(command.getAccelerator(), this.platform)}</div>
+                            </div>    
+                        }
+                        itemValue={(command: ICommand) => command.getDesc()}
+                        pickExactItem={true}
+                        />
 
                 <HotkeysOverlay model={this.props.model} />
 

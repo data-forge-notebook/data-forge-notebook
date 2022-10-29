@@ -50,6 +50,8 @@
         "utils": "workspace:*",
         "uuid": "^8.3.2",
         "react-fps-stats": "^0.1.1",
-        "axios": "^0.18.1"
+        "axios": "^0.18.1",
+        "prop-types": "^15.6.2",
+        "fuzzysearch": "^1.0.3"
     }
 }

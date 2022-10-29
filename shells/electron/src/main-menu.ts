@@ -13,6 +13,7 @@ import "notebook-editor/build/actions/reload-notebook-action";
 import "notebook-editor/build/actions/save-notebook-action";
 import "notebook-editor/build/actions/save-notebook-as-action";
 import "notebook-editor/build/actions/toggle-hotkeys-action";
+import "notebook-editor/build/actions/toggle-command-palette-action";
 
 const devMenuTemplate = {
     label: "Development",
@@ -120,6 +121,13 @@ export class MainMenu implements IMainMenu {
             },
 
             {
+                label: "&View",
+                submenu: [
+                    this.createMenu("toggle-command-palette"),
+                ],
+            },
+
+            {
                 label: "&Run",
                 submenu: [
                     this.createMenu("eval-notebook"),
@@ -130,6 +138,7 @@ export class MainMenu implements IMainMenu {
                 label: "&Help",
                 submenu: [
                     this.createMenu("toggle-hotkeys"),
+                    
                 ],
             },
         ];

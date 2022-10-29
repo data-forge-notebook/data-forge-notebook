@@ -142,6 +142,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                     }
 
                     {makeButton(this.commander, "toggle-hotkeys", { pos: Position.BOTTOM }, this.platform)}
+                    {makeButton(this.commander, "toggle-command-palette", { pos: Position.BOTTOM }, this.platform)}
 
                     <span className="flex-grow ml-2" />
 

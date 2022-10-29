@@ -174,3 +174,13 @@ iframe {
     padding: 0;
     width: 100%;
 }
+
+.fuzzy-picker-background .fuzzy-picker {
+    max-width: 80% !important;
+    width: 80% !important;
+}
+
+.fuzzy-items {
+    max-height: 400px;
+    overflow: auto;
+}

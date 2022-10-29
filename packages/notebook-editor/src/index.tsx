@@ -23,6 +23,7 @@ import "./actions/save-notebook-action";
 import "./actions/save-notebook-as-action";
 import "./actions/reload-notebook-action";
 import "./actions/toggle-hotkeys-action";
+import "./actions/toggle-command-palette-action";
 
 import "./actions/undo-action";
 import "./actions/redo-action";

@@ -141,6 +141,17 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     //
     onOpenNotebookChanged: IEventSource<OpenNotebookChangedEventHandler>;
 
+    //
+    // Opens or closes the command palette.
+    //
+    toggleCommandPalette(): Promise<void>;
+
+    //
+    // Event raised to toggle the command palette.
+    //
+    onToggleCommandPalette: IEventSource<BasicEventHandler>;
+
+
 }
 
 @InjectableClass()
@@ -698,4 +709,16 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Event raised when the hotkeys overlay is opened or closed.
     //
     onHotkeysOverlayChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+    //
+    // Opens or closes the command palette.
+    //
+    async toggleCommandPalette(): Promise<void> {
+        await this.onToggleCommandPalette.raise();
+    }
+
+    //
+    // Event raised to toggle the command palette.
+    //
+    onToggleCommandPalette: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }

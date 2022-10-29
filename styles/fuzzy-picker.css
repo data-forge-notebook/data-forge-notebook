@@ -1,0 +1,56 @@
+.fuzzy-picker-background {
+  background: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 300px;
+  padding-top: 25vh;
+  z-index: 5000; }
+  .fuzzy-picker-background .fuzzy-picker {
+    max-width: 600px;
+    background: #FFF;
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    box-shadow: 0px 0px 16px #333;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column; }
+    .fuzzy-picker-background .fuzzy-picker .fuzzy-picker-top-text {
+      color: #AAA;
+      margin-top: 0.5em;
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      font-size: 0.8em;
+      user-select: none; }
+      .fuzzy-picker-background .fuzzy-picker .fuzzy-picker-top-text .fuzzy-picker-label {
+        float: left; }
+      .fuzzy-picker-background .fuzzy-picker .fuzzy-picker-top-text .fuzzy-picker-instructions {
+        float: right; }
+        .fuzzy-picker-background .fuzzy-picker .fuzzy-picker-top-text .fuzzy-picker-instructions span {
+          margin: 0.35em; }
+    .fuzzy-picker-background .fuzzy-picker input[type=text] {
+      border: 1px solid #DDD;
+      border-radius: 4px;
+      outline: none;
+      flex: 1;
+      font-size: 2.4em;
+      padding: 1rem;
+      margin: 0.5rem; }
+    .fuzzy-picker-background .fuzzy-picker ul {
+      list-style-type: none;
+      padding-left: 0px;
+      margin-top: 0.2em;
+      margin-bottom: 0.5em; }
+      .fuzzy-picker-background .fuzzy-picker ul li {
+        margin: 0.1em 0.5rem;
+        padding: 0.6em 0.5em;
+        border-radius: 4px;
+        cursor: pointer; }
+        .fuzzy-picker-background .fuzzy-picker ul li.selected {
+          background-color: #51c4c4;
+          color: #FFF; }
