@@ -166,11 +166,6 @@ export class CellViewModel implements ICellViewModel {
     }
 
     //
-    // Debounced version of onCodeChanged event handler.
-    //
-    private notifyTextChanged = debounceAsync(this, () => this.onTextChanged.raise(this), 1000);
-
-    //
     // Set the text for the cell.
     // Marks the text as dirty if changed.
     //
@@ -178,7 +173,7 @@ export class CellViewModel implements ICellViewModel {
 
         if (this.cell.setText(text)) {
             await this.notifyModified();
-            await this.notifyTextChanged();
+            await this.onTextChanged.raise(this);
             return true;
         }
 
@@ -411,8 +406,6 @@ export class CellViewModel implements ICellViewModel {
     // Notify the model it is about to be saved.
     //
     async flushChanges(): Promise<void> {
-        this.notifyTextChanged.flush();
-        
         await this.onFlushChanges.raise();
     }
 

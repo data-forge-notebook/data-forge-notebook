@@ -313,7 +313,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             100
         );   
 
-        this.updateTextInModel = debounceAsync(this, this.updateCode, 500);
+        this.updateTextInModel = debounceAsync(this, this.updateCode, 1000);
 
         this.onDidChangeModelContentDisposable = this.editor.onDidChangeModelContent(
             () => {
@@ -584,7 +584,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         if (this.editorModel) {
             const selectedText = this.editorModel.getValueInRange(event.selection);
             this.props.model.setSelectedText(selectedText);
-            this.props.model.setSelectedTextRange(event.selection);           
+            this.props.model.setSelectedTextRange(event.selection);
         }
     }
 
