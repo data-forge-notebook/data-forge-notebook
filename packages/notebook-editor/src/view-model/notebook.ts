@@ -769,7 +769,7 @@ export class NotebookViewModel implements INotebookViewModel {
         this.storageId = newNotebookId;
         this.readOnly = false;
         
-        this.log.info("Saved notebook as: " + newNotebookId.asPath());
+        this.log.info("Saved notebook: " + newNotebookId.displayName());
     }
 
     //

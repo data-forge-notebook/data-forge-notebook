@@ -109,7 +109,7 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     //
     // Save the notebook as a new file.
     //
-    saveNotebookAs(filePath?: string): Promise<void>;
+    saveNotebookAs(): Promise<void>;
 
     //
     // Reloads the current notebook.
@@ -311,7 +311,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             title: title,
             options: [SaveChoice.Save, SaveChoice.DontSave, SaveChoice.Cancel],
             msg: 
-                "Do you want to save changes that you made to " + this.notebook.getStorageId().asPath() +
+                "Do you want to save changes that you made to " + this.notebook.getStorageId().displayName() +
                 "\r\nIf you don't save your changes will be lost.",
         }) as SaveChoice;
 
@@ -440,10 +440,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return this.notebook!;
         }
         catch (err) {
-            this.log.error("Error opening notebook: " + notebookId.asPath());
+            this.log.error("Error opening notebook: " + notebookId.displayName());
             this.log.error(err & err.stack || err);
-            const msg = "Failed to open notebook: " + path.basename(notebookId.asPath())
-                + "\r\nFrom directory: " + path.dirname(notebookId.asPath())
+            const msg = "Failed to open notebook: " + path.basename(notebookId.displayName())
                 + "\r\nError: " + (err && (err.message || err.stack || err.toString()) || "unknown");
             this.notification.error(msg);
             return undefined;
@@ -474,14 +473,14 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Save the notebook as a new file.
     //
-    async saveNotebookAs(defaultLocation?: string): Promise<void> {
+    async saveNotebookAs(): Promise<void> {
         if (this.isWorking()) {
             this.notification.warn("Already working!");
             return;
         }
 
         const notebook = this.getOpenNotebook();
-        const newStorageId = await this.notebookRepository.showNotebookSaveAsDialog(notebook.getStorageId(), defaultLocation)
+        const newStorageId = await this.notebookRepository.showNotebookSaveAsDialog(notebook.getStorageId())
         if (!newStorageId) {
             // User cancelled.
             return;

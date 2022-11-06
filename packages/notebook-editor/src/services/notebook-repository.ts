@@ -11,9 +11,9 @@ export const INotebookRepositoryId = "INotebookRepository";
 export interface INotebookStorageId {
 
     //
-    // Get the id as a path.
+    // Get the display name of the file for the user.
     //
-    asPath(): string;
+    displayName(): string;
 }
 
 //
@@ -24,7 +24,8 @@ export interface INotebookRepository {
     //
     // Check if the requested notebook is already in storage.
     //
-    exists(notebookId: INotebookStorageId): Promise<boolean>;
+    //fio:
+    // exists(notebookId: INotebookStorageId): Promise<boolean>;
 
     //
     // Writes a notebook to storage.
@@ -49,5 +50,5 @@ export interface INotebookRepository {
     //
     // Shows a dialog to allow the user to save their notebook to a new location.
     //
-    showNotebookSaveAsDialog(existingNotebookId: INotebookStorageId | undefined, specifiedLocation?: string): Promise<INotebookStorageId | undefined>;
+    showNotebookSaveAsDialog(existingNotebookId: INotebookStorageId): Promise<INotebookStorageId | undefined>;
 }

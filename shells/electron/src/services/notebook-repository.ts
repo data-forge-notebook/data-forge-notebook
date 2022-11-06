@@ -14,7 +14,7 @@ export class NotebookStorageId implements INotebookStorageId {
     //
     // The file name for the notebook or 'untitled' for new notebooks.
     //
-    private fileName: string;
+    private fileName: string | undefined;
 
     //
     // The path that contains the notebook undefined for new notebooks that have never been saved.
@@ -28,22 +28,27 @@ export class NotebookStorageId implements INotebookStorageId {
         return new NotebookStorageId(path.basename(filePath), path.dirname(filePath));
     }
 
-    constructor(fileName: string, containingPath: string) {
+    constructor(fileName: string | undefined, containingPath: string) {
         this.fileName = fileName;
         this.containingPath = containingPath;
     }
 
     //
-    // Get the id as a path.
+    // Get the display name of the file for the user.
     //
-    asPath(): string {
-        return path.join(this.containingPath, this.fileName);
+    displayName(): string {
+        if (this.fileName === undefined) {
+            return "untitled";
+        }
+        else {
+            return path.join(this.containingPath, this.fileName);
+        }
     }
 
     //
     // Get the file name for the notebook or 'untitled' for new notebooks.
     //
-    getFileName(): string {
+    getFileName(): string | undefined {
         return this.fileName;
     }
 
@@ -67,13 +72,6 @@ export class NotebookStorageId implements INotebookStorageId {
     setContainingPath(path: string): void {
         this.containingPath = path;
     }
-
-    //
-    // Get the full path for this file.
-    //
-    getFullPath(): string {
-        return path.join(this.getContainingPath(), this.getFileName());
-    }
 }
 
 //
@@ -92,19 +90,16 @@ export class NotebookRepository implements INotebookRepository {
     idGenerator!: IIdGenerator;
 
     //
-    // Check if the requested notebook is already in storage.
-    //
-    async exists(notebookId: INotebookStorageId): Promise<boolean> {
-        const id = notebookId as NotebookStorageId;
-        return await this.file.exists(id.getFullPath());
-    }
-
-    //
     // Writes a notebook to storage.
     //
     async writeNotebook(notebook: ISerializedNotebook1, notebookId: INotebookStorageId): Promise<void> {
         const id = notebookId as NotebookStorageId;
-        await this.file.writeJsonFile(id.getFullPath(), notebook);
+        const fileName = id.getFileName();
+        if (fileName === undefined) {
+            throw new Error("Can't write notebook untitled notebook until the filename has been set in the notebook id.");
+        }
+        const fullPath = path.join(id.getContainingPath(), fileName);
+        await this.file.writeJsonFile(fullPath, notebook);
     }
 
     //
@@ -112,8 +107,13 @@ export class NotebookRepository implements INotebookRepository {
     //
     async readNotebook(notebookId: INotebookStorageId): Promise<{ data: ISerializedNotebook1, readOnly: boolean }> {
         const id = notebookId as NotebookStorageId;
-        const data = await this.file.readJsonFile(id.getFullPath());
-        const readOnly = await this.file.isReadOnly(id.getFullPath());
+        const fileName = id.getFileName();
+        if (fileName === undefined) {
+            throw new Error("Can't read notebook until the filename has been set in the notebook id.");
+        }
+        const fullPath = path.join(id.getContainingPath(), fileName);
+        const data = await this.file.readJsonFile(fullPath);
+        const readOnly = await this.file.isReadOnly(fullPath);
         return { data, readOnly };
     }
 
@@ -125,7 +125,7 @@ export class NotebookRepository implements INotebookRepository {
         const untitledProjectsPath = path.join(tmpDir, "untitled");
         const newUntitledProjectPath = path.join(untitledProjectsPath, this.idGenerator.genId());
         await this.file.ensureDir(newUntitledProjectPath);
-        return new NotebookStorageId("untitled", newUntitledProjectPath);
+        return new NotebookStorageId(undefined, newUntitledProjectPath);
     }
 
     //
@@ -144,10 +144,11 @@ export class NotebookRepository implements INotebookRepository {
     //
     // Shows a dialog to allow the user to save their notebook to a new location.
     //
-    async showNotebookSaveAsDialog(existingNotebookId: INotebookStorageId | undefined, specifiedLocation?: string): Promise<INotebookStorageId | undefined> {
+    async showNotebookSaveAsDialog(existingNotebookId: INotebookStorageId): Promise<INotebookStorageId | undefined> {
         const existingId = existingNotebookId as NotebookStorageId;
-        const defaultPath = existingId ? existingId.getContainingPath() : undefined;
-        const filePath = specifiedLocation || await this.dialogs.showFileSaveAsDialog("Save notebook", existingId.getFileName(), defaultPath, "Notebook file", "notebook");
+        const fileName = existingId.getFileName();
+        const containingPath = fileName !== undefined ? existingId.getContainingPath() : undefined;
+        const filePath = await this.dialogs.showFileSaveAsDialog("Save notebook", existingId.getFileName() || "", containingPath, "Notebook file", "notebook");
         if (!filePath) {
             return undefined;
         }
