@@ -18,7 +18,7 @@ describe('view-model / notebook-editor', () => {
         };
         notebookEditor.log = mockLog;
 
-        const mockNotebookId: any = { a: "notebook id", asPath: () => "/a/path" };
+        const mockNotebookId: any = { a: "notebook id", displayName: () => "/a/path" };
         const mockRepository: any = {
             makeUntitledNotebookId: () => mockNotebookId,
             readNotebook: async (notebookId: INotebookStorageId) => {
@@ -153,7 +153,7 @@ describe('view-model / notebook-editor', () => {
 
         let notebookWasLoaded = false;
 
-        const notebookToOpenId: any = { a: "another notebook id", asPath: () => "/a/path" };
+        const notebookToOpenId: any = { a: "another notebook id", displayName: () => "/a/path" };
         mockRepository.showNotebookOpenDialog = async () => notebookToOpenId;
         mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
             expect(notebookId).toBe(notebookToOpenId);
@@ -207,7 +207,7 @@ describe('view-model / notebook-editor', () => {
 
         let notebookWasLoaded = false;
 
-        const notebookToOpenId: any = { a: "another notebook id", asPath: () => "/a/path" };
+        const notebookToOpenId: any = { a: "another notebook id", displayName: () => "/a/path" };
         mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
             expect(notebookId).toBe(notebookToOpenId);
 
@@ -236,7 +236,7 @@ describe('view-model / notebook-editor', () => {
 
         notebookEditor.promptSave = jest.fn(async () => true);
 
-        const notebookToOpenId: any = { a: "another notebook id", asPath: () => "/a/path" };
+        const notebookToOpenId: any = { a: "another notebook id", displayName: () => "/a/path" };
         await notebookEditor.openSpecificNotebook(notebookToOpenId);
 
         expect(notebookEditor.promptSave).toHaveBeenCalledTimes(1);
@@ -274,7 +274,7 @@ describe('view-model / notebook-editor', () => {
 
         const { notebookEditor, notebook, mockRepository } = await createNotebookEditorWithNotebook();
 
-        const notebookToSaveId: any = { a: "another notebook id", asPath: () => "/a/path" };
+        const notebookToSaveId: any = { a: "another notebook id", displayName: () => "/a/path" };
         mockRepository.showNotebookSaveAsDialog = async () => notebookToSaveId;
 
         notebook.saveAs = jest.fn();

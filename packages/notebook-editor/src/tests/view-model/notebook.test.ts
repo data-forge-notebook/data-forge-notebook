@@ -66,7 +66,12 @@ describe('view-model / notebook', () => {
     //
     function createNotebookViewModel(mockNotebookModel: INotebook, mockCells: ICellViewModel[]) {
         
-        const mockStorageId: any = { a: "orig storage id" };
+        const mockStorageId: any = { 
+            a: "orig storage id",
+            displayName: () => {
+                return "a storage id";
+            },
+        };
         const notebook = new NotebookViewModel(mockStorageId, mockNotebookModel, mockCells, false, false, defaultNodejsVersion);
 
         const mockLog: any =  {
@@ -849,7 +854,7 @@ describe('view-model / notebook', () => {
 
         mockRepository.writeNotebook = jest.fn();
 
-        const newStorageId: any = { a: "new storage id", asPath: () => "a/path" };
+        const newStorageId: any = { a: "new storage id", displayName: () => "a/path" };
         await notebook.saveAs(newStorageId);
 
         expect(mockRepository.writeNotebook).toHaveBeenCalledTimes(1);
@@ -861,12 +866,12 @@ describe('view-model / notebook', () => {
         const { notebook } = createEmptyNotebook();
 
         await expectEventRaised(notebook, "onFlushChanges", async () => {
-            const newStorageId: any = { asPath: () => "a/path" };
+            const newStorageId: any = { displayName: () => "a/path" };
             await notebook.saveAs(newStorageId);
         });
     });
 
-    test("saving notebook resets modified flag", async () => {
+    test("saving notebook as resets modified flag", async () => {
 
         const { notebook } = createEmptyNotebook();
 
@@ -874,7 +879,9 @@ describe('view-model / notebook', () => {
 
         expect(notebook.isModified()).toBe(true);
 
-        const newStorageId: any = { asPath: () => "a/path" };
+        const newStorageId: any = { 
+            displayName: () => "a new path",
+        };
         await notebook.saveAs(newStorageId);
 
         expect(notebook.isModified()).toBe(false);

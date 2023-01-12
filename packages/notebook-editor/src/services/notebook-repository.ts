@@ -22,12 +22,6 @@ export interface INotebookStorageId {
 export interface INotebookRepository {
 
     //
-    // Check if the requested notebook is already in storage.
-    //
-    //fio:
-    // exists(notebookId: INotebookStorageId): Promise<boolean>;
-
-    //
     // Writes a notebook to storage.
     //
     writeNotebook(notebook: ISerializedNotebook1, notebookId: INotebookStorageId): Promise<void>;
