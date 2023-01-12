@@ -745,7 +745,7 @@ export class NotebookViewModel implements INotebookViewModel {
             throw new Error("The file for this notebook is readonly, it can't be saved this way.");
         }
         
-        this.log.info("Saving notebook: " + this.storageId.toString());
+        this.log.info("Saving notebook: " + this.storageId.displayName());
 
         if (this.isUnsaved()) {
             throw new Error("Notebook has never been saved before, use saveAs function for the first save.");
@@ -753,7 +753,7 @@ export class NotebookViewModel implements INotebookViewModel {
 
         await this._save(this.storageId);
         
-        this.log.info("Saved notebook: " + this.storageId.toString());
+        this.log.info("Saved notebook: " + this.storageId.displayName());
     }
 
     //
@@ -761,7 +761,7 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     async saveAs(newNotebookId: INotebookStorageId): Promise<void> {
     
-		this.log.info("Saving notebook as: " + newNotebookId.toString());
+		this.log.info("Saving notebook as: " + newNotebookId.displayName());
 
 		await this._save(newNotebookId);
 
