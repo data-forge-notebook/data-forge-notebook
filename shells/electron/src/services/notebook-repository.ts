@@ -2,7 +2,8 @@ import { InjectProperty, InjectableSingleton } from "@codecapers/fusion";
 import * as path from "path";
 import * as os from "os";
 import { IFile, IFileId } from "./file";
-import { INotebookRepository, INotebookRepositoryId, INotebookStorageId, IIdGenerator, IIdGeneratorId } from "notebook-editor";
+import { IIdGenerator, IIdGeneratorId } from "utils";
+import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { IDialogs, IDialogsId } from "./dialogs";
 import { ISerializedNotebook1 } from "model";
 

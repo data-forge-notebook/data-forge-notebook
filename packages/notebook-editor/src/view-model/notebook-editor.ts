@@ -3,8 +3,8 @@ import { BasicEventHandler, IEventSource, EventSource, ILogId, ILog } from "util
 import { CellError, CellOutput, CellScope, CellType } from "model";
 import { notebookVersion } from "model";
 import { ISerializedNotebook1 } from "model";
-import { IIdGenerator, IIdGeneratorId } from "../services/id-generator";
-import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "../services/notebook-repository";
+import { IIdGenerator, IIdGeneratorId } from "utils/src/lib/id-generator";
+import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { INotebookViewModel, NotebookViewModel } from "./notebook";
 import * as path from "path";
 import { IConfirmationDialog, IConfirmationDialogId } from "../services/confirmation-dialog";

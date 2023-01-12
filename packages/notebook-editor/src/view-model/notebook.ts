@@ -6,11 +6,10 @@ import { IEventSource, BasicEventHandler, EventSource, ILog, ILogId } from "util
 import { CellType, ICell } from "model";
 import { INotebook, Notebook } from "model";
 import { ISerializedNotebook1 } from "model";
-import * as path from "path";
 import { MarkdownCellViewModel } from "./markdown-cell";
 import { CellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel } from "./cell-output";
-import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "../services/notebook-repository";
+import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 export type TextChangedEventHandler = (cell: ICellViewModel) => Promise<void>;
 

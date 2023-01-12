@@ -1,6 +1,6 @@
 import { disableInjector } from "@codecapers/fusion";
 import { EventSource, BasicEventHandler } from "utils";
-import { INotebookStorageId } from "../../services/notebook-repository";
+import { INotebookStorageId } from "storage";
 import { NotebookEditorViewModel, SaveChoice } from "../../view-model/notebook-editor";
 import { expectEventRaised } from "../lib/utils";
 

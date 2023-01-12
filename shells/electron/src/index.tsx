@@ -8,7 +8,7 @@ import { instantiateSingleton, registerSingleton } from "@codecapers/fusion";
 
 import "./services/file";
 import "./services/confirmation-dialog";
-import "./services/dialogs";
+import "./services/dialogs.impl";
 import "./services/notebook-repository";
 import "./services/platform";
 
