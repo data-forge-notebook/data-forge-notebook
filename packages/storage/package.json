@@ -5,19 +5,11 @@
         "clean": "rm -rf build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "s": "pnpm run start",
         "c": "pnpm run compile",
-        "cw": "pnpm run compile:watch",
-        "t": "pnpm run test",
-        "tw": "pnpm run test:watch"
+        "cw": "pnpm run compile:watch"
     },
     "devDependencies": {
-        "@types/jest": "28.1.6",
         "@types/node": "^16.11.7",
-        "jest": "28.1.3",
-        "ts-jest": "28.0.7",
         "typescript": "^4.6.2"
     },
     "dependencies": {

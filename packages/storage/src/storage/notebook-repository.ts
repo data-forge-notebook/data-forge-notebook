@@ -39,7 +39,7 @@ export interface INotebookRepository {
     //
     // Shows a dialog to allow the user to choose a notebook to open.
     //
-    showNotebookOpenDialog(openFilePath?: string, directoryPath?: string): Promise<INotebookStorageId | undefined>;
+    showNotebookOpenDialog(directoryPath?: string): Promise<INotebookStorageId | undefined>;
 
     //
     // Shows a dialog to allow the user to save their notebook to a new location.

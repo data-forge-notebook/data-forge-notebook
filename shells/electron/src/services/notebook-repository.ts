@@ -1,6 +1,5 @@
 import { InjectProperty, InjectableSingleton } from "@codecapers/fusion";
 import * as path from "path";
-import * as os from "os";
 import { IFile, IFileId } from "./file";
 import { IIdGenerator, IIdGeneratorId } from "utils";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
@@ -26,7 +25,8 @@ export class NotebookStorageId implements INotebookStorageId {
     // Create a notebook storage ID from a full file path.
     //
     static fromFilePath(filePath: string): NotebookStorageId {
-        return new NotebookStorageId(path.basename(filePath), path.dirname(filePath));
+        const containingPath = path.dirname(filePath).replace(/\\/g, "/"); // Normalise the path for testing.
+        return new NotebookStorageId(path.basename(filePath), containingPath);
     }
 
     constructor(fileName: string | undefined, containingPath: string) {
@@ -122,7 +122,7 @@ export class NotebookRepository implements INotebookRepository {
     // Makes the id for a new untititled notebook.
     //
     async makeUntitledNotebookId(): Promise<INotebookStorageId> {
-        const tmpDir = path.join(os.tmpdir(), "dfntmp");
+        const tmpDir = path.join(this.file.getTemporaryDirectory(), "dfntmp");
         const untitledProjectsPath = path.join(tmpDir, "untitled");
         const newUntitledProjectPath = path.join(untitledProjectsPath, this.idGenerator.genId());
         await this.file.ensureDir(newUntitledProjectPath);
@@ -132,8 +132,8 @@ export class NotebookRepository implements INotebookRepository {
     //
     // Shows a dialog to allow the user to choose a notebook to open.
     //
-    async showNotebookOpenDialog(openFilePath?: string, directoryPath?: string): Promise<INotebookStorageId | undefined> {
-        const filePath = openFilePath ? openFilePath : await this.dialogs.showFileOpenDialog(directoryPath);
+    async showNotebookOpenDialog(directoryPath?: string): Promise<INotebookStorageId | undefined> {
+        const filePath = await this.dialogs.showFileOpenDialog(directoryPath);
         if (!filePath) {
             // User cancelled.
             return undefined;

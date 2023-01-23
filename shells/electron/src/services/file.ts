@@ -4,10 +4,11 @@
 
 import { InjectableSingleton } from "@codecapers/fusion";
 import * as fs from "fs-extra";
+import * as os from "os";
 
 export const IFileId = "IFile";
 
-export interface IFile   {
+export interface IFile {
 
     //
     // Creates the requested directory if it doesn't already exist.
@@ -43,6 +44,11 @@ export interface IFile   {
     // Determines if a specific file is read-only.
     //
     isReadOnly(filePath: string): Promise<boolean>;
+
+    //
+    // Gets the temporary directory for the current OS.
+    //
+    getTemporaryDirectory(): string;
 }
 
 
@@ -141,4 +147,12 @@ export class File implements IFile {
             });
         });
     }
+
+    //
+    // Gets the temporary directory for the current OS.
+    //
+    getTemporaryDirectory(): string {
+        return os.tmpdir();
+    }
+
 }

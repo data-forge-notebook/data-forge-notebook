@@ -94,7 +94,7 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     //
     // Open a notebook from a user-selected file.
     //
-    openNotebook(openFilePath?: string, directoryPath?: string): Promise<INotebookViewModel | undefined>;
+    openNotebook(directoryPath?: string): Promise<INotebookViewModel | undefined>;
 
     //
     // Open a notebook from a specific location.
@@ -383,7 +383,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Open a notebook from a user-selected file.
     //
-    async openNotebook(openFilePath?: string, directoryPath?: string): Promise<INotebookViewModel | undefined> {
+    async openNotebook(directoryPath?: string): Promise<INotebookViewModel | undefined> {
         if (this.isWorking()) {
             this.notification.warn("Already working!");
             return undefined;
@@ -394,7 +394,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return undefined;
         }
 
-        const notebookId = await this.notebookRepository.showNotebookOpenDialog(openFilePath, directoryPath);
+        const notebookId = await this.notebookRepository.showNotebookOpenDialog(directoryPath);
         if (!notebookId) {
             return undefined;
         }
