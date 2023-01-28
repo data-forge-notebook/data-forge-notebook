@@ -428,14 +428,14 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
 		await this.startBlockingTask();
 
-		this.log.info("Opening notebook: " + notebookId.toString());
+		this.log.info("Opening notebook: " + notebookId.displayName());
 
         try {
 			const { data, readOnly } = await this.notebookRepository.readNotebook(notebookId);
 			const notebook = NotebookViewModel.deserialize(notebookId, false, readOnly, defaultNodejsVersion, data);
 			await this.setNotebook(notebook, isReload);
 
-			this.log.info("Opened notebook: " + notebookId.toString());
+			this.log.info("Opened notebook: " + notebookId.displayName());
 
             return this.notebook!;
         }
