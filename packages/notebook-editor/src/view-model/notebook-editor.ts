@@ -364,7 +364,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 			await this.startBlockingTask();
         	
             try {
-                const newNotebookId = await this.notebookRepository.makeUntitledNotebookId();
+                const newNotebookId = this.notebookRepository.makeUntitledNotebookId();
                 const notebookTemplate = this.newNotebookTemplate(language, defaultNodejsVersion);
                 const notebook = NotebookViewModel.deserialize(newNotebookId, true, false, defaultNodejsVersion, notebookTemplate);
                 await this.setNotebook(notebook, false);

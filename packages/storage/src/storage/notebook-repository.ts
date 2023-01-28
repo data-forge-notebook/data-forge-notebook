@@ -34,7 +34,7 @@ export interface INotebookRepository {
     //
     // Makes the id for a new untititled notebook.
     //
-    makeUntitledNotebookId(): Promise<INotebookStorageId>;
+    makeUntitledNotebookId(): INotebookStorageId;
 
     //
     // Shows a dialog to allow the user to choose a notebook to open.

@@ -143,38 +143,6 @@ describe("electron / notebook-repository", () => {
             .toThrow();
     });
 
-    test("make untitled notebook id creates directory", async () => {
-
-        const tmpDirectory = "a/tmp/path";
-        const id = "1234";
-        const containingPath = path.join(tmpDirectory, "dfntmp", "untitled", id);
-
-        const mockFile: any = {
-            getTemporaryDirectory() {
-                return tmpDirectory;
-            },
-            ensureDir: jest.fn(),
-        };
-
-        const mockIdGenerator: any = {
-            genId() {
-                return id;
-            },
-        };
-
-        const notebookRepository = new NotebookRepository();
-        notebookRepository.file = mockFile;
-        notebookRepository.idGenerator = mockIdGenerator;
-        const notebookId = await notebookRepository.makeUntitledNotebookId();
-
-        expect(notebookId).toEqual({
-            fileName: undefined,
-            containingPath: containingPath,
-        });
-        expect(mockFile.ensureDir).toBeCalledTimes(1);
-        expect(mockFile.ensureDir).toBeCalledWith(containingPath);
-    });
-
     test("can cancel open dialog", async () => {
         const mockDialogs: any = {
             async showFileOpenDialog() {

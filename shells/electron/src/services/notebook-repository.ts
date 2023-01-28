@@ -19,7 +19,7 @@ export class NotebookStorageId implements INotebookStorageId {
     //
     // The path that contains the notebook undefined for new notebooks that have never been saved.
     //
-    private containingPath: string;
+    private containingPath: string | undefined;
 
     //
     // Create a notebook storage ID from a full file path.
@@ -29,7 +29,7 @@ export class NotebookStorageId implements INotebookStorageId {
         return new NotebookStorageId(path.basename(filePath), containingPath);
     }
 
-    constructor(fileName: string | undefined, containingPath: string) {
+    constructor(fileName: string | undefined, containingPath: string | undefined) {
         this.fileName = fileName;
         this.containingPath = containingPath;
     }
@@ -40,6 +40,9 @@ export class NotebookStorageId implements INotebookStorageId {
     displayName(): string {
         if (this.fileName === undefined) {
             return "untitled";
+        }
+        else if (this.containingPath === undefined) {
+            return this.fileName;
         }
         else {
             return path.join(this.containingPath, this.fileName);
@@ -63,7 +66,7 @@ export class NotebookStorageId implements INotebookStorageId {
     //
     // Get the path that contains the notebook undefined for new notebooks that have never been saved.
     //
-    getContainingPath(): string {
+    getContainingPath(): string | undefined {
         return this.containingPath;
     }
 
@@ -99,7 +102,11 @@ export class NotebookRepository implements INotebookRepository {
         if (fileName === undefined) {
             throw new Error("Can't write notebook untitled notebook until the filename has been set in the notebook id.");
         }
-        const fullPath = path.join(id.getContainingPath(), fileName);
+        const containingPath = id.getContainingPath();
+        if (containingPath === undefined) {
+            throw new Error("Can't write notebook until the containing path has been set in the notebook id.");
+        }
+        const fullPath = path.join(containingPath, fileName);
         await this.file.writeJsonFile(fullPath, notebook);
     }
 
@@ -112,7 +119,11 @@ export class NotebookRepository implements INotebookRepository {
         if (fileName === undefined) {
             throw new Error("Can't read notebook until the filename has been set in the notebook id.");
         }
-        const fullPath = path.join(id.getContainingPath(), fileName);
+        const containingPath = id.getContainingPath();
+        if (containingPath === undefined) {
+            throw new Error("Can't write notebook until the containing path has been set in the notebook id.");
+        }
+        const fullPath = path.join(containingPath, fileName);
         const data = await this.file.readJsonFile(fullPath);
         const readOnly = await this.file.isReadOnly(fullPath);
         return { data, readOnly };
@@ -121,12 +132,8 @@ export class NotebookRepository implements INotebookRepository {
     //
     // Makes the id for a new untititled notebook.
     //
-    async makeUntitledNotebookId(): Promise<INotebookStorageId> {
-        const tmpDir = path.join(this.file.getTemporaryDirectory(), "dfntmp");
-        const untitledProjectsPath = path.join(tmpDir, "untitled");
-        const newUntitledProjectPath = path.join(untitledProjectsPath, this.idGenerator.genId());
-        await this.file.ensureDir(newUntitledProjectPath);
-        return new NotebookStorageId(undefined, newUntitledProjectPath);
+    makeUntitledNotebookId(): INotebookStorageId {
+        return new NotebookStorageId(undefined, undefined);
     }
 
     //
