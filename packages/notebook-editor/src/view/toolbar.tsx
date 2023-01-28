@@ -116,7 +116,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                 }, 
                                 this.platform,
                                 { 
-                                    notebook                                         
+                                    notebook
                                 }, 
                                 isExecuting ? "executing" : "notExecuting"
                             )}

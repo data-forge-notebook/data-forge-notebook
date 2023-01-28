@@ -1,8 +1,7 @@
 import { InjectableSingleton } from "@codecapers/fusion";
-import * as electron from "electron";
 import { IConfirmationDialogId, IConfirmationDialog, IConfirmOptions } from "notebook-editor";
 
-const remote = (electron as any).remote || electron;
+const remote = require("@electron/remote");
 const dialog = remote.dialog;
 
 //
