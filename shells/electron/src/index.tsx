@@ -17,7 +17,7 @@ registerSingleton(ILogId, new ConsoleLog());
 
 const notebookRepository = instantiateSingleton<NotebookRepository>(INotebookRepositoryId);
 const storageId = notebookRepository.makeUntitledNotebookId();
-const notebookViewModel = NotebookViewModel.deserialize(storageId, false, false, "v16", testNotebook);
+const notebookViewModel = NotebookViewModel.deserialize(storageId, true, false, "v16", testNotebook);
 const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 
 function App() {

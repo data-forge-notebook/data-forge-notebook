@@ -323,7 +323,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return false; // Abort.
         }
 
-        return true; // Allow operation to procede.        
+        return true; // Allow operation to procede.
     }
     
     //
