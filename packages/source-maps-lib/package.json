@@ -1,0 +1,39 @@
+{
+    "name": "source-map-lib",
+    "version": "0.0.1",
+    "description": "A library for working with source maps with an emphasis on convenience and ease of use.",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "scripts": {
+        "start": "nodemon",
+        "start:dev": "nodemon",
+        "c": "npm run clean",
+        "clean": "rm -rf build/*",
+        "b": "npm run build",
+        "build": "tsc --incremental",
+        "bw": "npm run build:watch",
+        "build:watch": "tsc  --incremental --watch",
+        "prepublishOnly": "npm test && npm run clean && tsc",
+        "t": "npm run test",
+        "test": "jest --runInBand",
+        "tw": "npm run test:watch",
+        "test:watch": "jest --watch --runInBand"
+    },
+    "keywords": [],
+    "author": "ashley@codecapers.com.au",
+    "license": "MIT",
+    "dependencies": {
+        "moment": "^2.29.1",
+        "vlq": "^2.0.4"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.24",
+        "@types/node": "^14.17.5",
+        "jest": "^26.6.3",
+        "nodemon": "^2.0.12",
+        "source-map-support": "0.5.19",
+        "ts-jest": "^26.5.6",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.3.5"
+    }
+}
