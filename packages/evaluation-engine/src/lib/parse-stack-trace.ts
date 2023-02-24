@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { ISourceMap } from './source-map';
+import { ISourceMap } from 'source-map-lib';
+import { mapNotebookLocation } from './source-map';
 
 //
 // Had to write my own stack frame parser!
@@ -9,7 +10,7 @@ import { ISourceMap } from './source-map';
 export interface IStackFrame {
     functionName?: string;
     filePath: string;
-    lineNumber?: number;
+    line?: number;
     column?: number;
 }
 
@@ -20,14 +21,14 @@ export function parseFileLocator(fileLocator: string): IStackFrame {
     const fileLocatorParts = fileLocator.trim().split(":").map(part => part.trim());
 
     let column: number | undefined;
-    let lineNumber: number | undefined;
+    let line: number | undefined;
 
     if (fileLocatorParts.length >= 3) {
         column = parseInt(fileLocatorParts.pop()!);
     }
 
     if (fileLocatorParts.length >= 2) {
-        lineNumber = parseInt(fileLocatorParts.pop()!);
+        line = parseInt(fileLocatorParts.pop()!);
     }
 
     const filePath = fileLocatorParts.join(":");
@@ -40,8 +41,8 @@ export function parseFileLocator(fileLocator: string): IStackFrame {
         stackFrame.column = column;
     }
 
-    if (lineNumber !== undefined) {
-        stackFrame.lineNumber = lineNumber;
+    if (line !== undefined) {
+        stackFrame.line = line;
     }
 
     return stackFrame;
@@ -113,18 +114,12 @@ function getFunctionName(functionName: string | undefined): string {
 //
 // Translate a single stack frame for display.
 //
-export async function translateStackFrame(frame: any, onlyOriginal: boolean, sourceMap?: ISourceMap): Promise<string | undefined> {
-    frame = Object.assign({}, frame);
-    if (frame.lineNumber !== undefined && sourceMap !== undefined) {
-        const cellLine = await sourceMap.mapLine(frame.lineNumber, frame.column, onlyOriginal);
-        if (cellLine) {
-            frame.lineNumber = cellLine.lineNumber;
-
+export function translateStackFrame(frame: IStackFrame, sourceMap?: ISourceMap): string | undefined {
+    if (frame.line !== undefined && sourceMap !== undefined) {
+        const notebookLocation = mapNotebookLocation({ line: frame.line, column: frame.column || 1 }, sourceMap);
+        if (notebookLocation) {
             let displayFrame = "at " + getFunctionName(frame.functionName);
-            if (frame.lineNumber !== undefined) {
-                displayFrame += ", line " + frame.lineNumber;
-            }
-            
+            displayFrame += ", line " + notebookLocation.line;
             return displayFrame;
         }
     }
@@ -135,22 +130,26 @@ export async function translateStackFrame(frame: any, onlyOriginal: boolean, sou
 //
 // Translate a file:line location string.
 //
-export async function translateLocation(location: string, onlyOriginal: boolean, sourceMap?: ISourceMap): Promise<string | undefined> {
+export function translateLocation(location: string, sourceMap?: ISourceMap): string | undefined {
     const stackFrame = parseFileLocator(location);
-    return await translateStackFrame(stackFrame, onlyOriginal, sourceMap);
+    return translateStackFrame(stackFrame, sourceMap);
 }
 
 //
 // Translate a stack trace using a source map.
 //
-export async function translateStackTrace(stackTrace: string, fileName: string, sourceMap?: ISourceMap): Promise<string> {
+export function translateStackTrace(stackTrace: string, fileName: string, sourceMap?: ISourceMap): string {
     const stackFrames = parseStackTrace(stackTrace);
-    const translated = await Promise.all(
-        stackFrames
-            .filter((frame: any) => { //TODO: Bit of a hack here checking for the in memory file name.
-                return path.basename(frame.filePath) === fileName || frame.filePath === "/in-memory-file.ts" || frame.filePath === "/in-memory-file.js";
-            })
-            .map(frame => translateStackFrame(frame, false, sourceMap))
-    );
+    const translated: string[] = [];
+    for (const frame of stackFrames) {
+        if (path.basename(frame.filePath) === fileName 
+            || frame.filePath === "/in-memory-file.ts" 
+            || frame.filePath === "/in-memory-file.js") {
+            const displayFrame = translateStackFrame(frame, sourceMap);
+            if (displayFrame) {
+                translated.push(displayFrame);
+            }
+        }
+    }
     return translated.filter(frame => frame).join("\n");
 }

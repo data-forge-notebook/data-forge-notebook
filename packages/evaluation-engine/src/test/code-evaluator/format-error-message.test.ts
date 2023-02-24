@@ -1,14 +1,10 @@
 import "jest";
-import { SourceMapGenerator } from "../../lib/source-map";
 import { formatErrorMessage, ErrorSource } from "../../lib/format-error-message";
-import { SourceMap } from "../../lib/source-map";
-import * as path from "path";
+import { mergeSourceMaps, SourceMap } from "source-map-lib";
 
-SourceMapGenerator.init(path.join(__dirname, "../../../lib/source-map/lib/mappings.wasm"));
+describe("format error message", () => {
 
-describe.skip("format error message", () => {
-
-    it("format error message - syntax errror", async () => {
+    it("syntax errror", () => {
 
         const input = {
             "fileName": "error - syntax error.notebook",
@@ -27,25 +23,26 @@ describe.skip("format error message", () => {
             }
         };
 
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeSetup,
             undefined,
             input.errorMessage,
             undefined,
             input.errorStack,
-            await new SourceMap(input.sourceMap)
+            new SourceMap(input.sourceMap),
+            new SourceMap(input.sourceMap)
         );
 
         expect(msg).toEqual({
-            "display": "Unexpected token ;\r\nat <anonymous> (1)",
+            "display": "Unexpected token ;\r\nat Code cell, line 1",
             "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "location": "at <anonymous> (1)",
+            "location": "at Code cell, line 1",
             "stack": ""
         });
     });
 
-    it("format error message - typescript error", async () => {
+    it("typescript error", () => {
 
         const input = {
             "fileName": "error - typescript type error.notebook",
@@ -53,8 +50,8 @@ describe.skip("format error message", () => {
             "errorMessage": "Argument of type '\"Hello TypeScript!\"' is not assignable to parameter of type 'number'.",
             "errorLocation": {
                 "fileName": "C:/projects/data-forge-notebook/data-forge-notebook-dev/test/in-memory-file.ts",
-                "lineNumber": 7,
-                "columnNumber": 1,
+                "line": 7,
+                "column": 1,
             },
             "sourceMap": [
                 {
@@ -80,29 +77,27 @@ describe.skip("format error message", () => {
             ]
         };
 
-        const sourceMap = new SourceMap(input.sourceMap[0]);
-        sourceMap.addSourceMap(input.sourceMap[1])
-
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeSetup,
             undefined,
             input.errorMessage,
             input.errorLocation,
             undefined,
-            await sourceMap
+            new SourceMap(input.sourceMap[0]),
+            new SourceMap(mergeSourceMaps(input.sourceMap[0], input.sourceMap[1]))
         );
 
         expect(msg).toEqual({
-            "display": "Argument of type '\"Hello TypeScript!\"' is not assignable to parameter of type 'number'.\r\nat <anonymous> (5)",
+            "display": "Argument of type '\"Hello TypeScript!\"' is not assignable to parameter of type 'number'.\r\nat Code cell, line 5",
             "cellId": "f3c08f51-24e3-11e9-a63a-c97fe03898f5",
-            "location": "at <anonymous> (5)"
+            "location": "at Code cell, line 5"
         });
     });
 
-    it("format error message - a long error message", async () => {
+    it("a long error message", () => {
 
-        const input =     {
+        const input = {
             "fileName": "error - a long error message.notebook",
             "errorSource": "Code evaluation",
             "curCellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
@@ -120,24 +115,25 @@ describe.skip("format error message", () => {
             }
         };
 
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeEvaluation,
             input.curCellId,
             input.errorMessage,
             undefined,
             input.errorStack,
-            await new SourceMap(input.sourceMap)
+            new SourceMap(input.sourceMap),
+            new SourceMap(input.sourceMap)
         );
 
         expect(msg).toEqual({
-            "display": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \r\nat <anonymous> (1:11)",
+            "display": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \r\nat Code cell, line 1",
             "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "stack": "at <anonymous> (1:11)"
+            "stack": "at Code cell, line 1"
         });
     });
 
-    it("format error message - a deep stack error", async () => {
+    it("a deep stack error", () => {
 
         const input = {
             "fileName": "error - deep stack error.notebook",
@@ -158,24 +154,25 @@ describe.skip("format error message", () => {
             }
         };
 
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeEvaluation,
             input.curCellId,
             input.errorMessage,
             undefined,
             input.errorStack,
-            await new SourceMap(input.sourceMap)
+            new SourceMap(input.sourceMap),
+            new SourceMap(input.sourceMap)
         );
 
         expect(msg).toEqual({
-            "display": "my error!\r\nat inner (2:15)\nat outer (6:9)\nat <anonymous> (9:5)",
+            "display": "my error!\r\nat inner, line 2\nat outer, line 6\nat Code cell, line 9",
             "cellId": "7c5e7c60-1917-11e9-83a8-474ce3a39435",
-            "stack": "at inner (2:15)\nat outer (6:9)\nat <anonymous> (9:5)"
+            "stack": "at inner, line 2\nat outer, line 6\nat Code cell, line 9"
         });
     });
 
-    it("format error message - a module error", async () => {
+    it("a module error", () => {
 
         const input = {
             "fileName": "error - no module.notebook",
@@ -195,24 +192,25 @@ describe.skip("format error message", () => {
             }
         };
 
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeEvaluation,
             input.curCellId,
             input.errorMessage,
             undefined,
             input.errorStack,
-            await new SourceMap(input.sourceMap)
+            new SourceMap(input.sourceMap),
+            new SourceMap(input.sourceMap)
         );
 
         expect(msg).toEqual({
-            "display": "Cannot find module 'woburt'\r\nat <anonymous> (1:20)",
+            "display": "Cannot find module 'woburt'\r\nat Code cell, line 1",
             "cellId": "fff1e850-84de-11e8-bd48-252399c91c27",
-            "stack": "at <anonymous> (1:20)"
+            "stack": "at Code cell, line 1"
         });
     });
 
-    it("format error message - throwing an error object", async () => {
+    it("throwing an error object", () => {
 
         const input = {
             "fileName": "error - throwing a error object.notebook",
@@ -232,24 +230,25 @@ describe.skip("format error message", () => {
             }
         };
 
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeEvaluation,
             input.curCellId,
             input.errorMessage,
             undefined,
             input.errorStack,
-            await new SourceMap(input.sourceMap)
+            new SourceMap(input.sourceMap),
+            new SourceMap(input.sourceMap)
         );
 
         expect(msg).toEqual({
-            "display": "foobar\r\nat <anonymous> (1:11)",
+            "display": "foobar\r\nat Code cell, line 1",
             "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "stack": "at <anonymous> (1:11)"
+            "stack": "at Code cell, line 1"
         });
     });
 
-    it("format error message - throwing an error string", async () => {
+    it("throwing an error string", () => {
 
         const input = {
             "fileName": "error - throwing a string.notebook",
@@ -267,14 +266,15 @@ describe.skip("format error message", () => {
             }
         };
 
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeEvaluation,
             input.curCellId,
             undefined,
             undefined,
             undefined,
-            await new SourceMap(input.sourceMap)
+            new SourceMap(input.sourceMap),
+            new SourceMap(input.sourceMap)
         );
 
         expect(msg).toEqual({
@@ -283,7 +283,7 @@ describe.skip("format error message", () => {
         });
     });
     
-    it("format error message - undefined variable", async () => {
+    it("undefined variable", () => {
 
         const input = {
             "fileName": "error - undefined variable.notebook",
@@ -303,24 +303,25 @@ describe.skip("format error message", () => {
             }
         };
 
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeEvaluation,
             input.curCellId,
             input.errorMessage,
             undefined,
             input.errorStack,
-            await new SourceMap(input.sourceMap)
+            new SourceMap(input.sourceMap),
+            new SourceMap(input.sourceMap)
         );
 
         expect(msg).toEqual({
-            "display": "x is not defined\r\nat <anonymous> (2:5)",
+            "display": "x is not defined\r\nat Code cell, line 2",
             "cellId": "2a0bc262-84de-11e8-bd48-252399c91c27",
-            "stack": "at <anonymous> (2:5)"
+            "stack": "at Code cell, line 2"
         });
     });
 
-    it("format error message - unexpected identifier", async () => {
+    it("unexpected identifier", () => {
 
         const input = {
             "fileName": "error - unexpected identifier.notebook",
@@ -339,20 +340,21 @@ describe.skip("format error message", () => {
             },
         };
 
-        const msg = await formatErrorMessage(
+        const msg = formatErrorMessage(
             input.fileName,
             ErrorSource.CodeSetup,
             undefined,
             input.errorMessage,
             undefined,
             input.errorStack,
-            await new SourceMap(input.sourceMap)
+            new SourceMap(input.sourceMap),
+            new SourceMap(input.sourceMap)
         );
 
         expect(msg).toEqual({
-            "display": "Unexpected identifier\r\nat <anonymous> (1)",
+            "display": "Unexpected identifier\r\nat Code cell, line 1",
             "cellId": "1ea43181-7ae4-11e9-9e03-9bc4336b9353",
-            "location": "at <anonymous> (1)",
+            "location": "at Code cell, line 1",
             "stack": ""
         });
     });

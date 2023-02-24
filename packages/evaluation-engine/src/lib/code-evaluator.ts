@@ -6,7 +6,7 @@ import { CodeGenerator } from "./code-generator";
 import { ILog } from "utils";
 import * as vm from 'vm';
 import { formatErrorMessage, ErrorSource } from "./format-error-message";
-import { ISourceMap } from "./source-map";
+import { ISourceMap, mergeSourceMaps, SourceMap } from "source-map-lib";
 import { IFileLocation } from "./language-code-generator";
 import { ProjectGenerator } from "./project-generator";
 import { CellType } from "model";
@@ -207,9 +207,14 @@ export class CodeEvaluator implements ICodeEvaluator {
     private code?: string;
 
     //
-    // Source map for generated code.
+    // Original source map for generated code.
     //
-    private sourceMap?: ISourceMap;
+    private origSourceMap?: ISourceMap;
+
+    //
+    // Final source map for generated code.
+    //
+    private finalSourceMap?: ISourceMap;
 
     //
     // Puts maximum time on syncrhonous code execution before the process is terminated.
@@ -418,7 +423,7 @@ export class CodeEvaluator implements ICodeEvaluator {
                     await this.npm.ensureRequiredModules(cell.getText(), projectPath, false);
                 }
                 catch (err: any) {
-                    await this.reportError(ErrorSource.ModuleInstall, cell.getId(), err.message, err.stack);
+                    this.reportError(ErrorSource.ModuleInstall, cell.getId(), err.message, err.stack);
                 }
             }
         }
@@ -428,7 +433,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     // Handle an uncaught exception in the user's notebook.
     //
     private onUncaughtException = (err: Error): void => {
-        this.reportErrorSync(ErrorSource.CodeEvaluation, this.getCurCellId(), err.message, undefined, err.stack);
+        this.reportError(ErrorSource.CodeEvaluation, this.getCurCellId(), err.message, undefined, err.stack);
         this.onFinished();
     }
 
@@ -436,7 +441,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     // Handle an unhandled rejected promise in the users' notebook.
     //
     private onUnhandledRejection = (err: any, promise: Promise<any>): void => {
-        this.reportErrorSync(ErrorSource.CodeEvaluation, this.getCurCellId(), err && err.message, undefined, err && err.stack);
+        this.reportError(ErrorSource.CodeEvaluation, this.getCurCellId(), err && err.message, undefined, err && err.stack);
         this.onFinished();
     };
 
@@ -455,11 +460,6 @@ export class CodeEvaluator implements ICodeEvaluator {
         this.notebookFinished = true;
 
         this.restoreOutput();
-
-        if (this.sourceMap) {
-            this.sourceMap.destroy();
-            delete this.sourceMap;
-        }
 
         this.asyncTracker.deinit();
 
@@ -488,7 +488,7 @@ export class CodeEvaluator implements ICodeEvaluator {
             const runningTime = performance.now() - this.startTime!;
             if (runningTime > this.timeout) {
                 // Notebook has exceed its timeout.
-                this.reportErrorSync(ErrorSource.CodeEvaluation, this.getCurCellId(), "Notebook exceeded timeout", undefined, undefined);
+                this.reportError(ErrorSource.CodeEvaluation, this.getCurCellId(), "Notebook exceeded timeout", undefined, undefined);
                 this.onFinished();
                 return;
             }
@@ -614,12 +614,12 @@ export class CodeEvaluator implements ICodeEvaluator {
             try {
                 cellCode() // Run the cell code.
                     .catch((err: any) => { // Catch any direct async errors from the cell.
-                        this.reportErrorSync(ErrorSource.CodeEvaluation, cellId, err.message, undefined, err.stack);
+                        this.reportError(ErrorSource.CodeEvaluation, cellId, err.message, undefined, err.stack);
                         this.onFinished();
                     });
             }
             catch (err: any) { // Catch any direct non-async errors from the cell.
-                this.reportErrorSync(ErrorSource.CodeEvaluation, cellId, err.message, undefined, err.stack);
+                this.reportError(ErrorSource.CodeEvaluation, cellId, err.message, undefined, err.stack);
                 this.onFinished();
             }
         });
@@ -649,7 +649,7 @@ export class CodeEvaluator implements ICodeEvaluator {
             fn = vm.runInThisContext(this.code!, options);
         }
         catch (err: any) {
-            this.reportErrorSync(ErrorSource.CodeSetup, this.getCurCellId(), err.message, undefined, err.stack);
+            this.reportError(ErrorSource.CodeSetup, this.getCurCellId(), err.message, undefined, err.stack);
             return;
         }
 
@@ -672,12 +672,12 @@ export class CodeEvaluator implements ICodeEvaluator {
                 this.__auto_display
             )
             .catch((err: any) => {
-                this.reportErrorSync(ErrorSource.CodeEvaluation, this.getCurCellId(), err.message, undefined, err.stack);
+                this.reportError(ErrorSource.CodeEvaluation, this.getCurCellId(), err.message, undefined, err.stack);
                 this.onFinished();
             });
         }
         catch (err: any) {
-            this.reportErrorSync(ErrorSource.CodeEvaluation, this.getCurCellId(), err.message, undefined, err.stack);
+            this.reportError(ErrorSource.CodeEvaluation, this.getCurCellId(), err.message, undefined, err.stack);
             this.onFinished();
         }
 
@@ -706,7 +706,19 @@ export class CodeEvaluator implements ICodeEvaluator {
 
         const generatedCode = await codeGenerator.genCode(this.cells);
         this.code = generatedCode.code;
-        this.sourceMap = generatedCode.sourceMap;
+        if (generatedCode.sourceMapData.length > 0) {
+            this.origSourceMap = new SourceMap(generatedCode.sourceMapData[0]);
+            if (generatedCode.sourceMapData.length > 1) {
+                let mergedSourceMap = generatedCode.sourceMapData[0];
+                for (let i = 1; i < generatedCode.sourceMapData.length; ++i) {
+                    mergedSourceMap = mergeSourceMaps(mergedSourceMap, generatedCode.sourceMapData[i]);                    
+                }
+                this.finalSourceMap = new SourceMap(mergedSourceMap);
+            }
+            else {
+                this.finalSourceMap = this.origSourceMap;
+            }
+        }
 
         // if (this.code) {
         //     this.log.info("============= Generated code =============");
@@ -732,7 +744,7 @@ export class CodeEvaluator implements ICodeEvaluator {
 
         if (generatedCode.diagnostics && generatedCode.diagnostics.length) {
             for (const diagnostic of generatedCode.diagnostics) {
-                await this.reportError(ErrorSource.Compiler, this.getCurCellId(), diagnostic.message, diagnostic.location, undefined);
+                this.reportError(ErrorSource.Compiler, this.getCurCellId(), diagnostic.message, diagnostic.location, undefined);
             }
         }
     }
@@ -763,12 +775,12 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Report an error back to the user.
     //
-    private async reportError(
+    private reportError(
         errorSource: ErrorSource,
         curCellId: string, 
         errorMessage?: string, 
         errorLocation?: IFileLocation,
-        errorStack?: string): Promise<void> {
+        errorStack?: string): void {
 
         const fileName = this.fileName;
         this.log.info(`!! An error occurred while evaluating notebook "${fileName}" details follow.`);
@@ -797,7 +809,7 @@ export class CodeEvaluator implements ICodeEvaluator {
         //     sourceMap: this.sourceMap && this.sourceMap.getSourceMap(),
         // }, null, 4));
 
-        const errorMsg = await formatErrorMessage(fileName, errorSource, curCellId, errorMessage, errorLocation, errorStack, this.sourceMap);
+        const errorMsg = formatErrorMessage(fileName, errorSource, curCellId, errorMessage, errorLocation, errorStack, this.origSourceMap, this.finalSourceMap);
 
         this.log.info("== Translated error message and stack trace ==");
         this.log.info(JSON.stringify(errorMsg, null, 4));
@@ -807,18 +819,4 @@ export class CodeEvaluator implements ICodeEvaluator {
             this.onError(errorMsg.cellId!, errorMsg.display);
         }
     }    
-
-    //
-    // Report an error back to the user.
-    //
-    private reportErrorSync(
-        errorSource: ErrorSource,
-        curCellId: string, 
-        errorMessage?: string, 
-        errorLocation?: IFileLocation,
-        errorStack?: string): void {
-        handleAsyncErrors(async () => {
-            await this.reportError(errorSource, curCellId, errorMessage, errorLocation, errorStack);
-        });
-    }
 }   

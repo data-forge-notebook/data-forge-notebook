@@ -10,7 +10,7 @@ import { customPlugin } from "./babel-plugin";
 export interface ICompilationResult {
     code?: string;
     diagnostics: IDiagnostic[];
-    sourceMap?: any;
+    sourceMapData?: any;
 };
 
 //
@@ -66,8 +66,8 @@ function internalBabelCompile(log: ILog, code: string, babelConfig: TransformOpt
                             message,
                             location: {
                                 fileName: "in-memory-file.js",
-                                lineNumber: err && err.loc && err.loc.line,
-                                columnNumber: err && err.loc && err.loc.column,
+                                line: err && err.loc && err.loc.line,
+                                column: err && err.loc && err.loc.column,
                             },
                             source: "Babel",
                         },
@@ -79,7 +79,7 @@ function internalBabelCompile(log: ILog, code: string, babelConfig: TransformOpt
             resolve({
                 code: result!.code!,
                 diagnostics: [],
-                sourceMap: result!.map!,
+                sourceMapData: result!.map!,
             });
         });
     });

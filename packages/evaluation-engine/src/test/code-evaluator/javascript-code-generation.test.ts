@@ -48,7 +48,7 @@ describe("javascript code generation", () => {
         `);
 
         expect(trim(code.code!)).toEqual(expected);
-        expect(code.sourceMap).not.toBeUndefined();
+        expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
@@ -96,7 +96,7 @@ describe("javascript code generation", () => {
         `);
 
         expect(trim(code.code!)).toEqual(expected);
-        expect(code.sourceMap).not.toBeUndefined();
+        expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
@@ -144,7 +144,7 @@ describe("javascript code generation", () => {
         `);
 
         expect(trim(code.code!)).toEqual(expected);
-        expect(code.sourceMap).not.toBeUndefined();
+        expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
@@ -173,7 +173,7 @@ describe("javascript code generation", () => {
         `);
 
         expect(trim(code.code!)).toEqual(expected);
-        expect(code.sourceMap).not.toBeUndefined();
+        expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
@@ -211,7 +211,7 @@ describe("javascript code generation", () => {
         `);
 
         expect(trim(code.code!)).toEqual(expected);
-        expect(code.sourceMap).not.toBeUndefined();
+        expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
@@ -249,7 +249,7 @@ describe("javascript code generation", () => {
         `);
 
         expect(trim(code.code!)).toEqual(expected);
-        expect(code.sourceMap).not.toBeUndefined();
+        expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 

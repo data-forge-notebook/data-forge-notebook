@@ -1,7 +1,7 @@
 import { INotebook } from "model";
 import { ICell, CellType, CellScope } from "model";
 import { ILog } from "utils";
-import { SourceMapGenerator } from "./source-map";
+import { mergeSourceMaps, SourceMapGenerator } from "source-map-lib";
 import { ILanguageCodeGenerator, IGeneratedCode } from "./language-code-generator";
 import { babelCompile } from "./babel-compile";
 import { isModuleImportStatement } from "./npm";
@@ -140,7 +140,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
                 }
             }
 
-            sourceMapGenerator.addMappings(cellId, cellStartLine, cell.getText());
+            sourceMapGenerator.addMappings(cellId, cell.getText(), { line: cellStartLine, column: 0 });
             cellIndex += 1;
         }
 
@@ -176,7 +176,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
         return {
             code,
-            sourceMap: await sourceMapGenerator.makeSourceMap(),
+            sourceMapData: sourceMapGenerator.serialize(),
             diagnostics: [],
         };
     }
@@ -212,21 +212,25 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
         // log.info(JSON.stringify(generatedCode.sourceMap.getSourceMap(), null, 4));
         // log.info("==========================================");
 
+        const sourceMapData: any[] = [
+            generatedCode.sourceMapData,
+        ];
+
         const compilationResult = await babelCompile(this.log, generatedCode.code, this.projectPath);
+        if (compilationResult.sourceMapData) {
+            sourceMapData.push(compilationResult.sourceMapData);
+        }
+
         if (compilationResult.code === undefined) {
             // Some kind of error happened.
             return {
-                sourceMap: generatedCode.sourceMap,
+                sourceMapData: sourceMapData,
                 diagnostics: generatedCode.diagnostics
                     .concat(compilationResult.diagnostics)
             };
         }
 
         //await writeFile("./compiled.js", compilationResult.code);
-
-        if (compilationResult.sourceMap) {
-            generatedCode.sourceMap!.addSourceMap(compilationResult.sourceMap);
-        }
 
         //await writeFile("./compiled.js.map", JSON.stringify(generatedCode.sourceMap.getSourceMap(), null, 4));
 
@@ -240,7 +244,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
         return {
             code,
-            sourceMap: generatedCode.sourceMap,
+            sourceMapData: sourceMapData,
             diagnostics: generatedCode.diagnostics
                 .concat(compilationResult.diagnostics)
         };

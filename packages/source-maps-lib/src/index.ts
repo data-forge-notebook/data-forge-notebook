@@ -1,4 +1,5 @@
 import * as vlq from "vlq";
+const merge = require('merge-source-map');
 
 //
 // Maps a position in the generated file to to a position in the source file.
@@ -245,7 +246,7 @@ export class SourceMap implements ISourceMap {
     constructor(sourceMapData: any) { 
         this.sourceMapData = sourceMapData;
         this.mappings = parseMappings(sourceMapData.mappings || "");
-    }
+    }    
 
     //
     // Maps a generated file location to a source file location.
@@ -505,3 +506,11 @@ export class SourceMapGenerator implements ISourceMapGenerator {
     };
 
 }
+
+//
+// Merges two source maps.
+//
+export function mergeSourceMaps(sourceMapData1: any, sourceMapData2: any) {
+    return merge(sourceMapData1, sourceMapData2);
+}
+

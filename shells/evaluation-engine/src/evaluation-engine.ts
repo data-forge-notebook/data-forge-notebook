@@ -5,11 +5,8 @@ import { ISerializedCellOutput1 } from "model";
 import * as _ from "lodash";
 import { Npm } from "evaluation-engine";
 import * as path from "path";
-import { SourceMapGenerator } from "evaluation-engine";
 import { stringify } from "./lib/json";
 import { NOTEBOOK_TIMEOUT_MS } from "./config";
-
-SourceMapGenerator.init(path.join(__dirname, "../src/evaluation-engine/lib/source-map/lib/mappings.wasm"));
 
 //
 // Evaluate a series of cells in a notebook.

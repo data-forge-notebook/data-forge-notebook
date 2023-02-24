@@ -1,5 +1,5 @@
 import { ICell } from "model";
-import { ISourceMap } from "./source-map";
+import { ISourceMap } from "source-map-lib";
 
 export type CodeCellEventHandler = (cell: ICell) => Promise<void>;
 
@@ -16,12 +16,12 @@ export interface IFileLocation {
     //
     // Line number.
     //
-    lineNumber: number;
+    line: number;
 
     // 
     // Column number.
     //
-    columnNumber: number;
+    column: number;
 }
 
 //
@@ -59,7 +59,7 @@ export interface IGeneratedCode {
     // Maps generated code back to source code.
     // Or undefined if failed to generate code.
     //
-    sourceMap?: ISourceMap;
+    sourceMapData: any[];
 
     //
     // Array of diagnostic messages produced during compilation.

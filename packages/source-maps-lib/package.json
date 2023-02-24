@@ -7,13 +7,11 @@
     "scripts": {
         "start": "nodemon",
         "start:dev": "nodemon",
-        "c": "npm run clean",
         "clean": "rm -rf build/*",
-        "b": "npm run build",
-        "build": "tsc --incremental",
-        "bw": "npm run build:watch",
-        "build:watch": "tsc  --incremental --watch",
-        "prepublishOnly": "npm test && npm run clean && tsc",
+        "c": "npm run compile",
+        "compile": "tsc --incremental",
+        "cw": "npm run compile:watch",
+        "compile:watch": "tsc  --incremental --watch",
         "t": "npm run test",
         "test": "jest --runInBand",
         "tw": "npm run test:watch",
@@ -24,16 +22,17 @@
     "license": "MIT",
     "dependencies": {
         "moment": "^2.29.1",
-        "vlq": "^2.0.4"
+        "vlq": "^2.0.4",
+        "merge-source-map": "^1.1.0"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.24",
-        "@types/node": "^14.17.5",
-        "jest": "^26.6.3",
+        "@types/jest": "^27.5.1",
+        "@types/node": "^16.11.7",
+        "jest": "^28.1.0",
         "nodemon": "^2.0.12",
         "source-map-support": "0.5.19",
-        "ts-jest": "^26.5.6",
-        "ts-node": "^9.1.1",
-        "typescript": "^4.3.5"
+        "ts-jest": "^28.0.2",
+        "ts-node": "^10.7.0",
+        "typescript": "^4.6.4"
     }
 }

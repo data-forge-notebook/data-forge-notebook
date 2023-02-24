@@ -1,4 +1,4 @@
-import { IFilePosition, ISourceMap, parseMappings, serializeMappings, SourceMap, SourceMapGenerator } from "..";
+import { IFilePosition, ISourceMap, mergeSourceMaps, parseMappings, serializeMappings, SourceMap, SourceMapGenerator } from "..";
 import * as jqSourceMap from "./jquery-2.0.3.min.map.json";
 
 describe("test suite", () => {
@@ -617,5 +617,43 @@ describe("test suite", () => {
 
         const generatedSourceMap = map.serialize();
         expect(generatedSourceMap).toEqual(testMap);
+    });
+
+    test("can merge source maps", () => {
+
+        const sourceMapData1 = {
+            "version": 3,
+            "sources": [
+                "cell-f3c08f51-24e3-11e9-a63a-c97fe03898f5"
+            ],
+            "names": [],
+            "mappings": ";;CAAA;CACA;CACA;CACA;CACA",
+            "file": "",
+            "sourceRoot": ""
+        };
+
+        const sourceMapData2 = {
+            "version": 3,
+            "file": "in-memory-file.js",
+            "sourceRoot": "",
+            "sources": [
+                "in-memory-file.ts"
+            ],
+            "names": [],
+            "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA,CAAC,UAAgB,OAAiB,EAAE,UAAkB,EAAE,SAAiB,EAAE,OAAiB,EAAE,mBAA6B,EAAE,iBAA2B;;QAEpJ,SAAS,eAAe,CAAC,IAAY;YACjC,OAAO,CAAC,GAAG,CAAC,IAAI,CAAC,CAAC;QACtB,CAAC;;YAHL,mBAAmB,CAAC,sCAAsC,CAAC,CAAC;YAKxD,eAAe,CAAC,mBAAmB,CAAC,CAAC;YACzC,iBAAiB,CAAC,sCAAsC,CAAC,CAAC;;;;CAEzD,CAAC,CAAA"
+        };
+
+        const mergeSourceMapData = mergeSourceMaps(sourceMapData1, sourceMapData2);
+        expect(mergeSourceMapData).toEqual( {
+            "version": 3,
+            "sources": [
+                "cell-f3c08f51-24e3-11e9-a63a-c97fe03898f5",
+                "in-memory-file.ts"
+            ],
+            "names": [],
+            "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;QAAA,SAAA,eAAA,CAAA,IAAA;YACA,OAAA,CAAA,GAAA,CAAA,IAAA,CAAA,CAAA;QACA,CAAA;;;YAEA,eAAA,CAAA,mBAAA,CAAA,CAAA",
+            "file": "",
+            "sourceRoot": ""
+        });
     });
 });

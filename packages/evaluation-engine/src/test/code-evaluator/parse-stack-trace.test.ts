@@ -18,7 +18,7 @@ describe("parse stack trace", () => {
     it("can parse basic file locator", () => {
         expect(parseFileLocator("my-file:1:2")).toEqual({
             filePath: "my-file",
-            lineNumber: 1,
+            line: 1,
             column: 2,
         });
     });
@@ -26,7 +26,7 @@ describe("parse stack trace", () => {
     it("parsing file locator trims whitespace", () => {
         expect(parseFileLocator(" my-file : 1 : 2 ")).toEqual({
             filePath: "my-file",
-            lineNumber: 1,
+            line: 1,
             column: 2,
         });
     });
@@ -34,14 +34,14 @@ describe("parse stack trace", () => {
     it("can parse file locator with no column", () => {
         expect(parseFileLocator("my-file:1")).toEqual({
             filePath: "my-file",
-            lineNumber: 1,
+            line: 1,
         });
     });
 
     it("can parse file locator that has colons in the file path", () => {
         expect(parseFileLocator("my:file:1:2")).toEqual({
             filePath: "my:file",
-            lineNumber: 1,
+            line: 1,
             column: 2,
         });
     });
@@ -49,7 +49,7 @@ describe("parse stack trace", () => {
     it("can parse file locator with spaces in the file path", () => {
         expect(parseFileLocator("my file:1:2")).toEqual({
             filePath: "my file",
-            lineNumber: 1,
+            line: 1,
             column: 2,
         });
     });
@@ -105,7 +105,7 @@ describe("parse stack trace", () => {
         expect(parseStackTrace("at deep stack error.notebook:17:5")).toEqual([
             {
                 filePath: "deep stack error.notebook",
-                lineNumber: 17,
+                line: 17,
                 column: 5,
             },
         ]);
@@ -117,7 +117,7 @@ describe("parse stack trace", () => {
         expect(parseStackTrace(line)).toEqual([
             {
                 filePath: "C:\\projects\\data-forge-notebook\\data-forge-notebook\\src\\evaluator-server.ts",
-                lineNumber: 363,
+                line: 363,
                 column: 15,
             },
         ]);
@@ -129,7 +129,7 @@ describe("parse stack trace", () => {
             {
                 filePath: "deep stack error.notebook",
                 functionName: "woo",
-                lineNumber: 10,
+                line: 10,
                 column: 15,
             }
         ]);
@@ -142,7 +142,7 @@ describe("parse stack trace", () => {
             {
                 filePath: "C:\\projects\\data-forge-notebook\\data-forge-notebook\\ts-build\\evaluator-server.js",
                 functionName: "fulfilled",
-                lineNumber: 4,
+                line: 4,
                 column: 58,
             }
         ]);
@@ -172,24 +172,24 @@ describe("parse stack trace", () => {
         expect(parsed).toEqual([ 
             { 
                 filePath: 'deep stack error.notebook',
-                lineNumber: 10,
+                line: 10,
                 column: 15,
                 functionName: 'woo' 
             },
             { 
                 filePath: 'deep stack error.notebook',
-                lineNumber: 14,
+                line: 14,
                 column: 9,
                 functionName: 'blah' 
             },
             { 
                 filePath: 'deep stack error.notebook',
-                lineNumber: 17,
+                line: 17,
                 column: 5 
             },
             { 
                 filePath: "C:\\projects\\data-forge-notebook\\data-forge-notebook\\src\\evaluator-server.ts", 
-                lineNumber: 363, 
+                line: 363, 
                 column: 15 
             },
             { 
@@ -197,7 +197,7 @@ describe("parse stack trace", () => {
             },
             { 
                 filePath: 'C:\\projects\\data-forge-notebook\\data-forge-notebook\\ts-build\\evaluator-server.js',
-                lineNumber: 4,
+                line: 4,
                 column: 58,
                 functionName: 'fulfilled' 
             },
@@ -206,7 +206,7 @@ describe("parse stack trace", () => {
             },
             { 
                 filePath: 'internal/process/next_tick.js',
-                lineNumber: 188,
+                line: 188,
                 column: 7,
                 functionName: 'process._tickCallback' 
             } 
