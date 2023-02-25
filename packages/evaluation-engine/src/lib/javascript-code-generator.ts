@@ -140,7 +140,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
                 }
             }
 
-            sourceMapGenerator.addMappings(cellId, cell.getText(), { line: cellStartLine, column: 0 });
+            sourceMapGenerator.addMappings(`cell-${cellId}`, cell.getText(), { line: cellStartLine, column: 0 });
             cellIndex += 1;
         }
 

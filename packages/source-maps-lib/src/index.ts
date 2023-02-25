@@ -221,6 +221,16 @@ export interface ISourceLocation {
 export interface ISourceMap {
 
     //
+    // Retrieves the source map data.
+    //
+    getData(): any;
+
+    //
+    // Gets the mappings that have been parsed from the source map data.
+    //
+    getMappings(): IMapping[];
+
+    //
     // Maps a generated file location to a source file location.
     // Returns undefined when no corresponding source location exists.
     //
@@ -246,7 +256,21 @@ export class SourceMap implements ISourceMap {
     constructor(sourceMapData: any) { 
         this.sourceMapData = sourceMapData;
         this.mappings = parseMappings(sourceMapData.mappings || "");
-    }    
+    }
+
+    //
+    // Retrieves the source map data.
+    //
+    getData(): any {
+        return this.sourceMapData;
+    }
+
+    //
+    // Gets the mappings that have been parsed from the source map data.
+    //
+    getMappings(): IMapping[] {
+        return this.mappings;
+    }
 
     //
     // Maps a generated file location to a source file location.

@@ -796,8 +796,10 @@ export class CodeEvaluator implements ICodeEvaluator {
         this.log.info(errorLocation && JSON.stringify(errorLocation, null, 4) || "<no-location>");
         this.log.info("== Error stacktrace ==");
         this.log.info(errorStack || "<no-stack-trace>");
-        // this.log.info("== Error sourcemap ==");
-        // this.log.info(this.sourceMap && JSON.stringify(this.sourceMap.getSourceMap(), null, 4) || "<no-source-map>");
+        // this.log.info("== Orig sourcemap ==");
+        // this.log.info(this.origSourceMap && JSON.stringify(this.origSourceMap.getData(), null, 4) || "<no-source-map>");
+        // this.log.info("== Final sourcemap ==");
+        // this.log.info(this.finalSourceMap && JSON.stringify(this.finalSourceMap.getData(), null, 4) || "<no-source-map>");
 
         // this.log.info(JSON.stringify({
         //     fileName,
@@ -806,7 +808,8 @@ export class CodeEvaluator implements ICodeEvaluator {
         //     errorMessage,
         //     errorLocation,
         //     errorStack,
-        //     sourceMap: this.sourceMap && this.sourceMap.getSourceMap(),
+        //     origSourceMap: this.origSourceMap && this.origSourceMap.getData(),
+        //     finalSourceMap: this.finalSourceMap && this.finalSourceMap.getData(),
         // }, null, 4));
 
         const errorMsg = formatErrorMessage(fileName, errorSource, curCellId, errorMessage, errorLocation, errorStack, this.origSourceMap, this.finalSourceMap);

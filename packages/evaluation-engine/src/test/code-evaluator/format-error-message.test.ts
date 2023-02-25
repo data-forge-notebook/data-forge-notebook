@@ -133,6 +133,55 @@ describe("format error message", () => {
         });
     });
 
+    it("a long error message 2", () => {
+
+        const input = {
+            "fileName": "856e82cc-6a7a-4abd-bee2-34709cb37c58",
+            "errorSource": "Code evaluation",
+            "curCellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
+            "errorMessage": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey ",
+            "errorStack": "Error: foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \n    at 856e82cc-6a7a-4abd-bee2-34709cb37c58:5:11\n    at C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:615:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:202:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:607:26)\n    at wrapperFn (856e82cc-6a7a-4abd-bee2-34709cb37c58:4:3)\n    at 856e82cc-6a7a-4abd-bee2-34709cb37c58:11:10\n    at CodeEvaluator.evalGeneratedCode (C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:664:13)\n    at C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:766:26",
+            "origSourceMap": {
+                "version": 3,
+                "names": [],
+                "sources": [
+                    "cell-2a0bc263-84de-11e8-bd48-252399c91c27"
+                ],
+                "mappings": ";;AAAA"
+            },
+            "finalSourceMap": {
+                "version": 3,
+                "sources": [
+                    "cell-2a0bc263-84de-11e8-bd48-252399c91c27",
+                    "unknown"
+                ],
+                "names": [],
+                "mappings": ";;;;IAAA,MAAA,IAAA,KAAA,CAAA,kOAAA,CAAA",
+                "sourcesContent": [
+                    null,
+                    "const wrapperFn = (async function () {\r\n__cell(0, \"2a0bc263-84de-11e8-bd48-252399c91c27\", async () => {\r\nthrow new Error(\"foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \");\r\n__capture_locals(0, \"2a0bc263-84de-11e8-bd48-252399c91c27\", () => ({}));\r\n__end();\r\n});\r\n\r\n})"
+                ]
+            }
+        };
+
+        const msg = formatErrorMessage(
+            input.fileName,
+            ErrorSource.CodeEvaluation,
+            input.curCellId,
+            input.errorMessage,
+            undefined,
+            input.errorStack,
+            new SourceMap(input.origSourceMap),
+            new SourceMap(input.finalSourceMap)
+        );
+
+        expect(msg).toEqual({
+            "display": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \r\nat Code cell, line 1",
+            "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
+            "stack": "at Code cell, line 1"
+        });
+    });
+
     it("a deep stack error", () => {
 
         const input = {
@@ -282,7 +331,7 @@ describe("format error message", () => {
             "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27"
         });
     });
-    
+
     it("undefined variable", () => {
 
         const input = {
@@ -358,5 +407,5 @@ describe("format error message", () => {
             "stack": ""
         });
     });
-    
+
 });

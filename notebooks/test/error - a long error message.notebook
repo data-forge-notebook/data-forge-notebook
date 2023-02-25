@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "sheet": {
+        "id": "2a0bc261-84de-11e8-bd48-252399c91c27",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "2a0bc263-84de-11e8-bd48-252399c91c27",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "throw new Error(\"foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \");",
+                "lastEvaluationDate": "2020-03-18T13:38:18.331+10:00",
+                "output": [],
+                "errors": [
+                    {
+                        "msg": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \r\nat Code cell, line 1"
+                    }
+                ]
+            }
+        ]
+    }
+}
