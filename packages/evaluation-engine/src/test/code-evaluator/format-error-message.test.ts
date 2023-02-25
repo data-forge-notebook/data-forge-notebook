@@ -35,9 +35,9 @@ describe("format error message", () => {
         );
 
         expect(msg).toEqual({
-            "display": "Unexpected token ;\r\nat Code cell, line 1",
+            "display": "Unexpected token ;\r\n at Code cell, line 1",
             "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "location": "at Code cell, line 1",
+            "location": " at Code cell, line 1",
             "stack": ""
         });
     });
@@ -89,51 +89,13 @@ describe("format error message", () => {
         );
 
         expect(msg).toEqual({
-            "display": "Argument of type '\"Hello TypeScript!\"' is not assignable to parameter of type 'number'.\r\nat Code cell, line 5",
+            "display": "Argument of type '\"Hello TypeScript!\"' is not assignable to parameter of type 'number'.\r\n at Code cell, line 5",
             "cellId": "f3c08f51-24e3-11e9-a63a-c97fe03898f5",
-            "location": "at Code cell, line 5"
+            "location": " at Code cell, line 5"
         });
     });
 
     it("a long error message", () => {
-
-        const input = {
-            "fileName": "error - a long error message.notebook",
-            "errorSource": "Code evaluation",
-            "curCellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "errorMessage": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey ",
-            "errorStack": "Error: foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \n    at error - a long error message.notebook:4:11\n    at CodeEvaluator.<anonymous> (C:\\projects\\data-forge-notebook\\data-forge-notebook-dev\\src\\code-evaluator\\code-evaluator.ts:323:27)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\projects\\data-forge-notebook\\data-forge-notebook-dev\\ts-build\\code-evaluator\\code-evaluator.js:4:58)",
-            "sourceMap": {
-                "version": 3,
-                "sources": [
-                    "cell-2a0bc263-84de-11e8-bd48-252399c91c27"
-                ],
-                "names": [],
-                "mappings": ";;;CAAA",
-                "file": "",
-                "sourceRoot": ""
-            }
-        };
-
-        const msg = formatErrorMessage(
-            input.fileName,
-            ErrorSource.CodeEvaluation,
-            input.curCellId,
-            input.errorMessage,
-            undefined,
-            input.errorStack,
-            new SourceMap(input.sourceMap),
-            new SourceMap(input.sourceMap)
-        );
-
-        expect(msg).toEqual({
-            "display": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \r\nat Code cell, line 1",
-            "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "stack": "at Code cell, line 1"
-        });
-    });
-
-    it("a long error message 2", () => {
 
         const input = {
             "fileName": "856e82cc-6a7a-4abd-bee2-34709cb37c58",
@@ -176,30 +138,43 @@ describe("format error message", () => {
         );
 
         expect(msg).toEqual({
-            "display": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \r\nat Code cell, line 1",
+            "display": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \r\n at Code cell, line 1",
             "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "stack": "at Code cell, line 1"
+            "stack": " at Code cell, line 1"
         });
     });
 
     it("a deep stack error", () => {
 
         const input = {
-            "fileName": "error - deep stack error.notebook",
+            "fileName": "78b62053-ce9d-412e-b59f-2a9069ae49c7",
             "errorSource": "Code evaluation",
             "curCellId": "7c5e7c60-1917-11e9-83a8-474ce3a39435",
             "errorMessage": "my error!",
-            "errorStack": "Error: my error!\n    at inner (error - deep stack error.notebook:10:15)\n    at outer (error - deep stack error.notebook:14:9)\n    at error - deep stack error.notebook:17:5\n    at CodeEvaluator.<anonymous> (C:\\projects\\data-forge-notebook\\data-forge-notebook-dev\\src\\code-evaluator\\code-evaluator.ts:323:27)\n    at Generator.next (<anonymous>)\n    at fulfilled (C:\\projects\\data-forge-notebook\\data-forge-notebook-dev\\ts-build\\code-evaluator\\code-evaluator.js:4:58)",
-            "sourceMap": {
+            "errorStack": "Error: my error!\n    at inner (78b62053-ce9d-412e-b59f-2a9069ae49c7:13:15)\n    at outer (78b62053-ce9d-412e-b59f-2a9069ae49c7:17:9)\n    at 78b62053-ce9d-412e-b59f-2a9069ae49c7:20:7\n    at C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:615:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:202:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:607:26)\n    at 78b62053-ce9d-412e-b59f-2a9069ae49c7:11:5\n    at C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:615:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:202:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:607:26)",
+            "origSourceMap": {
                 "version": 3,
+                "names": [],
                 "sources": [
                     "cell-18f52840-1962-11e9-adfb-476805eddcf7",
                     "cell-7c5e7c60-1917-11e9-83a8-474ce3a39435"
                 ],
+                "mappings": ";;AAAA;AACA;AACA;;;ACFA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA"
+            },
+            "finalSourceMap": {
+                "version": 3,
+                "sources": [
+                    "cell-18f52840-1962-11e9-adfb-476805eddcf7",
+                    "cell-7c5e7c60-1917-11e9-83a8-474ce3a39435",
+                    "unknown"
+                ],
                 "names": [],
-                "mappings": ";;;CAAA;CACA;CACA;;;CCFA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA",
-                "file": "",
-                "sourceRoot": ""
+                "mappings": ";;;;IAAA,OAAA,CAAA,GAAA,CAAA,GAAA;IACA,OAAA,CAAA,GAAA,CAAA,GAAA;IACA,OAAA,CAAA,GAAA,CAAA,GAAA;;;;;MCFA,SAAA,KAAA,GAAA;QACA,MAAA,IAAA,KAAA,CAAA,WAAA,CAAA;MACA;;MAEA,SAAA,KAAA,GAAA;QACA,KAAA;MACA;;MAEA,KAAA",
+                "sourcesContent": [
+                    null,
+                    null,
+                    "const wrapperFn = (async function () {\r\n__cell(0, \"18f52840-1962-11e9-adfb-476805eddcf7\", async () => {\r\nconsole.log(\"1\")\r\nconsole.log(\"2\")\r\nconsole.log(\"3\")\r\n__capture_locals(0, \"18f52840-1962-11e9-adfb-476805eddcf7\", () => ({}));\r\n__cell(1, \"7c5e7c60-1917-11e9-83a8-474ce3a39435\", async () => {\r\nfunction inner() {\r\n    throw new Error(\"my error!\");\r\n}\r\n\r\nfunction outer() {\r\n    inner();\r\n}\r\n\r\nouter();\r\n__capture_locals(1, \"7c5e7c60-1917-11e9-83a8-474ce3a39435\", () => ({}));\r\n__end();\r\n});\r\n});\r\n\r\n})"
+                ]
             }
         };
 
@@ -210,14 +185,14 @@ describe("format error message", () => {
             input.errorMessage,
             undefined,
             input.errorStack,
-            new SourceMap(input.sourceMap),
-            new SourceMap(input.sourceMap)
+            new SourceMap(input.origSourceMap),
+            new SourceMap(input.finalSourceMap)
         );
 
         expect(msg).toEqual({
-            "display": "my error!\r\nat inner, line 2\nat outer, line 6\nat Code cell, line 9",
+            "display": "my error!\r\n at inner, line 2\n at outer, line 6\n at Code cell, line 9",
             "cellId": "7c5e7c60-1917-11e9-83a8-474ce3a39435",
-            "stack": "at inner, line 2\nat outer, line 6\nat Code cell, line 9"
+            "stack": " at inner, line 2\n at outer, line 6\n at Code cell, line 9"
         });
     });
 
@@ -253,9 +228,9 @@ describe("format error message", () => {
         );
 
         expect(msg).toEqual({
-            "display": "Cannot find module 'woburt'\r\nat Code cell, line 1",
+            "display": "Cannot find module 'woburt'\r\n at Code cell, line 1",
             "cellId": "fff1e850-84de-11e8-bd48-252399c91c27",
-            "stack": "at Code cell, line 1"
+            "stack": " at Code cell, line 1"
         });
     });
 
@@ -291,9 +266,9 @@ describe("format error message", () => {
         );
 
         expect(msg).toEqual({
-            "display": "foobar\r\nat Code cell, line 1",
+            "display": "foobar\r\n at Code cell, line 1",
             "cellId": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "stack": "at Code cell, line 1"
+            "stack": " at Code cell, line 1"
         });
     });
 
@@ -364,9 +339,9 @@ describe("format error message", () => {
         );
 
         expect(msg).toEqual({
-            "display": "x is not defined\r\nat Code cell, line 2",
+            "display": "x is not defined\r\n at Code cell, line 2",
             "cellId": "2a0bc262-84de-11e8-bd48-252399c91c27",
-            "stack": "at Code cell, line 2"
+            "stack": " at Code cell, line 2"
         });
     });
 
@@ -401,9 +376,9 @@ describe("format error message", () => {
         );
 
         expect(msg).toEqual({
-            "display": "Unexpected identifier\r\nat Code cell, line 1",
+            "display": "Unexpected identifier\r\n at Code cell, line 1",
             "cellId": "1ea43181-7ae4-11e9-9e03-9bc4336b9353",
-            "location": "at Code cell, line 1",
+            "location": " at Code cell, line 1",
             "stack": ""
         });
     });

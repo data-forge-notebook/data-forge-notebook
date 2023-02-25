@@ -101,14 +101,21 @@ export function parseStackTrace(stackTrace: string): IStackFrame[] {
 }
 
 //
+// Determine if the function is a code cell.
+//
+function isCodeCell(functionName: string | undefined): boolean {
+    return functionName === undefined || functionName === "__sync" || functionName === "wrapperFn";
+}
+
+//
 // Determine the name of the function.
 //
 function getFunctionName(functionName: string | undefined): string {
-    if (functionName === undefined || functionName === "__sync" || functionName === "wrapperFn") {
+    if (isCodeCell(functionName)) {
         return "Code cell";
     }
 
-    return functionName;
+    return functionName!;
 }
 
 //
@@ -150,6 +157,12 @@ export function translateStackTrace(stackTrace: string, fileName: string, source
                 translated.push(displayFrame);
             }
         }
+
+        if (isCodeCell(frame.functionName)) {
+            // Break out of the stack trace when we hit the code cell.
+            break;
+        }
     }
+
     return translated.filter(frame => frame).join("\n");
 }

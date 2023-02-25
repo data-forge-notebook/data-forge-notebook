@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "sheet": {
+        "id": "42d60d40-012a-11ea-aa01-75214a1b27b1",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "42d60d41-012a-11ea-aa01-75214a1b27b1",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "console.trace();",
+                "lastEvaluationDate": "2020-03-18T13:40:02.053+10:00",
+                "output": [],
+                "errors": [
+                    {
+                        "msg": "Trace: \n    at error - console trace.notebook:5:13\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook-git\\src\\common\\code-evaluator\\code-evaluator.ts:585:17\n    at AsyncResource.runInAsyncScope (async_hooks.js:173:16)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\data-forge-notebook-git\\src\\common\\code-evaluator\\code-evaluator.ts:577:26)\n    at wrapperFn (error - console trace.notebook:4:3)\n    at error - console trace.notebook:9:10\n    at CodeEvaluator.evalGeneratedCode (C:\\projects\\data-forge-notebook\\data-forge-notebook-git\\src\\common\\code-evaluator\\code-evaluator.ts:621:13)\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook-git\\src\\common\\code-evaluator\\code-evaluator.ts:725:34\n    at processTicksAndRejections (internal/process/task_queues.js:94:5)\n"
+                    }
+                ]
+            }
+        ]
+    }
+}
