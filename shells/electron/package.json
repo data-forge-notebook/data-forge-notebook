@@ -7,7 +7,7 @@
         "electron:dev": "pnpm run compile && concurrently --names=\"serve,electron\" --kill-others \"pnpm run serve\" \"pnpm run run-electron-dev\"",
         "build": "pnpm run compile && npm run pack",
         "run-electron-static": "cross-env ENTRY=../../electron/dist/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
-        "run-electron-dev": "wait-on http://localhost:8080/index.html && cross-env ENTRY=http://localhost:8080/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron  build/main.js",
+        "run-electron-dev": "wait-on --interval 2000 http://localhost:8080/index.html && cross-env ENTRY=http://localhost:8080/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron  build/main.js",
         "clean": "rm -rf ./dist build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
