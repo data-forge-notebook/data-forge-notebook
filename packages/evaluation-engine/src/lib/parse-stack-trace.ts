@@ -125,7 +125,7 @@ export function translateStackFrame(frame: IStackFrame, sourceMap?: ISourceMap):
     if (frame.line !== undefined && sourceMap !== undefined) {
         const notebookLocation = mapNotebookLocation({ line: frame.line, column: frame.column || 1 }, sourceMap);
         if (notebookLocation) {
-            let displayFrame = "at " + getFunctionName(frame.functionName);
+            let displayFrame = " at " + getFunctionName(frame.functionName);
             displayFrame += ", line " + notebookLocation.line;
             return displayFrame;
         }
