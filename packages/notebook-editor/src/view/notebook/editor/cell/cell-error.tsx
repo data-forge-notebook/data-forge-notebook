@@ -22,13 +22,9 @@ export class CellErrorUI extends React.Component<ICellErrorProps, {}> {
     render () {
         return (
             <ErrorBorder>
-                {this.props.msg
-                    .split("\n")
-                    .map((line, index) => 
-                        <div key={index}>
-                            {line.trim()}
-                        </div>
-                )}
+                <pre>
+                    {this.props.msg}
+                </pre>
             </ErrorBorder>
         );
     }
