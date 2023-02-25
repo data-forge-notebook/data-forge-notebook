@@ -30,8 +30,6 @@
         "lodash": "^4.17.10",
         "model": "workspace:*",
         "utils": "workspace:*",
-        "inline-source-map": "^0.6.2",
-        "merge-source-map": "^1.1.0",
         "typy": "^3.3.0",
         "@codecapers/fusion": "1.0.15",
         "source-map-lib": "workspace:*"
