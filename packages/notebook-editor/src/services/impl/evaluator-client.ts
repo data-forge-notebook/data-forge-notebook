@@ -110,7 +110,7 @@ export class EvaluatorClient implements IEvaluatorClient {
     //
     // Evaluates the entire notebook.
     //
-    evalNotebook(notebookId: string, notebook: ISerializedNotebook1, ): void {
+    evalNotebook(notebookId: string, notebook: ISerializedNotebook1): void {
         console.log(`Eval notebook`); 
 
         this.startEvaluation(notebookId, notebook);

@@ -24,7 +24,7 @@ export interface IEvaluatorClient {
     //
     // Evaluates the entire notebook.
     //
-    evalNotebook(notebookId: string, notebook: ISerializedNotebook1, ): void;
+    evalNotebook(notebookId: string, notebook: ISerializedNotebook1): void;
 
     //
     // Event raised on a message from the evaluation engin.

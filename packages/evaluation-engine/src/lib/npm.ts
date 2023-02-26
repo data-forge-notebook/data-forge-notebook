@@ -293,14 +293,12 @@ export class Npm implements INpm {
 
         const installs: Promise<void | string | undefined>[] = [];
         
-        installs.push(this.invokeNpm(projectPath, args));
+        await this.invokeNpm(projectPath, args);
 
         if (installExtras) {
-            installs.push(this.installPeerDeps(moduleNames, projectPath, saveDev, noBinLinks));
-            installs.push(this.installTypeDefs(moduleNames, projectPath));
+            await this.installPeerDeps(moduleNames, projectPath, saveDev, noBinLinks);
+            await this.installTypeDefs(moduleNames, projectPath);
         }
-
-        await Promise.all(installs);
     }
 
     private async installTypeDefs(moduleNames: string[], projectPath: string) {
@@ -312,9 +310,9 @@ export class Npm implements INpm {
     }
 
     private async installPeerDeps(moduleNames: string[], projectPath: string, saveDev: boolean, noBinLinks: boolean) {
-        await Promise.all(
-            moduleNames.map(moduleName => this.ensurePeerDependenciesInstalled(moduleName, projectPath, saveDev, noBinLinks))
-        );
+        for (const moduleName of moduleNames) {
+            await this.ensurePeerDependenciesInstalled(moduleName, projectPath, saveDev, noBinLinks);
+        }
     }
 
     //
