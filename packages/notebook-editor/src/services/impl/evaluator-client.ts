@@ -30,6 +30,11 @@ interface IEvaluateNotebookPayload {
     // Set to true to evaluate only the single cell and no others.
     //
     singleCell?: boolean;
+
+    //
+    // The containing path of the notebook (if known).
+    //
+    containingPath?: string;
 }
 
 //
@@ -118,34 +123,34 @@ export class EvaluatorClient implements IEvaluatorClient {
     //
     // Evaluate up to a particular cell.
     //
-    evalToCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string): void {
+    evalToCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string, containingPath?: string): void {
         console.log(`Eval to cell ${cellId}`); 
 
-        this.startEvaluation(notebookId, notebook, cellId, false);
+        this.startEvaluation(notebookId, notebook, cellId, false, containingPath);
     }
 
     //
     // Evaluate up a single cell.
     //
-    evalSingleCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string): void {
+    evalSingleCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string, containingPath?: string): void {
         console.log(`Eval single cell ${cellId}`); 
 
-        this.startEvaluation(notebookId, notebook, cellId, true);
+        this.startEvaluation(notebookId, notebook, cellId, true, containingPath);
     }
 
     //
     // Evaluates the entire notebook.
     //
-    evalNotebook(notebookId: string, notebook: ISerializedNotebook1): void {
+    evalNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void {
         console.log(`Eval notebook`); 
 
-        this.startEvaluation(notebookId, notebook);
+        this.startEvaluation(notebookId, notebook, undefined, undefined, containingPath);
     }
 
     //
     // Starts notebook evaluation in the backend.
     //
-    private startEvaluation(notebookId: string, notebook: ISerializedNotebook1, cellId?: string, singleCell?: boolean) {
+    private startEvaluation(notebookId: string, notebook: ISerializedNotebook1, cellId?: string, singleCell?: boolean, containingPath?: string) {
         this.notebookId = notebookId;
         this.startMessagePump();
 
@@ -154,6 +159,7 @@ export class EvaluatorClient implements IEvaluatorClient {
             notebook: notebook,
             cellId: cellId,
             singleCell: singleCell,
+            containingPath: containingPath,
         };
 
         axios.post(`${baseUrl}/evaluate`, evaluateNotebookPayload)

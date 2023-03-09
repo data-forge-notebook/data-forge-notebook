@@ -14,17 +14,17 @@ export interface IEvaluatorClient {
     //
     // Evaluate up to a particular cell.
     //
-    evalToCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string): void;
+    evalToCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string, containingPath?: string): void;
 
     //
     // Evaluate up a single cell.
     //
-    evalSingleCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string): void;
+    evalSingleCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string, containingPath?: string): void;
 
     //
     // Evaluates the entire notebook.
     //
-    evalNotebook(notebookId: string, notebook: ISerializedNotebook1): void;
+    evalNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void;
 
     //
     // Event raised on a message from the evaluation engin.

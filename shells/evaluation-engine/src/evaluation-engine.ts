@@ -13,7 +13,7 @@ import { NOTEBOOK_TIMEOUT_MS } from "./config";
 //
 export function evaluateNotebook(process: NodeJS.Process, projectPath: string, notebook: INotebook, cells: ICell[], onEvent: (name: string, args: any) => void, done: (err?: any) => void): void {
 
-    console.log("Evaluating " + cells.length + " cells in notebook " + notebook.getInstanceId());
+    console.log(`Evaluating ${cells.length} cells in notebook ${notebook.getInstanceId()} in folder ${projectPath}.`);
     
     const log = {
         info: (msg: string): void => {

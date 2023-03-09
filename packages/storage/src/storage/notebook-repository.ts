@@ -14,6 +14,11 @@ export interface INotebookStorageId {
     // Get the display name of the file for the user.
     //
     displayName(): string;
+
+    //
+    // Gets the containing path of the notebook (if known).
+    //
+    getContainingPath(): string | undefined;
 }
 
 //

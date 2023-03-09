@@ -140,6 +140,7 @@ api.post("/evaluate", (req, res) => {
         notebook: body.notebook,
         cellId: body.cellId,
         singleCell: body.singleCell || false,
+        containingPath: body.containingPath,
     };
     forkEvalWorker(evaluateNotebookMsg);
 

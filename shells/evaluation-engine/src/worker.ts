@@ -41,6 +41,11 @@ export interface IEvaluateNotebookMsg extends IWorkerMsg {
     // Set to true to evaluate only the single cell and no others.
     //
     singleCell?: boolean;
+
+    //
+    // The containing path of the notebook, if known.
+    //
+    containingPath?: string;
 }
 
 const msg: IWorkerMsg = JSON.parse(process.env.INIT as string);
@@ -67,7 +72,7 @@ async function main(): Promise<void> {
     if (msg.cmd === "eval-notebook") {
         const evaluateNotebookMsg = msg as IEvaluateNotebookMsg;
         const notebookId = evaluateNotebookMsg.notebookId;
-        const projectPath = `./tmp/notebooks/${notebookId}`;
+        const projectPath = evaluateNotebookMsg.containingPath || `./tmp/notebooks/${notebookId}`;
         await fs.ensureDir(projectPath); 
 
         const notebook = Notebook.deserialize(evaluateNotebookMsg.notebook);

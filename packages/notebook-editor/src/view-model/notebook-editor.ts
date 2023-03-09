@@ -550,7 +550,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         await notebook.flushChanges();
 
-        this.evaluator.evalNotebook(notebook.getInstanceId(), notebook.serialize());
+        this.evaluator.evalNotebook(notebook.getInstanceId(), notebook.serialize(), notebook.getStorageId().getContainingPath());
     }
 
     //
