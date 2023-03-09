@@ -2,6 +2,7 @@ import * as express from "express";
 import { NOTEBOOK_TIMEOUT_MS } from "./config";
 import * as path from "path";
 import { PerformanceObserverCallback } from "perf_hooks";
+import { IEvaluateNotebookMsg, IWorkerMsg } from "./worker";
 const cluster = require("cluster");
 
 const api: express.Router = express.Router();
@@ -87,6 +88,7 @@ api.post("/test-death", (req, res) => {
     
     forkEvalWorker({
         cmd: "test-death",
+        notebookId: "test-death",
     });
 
     res.status(200).end();
@@ -100,6 +102,7 @@ api.post("/test-exception", (req, res) => {
 
     forkEvalWorker({
         cmd: "test-exception",
+        notebookId: "test-exception",
     });
 
     res.status(200).end();
@@ -113,6 +116,7 @@ api.post("/test-long", (req, res) => {
 
     forkEvalWorker({
         cmd: "test-long",
+        notebookId: "test-long",
     });
 
     res.status(200).end();
@@ -130,13 +134,14 @@ api.post("/evaluate", (req, res) => {
     // Kill any existing workers before starting a new evaluation.
     killWorkers(body.notebookId);
 
-    forkEvalWorker({
+    const evaluateNotebookMsg: IEvaluateNotebookMsg = {
         cmd: "eval-notebook",
         notebookId: body.notebookId,
         notebook: body.notebook,
         cellId: body.cellId,
         singleCell: body.singleCell || false,
-    });
+    };
+    forkEvalWorker(evaluateNotebookMsg);
 
     res.status(200).end();
 });
@@ -157,7 +162,7 @@ api.post("/stop-evaluation", (req, res) => {
 //
 // Work a worker to do an evaluation.
 //
-function forkEvalWorker(msg: any): void {
+function forkEvalWorker(msg: IWorkerMsg): void {
 
     const notebookId = msg.notebookId;
 

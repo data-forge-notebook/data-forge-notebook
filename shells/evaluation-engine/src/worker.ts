@@ -2,7 +2,7 @@
 // A worker process for evaluating code.
 //
 
-import { Notebook } from "model";
+import { ISerializedNotebook1, Notebook } from "model";
 import { evaluateNotebook } from "./evaluation-engine";
 import * as fs from "fs-extra";
 import { sleep } from "utils";
@@ -13,7 +13,37 @@ if (!workerId) {
     process.exit(1);
 }
 
-const msg = JSON.parse(process.env.INIT as string);
+export interface IWorkerMsg {
+    //
+    // The command to invoke in the worker.
+    //
+    cmd: string;
+
+    //
+    // The ID of the notebook to be evaluated.
+    //
+    notebookId: string;
+}
+
+export interface IEvaluateNotebookMsg extends IWorkerMsg {
+
+    //
+    // The notebook to evaluate.
+    //
+    notebook: ISerializedNotebook1;
+
+    //
+    // Optional ID of the cell to evaluate.
+    //
+    cellId?: string;
+
+    //
+    // Set to true to evaluate only the single cell and no others.
+    //
+    singleCell?: boolean;
+}
+
+const msg: IWorkerMsg = JSON.parse(process.env.INIT as string);
 
 // console.log(`Started worker ${workerId} from ${__dirname}/${__filename}`);
 // console.log(`With args:`);
@@ -35,22 +65,22 @@ global.process.send = () => true;
 async function main(): Promise<void> {
     
     if (msg.cmd === "eval-notebook") {
-    
-        const notebookId = msg.notebookId;
+        const evaluateNotebookMsg = msg as IEvaluateNotebookMsg;
+        const notebookId = evaluateNotebookMsg.notebookId;
         const projectPath = `./tmp/notebooks/${notebookId}`;
         await fs.ensureDir(projectPath); 
 
-        const notebook = Notebook.deserialize(msg.notebook);
+        const notebook = Notebook.deserialize(evaluateNotebookMsg.notebook);
 
         let cells;
-        if (msg.cellId) {
-            if (msg.singleCell) {
-                const cell = notebook.findCell(msg.cellId);
+        if (evaluateNotebookMsg.cellId) {
+            if (evaluateNotebookMsg.singleCell) {
+                const cell = notebook.findCell(evaluateNotebookMsg.cellId);
                 if (cell) {
                     cells = [ cell ];
                 }
                 else {
-                    throw new Error(`Failed to find cell ${msg.cellId}`);
+                    throw new Error(`Failed to find cell ${evaluateNotebookMsg.cellId}`);
                 }
             }
             else {
@@ -58,14 +88,14 @@ async function main(): Promise<void> {
                 cells = [];
                 for (const cell of notebook.getCells()) {
                     cells.push(cell);
-                    if (cell.getId() === msg.cellId) {
+                    if (cell.getId() === evaluateNotebookMsg.cellId) {
                         foundCell = true;
                         break;
                     }
                 }
             
                 if (!foundCell) {
-                    throw new Error(`Failed to find cell ${msg.cellId}`);
+                    throw new Error(`Failed to find cell ${evaluateNotebookMsg.cellId}`);
                 }
             }
         }

@@ -18,18 +18,23 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
     const log = {
         info: (msg: string): void => {
             onEvent("debug-log", { level: "info", msg });
+            console.log(msg);
         },
         warn: (msg: string): void => {
             onEvent("debug-log", { level: "warn", msg });
+            console.warn(msg);
         },
         error: (msg: string): void => {
             onEvent("debug-log", { level: "error", msg });
+            console.error(msg);
         },
         verbose: (msg: string): void => {
             onEvent("debug-log", { level: "verbose", msg });
+            console.log(msg);
         },
         debug: (msg: string): void => {
             onEvent("debug-log", { level: "debug", msg });
+            console.log(msg);
         },
     };
 
@@ -59,6 +64,7 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
     );
 
     console.log(`Evaluating notebook in path ${projectPath}.`);
+    console.log(`Working directory: ${process.cwd()}`);
 
     const npm = new Npm(path.dirname(process.argv0), "./tmp/cache", log);
     const codeEvaluator = new CodeEvaluator(process, notebook, cells, `notebook-${notebook.getInstanceId()}`, projectPath, npm, log, NOTEBOOK_TIMEOUT_MS);

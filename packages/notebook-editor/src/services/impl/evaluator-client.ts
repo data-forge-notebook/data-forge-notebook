@@ -7,6 +7,32 @@ import { EvaluationEventHandler, IEvaluatorClient, IEvaluatorId } from "../evalu
 const baseUrl = process.env.EVALUATION_ENGINE_URL as string;
 
 //
+// Payload to the /evaluate endpoint in the evaluation engine that evaluates a notebook.
+//
+interface IEvaluateNotebookPayload {
+
+    //
+    // The ID of the notebook to be evaluated.
+    //
+    notebookId: string;
+
+    //
+    // The notebook to evaluate.
+    //
+    notebook: ISerializedNotebook1;
+
+    //
+    // Optional ID of the cell to evaluate.
+    //
+    cellId?: string;
+
+    //
+    // Set to true to evaluate only the single cell and no others.
+    //
+    singleCell?: boolean;
+}
+
+//
 // App-side client to the code evaluator.
 //
 @InjectableSingleton(IEvaluatorId)
@@ -123,12 +149,14 @@ export class EvaluatorClient implements IEvaluatorClient {
         this.notebookId = notebookId;
         this.startMessagePump();
 
-        axios.post(`${baseUrl}/evaluate`, {
-                notebookId: notebookId,
-                notebook: notebook,
-                cellId: cellId,
-                singleCell: singleCell,
-            })
+        const evaluateNotebookPayload: IEvaluateNotebookPayload = {
+            notebookId: notebookId,
+            notebook: notebook,
+            cellId: cellId,
+            singleCell: singleCell,
+        };
+
+        axios.post(`${baseUrl}/evaluate`, evaluateNotebookPayload)
             .catch((err: any) => {
                 console.error(`API failed:`);
                 console.error(err && err.stack || err);
