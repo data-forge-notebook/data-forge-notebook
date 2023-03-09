@@ -801,6 +801,7 @@ export class CodeEvaluator implements ICodeEvaluator {
         // this.log.info("== Final sourcemap ==");
         // this.log.info(this.finalSourceMap && JSON.stringify(this.finalSourceMap.getData(), null, 4) || "<no-source-map>");
 
+        // this.log.info("== Exports data for testing ==");
         // this.log.info(JSON.stringify({
         //     fileName,
         //     errorSource,
