@@ -18,7 +18,11 @@ registerSingleton(IConfirmationDialogId, {
 
 registerSingleton(ILogId, new ConsoleLog());
 
-const mockId: any = {};
+const mockId: any = {
+    getContainingPath() {
+        return undefined; 
+    },
+};
 const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
 const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 
