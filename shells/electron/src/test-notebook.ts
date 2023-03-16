@@ -26,7 +26,7 @@ export const testNotebook: ISerializedNotebook1 = {
         {
             "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
             "cellType": CellType.Code,
-            "cellScope": CellScope.Local,
+            "cellScope": CellScope.Global,
             "code": "let data = \"Whatever you want to log!\";\r\nconsole.log(data);",
             "lastEvaluationDate": "2020-06-22T17:23:59.889+10:00",
             "output": [
@@ -53,7 +53,7 @@ export const testNotebook: ISerializedNotebook1 = {
         {
             "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
             "cellType": CellType.Code,
-            "cellScope": CellScope.Local,
+            "cellScope": CellScope.Global,
             "code": "data = { array: [1, 2, 3, 4], object: { A: 1, B: \"hello\" } };\r\ndisplay(data);",
             "lastEvaluationDate": "2020-06-22T17:24:08.138+10:00",
             "output": [
@@ -91,7 +91,7 @@ export const testNotebook: ISerializedNotebook1 = {
         {
             "id": "31ae9260-a804-11e8-b3eb-53e94e633165",
             "cellType": CellType.Code,
-            "cellScope": CellScope.Local,
+            "cellScope": CellScope.Global,
             "code": "const datakit = require('datakit');\r\ndata = await datakit.readCsv(\"./example.csv\");\r\ndisplay.table(data.slice(0, 5));",
             "lastEvaluationDate": "2020-06-22T17:24:12.040+10:00",
             "output": [
@@ -163,7 +163,7 @@ export const testNotebook: ISerializedNotebook1 = {
         {
             "id": "24ef35e0-f3ce-11e9-97b7-a975ba8f6456",
             "cellType": CellType.Code,
-            "cellScope": CellScope.Local,
+            "cellScope": CellScope.Global,
             "code": "data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay.plot(data);",
             "lastEvaluationDate": "2020-06-22T17:24:12.895+10:00",
             "output": [
@@ -311,7 +311,7 @@ export const testNotebook: ISerializedNotebook1 = {
         {
             "id": "3736bd70-a804-11e8-b3eb-53e94e633165",
             "cellType": CellType.Code,
-            "cellScope": CellScope.Local,
+            "cellScope": CellScope.Global,
             "code": "data = await datakit.readCsv(\"./example.csv\");\r\ndisplay.plot(data);",
             "lastEvaluationDate": "2020-06-22T17:24:13.431+10:00",
             "output": [
