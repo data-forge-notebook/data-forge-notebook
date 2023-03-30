@@ -30,10 +30,13 @@ jobs:
         run: pnpm install
 
       - name: Compile
-        run: pnpm run compile        
+        run: pnpm run compile
+      
+      - name: Buid plugins
+        run: pnpm run build-plugins
 
       - name: Run tests
-        run: pnpm test        
+        run: pnpm test
       
       - name: Build browser
         run: pnpm run build-browser   

@@ -38,6 +38,24 @@ A birds eye view of this project:
         └───testbed ---------------- A custom testbed for UI components.
 ```
 
+## Quickstart - Electron
+
+```bash
+cd editor-core
+pnpm install
+pnpm run compile
+pnpm run electron:dev
+```
+
+## Quickstart - Browser
+
+```bash
+cd editor-core
+pnpm install
+pnpm run compile
+pnpm run start
+```
+
 ## Setup 
 
 Clone this repo locally, open a terminal and change to the local directory.
@@ -56,6 +74,29 @@ Install dependencies for this project:
 pnpm install
 ```
 
+ see the changes.
+
+## Compile all packages
+
+Before you should do anything you should compile all TypeScript code to JavaScript. You only have to do this once at the start and you only need to recompile packages when you change code in them.
+
+```bash
+pnpm run compile
+```
+
+You can also compile all packages in watch mode which can be useful if you are changing code and want them to recompile automatically:
+
+```bash
+pnpm run compile:watch
+```
+
+## Build plugins
+
+For static builds, you must also build the web pages for all plugins:
+
+```bash
+pnpm run build-plugins
+```
 ## Run the browser shell
 
 This runs the whole notebook editor in the browser.
@@ -66,7 +107,7 @@ pnpm start
 
 It is runs in "dev" mode with live reload enabled.
 
-The plugins (which are complete web pages in their own right) and also served in "dev" mode from the `./plugins` directory. You can edit the code for the plugins, but you might have to manually refresh the browser to see the changes.
+The plugins (which are complete web pages in their own right) and also served in "dev" mode from the `./plugins` directory. You can edit the code for the plugins, but you might have to manually refresh the browser to
 
 ## Build a static web page
 
@@ -108,12 +149,6 @@ Storybox showcases various configurations for UI components.
 
 ```bash
 pnpm run storybook
-```
-
-## Build the TypeScript code
-
-```bash
-pnpm run compile
 ```
 
 Compiled JavaScript code is output to the `build` subdirectory for each project.
