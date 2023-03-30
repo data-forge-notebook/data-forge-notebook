@@ -6,8 +6,8 @@
         "electron:static": "pnpm run build && pnpm run run-electron-static",
         "electron:dev": "pnpm run compile && concurrently --names=\"serve,electron\" --kill-others \"pnpm run serve\" \"pnpm run run-electron-dev\"",
         "build": "pnpm run compile && npm run pack",
-        "run-electron-static": "cross-env ENTRY=../../electron/dist/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
-        "run-electron-dev": "wait-on --interval 2000 http://localhost:8080/index.html && cross-env ENTRY=http://localhost:8080/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron  build/main.js",
+        "run-electron-static": "cross-env EDITOR_HTML=../../electron/dist/index.html WORKER_HTML=../../electron/dist/worker.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
+        "run-electron-dev": "wait-on --interval 2000 http://localhost:8080 && cross-env EDITOR_HTML=http://localhost:8080/index.html WORKER_HTML=http://localhost:8080/worker.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
         "clean": "rm -rf ./dist build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
@@ -24,6 +24,7 @@
         "tw": "pnpm run test:watch"
     },
     "devDependencies": {
+        "@types/minimist": "^1.2.2",
         "@types/fs-extra": "^9.0.13",
         "@types/jest": "28.1.6",
         "@types/node": "^16.11.7",
@@ -39,6 +40,7 @@
         "wait-on": "6.0.1"
     },
     "dependencies": {
+        "minimist": "^1.2.5",
         "@codecapers/fusion": "1.0.15",
         "@electron/remote": "^2.0.8",
         "model": "workspace:*",

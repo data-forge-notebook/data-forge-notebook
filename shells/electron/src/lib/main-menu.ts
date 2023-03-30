@@ -2,7 +2,7 @@ import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions } from "electron";
 import { commandTable, expandAccelerator } from "notebook-editor/build/services/command";
 import { IPlatform, IPlatformId } from "notebook-editor/build/services/platform";
-import { ILog, ILogId } from "utils";
+import { BasicEventHandler, IEventSource, EventSource, ILog, ILogId } from "utils";
 
 import "notebook-editor/build/actions/new-notebook-action";
 import "notebook-editor/build/actions/eval-notebook-action";
@@ -14,6 +14,7 @@ import "notebook-editor/build/actions/save-notebook-action";
 import "notebook-editor/build/actions/save-notebook-as-action";
 import "notebook-editor/build/actions/toggle-hotkeys-action";
 import "notebook-editor/build/actions/toggle-command-palette-action";
+import { IWindowManager, IWindowManagerId } from "./window-manager";
 
 const devMenuTemplate = {
     label: "Development",
@@ -40,6 +41,11 @@ export interface IMainMenu {
     // Switch to the main editor menu.
     //
     buildEditorMenu(): void;
+
+    //
+    // Event raised when there is a request to open a new editor window.
+    //
+    onNewEditorWindow: IEventSource<BasicEventHandler>;
 }
 
 @InjectableClass()
@@ -50,6 +56,9 @@ export class MainMenu implements IMainMenu {
 
     @InjectProperty(IPlatformId)
     platform!: IPlatform;
+
+    @InjectProperty(IWindowManagerId)
+    windowManager!: IWindowManager;
 
     private createSeparator(): MenuItemConstructorOptions {
         return {
@@ -85,6 +94,17 @@ export class MainMenu implements IMainMenu {
                 label: "&File",
                 submenu: [
                     this.createMenu("new-notebook"),
+
+                    {
+                        label: "New &window",
+                        accelerator: expandAccelerator("CmdOrCtrl+Shift+N", this.platform),
+                        click: async () => {
+                            await this.onNewEditorWindow.raise();
+                        },
+                    },
+                    
+                    this.createSeparator(),
+
                     this.createMenu("open-notebook"),
 
                     this.createSeparator(),
@@ -135,6 +155,20 @@ export class MainMenu implements IMainMenu {
             },
 
             {
+                label: "&Windows",
+                submenu: this.windowManager.getEditorWindows()
+                    .map(editorWindow => {
+                        let fileName = editorWindow.getFileName() || "untitled";
+                        return {
+                            label: fileName,
+                            click: () => {
+                                editorWindow.focus();
+                            },
+                        };
+                    }),
+            },
+
+            {
                 label: "&Help",
                 submenu: [
                     this.createMenu("toggle-hotkeys"),
@@ -164,5 +198,10 @@ export class MainMenu implements IMainMenu {
 
         Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
     }
+
+    //
+    // Event raised when there is a request to open a new editor window.
+    //
+    onNewEditorWindow: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }
 
