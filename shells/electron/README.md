@@ -1,6 +1,6 @@
 # Electron
 
-The Electron-based testbed for DFN v2.
+The Electron-based shell for DFN v2.
 
 Follow instructions in the root directory for setup.
 
@@ -28,4 +28,4 @@ pnpm run compile
 pnpm run build
 ```
 
-Static web page is output to `./dist/electron`.
+Static web page is output to `./dist`.

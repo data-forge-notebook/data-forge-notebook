@@ -1,8 +1,8 @@
 # editor-core
 
-The core repository for Data-Forge Notebook's editor. Reused in the Electron and Online builds.
+The core repository for Data-Forge Notebook's editor. Reused in the Tauri and Electron.
 
-Data-Forge Notebook is being open sourced in this code repository in 2022.
+Data-Forge Notebook is being open sourced in this code repository in 2022/23.
 
 [Read more about the decision here](https://github.com/data-forge-notebook/wiki/wiki/Future-Plans)
 
@@ -35,7 +35,19 @@ A birds eye view of this project:
         ├───electron --------------- Runs DFN in Electron.
         ├───evaluation-engine ------ HTTP server for the code evaluation engine.
         ├───storybook -------------- Showcases UI components in Storybook.
+        ├───tauri ------------------ Runs DFN in Tauri.
         └───testbed ---------------- A custom testbed for UI components.
+```
+
+## Quickstart - Tauri
+
+todo: Install tauri!?
+
+```bash
+cd editor-core
+pnpm install
+pnpm run compile
+pnpm run tauri:dev
 ```
 
 ## Quickstart - Electron
@@ -74,8 +86,6 @@ Install dependencies for this project:
 pnpm install
 ```
 
- see the changes.
-
 ## Compile all packages
 
 Before you should do anything you should compile all TypeScript code to JavaScript. You only have to do this once at the start and you only need to recompile packages when you change code in them.
@@ -111,7 +121,7 @@ The plugins (which are complete web pages in their own right) and also served in
 
 ## Build a static web page
 
-This builds the browser shell to a static web page:
+This builds the notebook editor to a static web page:
 
 ```bash
 pnpm run build-browser
@@ -120,6 +130,19 @@ pnpm run build-browser
 The static web page is generated to `./shells/browser/dist/browser`.
 
 The plugins are automatically built and inlined into the package.
+
+## Run the Tauri shell
+
+This runs the whole notebook editor in Tauri (with a static build):
+
+```bash
+pnpm run tauri:static
+```
+
+To run in Tauri with live reload:
+
+```bash
+pnpm run tauri:dev
 
 ## Run the Electron shell
 
