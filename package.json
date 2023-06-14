@@ -13,7 +13,7 @@
     "build-browser": "pnpm --filter browser run build",
     "build-electron": "pnpm --filter electron run build",
     "build-tauri": "pnpm --filter tauri run build",
-    "build-tauri-debug": "pnpm --filter tauri run build-debug`",
+    "build-tauri-debug": "pnpm --filter tauri run build-debug",
     "clean": "pnpm --stream -r run clean",
     "compile": "pnpm --stream -r run compile",
     "compile:watch": "pnpm --stream -r --parallel run compile:watch",
