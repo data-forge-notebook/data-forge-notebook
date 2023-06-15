@@ -24,7 +24,7 @@ pnpm run pack
 
 Static web page is output to `./dist`.
 
-## Build the Tauri bundle
+## Build the Tauri installer
 
 Release:
 

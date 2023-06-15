@@ -158,6 +158,20 @@ To run in Electron with live reload:
 pnpm run electron:dev
 ```
 
+## Build the Tauri installer
+
+Release:
+
+```bash
+pnpm run build-tauri
+```
+
+Or debug:
+
+```bash
+pnpm run build-tauri-debug
+```
+
 ## Run the testbed
 
 The testbed is used for testing selected UI components.

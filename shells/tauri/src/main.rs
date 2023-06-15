@@ -51,7 +51,7 @@ fn get_eval_engine_server_port() -> u16 {
 }
 
 fn start_eval_engine(resources_path: PathBuf) {
-    let server_path = resources_path.join("server.js");
+    let server_path = resources_path.join("evaluation-engine/build/index.js");
     println!("Spawning evaluation engine: {}", server_path.display());
 
     let npm_cmd = if cfg!(target_os = "windows") {
@@ -73,7 +73,8 @@ fn start_eval_engine(resources_path: PathBuf) {
         envs.insert("PORT".to_string(), eval_engine_server_port.to_string());
     }
 
-    let (mut rx, _) = Command::new("node/node")
+    let node_path = resources_path.join("node/node").into_os_string().into_string().unwrap();
+    let (mut rx, _) = Command::new(node_path)
         .envs(envs)
         .args([ server_path.into_os_string().into_string().unwrap() ])
         .spawn()
@@ -148,14 +149,12 @@ fn main() {
                 window.open_devtools();
             }
 
-            //todo: Only need to do this in a prod build.
-            //
-            // let resources_path = app
-            //     .path_resolver()
-            //     .resolve_resource("resources")
-            //     .expect("Expected to get resources path.");
-            // println!("{}", resources_path.display());
-            // start_eval_engine(resources_path);
+            let resources_path = app
+                .path_resolver()
+                .resolve_resource("resources")
+                .expect("Expected to get resources path.");
+            println!("{}", resources_path.display());
+            start_eval_engine(resources_path);
 
             Ok(())
         })
