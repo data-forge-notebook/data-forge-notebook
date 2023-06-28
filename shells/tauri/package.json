@@ -7,7 +7,7 @@
         "build": "pnpm run pack && cargo tauri build",
         "build-debug": "pnpm run pack &&  cargo tauri build --debug",
         "run-tauri-dev": "cargo tauri dev",
-        "clean": "rm -rf ./dist build tsconfig.tsbuildinfo",
+        "clean": "rm -rf ./dist build tsconfig.tsbuildinfo target",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
         "test": "jest",
