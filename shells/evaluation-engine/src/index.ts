@@ -1,5 +1,4 @@
 import * as express from "express";
-import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as fs from "fs-extra";
 import { api } from "./routes";
@@ -13,7 +12,7 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(api);
 
 app.listen(port, () => {

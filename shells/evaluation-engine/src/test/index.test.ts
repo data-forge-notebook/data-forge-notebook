@@ -1,6 +1,5 @@
 import * as supertest from "supertest";
 import  * as express from "express";
-import * as bodyParser from "body-parser";
 import { api } from "../routes"
 import { sleep } from "utils";
 
@@ -9,7 +8,7 @@ import { sleep } from "utils";
 //
 function request() {
     const app = express();
-    app.use(bodyParser.json());
+    app.use(express.json());
     app.use(api);
     return supertest(app);
 }
