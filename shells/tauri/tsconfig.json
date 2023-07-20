@@ -62,14 +62,7 @@
     "emitDecoratorMetadata": true,            /* Enables experimental support for emitting type metadata for decorators. */
     "composite": true                         /* Enables this project to be referenced from another TypeScript project. */  
   },
-  "exclude": [
-      "node_modules",
-      "build",
-      "dist",
-      "examples",
-      "test",
-      "prod-build",
-      "plugins",
-      "packages"
+  "include": [
+    "src/**/*"
   ]
 }
