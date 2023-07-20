@@ -41,7 +41,7 @@ A birds eye view of this project:
 
 ## Quickstart - Tauri
 
-todo: Install tauri!?
+Note: You need Rust installed for the Tauri build.
 
 ```bash
 cd editor-core
@@ -133,6 +133,8 @@ The plugins are automatically built and inlined into the package.
 
 ## Run the Tauri shell
 
+Note: You need Rust installed for the Tauri build.
+
 This runs the whole notebook editor in Tauri (with a static build):
 
 ```bash
@@ -160,7 +162,17 @@ pnpm run electron:dev
 
 ## Build the Tauri installer
 
-Release:
+NOTE: You need Rust installed for the Tauri build.
+
+NOTE: The evaluation engine needs to be packaged before making the Tauri build. This part of the process doesn't work under Windows terminal due to an issue with pnpm, run this under Powershell instead.
+
+Package the evaluation engine (under Powershell):
+
+```bash
+pnpm run package-eval-engine
+```
+
+Then build the release Tauri installer:
 
 ```bash
 pnpm run build-tauri

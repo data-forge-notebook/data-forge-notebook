@@ -2,43 +2,51 @@
 // Packages the evaluation-engine for bundling into the Tauri shell installer.
 //
 
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 const fs = require("fs-extra");
+const os = require("os");
 
-if (fs.existsSync("./shells/tauri/resources/evaluation-engine")) {
-    fs.removeSync("./shells/tauri/resources/evaluation-engine");
-}
-
-fs.ensureDirSync("./shells/tauri/resources/evaluation-engine");
-fs.copySync("./shells/evaluation-engine/build", "./shells/tauri/resources/evaluation-engine/build");
-fs.copySync("./shells/evaluation-engine/package.json", "./shells/tauri/resources/evaluation-engine/package.json");
-
-copyNodeModulesRecursive("./shells/evaluation-engine/node_modules", "./shells/tauri/resources/evaluation-engine/node_modules", "./shells/tauri/resources/evaluation-engine/node_modules");
-
-//
-// Walk a directory and copy files (synchronously).
-//
-function copyNodeModulesRecursive(from, to, rootPath) {
-    const items = fs.readdirSync(from);
-
-    for (const item of items) {
-        const fromPath = from + "/" + item;
-        const toPath = to + "/" + item;
-        if (item === ".bin" 
-            || item === "@types"
-            || item === ".vscode") {
-            continue;
+async function execCmd(cmd, cwd, options) {
+    try {
+        console.log("$ " + cmd + " (cwd: " + cwd + ")");
+        const { stdout, stderr } = await exec(cmd, { cwd });
+        console.log(stdout);
+        console.log(stderr);
+        return true;
+    } 
+    catch (error) {
+        if (options?.ignoreErrors) {
+            return true;
         }
-        else if (item === "node_modules") {
-            // Flattens nested node modules.
-            copyNodeModulesRecursive(fromPath, rootPath, rootPath);
-        }
-        else if (fs.statSync(fromPath).isDirectory()) {
-            if (!fs.existsSync(toPath)) {
-                copyNodeModulesRecursive(fromPath, toPath, rootPath);
-            }
-        }
-        else {
-            fs.copySync(fromPath, toPath, { overwrite: true });
-        }
+
+        console.error('Error occurred:', error);
+        return false;
     }
 }
+
+async function main() {
+    const destDir = "./shells/tauri/resources/evaluation-engine";
+
+    if (fs.existsSync(destDir)) {
+        console.log(`Removing previous build...`);
+        fs.removeSync(destDir);
+    }
+
+    console.log(`Exporting evaluation engine to ${destDir}...`);
+
+    //
+    // Assume eval engine shell is built.
+    // Export the project from the mono repo.
+    // Note: Errors are ignored because 'pnpm deploy' has an EPERM error (code 1) on Windows, but the files are still copied.
+    //
+    await execCmd(`pnpm --filter=evaluation-engine-shell --prod --shamefully-hoist deploy --silent ${destDir}`, ".", { ignoreErrors: true });
+
+    console.log(`Done`);
+}
+
+main()
+    .catch(err => {
+        console.error(`Failed:`);
+        console.error(err);
+    });
