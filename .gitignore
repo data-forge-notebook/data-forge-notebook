@@ -112,3 +112,4 @@ shells/evaluation-engine/tmp
 packages/source-maps-lib/todo.txt
 shells/tauri/resources/evaluation-engine
 shells/tauri/resources/node
+shells/electron/installer

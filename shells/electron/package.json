@@ -1,11 +1,17 @@
 {
     "name": "electron",
+    "version": "2.0.0",
+    "author": "ashley@codecapers.com.au",
+    "description": "Data-Forge Notebook v2 - a cross-platform desktop application for data analysis, transformation and visualization in JavaScript",
+    "main": "build/main.js",
     "scripts": {
         "start": "pnpm run electron:static",
         "start:dev": "pnpm run electron:dev",
         "electron:static": "pnpm run build && pnpm run run-electron-static",
         "electron:dev": "pnpm run compile && concurrently --names=\"serve,electron\" --kill-others \"pnpm run serve\" \"pnpm run run-electron-dev\"",
-        "build": "pnpm run compile && npm run pack",
+        "build-win": "pnpm run compile && pnpm run pack && pnpm run package-electron -- --win",
+        "build-linux": "pnpm run compile && pnpm run pack && pnpm run package-electron -- --linux",
+        "build-mac": "pnpm run compile && pnpm run pack && pnpm run package-electron -- --mac",
         "run-electron-static": "cross-env EDITOR_HTML=../../electron/dist/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
         "run-electron-dev": "wait-on --interval 2000 http://localhost:8080 && cross-env EDITOR_HTML=http://localhost:8080/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
         "clean": "rm -rf ./dist build tsconfig.tsbuildinfo",
@@ -15,6 +21,7 @@
         "test:watch": "jest --watch",
         "serve": "webpack serve --config webpack.config.js",
         "pack": "webpack --config webpack.config.js",
+        "package-electron": "electron-builder -c.mac.identity=null",
         "s": "pnpm run start",
         "b": "pnpm run build",
         "c": "pnpm run compile",
@@ -37,7 +44,8 @@
         "jest": "28.1.3",
         "ts-jest": "28.0.7",
         "typescript": "^4.6.2",
-        "wait-on": "6.0.1"
+        "wait-on": "6.0.1",
+        "electron-builder": "^22.6.0"
     },
     "dependencies": {
         "minimist": "^1.2.5",
@@ -49,5 +57,102 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "utils": "workspace:*"
+    },
+    "build": {
+        "appId": "com.codecapers.dataforgenotebook.v2",
+        "productName": "Data-Forge Notebook v2",
+        "artifactName": "Data-Forge Notebook v2 Setup - ${version}.${ext}",
+        "copyright": "Copyright @ 2023 Ashley Davis",
+        "directories": {
+            "output": "installer"
+        },
+        "files": [
+            "dist/*",
+            "build/**/*",
+            "node_modules/**/*",
+            "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+            "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+            "!**/node_modules/*.d.ts",
+            "!**/node_modules/.bin",
+            "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+            "!.editorconfig",
+            "!**/._*",
+            "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+            "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+            "!**/{appveyor.yml,.travis.yml,circle.yml}",
+            "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}",
+            "!node_modules/nightmare/node_modules/electron${/*}"
+        ],
+        "extraFiles": [
+            "./examples/**/*",
+            "./intro/**/*",
+            "./templates/**/*",
+            "./nodejs/v16.18.1/**/*",
+            "./bundled_node_modules/**/*",
+            "./build/icon.png",
+            "./node_modules/@data-forge-plot/apex/**/*"
+        ],
+        "linux": {
+            "target": [
+                {
+                    "target": "AppImage",
+                    "arch": "x64"
+                },
+                {
+                    "target": "tar.gz",
+                    "arch": "x64"
+                }
+            ]
+        },
+        "win": {
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": "x64"
+                },
+                {
+                    "target": "zip",
+                    "arch": "x64"
+                }
+            ]
+        },
+        "mac": {
+            "target": [
+                {
+                    "target": "dmg",
+                    "arch": "x64"
+                },
+                {
+                    "target": "tar.gz",
+                    "arch": "x64"
+                }
+            ]
+        },
+        "fileAssociations": [
+            {
+                "ext": "notebook",
+                "name": "JavaScript Notebook"
+            }
+        ],
+        "protocols": [
+            {
+                "name": "JavaScript Notebook",
+                "schemes": [
+                    "notebook"
+                ]
+            },
+            {
+                "name": "JavaScript Notebook",
+                "schemes": [
+                    "notebooks"
+                ]
+            }
+        ],
+        "publish": {
+            "provider": "spaces",
+            "name": "data-forge-notebook",
+            "region": "nyc3",
+            "acl": "public-read"
+        }
     }
 }
