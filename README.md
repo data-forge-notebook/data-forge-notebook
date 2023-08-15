@@ -166,7 +166,7 @@ NOTE: You need Rust installed for the Tauri build.
 
 NOTE: The evaluation engine needs to be packaged before making the Tauri build. This part of the process doesn't work under Windows terminal due to an issue with pnpm, run this under Powershell instead.
 
-Package the evaluation engine (under Powershell):
+Package the evaluation engine:
 
 ```bash
 pnpm run package-eval-engine
