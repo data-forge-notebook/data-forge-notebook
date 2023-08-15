@@ -8,9 +8,9 @@ remote.initialize();
 
 const versionNo = "v2.0.0"; //TODO: This needs to be produced by the build pipeline.
 
-const EDITOR_HTML = process.env.EDITOR_HTML as string;
+let EDITOR_HTML = process.env.EDITOR_HTML as string;
 if (!EDITOR_HTML) {
-    throw new Error(`Env var EDITOR_HTML is not defined. This should specify entry point for the editor window.`);
+    EDITOR_HTML = "dist/index.html";
 }
 
 //
