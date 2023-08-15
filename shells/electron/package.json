@@ -14,7 +14,7 @@
         "build-mac": "pnpm run compile && pnpm run pack && pnpm run package-electron -- --mac",
         "run-electron-static": "cross-env EDITOR_HTML=../../electron/dist/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
         "run-electron-dev": "wait-on --interval 2000 http://localhost:8080 && cross-env EDITOR_HTML=http://localhost:8080/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
-        "clean": "rm -rf ./dist build tsconfig.tsbuildinfo",
+        "clean": "rm -rf dist build installer tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
         "test": "jest",
