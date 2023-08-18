@@ -162,6 +162,8 @@ pnpm run electron:dev
 
 ## Build the Tauri installer
 
+WARNING: The Tauri build doesn't work. It seems to crash while buliding the project.
+
 NOTE: You need Rust installed for the Tauri build.
 
 NOTE: The evaluation engine needs to be packaged before making the Tauri build. This part of the process doesn't work under Windows terminal due to an issue with pnpm, run this under Powershell instead.
