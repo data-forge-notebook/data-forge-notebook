@@ -7,7 +7,7 @@
     "scripts": {
         "start": "nodemon",
         "start:dev": "nodemon",
-        "clean": "rm -rf build/*",
+        "clean": "rm -rf build/* tsconfig.tsbuildinfo",
         "c": "npm run compile",
         "compile": "tsc --incremental",
         "cw": "npm run compile:watch",
