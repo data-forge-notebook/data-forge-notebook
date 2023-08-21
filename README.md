@@ -35,13 +35,15 @@ A birds eye view of this project:
         ├───electron --------------- Runs DFN in Electron.
         ├───evaluation-engine ------ HTTP server for the code evaluation engine.
         ├───storybook -------------- Showcases UI components in Storybook.
-        ├───tauri ------------------ Runs DFN in Tauri.
+        ├───tauri ------------------ Runs DFN in Tauri (not yet functional).
         └───testbed ---------------- A custom testbed for UI components.
 ```
 
 ## Quickstart - Tauri
 
 Note: You need Rust installed for the Tauri build.
+
+WARNING: Tauri build doesn't work yet.
 
 ```bash
 cd editor-core
@@ -135,6 +137,8 @@ The plugins are automatically built and inlined into the package.
 
 Note: You need Rust installed for the Tauri build.
 
+WARNING: Tauri build doesn't work yet.
+
 This runs the whole notebook editor in Tauri (with a static build):
 
 ```bash
@@ -145,6 +149,7 @@ To run in Tauri with live reload:
 
 ```bash
 pnpm run tauri:dev
+```
 
 ## Run the Electron shell
 
@@ -186,6 +191,18 @@ Or debug:
 pnpm run build-tauri-debug
 ```
 
+### Build the Electron installer
+
+Run one of the scripts depending on the OS you are on building for:
+
+```bash
+pnpm run build-electron-win
+pnpm run build-electron-linux
+pnpm run build-electron-mac
+```
+
+For complete build details see [./shells/electron/README.md](./shells/electron/README.md).
+
 ## Run the testbed
 
 The testbed is used for testing selected UI components.
@@ -196,7 +213,7 @@ pnpm run testbed
 
 ## Run Storybook
 
-Storybox showcases various configurations for UI components.
+Storybook showcases various configurations for UI components.
 
 ```bash
 pnpm run storybook
