@@ -17,7 +17,7 @@
     "dependencies": {
         "lodash": "^4.17.21",
         "@codecapers/fusion": "1.0.15",
-        "uuid": "^8.3.2"
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "@types/node": "^16.11.7",
