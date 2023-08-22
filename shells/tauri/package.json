@@ -10,8 +10,6 @@
         "clean": "rm -rf ./dist build tsconfig.tsbuildinfo target resources/evaluation-engine",
         "compile": "tsc --incremental",
         "compile:watch": "tsc --incremental --watch",
-        "test": "jest",
-        "test:watch": "jest --watch",
         "serve": "webpack serve --config webpack.config.js",
         "pack": "webpack --config webpack.config.js",
         "s": "pnpm run start",
@@ -19,9 +17,7 @@
         "bd": "pnpm run build-debug",
         "c": "pnpm run compile",
         "cw": "pnpm run compile:watch",
-        "sd": "pnpm run tauri:dev",
-        "t": "pnpm run test",
-        "tw": "pnpm run test:watch"
+        "sd": "pnpm run tauri:dev"
     },
     "devDependencies": {
         "@types/minimist": "^1.2.2",
