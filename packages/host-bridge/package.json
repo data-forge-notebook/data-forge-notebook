@@ -15,7 +15,7 @@
     "author": "ashley@codecapers.com.au",
     "license": "MIT",
     "dependencies": {
-        "uuid": "^8.3.2"
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "@types/node": "^16.11.7",
