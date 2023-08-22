@@ -19,7 +19,6 @@ async function main() {
     fs.copySync('package.json', `${buildDir}/package.json`);
     fs.copySync('build', `${buildDir}/build`);
     fs.copySync('dist', `${buildDir}/dist`);
-    fs.copySync('./build-hook-before-build.js', `${buildDir}/build-hook-before-build.js`);
 
     await hoist("./node_modules", `${buildDir}\\node_modules`);
 }

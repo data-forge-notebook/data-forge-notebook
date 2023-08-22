@@ -61,7 +61,6 @@
         "utils": "workspace:*"
     },
     "build": {
-        "beforeBuild": "./build-hook-before-build.js",
         "appId": "com.codecapers.dataforgenotebook.v2",
         "productName": "Data-Forge Notebook v2",
         "artifactName": "Data-Forge Notebook v2 Setup - ${version}.${ext}",
