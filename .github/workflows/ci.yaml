@@ -39,7 +39,7 @@ jobs:
         run: pnpm test
       
       - name: Build browser
-        run: pnpm run build-browser   
+        run: pnpm run build-browser
 
       - name: Build Electron
-        run: pnpm run build-electron
+        run: pnpm run build-electron-win
