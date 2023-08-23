@@ -9,9 +9,9 @@
         "start:dev": "pnpm run electron:dev",
         "electron:static": "pnpm run pack && pnpm run run-electron-static",
         "electron:dev": "concurrently --names=\"serve,electron\" --kill-others \"pnpm run serve\" \"pnpm run run-electron-dev\"",
-        "build-win": "pnpm run pack && pnpm run build-setup && cd %BUILD_PARENT_DIR%\\dfn-build && pwd && pnpm run package-electron -- --win",
-        "build-linux": "pnpm run pack && pnpm run build-setup && cd $BUILD_PARENT_DIR/dfn-build && pnpm run package-electron -- --linux",
-        "build-mac": "pnpm run pack && pnpm run build-setup && cd $BUILD_PARENT_DIR/dfn-build  && pnpm run package-electron -- --mac",
+        "build-win": "pnpm run pack && cross-env PLATFORM=win pnpm run build-setup && cd %BUILD_PARENT_DIR%\\dfn-build && pwd && pnpm run package-electron -- --win",
+        "build-linux": "pnpm run pack && cross-env PLATFORM=linux pnpm run build-setup && cd $BUILD_PARENT_DIR/dfn-build && pnpm run package-electron -- --linux",
+        "build-mac": "pnpm run pack && cross-env PLATFORM=mac pnpm run build-setup && cd $BUILD_PARENT_DIR/dfn-build  && pnpm run package-electron -- --mac",
         "run-electron-static": "cross-env EDITOR_HTML=../dist/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
         "run-electron-dev": "wait-on --interval 2000 http://localhost:8080 && cross-env EDITOR_HTML=http://localhost:8080/index.html ELECTRON_DISABLE_SECURITY_WARNINGS=true electron build/main.js",
         "clean": "rm -rf dist build installer tsconfig.tsbuildinfo",
@@ -38,6 +38,7 @@
         "@types/node": "^16.11.7",
         "@types/react": "^17.0.39",
         "@types/react-dom": "^17.0.13",
+        "axios": "^0.18.0",
         "concurrently": "^7.0.0",
         "cross-env": "^7.0.3",
         "electron": "^17.1.1",
@@ -62,7 +63,7 @@
     },
     "build": {
         "appId": "com.codecapers.dataforgenotebook.v2",
-        "productName": "Data-Forge Notebook v2",
+        "productName": "data-forge-notebook-v2",
         "artifactName": "Data-Forge Notebook v2 Setup - ${version}.${ext}",
         "copyright": "Copyright @ 2023 Ashley Davis",
         "directories": {
@@ -88,11 +89,8 @@
         "extraFiles": [
             "./examples/**/*",
             "./intro/**/*",
-            "./templates/**/*",
-            "./nodejs/v16.18.1/**/*",
-            "./bundled_node_modules/**/*",
-            "./build/icon.png",
-            "./node_modules/@data-forge-plot/apex/**/*"
+            "./nodejs/**/*",
+            "./resources/icon.png"
         ],
         "linux": {
             "target": [
