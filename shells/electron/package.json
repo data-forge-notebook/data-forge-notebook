@@ -89,6 +89,7 @@
         "extraFiles": [
             "./examples/**/*",
             "./intro/**/*",
+            "./evaluation-engine/**/*",
             "./nodejs/**/*",
             "./resources/icon.png"
         ],

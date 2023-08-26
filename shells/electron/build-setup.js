@@ -33,11 +33,27 @@ async function main() {
     package.name = "data-forge-notebook-v2"; // Have to change the name so that DFN is installed to the right directory!
     fs.writeFileSync(`${buildDir}/package.json`, JSON.stringify(package, null, 2));
 
+    //
+    // Copy files.
+    //
     fs.copySync('build', `${buildDir}/build`);
     fs.copySync('dist', `${buildDir}/dist`);
 
+    //
+    // Copy and hoist node-modules.
+    //
     await hoist("./node_modules", `${buildDir}/node_modules`);
 
+    //
+    // Package the evaluation engine.
+    //
+    fs.ensureDirSync(`${buildDir}/evaluation-engine`);
+    fs.copySync(`../evaluation-engine/build`, `${buildDir}/evaluation-engine/build`);
+    await hoist(`../evaluation-engine/node_modules`, `${buildDir}/evaluation-engine/node_modules`);
+
+    //
+    // Download Node.js
+    //
     let nodejsInstallBasename;
     let nodejsInstallFile;
     const nodejsVersion = "18.17.1";
@@ -54,6 +70,9 @@ async function main() {
         nodejsInstallFile = `${nodejsInstallBasename}.tar.xz`;
     }
 
+    //
+    // Unpack Node.js.
+    //
     const nodejs_install_url = `https://nodejs.org/dist/v${nodejsVersion}/${nodejsInstallFile}`;
     console.log(`Downloading Node.js from ${nodejs_install_url}`); 
     const response = await axios.get(nodejs_install_url, { responseType: "stream" });
