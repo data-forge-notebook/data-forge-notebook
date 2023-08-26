@@ -3,6 +3,8 @@
     "version": "2.0.0",
     "author": "ashley@codecapers.com.au",
     "description": "Data-Forge Notebook v2 - a cross-platform desktop application for data analysis, transformation and visualization in JavaScript",
+    "homepage": "https://www.data-forge-notebook.com/",
+    "repository": "https://github.com/data-forge-notebook/editor-core/",
     "main": "build/main.js",
     "scripts": {
         "start": "pnpm run electron:static",
