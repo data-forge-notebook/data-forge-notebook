@@ -14,10 +14,10 @@
         "tw": "pnpm run test:watch"
     },
     "devDependencies": {
-        "@types/jest": "28.1.6",
+        "@types/jest": "^27.5.1",
         "@types/node": "^16.11.7",
         "@types/uuid": "^8.3.4",
-        "jest": "28.1.3",
+        "jest": "^28.1.0",
         "ts-jest": "28.0.7",
         "typescript": "^4.6.2"
     },

@@ -14,7 +14,7 @@
         "tw": "pnpm run test:watch"
     },
     "devDependencies": {
-        "@types/jest": "28.1.6",
+        "@types/jest": "^27.5.1",
         "@types/lodash": "^4.14.179",
         "@types/node": "^16.11.7",
         "@types/react": "^17.0.39",

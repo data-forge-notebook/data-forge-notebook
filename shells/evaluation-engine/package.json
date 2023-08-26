@@ -21,7 +21,7 @@
         "cors": "^2.8.5",
         "evaluation-engine": "workspace:*",
         "express": "5.0.0-beta.1",
-        "fs-extra": "^10.1.0",
+        "fs-extra": "^6.0.1",
         "model": "workspace:*",
         "utils": "workspace:*",
         "lodash": "^4.17.21"
@@ -29,7 +29,7 @@
     "devDependencies": {
         "@types/cors": "^2.8.12",
         "@types/express": "^4.17.13",
-        "@types/fs-extra": "^9.0.13",
+        "@types/fs-extra": "^5.0.4",
         "@types/jest": "^27.5.1",
         "@types/node": "^16.11.7",
         "jest": "^28.1.0",
