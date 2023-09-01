@@ -4,7 +4,7 @@
 
 const fs = require('fs-extra');
 const axios = require('axios');
-const { spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
 const { hoist } = require('hoist-modules');
 const path = require('path');
 
@@ -47,9 +47,16 @@ async function main() {
     //
     // Package the evaluation engine.
     //
+    const evalEngineDeployDir = `${buildDir}/tmp-eval-engine`;
+    const result = exec(`pnpm --filter=evaluation-engine-shell --prod --shamefully-hoist deploy --silent ${evalEngineDeployDir}`);
+    if (result.err) {
+        console.log(result);
+        process.exit(1);
+    }
+
     fs.ensureDirSync(`${buildDir}/evaluation-engine`);
     fs.copySync(`../evaluation-engine/build`, `${buildDir}/evaluation-engine/build`);
-    await hoist(`../evaluation-engine/node_modules`, `${buildDir}/evaluation-engine/node_modules`);
+    await hoist(`${evalEngineDeployDir}/node_modules`, `${buildDir}/evaluation-engine/node_modules`);
 
     //
     // Download Node.js
@@ -164,6 +171,23 @@ function runCmd(command, args, options) {
             reject(err);
         });
     });
+}
+
+//
+// Runs a command.
+// TODO: Should use this instead of `runCmd`.
+//
+function exec(cmd) {
+    try {
+        const output = execSync(cmd);
+        return { stdout: output.toString() };
+    }
+    catch (err) {
+        return {
+            err,
+            stderr: err.stderr.toString(),
+        };
+    }
 }
 
 main()

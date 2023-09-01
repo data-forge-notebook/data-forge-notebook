@@ -57,3 +57,13 @@ npm run build-mac
 After the build you can find the exported project under <a-tmp-dir> and under the subdirectory `dfn-build`. Under there drill down to the `installer` subdirectory and you'll find the installer that was built for DFN.
 
 After you copy the installer out feel free to delete the temporary directory.
+
+On Windows, if you see an error like the following you might have to close VS Code: 
+
+```bash
+EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_modules\.bin\upgrade-blueprint-2.0.0-rename'
+```
+
+Install directory:
+
+- Windows: C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
