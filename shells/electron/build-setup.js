@@ -54,9 +54,11 @@ async function main() {
         process.exit(1);
     }
 
-    fs.ensureDirSync(`${buildDir}/evaluation-engine`);
-    fs.copySync(`../evaluation-engine/build`, `${buildDir}/evaluation-engine/build`);
-    await hoist(`${evalEngineDeployDir}/node_modules`, `${buildDir}/evaluation-engine/node_modules`);
+    const evaluationEngineDir = `${buildDir}/evaluation-engine`;
+    fs.ensureDirSync(evaluationEngineDir);
+    fs.copyFileSync(`${evalEngineDeployDir}/package.json`, `${evaluationEngineDir}/package.json`);
+    fs.copySync(`../evaluation-engine/build`, `${evaluationEngineDir}/build`);
+    await hoist(`${evalEngineDeployDir}/node_modules`, `${evaluationEngineDir}/node_modules`);
 
     //
     // Download Node.js
