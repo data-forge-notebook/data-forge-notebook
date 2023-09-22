@@ -4,7 +4,9 @@ import { ISerializedNotebook1 } from "model";
 import { IEventSource, EventSource } from "utils";
 import { EvaluationEventHandler, IEvaluatorClient, IEvaluatorId } from "../evaluator-client";
 
-const baseUrl = process.env.EVALUATION_ENGINE_URL as string;
+const baseUrl = process.env.EVALUATION_ENGINE_URL as string || "http://127.0.0.1:9000";
+
+console.log(`Connecting to evaluation engine via ${baseUrl}`);
 
 //
 // Payload to the /evaluate endpoint in the evaluation engine that evaluates a notebook.

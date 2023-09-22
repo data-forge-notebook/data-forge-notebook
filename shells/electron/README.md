@@ -67,3 +67,23 @@ EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_mod
 Install directory:
 
 - Windows: C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
+
+## Run a local build from the installed app data path
+
+Set the environment variable to the installed path:
+
+```bash
+export APP_DATA_PATH=C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
+```
+
+Run it this way:
+
+``` bash
+pnpm run electron:static
+```
+
+Or this way:
+
+```bash
+pnpm run electron:dev
+```
