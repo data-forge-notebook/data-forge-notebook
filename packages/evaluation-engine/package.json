@@ -32,7 +32,8 @@
         "utils": "workspace:*",
         "typy": "^3.3.0",
         "@codecapers/fusion": "1.0.15",
-        "source-map-lib": "workspace:*"
+        "source-map-lib": "workspace:*",
+        "resolve-cwd": "^2.0.0"
     },
     "devDependencies": {
         "@types/babel-traverse": "^6.25.5",
