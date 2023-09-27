@@ -52,18 +52,11 @@ async function main() {
     //
     // Package the evaluation engine.
     //
-    const evalEngineDeployDir = `${buildDir}/tmp-eval-engine`;
-    const result = exec(`pnpm --filter=evaluation-engine-shell --prod --shamefully-hoist deploy --silent ${evalEngineDeployDir}`);
-    if (result.err) {
-        console.log(result);
-        process.exit(1);
-    }
-
     const evaluationEngineDir = `${buildDir}/evaluation-engine`;
     fs.ensureDirSync(evaluationEngineDir);
-    fs.copyFileSync(`${evalEngineDeployDir}/package.json`, `${evaluationEngineDir}/package.json`);
+    fs.copyFileSync(`../evaluation-engine/package.json`, `${evaluationEngineDir}/package.json`);
     fs.copySync(`../evaluation-engine/build`, `${evaluationEngineDir}/build`);
-    await hoist(`${evalEngineDeployDir}/node_modules`, `${evaluationEngineDir}/node_modules`);
+    await hoist(`../evaluation-engine`, `${evaluationEngineDir}/node_modules`);
 
     let nodejsInstallBasename;
     let nodejsInstallFile;

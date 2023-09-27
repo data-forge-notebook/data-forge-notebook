@@ -46,7 +46,7 @@
         "electron": "^17.1.1",
         "electron-builder": "^24.6.3",
         "fs-extra": "^10.1.0",
-        "hoist-modules": "^1.0.5",
+        "hoist-modules": "^1.1.2",
         "jest": "^28.1.0",
         "ts-jest": "28.0.7",
         "typescript": "^4.6.2",

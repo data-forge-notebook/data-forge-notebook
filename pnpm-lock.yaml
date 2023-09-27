@@ -692,8 +692,8 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0
       hoist-modules:
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: ^1.1.2
+        version: 1.1.2
       jest:
         specifier: ^28.1.0
         version: 28.1.3(@types/node@16.11.36)(ts-node@10.9.1)
@@ -10237,12 +10237,13 @@ packages:
       minimalistic-crypto-utils: 1.0.1
     dev: true
 
-  /hoist-modules@1.0.5:
-    resolution: {integrity: sha512-3sTZXWQPtMIb+SUR1oIM06iLKCLjyJJ/NmDhOfOgGDd1LfrjKXlvvnmfRrsDkv3vuFRTw3lvUvJK2tcD1vvefA==}
+  /hoist-modules@1.1.2:
+    resolution: {integrity: sha512-P2s3cDrLpju2yOTlz+n3XGrHAR4OoPVURX/im5ybaScpRet695l1QAi4GtegqxRQewpllkAcGST8NaciNFYdyw==}
     hasBin: true
     dependencies:
       fs-extra: 11.1.1
       minimist: 1.2.8
+      semver: 7.5.4
     dev: true
 
   /hoist-non-react-statics@3.3.2:
@@ -13525,7 +13526,7 @@ packages:
     dependencies:
       growly: 1.3.0
       is-wsl: 2.2.0
-      semver: 7.3.7
+      semver: 7.5.4
       shellwords: 0.1.1
       uuid: 8.3.2
       which: 2.0.2
@@ -16496,7 +16497,7 @@ packages:
       mime: 2.6.0
       qs: 6.10.3
       readable-stream: 3.6.0
-      semver: 7.3.7
+      semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
     dev: true
