@@ -21,8 +21,13 @@ if (!PLATFORM) {
 async function main() {
     console.log(`Building for platform: ${PLATFORM}`);
 
-    const buildDir = `${BUILD_PARENT_DIR}/dfn-build`;
-    
+    const rootBuildDir = `${BUILD_PARENT_DIR}/dfn-build`;
+    fs.ensureDirSync(rootBuildDir);
+
+    const cacheDir = `${rootBuildDir}/cache`;
+    fs.ensureDirSync(cacheDir);
+
+    const buildDir = `${rootBuildDir}/build`;
     fs.removeSync(buildDir);
     fs.ensureDirSync(buildDir);
 
@@ -60,9 +65,6 @@ async function main() {
     fs.copySync(`../evaluation-engine/build`, `${evaluationEngineDir}/build`);
     await hoist(`${evalEngineDeployDir}/node_modules`, `${evaluationEngineDir}/node_modules`);
 
-    //
-    // Download Node.js
-    //
     let nodejsInstallBasename;
     let nodejsInstallFile;
     const nodejsVersion = "18.17.1";
@@ -79,26 +81,35 @@ async function main() {
         nodejsInstallFile = `${nodejsInstallBasename}.tar.xz`;
     }
 
-    //
-    // Unpack Node.js.
-    //
-    const nodejs_install_url = `https://nodejs.org/dist/v${nodejsVersion}/${nodejsInstallFile}`;
-    console.log(`Downloading Node.js from ${nodejs_install_url}`); 
-    const response = await axios.get(nodejs_install_url, { responseType: "stream" });
-    const nodejsDownloadPath = `${buildDir}/${nodejsInstallFile}`;
-    await downloadStreamToFile(response.data, nodejsDownloadPath);
+    const nodeJsUnpackDir = `${cacheDir}/${nodejsInstallBasename}`;
+    if (!fs.existsSync(nodeJsUnpackDir)) {
+        //
+        // Download Node.js
+        //
+        const nodejsDownloadPath = `${cacheDir}/${nodejsInstallFile}`;
+        if (!fs.existsSync(nodejsDownloadPath)) {
+            const nodejs_install_url = `https://nodejs.org/dist/v${nodejsVersion}/${nodejsInstallFile}`;
+            console.log(`Downloading Node.js from ${nodejs_install_url}`); 
+            const response = await axios.get(nodejs_install_url, { responseType: "stream" });
+            await downloadStreamToFile(response.data, nodejsDownloadPath);
+        }
+    
+        //
+        // Unpack Node.js.
+        //
+        console.log(`Unpacking Node.js from ${nodejsDownloadPath}`);
+        if (PLATFORM === "mac") {
+            await runCmd("tar", ["-zxf", nodejsDownloadPath, "-C", cacheDir]);
+        }
+        else if (PLATFORM === "win") {
+            await runCmd("unzip", ["-oq", nodejsDownloadPath, "-d", cacheDir]);
+        }
+        else if (PLATFORM === "linux") {
+            await runCmd("tar", ["xf", nodejsDownloadPath, "-C", cacheDir]);
+        }
+    }
 
-    if (PLATFORM === "mac") {
-        await runCmd("tar", ["-zxf", nodejsDownloadPath, "-C", buildDir]);
-    }
-    else if (PLATFORM === "win") {
-        await runCmd("unzip", ["-oq", nodejsDownloadPath, "-d", buildDir]);
-    }
-    else if (PLATFORM === "linux") {
-        await runCmd("tar", ["xf", nodejsDownloadPath, "-C", buildDir]);
-    }
-
-    await fs.move(`${buildDir}/${nodejsInstallBasename}`, `${buildDir}/nodejs`);
+    await fs.copySync(nodeJsUnpackDir, `${buildDir}/nodejs`);
 }
 
 //
