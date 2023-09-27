@@ -73,7 +73,7 @@ Install directory:
 Set the environment variable to the installed path:
 
 ```bash
-export APP_DATA_PATH=C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
+set APP_DATA_PATH=C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
 ```
 
 Run it this way:
