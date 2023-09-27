@@ -47,7 +47,7 @@ async function main() {
     //
     // Copy and hoist node-modules.
     //
-    await hoist("./node_modules", `${buildDir}/node_modules`);
+    await hoist("./", `${buildDir}/node_modules`, { devDependencies: true });
 
     //
     // Package the evaluation engine.

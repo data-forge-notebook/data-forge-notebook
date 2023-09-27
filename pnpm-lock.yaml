@@ -692,8 +692,8 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0
       hoist-modules:
-        specifier: ^1.1.2
-        version: 1.1.2
+        specifier: ^1.1.3
+        version: 1.1.3
       jest:
         specifier: ^28.1.0
         version: 28.1.3(@types/node@16.11.36)(ts-node@10.9.1)
@@ -10237,8 +10237,8 @@ packages:
       minimalistic-crypto-utils: 1.0.1
     dev: true
 
-  /hoist-modules@1.1.2:
-    resolution: {integrity: sha512-P2s3cDrLpju2yOTlz+n3XGrHAR4OoPVURX/im5ybaScpRet695l1QAi4GtegqxRQewpllkAcGST8NaciNFYdyw==}
+  /hoist-modules@1.1.3:
+    resolution: {integrity: sha512-SUyk2jUUyxqekGJ0rvoeK3BXCqtOPfGjnJEt/+n0+5l6zIv8hcLTti9IKMcs7RqbeK7bSlS0plb3HTJ+10qfHQ==}
     hasBin: true
     dependencies:
       fs-extra: 11.1.1
