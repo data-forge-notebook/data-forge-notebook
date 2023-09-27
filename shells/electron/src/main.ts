@@ -235,6 +235,12 @@ function appReady(): void {
         cwd: evalEnginePath,
     };
 
+    //
+    // Enable these to show the shell for the process.
+    //
+    options.shell = true;
+    options.detached = true;
+
     const evaluatorEngineProcess = spawn(nodeExePath, args, options);
 
     evaluatorEngineProcess.stdout!.on('data', (buf: any) => {
