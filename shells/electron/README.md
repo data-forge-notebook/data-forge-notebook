@@ -68,6 +68,28 @@ Install directory:
 
 - Windows: C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
 
+## Run a local build from the dev evaluation engine
+
+Set the environment variable to the installed path:
+
+```bash
+set DEV_EVAL_ENGINE_DIR=c:\projects\data-forge-notebook\editor-core\shells\evaluation-engine
+```
+
+Run it this way:
+
+``` bash
+pnpm run electron:static
+```
+
+Or this way:
+
+```bash
+pnpm run electron:dev
+```
+
+Note: Make sure you compile the evaluation engine first. Run `pnpm run compile` at the root of the mono-repo to compile everything.
+
 ## Run a local build from the installed app data path
 
 Set the environment variable to the installed path:
@@ -87,3 +109,19 @@ Or this way:
 ```bash
 pnpm run electron:dev
 ```
+
+
+## Setting the URL for the evaluation engine
+
+Normally the electron build automatically spawns the evaluation engine. But you can also run it separately and instruct the electron build to connect to it using this environment variable:
+
+```bash
+set EVALUATION_ENGINE_URL=http://localhost:7000
+```
+
+When running the evaluation engine you must set the port to match:
+
+```bash
+set PORT=7000
+```
+
