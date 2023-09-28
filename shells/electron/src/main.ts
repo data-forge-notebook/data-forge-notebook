@@ -208,7 +208,8 @@ function appReady(): void {
     const appDataPath = process.env.APP_DATA_PATH || app.getPath("userData");
     console.log(`Using app data dir = ${appDataPath}`);
     const relEvalEnginePath = `evaluation-engine/`;
-    const evalEnginePath = path.join(appDataPath, relEvalEnginePath);
+    const evalEnginePath = process.env.DEV_EVAL_ENGINE_DIR || path.join(appDataPath, relEvalEnginePath);
+    console.log(`Running eval engine from ${evalEnginePath}`);
     const evalEngineScriptFile = `build/index.js`;
     const evalEngineScriptFilePath = path.join(evalEnginePath, evalEngineScriptFile);
     const nodeJsPath = `${appDataPath}/nodejs`;
@@ -227,8 +228,7 @@ function appReady(): void {
     console.log(process.cwd());
 
     const options: SpawnOptions = { 
-        env: {
-            // Send env vars to the evaluation engine if necessary.
+        env: { // Send env vars to the evaluation engine.
             PORT: "9000",
         },
         stdio: ['ignore', 'pipe', 'pipe'],
