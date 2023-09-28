@@ -9,7 +9,7 @@
         "es6",
         "dom"
     ],                                        
-    //"allowJs": true,                        /* Allow javascript files to be compiled. */
+    "allowJs": true,                          /* Allow javascript files to be compiled. */
     // "checkJs": true,                       /* Report errors in .js files. */
     "jsx": "react",                           /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     "declaration": true,                      /* Generates corresponding '.d.ts' file. */
@@ -70,6 +70,9 @@
       "test",
       "prod-build",
       "plugins",
-      "packages"
+      "packages",
+      "build-setup.js",
+      "jest.config.js",
+      "webpack.config.js"
   ]
 }

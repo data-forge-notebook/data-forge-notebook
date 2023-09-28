@@ -5,17 +5,18 @@
 import { registerSingleton } from "@codecapers/fusion";
 import { app, ipcMain } from "electron";
 import minimist from "minimist";
-import { ConsoleLog, ILogId } from "utils";
+import { ILogId } from "utils";
 import { EditorWindow, IEditorWindow } from "./lib/editor-window";
 import { IMainMenu, MainMenu } from "./lib/main-menu";
 import { IWindowManagerId, WindowManager } from "./lib/window-manager";
 import * as os from "os";
 import { spawn, SpawnOptions }  from "child_process";
 import * as path from "path";
+import { ElectronMainLog } from "./services/electron-main-log";
 
 import "./services/platform";
 
-const log = new ConsoleLog();
+const log = new ElectronMainLog();
 registerSingleton(ILogId, log);
 
 const windowManager = new WindowManager();

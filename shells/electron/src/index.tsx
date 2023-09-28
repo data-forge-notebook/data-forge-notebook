@@ -3,8 +3,9 @@ import * as ReactDOM from "react-dom";
 import { NotebookEditor, NotebookViewModel, NotebookEditorViewModel, ICommander, ICommanderId, INotebookRepositoryId } from "notebook-editor";
 import { ipcRenderer } from "electron";
 import { testNotebook } from "./test-notebook";
-import { ConsoleLog, handleAsyncErrors, ILogId } from "utils";
+import { handleAsyncErrors, ILogId } from "utils";
 import { instantiateSingleton, registerSingleton } from "@codecapers/fusion";
+import { ElectronWindowLog } from "./services/electron-renderer-log";
 
 import "./services/file";
 import "./services/confirmation-dialog";
@@ -27,7 +28,8 @@ if (!editorWindowId || editorWindowId.length <= 0) {
     throw new Error("No editor window id was provided!");
 }
 
-registerSingleton(ILogId, new ConsoleLog());
+const log = new ElectronWindowLog(`editor-window/${editorWindowId.substring(0, 5)}`);
+registerSingleton(ILogId, log);
 
 const notebookRepository = instantiateSingleton<NotebookRepository>(INotebookRepositoryId);
 const storageId = notebookRepository.makeUntitledNotebookId();

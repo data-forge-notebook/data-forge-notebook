@@ -1,0 +1,90 @@
+{
+  "_args": [
+    [
+      "electron-log@3.0.6",
+      "C:\\projects\\data-forge-notebook\\data-forge-notebook-dev"
+    ]
+  ],
+  "_from": "electron-log@3.0.6",
+  "_id": "electron-log@3.0.6",
+  "_inBundle": false,
+  "_integrity": "sha512-osPLk8m9+Ylo0k/okevdHUGsKpCNGxg206TxG2Ch8slGvlTZLI0955Ig4e+nJ6fHVDxFMv5dWkn2y8hwi0aENg==",
+  "_location": "/electron-log",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "electron-log@3.0.6",
+    "name": "electron-log",
+    "escapedName": "electron-log",
+    "rawSpec": "3.0.6",
+    "saveSpec": null,
+    "fetchSpec": "3.0.6"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/electron-log/-/electron-log-3.0.6.tgz",
+  "_spec": "3.0.6",
+  "_where": "C:\\projects\\data-forge-notebook\\data-forge-notebook-dev",
+  "author": {
+    "name": "Alexey Prokhorov"
+  },
+  "bugs": {
+    "url": "https://github.com/megahertz/electron-log/issues"
+  },
+  "description": "Just a very simple logging module for your Electron application",
+  "devDependencies": {
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "babel-loader": "*",
+    "chai": "*",
+    "electron": "*",
+    "eslint": "*",
+    "eslint-config-airbnb-base": "*",
+    "eslint-plugin-import": "*",
+    "mocha": "*",
+    "nw": "0.36.2",
+    "tslint": "*",
+    "typescript": "*",
+    "webpack": "*",
+    "webpack-cli": "*"
+  },
+  "files": [
+    "index.js",
+    "main.js",
+    "renderer.js",
+    "lib/**/*.js",
+    "!lib/**/*.spec.js",
+    "electron-log.d.ts"
+  ],
+  "homepage": "https://github.com/megahertz/electron-log#readme",
+  "keywords": [
+    "electron",
+    "atom",
+    "log",
+    "logger",
+    "logging",
+    "windows",
+    "mac",
+    "osx",
+    "linux",
+    "desktop"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "electron-log",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/megahertz/electron-log.git"
+  },
+  "scripts": {
+    "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js'",
+    "mocha": "mocha '**/*.spec.js' --exclude 'test-projects/**' --exclude 'node_modules/**'",
+    "test": "npm run lint && npm run tslint && npm run mocha && npm run test-projects",
+    "test-projects": "mocha 'test-projects/**/*.spec.js'",
+    "tslint": "tslint -p . -t verbose electron-log.d.ts"
+  },
+  "typings": "electron-log.d.ts",
+  "version": "3.0.6"
+}
