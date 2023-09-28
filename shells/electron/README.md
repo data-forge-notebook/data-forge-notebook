@@ -64,9 +64,26 @@ On Windows, if you see an error like the following you might have to close VS Co
 EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_modules\.bin\upgrade-blueprint-2.0.0-rename'
 ```
 
-Install directory:
+## Important directories
 
-- Windows: C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
+### Windows
+
+- Settings directory: C:\Users\ash\AppData\Roaming\data-forge-notebook-v2
+- Install directory: C:\Users\ash\AppData\Local\Programs\data-forge-notebook-v2
+- Log file: C:\Users\ash\AppData\Roaming\data-forge-notebook-v2\log.log
+
+### Linux
+
+- Settings: $XDG_CONFIG_HOME/data-forge-notebook-v2 or ~/.config/data-forge-notebook-v2
+- Log file: ~/.config/data-forge-notebook-v2/log.log
+
+
+### MacOS 
+
+- Settings: ~/Library/Application\ Support/data-forge-notebook-v2
+- Log file: ~/Library/Logs/data-forge-notebook-v2/log.log
+
+
 
 ## Run a local build from the dev evaluation engine
 
