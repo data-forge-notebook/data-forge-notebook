@@ -633,6 +633,9 @@ importers:
       '@electron/remote':
         specifier: ^2.0.8
         version: 2.0.8(electron@17.4.6)
+      fs-extra:
+        specifier: ^10.1.0
+        version: 10.1.0
       minimist:
         specifier: ^1.2.5
         version: 1.2.6
@@ -688,9 +691,6 @@ importers:
       electron-builder:
         specifier: ^24.6.3
         version: 24.6.3
-      fs-extra:
-        specifier: ^10.1.0
-        version: 10.1.0
       hoist-modules:
         specifier: ^1.1.3
         version: 1.1.3
@@ -9645,7 +9645,6 @@ packages:
       graceful-fs: 4.2.9
       jsonfile: 6.1.0
       universalify: 2.0.0
-    dev: true
 
   /fs-extra@11.1.1:
     resolution: {integrity: sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==}
@@ -12325,7 +12324,6 @@ packages:
       universalify: 2.0.0
     optionalDependencies:
       graceful-fs: 4.2.9
-    dev: true
 
   /jsprim@1.4.2:
     resolution: {integrity: sha512-P2bSOMAc/ciLz6DzgjVlGJP9+BrJWu5UDGK70C2iweC5QBIeFf0ZXRvGjEj2uYgrY2MkAAhsSWHDWlFtEroZWw==}
@@ -17445,7 +17443,6 @@ packages:
   /universalify@2.0.0:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
-    dev: true
 
   /unix-crypt-td-js@1.1.4:
     resolution: {integrity: sha512-8rMeVYWSIyccIJscb9NdCfZKSRBKYTeVnwmiRYT2ulE3qd1RaDQ0xQDP+rI3ccIWbhu/zuo5cgN8z73belNZgw==}
