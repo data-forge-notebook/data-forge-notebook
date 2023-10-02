@@ -24,7 +24,7 @@ const path = require("path");
 const { exec } = require("child_process");
 
 //
-// Servers a named plugiun.
+// Serves a named plugin.
 //
 function servePlugin(pluginName, portNo, outputDir) {
     fs.ensureDirSync(outputDir);
