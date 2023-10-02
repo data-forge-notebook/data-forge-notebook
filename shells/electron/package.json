@@ -156,6 +156,12 @@
             "name": "data-forge-notebook",
             "region": "nyc3",
             "acl": "public-read"
+        },
+        "nsis": {
+            "differentialPackage": false
+        },
+        "dmg": {
+            "writeUpdateInfo": false
         }
     }
 }
