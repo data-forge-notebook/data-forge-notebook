@@ -1,5 +1,7 @@
 # editor-core
 
+Data-Forge Notebook is a cross-platform notebook application for JavaScript.
+
 The core repository for Data-Forge Notebook's editor. Reused in the Tauri and Electron.
 
 Data-Forge Notebook is being open sourced in this code repository in 2022/23.
