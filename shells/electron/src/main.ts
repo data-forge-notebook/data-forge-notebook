@@ -206,7 +206,7 @@ function appReady(): void {
     // Start the evaluation engine.
     //
 
-    const appDataPath = process.env.APP_DATA_PATH || app.getPath("userData");
+    const appDataPath = process.env.APP_DATA_PATH || path.dirname(app.getPath("exe"));
     console.log(`Using app data dir = ${appDataPath}`);
     const relEvalEnginePath = `evaluation-engine/`;
     const evalEnginePath = process.env.DEV_EVAL_ENGINE_DIR || path.join(appDataPath, relEvalEnginePath);
