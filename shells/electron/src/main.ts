@@ -10,7 +10,7 @@ import { EditorWindow, IEditorWindow } from "./lib/editor-window";
 import { IMainMenu, MainMenu } from "./lib/main-menu";
 import { IWindowManagerId, WindowManager } from "./lib/window-manager";
 import * as os from "os";
-import { spawn, SpawnOptions }  from "child_process";
+import { ChildProcess, spawn, SpawnOptions }  from "child_process";
 import * as path from "path";
 import { ElectronMainLog } from "./services/electron-main-log";
 
@@ -28,6 +28,11 @@ registerSingleton(IWindowManagerId, windowManager);
 let quitting: boolean = false;
 
 //
+// The evaluation engine process.
+//
+let evaluatorEngineProcess: ChildProcess | undefined = undefined;
+
+//
 // Force an immediate exit.
 //
 function immediateExit(code: number): void {
@@ -36,6 +41,8 @@ function immediateExit(code: number): void {
     }
     
     quitting = true;
+
+    killEvaluationEngine();
 
     for (const editorWindow of windowManager.getEditorWindows()) {
         editorWindow.forceClose();
@@ -202,10 +209,13 @@ function appReady(): void {
         return;
     }
 
-    //
-    // Start the evaluation engine.
-    //
+    startEvaluationEngine();
+}
 
+//
+// Starts the evaluation engine.
+//
+function startEvaluationEngine(): void {
     const appDataPath = process.env.APP_DATA_PATH || path.dirname(app.getPath("exe"));
     console.log(`Using app data dir = ${appDataPath}`);
     const relEvalEnginePath = `evaluation-engine/`;
@@ -216,11 +226,11 @@ function appReady(): void {
     const nodeJsPath = `${appDataPath}/nodejs`;
     const platform = os.platform();
     const isWindows = platform === "win32";
-    const nodeExePath =  path.join(nodeJsPath, isWindows ? "node" : "bin/node");
+    const nodeExePath = path.join(nodeJsPath, isWindows ? "node" : "bin/node");
     const args = [
-        "--expose-gc", // Expose garbage collection so that we can wind up async operations promptly.
-        "--max-old-space-size=10000", // Enable large heap size.
-        "--inspect", // Enable debugging for the evaluation engine.
+        "--expose-gc",
+        "--max-old-space-size=10000",
+        "--inspect",
         evalEngineScriptFilePath,
     ];
 
@@ -228,8 +238,8 @@ function appReady(): void {
     console.log(`${nodeExePath} ${args.join(" ")}`);
     console.log(process.cwd());
 
-    const options: SpawnOptions = { 
-        env: { // Send env vars to the evaluation engine.
+    const options: SpawnOptions = {
+        env: {
             PORT: "9000",
         },
         stdio: ['ignore', 'pipe', 'pipe'],
@@ -242,7 +252,7 @@ function appReady(): void {
     // options.shell = true;
     // options.detached = true;
 
-    const evaluatorEngineProcess = spawn(nodeExePath, args, options);
+    evaluatorEngineProcess = spawn(nodeExePath, args, options);
 
     evaluatorEngineProcess.stdout!.on('data', (buf: any) => {
         log.info("** evaluation-engine: " + buf.toString());
@@ -268,7 +278,7 @@ function appReady(): void {
                     log.error(partialStderrLine + firstLine);
                 }
 
-                for (let i = 0; i < lines.length-1; i++) {
+                for (let i = 0; i < lines.length - 1; i++) {
                     if (detectFatalErrorMsg(lines[i])) {
                         // Intermediate lines that contain a fatal error.
                         log.error("** Detected fatal error.");
@@ -276,7 +286,7 @@ function appReady(): void {
                     }
                 }
 
-                partialStderrLine = lines[lines.length-1]; // Collection partial line.
+                partialStderrLine = lines[lines.length - 1]; // Collection partial line.
             }
         }
     });
@@ -293,7 +303,16 @@ function appReady(): void {
             log.error(partialStderrLine);
         }
     });
+}
 
+//
+// Kills the evaluation engine process.
+//
+function killEvaluationEngine(): void{
+    if (evaluatorEngineProcess) {
+        evaluatorEngineProcess.kill();
+        evaluatorEngineProcess = undefined;
+    }
 }
 
 //
@@ -360,6 +379,8 @@ app.on("will-quit", event => {
     log.info("Event: will-quit");
 
     log.info("== Exiting Data-Forge Notebook.");
+
+    killEvaluationEngine();
 });
 
 // 
