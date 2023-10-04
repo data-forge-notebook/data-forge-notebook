@@ -239,8 +239,8 @@ function appReady(): void {
     //
     // Enable these to show the shell for the process.
     //
-    options.shell = true;
-    options.detached = true;
+    // options.shell = true;
+    // options.detached = true;
 
     const evaluatorEngineProcess = spawn(nodeExePath, args, options);
 
