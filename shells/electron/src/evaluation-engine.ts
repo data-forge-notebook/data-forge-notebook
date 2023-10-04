@@ -10,19 +10,37 @@ import { log } from "./electron-log";
 let evaluatorEngineProcess: ChildProcess | undefined = undefined;
 
 //
+// Gets the path for data installed with the application.
+//
+export function getAppDataPath(): string {
+    const appDataPath = process.env.APP_DATA_PATH || path.dirname(app.getPath("exe"));
+    console.log(`Using app data dir = ${appDataPath}`);
+    return appDataPath;
+}
+
+//
+// Gets the local install path for Node.js.
+//
+export function getNodejsInstallPath(): string {
+    const appDataPath = getAppDataPath();
+    const nodeJsPath = `${appDataPath}/nodejs`;
+    return nodeJsPath;
+}
+
+//
 // Starts the evaluation engine.
 //
 export function startEvaluationEngine(): void {
-    const appDataPath = process.env.APP_DATA_PATH || path.dirname(app.getPath("exe"));
-    console.log(`Using app data dir = ${appDataPath}`);
     const relEvalEnginePath = `evaluation-engine/`;
+    const appDataPath = getAppDataPath();
     const evalEnginePath = process.env.DEV_EVAL_ENGINE_DIR || path.join(appDataPath, relEvalEnginePath);
     console.log(`Running eval engine from ${evalEnginePath}`);
     const evalEngineScriptFile = `build/index.js`;
     const evalEngineScriptFilePath = path.join(evalEnginePath, evalEngineScriptFile);
-    const nodeJsPath = `${appDataPath}/nodejs`;
+    
     const platform = os.platform();
     const isWindows = platform === "win32";
+    const nodeJsPath = getNodejsInstallPath();
     const nodeExePath = path.join(nodeJsPath, isWindows ? "node" : "bin/node");
     const args = [
         "--expose-gc",

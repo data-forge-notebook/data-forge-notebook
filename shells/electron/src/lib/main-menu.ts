@@ -1,8 +1,11 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions } from "electron";
+import { app, BrowserWindow, Menu, MenuItemConstructorOptions, shell } from "electron";
 import { commandTable, expandAccelerator } from "notebook-editor/build/services/command";
 import { IPlatform, IPlatformId } from "notebook-editor/build/services/platform";
 import { BasicEventHandler, IEventSource, EventSource, ILog, ILogId } from "utils";
+import * as path from "path";
+import * as os from "os";
+const opn = require('open');
 
 import "notebook-editor/build/actions/new-notebook-action";
 import "notebook-editor/build/actions/eval-notebook-action";
@@ -15,6 +18,7 @@ import "notebook-editor/build/actions/save-notebook-as-action";
 import "notebook-editor/build/actions/toggle-hotkeys-action";
 import "notebook-editor/build/actions/toggle-command-palette-action";
 import { IWindowManager, IWindowManagerId } from "./window-manager";
+import { getNodejsInstallPath } from "../evaluation-engine";
 
 const devMenuTemplate = {
     label: "Development",
@@ -34,6 +38,29 @@ const devMenuTemplate = {
             }
         },
     ],
+};
+
+const appInstallDirectory = "data-forge-notebook-v2";
+
+const directories: any = {
+    linux: {
+        installPath: "N/A",
+        projectPath: path.join(os.tmpdir(), "dfntmp"),
+        settingsPath: path.join(os.homedir(), `.config/${appInstallDirectory}`),
+        logFilePath: path.join(os.homedir(), `.config/${appInstallDirectory}/log.log`),
+    },
+    darwin: {
+        installPath: "N/A",
+        projectPath: path.join(os.tmpdir(), "dfntmp"),
+        settingsPath: path.join(os.homedir(), `Library/Application\ Support/${appInstallDirectory}`),
+        logFilePath: path.join(os.homedir(), `Library/Logs/${appInstallDirectory}/log.log`),
+    },
+    win32: {
+        installPath: path.join(os.homedir(), `AppData\\Local\\Programs\\${appInstallDirectory}`),
+        projectPath: path.join(os.tmpdir(), "dfntmp"),
+        settingsPath: path.join(os.homedir(), `AppData\\Roaming\\${appInstallDirectory}`),
+        logFilePath: path.join(os.homedir(), `AppData\\Roaming\\${appInstallDirectory}\\log.log`),
+    },
 };
 
 export interface IMainMenu {
@@ -151,6 +178,32 @@ export class MainMenu implements IMainMenu {
                 label: "&Run",
                 submenu: [
                     this.createMenu("eval-notebook"),
+                ],
+            },
+
+            {
+                label: "&Settings",
+                submenu: [
+                    {
+                        label: "Open log file directory",
+                        click: () => {
+                            const platform = os.platform();
+                            const isMacOS = platform === "darwin";
+                            let path = directories[platform].logFilePath;
+                            if (isMacOS) {
+                                path = path.replace("~", os.homedir());
+                            }
+                            console.log("Opening log file path for " + platform + ": " + path);
+                            shell.showItemInFolder(path);
+                        },
+                    },
+
+                    {
+                        label: "Open Node.js installs directory",
+                        click: () => {
+                            opn(getNodejsInstallPath());
+                        },
+                    },
                 ],
             },
 
