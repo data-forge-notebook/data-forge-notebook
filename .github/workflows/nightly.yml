@@ -1,0 +1,94 @@
+name: Nightly
+on:
+  schedule:
+    - cron: '0 8 * * *' # Run at 8am UTC, 6pm AEST.
+
+jobs:
+  check_date:
+    runs-on: ubuntu-latest
+    name: Check latest commit
+
+    outputs:
+      should_run: ${{ steps.should_run.outputs.should_run }}
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Print latest_commit
+        run: echo ${{ github.sha }}
+
+      - id: should_run
+        continue-on-error: true
+        name: Check latest commit is less than a day
+        if: ${{ github.event_name == 'schedule' }}
+        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
+
+  publish:
+    needs: check_date
+    if: ${{ needs.check_date.outputs.should_run != 'false' }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest] # Build for all platforms.
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      BUILD_PARENT_DIR: /temp
+      VERSION: ${{ github.sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 8.6.7
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: cache
+          key: ${{ runner.os }}-cache
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Create version file
+        run: |
+          echo "{ \"version\": \"nightly-${VERSION}\" }" > version.json
+          cat version.json
+
+      - name: Compile
+        run: pnpm run compile
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build plugins 
+        run: pnpm run build-plugins
+
+      - name: Build installer
+        run: pnpm run build-electron-win
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          release_name: Release ${{ github.ref }}
+          tag_name: ${{ github.ref }}
+          draft: false
+          prerelease: true
+          body: Nightly build
+
+
