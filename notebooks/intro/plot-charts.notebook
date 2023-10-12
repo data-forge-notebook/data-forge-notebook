@@ -1,0 +1,200 @@
+{
+    "version": 2,
+    "sheet": {
+        "id": "715b0bf0-a773-11e8-be47-d189ccafed88",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "715b3300-a773-11e8-be47-d189ccafed88",
+                "cellType": "markdown",
+                "code": "# A simple charting example\r\n\r\nThis example shows how to load a CSV file and render a chart.\r\n\r\nLoads the file \"example.csv\", which is placed to next to where this notebook is saved.\r\n\r\n**NOTE**: You can easily load and chart JSON files using almost the same code as this.",
+                "lastEvaluationDate": "2018-09-05T18:40:44.747+10:00",
+                "output": [],
+                "errors": [],
+                "height": 173
+            },
+            {
+                "id": "715b3301-a773-11e8-be47-d189ccafed88",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const { readCsv } = require(\"datakit\");\r\n\r\nconst data = await readCsv(\"./example.csv\", { dynamicTyping: true });\r\n\r\ndisplay.plot(data, { chartType: \"bar\" }, { x: \"Name\" }); // Show the chart.",
+                "lastEvaluationDate": "2020-10-13T16:20:20.806+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "plot",
+                            "data": {
+                                "data": {
+                                    "series": {
+                                        "Name": {
+                                            "type": "string",
+                                            "values": [
+                                                "Alex",
+                                                "Bert",
+                                                "Carl",
+                                                "Dave",
+                                                "Elly",
+                                                "Fran",
+                                                "Gwen",
+                                                "Hank",
+                                                "Ivan",
+                                                "Jake",
+                                                "Kate",
+                                                "Luke",
+                                                "Myra",
+                                                "Neil",
+                                                "Omar",
+                                                "Page",
+                                                "Quin",
+                                                "Ruth"
+                                            ]
+                                        },
+                                        "Sex": {
+                                            "type": "string",
+                                            "values": [
+                                                "M",
+                                                "M",
+                                                "M",
+                                                "M",
+                                                "F",
+                                                "F",
+                                                "F",
+                                                "M",
+                                                "M",
+                                                "M",
+                                                "F",
+                                                "M",
+                                                "F",
+                                                "M",
+                                                "M",
+                                                "F",
+                                                "M",
+                                                "F"
+                                            ]
+                                        },
+                                        "Age": {
+                                            "type": "number",
+                                            "values": [
+                                                41,
+                                                42,
+                                                32,
+                                                39,
+                                                30,
+                                                33,
+                                                26,
+                                                30,
+                                                53,
+                                                32,
+                                                47,
+                                                34,
+                                                23,
+                                                36,
+                                                38,
+                                                31,
+                                                29,
+                                                28
+                                            ]
+                                        },
+                                        "Height (in)": {
+                                            "type": "number",
+                                            "values": [
+                                                74,
+                                                68,
+                                                70,
+                                                72,
+                                                66,
+                                                66,
+                                                64,
+                                                71,
+                                                72,
+                                                69,
+                                                69,
+                                                72,
+                                                62,
+                                                75,
+                                                70,
+                                                67,
+                                                71,
+                                                65
+                                            ]
+                                        },
+                                        "Weight (lbs)": {
+                                            "type": "number",
+                                            "values": [
+                                                170,
+                                                166,
+                                                155,
+                                                167,
+                                                124,
+                                                115,
+                                                121,
+                                                158,
+                                                175,
+                                                143,
+                                                139,
+                                                163,
+                                                98,
+                                                160,
+                                                145,
+                                                135,
+                                                176,
+                                                131
+                                            ]
+                                        }
+                                    }
+                                },
+                                "plotConfig": {
+                                    "legend": {
+                                        "show": true
+                                    },
+                                    "chartType": "bar",
+                                    "width": "95%",
+                                    "height": "95%",
+                                    "y": {
+                                        "min": 23,
+                                        "max": 176
+                                    },
+                                    "y2": {}
+                                },
+                                "axisMap": {
+                                    "x": {
+                                        "series": "Name"
+                                    },
+                                    "y": [
+                                        {
+                                            "series": "Name"
+                                        },
+                                        {
+                                            "series": "Sex"
+                                        },
+                                        {
+                                            "series": "Age"
+                                        },
+                                        {
+                                            "series": "Height (in)"
+                                        },
+                                        {
+                                            "series": "Weight (lbs)"
+                                        }
+                                    ],
+                                    "y2": []
+                                }
+                            }
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 546
+            },
+            {
+                "id": "4642ce70-9cd2-11ea-89b4-d59a11d5b26f",
+                "cellType": "markdown",
+                "code": "## What's next?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [See more charts](http://open-notebook=../examples/charts.notebook)\r\n- [Plot maps](http://open-notebook=plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=../examples/csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=../examples/json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=../examples/viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+                "lastEvaluationDate": "2020-05-23T18:50:10.555+10:00",
+                "output": [],
+                "errors": [],
+                "height": 283
+            }
+        ]
+    }
+}

@@ -91,11 +91,12 @@
             "!node_modules/nightmare/node_modules/electron${/*}"
         ],
         "extraFiles": [
-            "./examples/**/*",
-            "./intro/**/*",
             "./evaluation-engine/**/*",
             "./nodejs/**/*",
             "./resources/icon.png"
+        ],
+        "extraResources": [
+            "./notebooks/**/*"
         ],
         "linux": {
             "target": [
