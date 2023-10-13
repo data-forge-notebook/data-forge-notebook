@@ -68,7 +68,7 @@ jobs:
 
       - name: Create version file
         run: |
-          echo "{ \"version\": \"nightly-${VERSION}\" }" > version.json
+          echo "{ \"version\": \"nightly-${{ github.sha }}\" }" > version.json 
           cat version.json
 
       - name: Compile
