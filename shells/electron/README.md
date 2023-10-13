@@ -87,7 +87,7 @@ EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_mod
 
 ## Run a local build from the dev evaluation engine
 
-Set the environment variable to the installed path:
+Set the environment variable to the path for the evaluation engine project:
 
 ```bash
 set DEV_EVAL_ENGINE_DIR=c:\projects\data-forge-notebook\editor-core\shells\evaluation-engine

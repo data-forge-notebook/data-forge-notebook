@@ -2,9 +2,7 @@
 
 Data-Forge Notebook is a cross-platform notebook application for JavaScript.
 
-The core repository for Data-Forge Notebook's editor. Reused in the Tauri and Electron.
-
-Data-Forge Notebook is being open sourced in this code repository in 2022/23.
+The core repository for Data-Forge Notebook.
 
 [Read more about the decision here](https://github.com/data-forge-notebook/wiki/wiki/Future-Plans)
 
@@ -40,20 +38,6 @@ A birds eye view of this project:
         ├───tauri ------------------ Runs DFN in Tauri (not yet functional).
         └───testbed ---------------- A custom testbed for UI components.
 ```
-
-## Quickstart - Tauri
-
-Note: You need Rust installed for the Tauri build.
-
-WARNING: Tauri build doesn't work yet.
-
-```bash
-cd editor-core
-pnpm install
-pnpm run compile
-pnpm run tauri:dev
-```
-
 ## Quickstart - Electron
 
 ```bash
@@ -106,7 +90,7 @@ pnpm run compile:watch
 
 ## Build plugins
 
-For static builds, you must also build the web pages for all plugins:
+For static (precompiled, no live reload) builds, you must also build the web pages for all plugins:
 
 ```bash
 pnpm run build-plugins
@@ -119,7 +103,7 @@ This runs the whole notebook editor in the browser.
 pnpm start
 ```
 
-It is runs in "dev" mode with live reload enabled.
+It runs in "dev" mode with live reload enabled.
 
 The plugins (which are complete web pages in their own right) and also served in "dev" mode from the `./plugins` directory. You can edit the code for the plugins, but you might have to manually refresh the browser to
 
@@ -194,6 +178,20 @@ pnpm run build-tauri-debug
 ```
 
 ### Build the Electron installer
+
+First set the parent temporary directory required for building. 
+
+On Windows:
+
+```bash
+set BUILD_PARENT_DIR=c:\temp
+```
+
+On MacOS / Linux:
+
+```bash
+export BUILD_PARENT_DIR=/tmp
+```
 
 Run one of the scripts depending on the OS you are on building for:
 
