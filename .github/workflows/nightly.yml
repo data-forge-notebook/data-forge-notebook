@@ -39,7 +39,7 @@ jobs:
 
     env:
       BUILD_PARENT_DIR: /temp
-      VERSION: ${{ github.sha }}
+      GIT_SHA: ${{ github.sha }}
 
     steps:
       - name: Checkout
