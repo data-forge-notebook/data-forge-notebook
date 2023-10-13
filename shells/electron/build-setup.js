@@ -39,7 +39,7 @@ async function main() {
 
     const sha = process.env.GIT_SHA;
     if (sha) {
-        package.version = `2.0.${sha.substring(0, 6)}`;
+        package.version = `2.0.0-${sha}`;
     }
     fs.writeFileSync(`${buildDir}/package.json`, JSON.stringify(package, null, 2));
 

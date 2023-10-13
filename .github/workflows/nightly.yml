@@ -83,13 +83,14 @@ jobs:
       - name: Build installer
         run: |
           pnpm run build-electron-win
-          ls /temp
+          ls /temp/dfn-build/build/installer
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
+          name: Nightly ${{ github.sha }}
+          tag_name: ${{ github.sha }}
           body: Nightly build
           draft: true
           prerelease: true
-          files: /temp/dfn-build/installer-builder/installer/Data-Forge Notebook v2 Setup - 2.0.0.exe
+          files: /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.exe
