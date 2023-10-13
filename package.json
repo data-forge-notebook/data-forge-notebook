@@ -13,7 +13,7 @@
     "build-browser": "pnpm --filter browser run build",
     "build-electron-win": "pnpm --filter electron run build-win",
     "build-electron-linux": "pnpm --filter electron run build-linux",
-    "build-electron-mac": "pnpm --filter electron run build-ma",
+    "build-electron-mac": "pnpm --filter electron run build-mac",
     "package-eval-engine": "node ./scripts/package-evaluation-engine.js",
     "build-tauri": "pnpm run package-eval-engine && pnpm --filter tauri run build",
     "build-tauri-debug": "pnpm run package-eval-engine && pnpm --filter tauri run build-debug",
