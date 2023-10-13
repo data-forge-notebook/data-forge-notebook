@@ -2,6 +2,7 @@ name: Nightly
 on:
   schedule:
     - cron: '0 8 * * *' # Run at 8am UTC, 6pm AEST.
+  workflow_dispatch:
 
 jobs:
   check_date:
