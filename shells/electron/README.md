@@ -80,10 +80,9 @@ EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_mod
 
 ### MacOS 
 
+- Install directory: /Applications/data-forge-notebook-v2.app/Contents
 - Settings: ~/Library/Application\ Support/data-forge-notebook-v2
 - Log file: ~/Library/Logs/data-forge-notebook-v2/log.log
-
-
 
 ## Run a local build from the dev evaluation engine
 
@@ -111,8 +110,16 @@ Note: Make sure you compile the evaluation engine first. Run `pnpm run compile` 
 
 Set the environment variable to the installed path:
 
+On Windows:
+
 ```bash
 set APP_DATA_PATH=C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
+```
+
+On MacOS:
+
+```bash
+export APP_DATA_PATH=/Applications/data-forge-notebook-v2.app/Contents
 ```
 
 Run it this way:
