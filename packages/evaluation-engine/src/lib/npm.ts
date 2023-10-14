@@ -145,19 +145,19 @@ export class Npm implements INpm {
     // Get the path to the npm command or script.
     //
     private getNpmScriptPath(): string {
-        return path.join(
+        return path.resolve(path.join(
             this.nodeJsPath, 
             (isLinux || isMacOS)
-                ? "lib/node_modules/npm/bin/npm-cli.js" 
+                ? "../lib/node_modules/npm/bin/npm-cli.js" 
                 : "node_modules/npm/bin/npm-cli.js"
-        );        
+        ));
     }
 
     //
     // Get the path to the Node.js exe.
     //
     getNodeJsExePath(): string {
-        return path.join(this.nodeJsPath, (isLinux || isMacOS) ? "bin/node" : "node");
+        return path.join(this.nodeJsPath, "node");
     }
 
     //
