@@ -1,7 +1,6 @@
 import * as express from "express";
 import { NOTEBOOK_TIMEOUT_MS } from "./config";
 import * as path from "path";
-import { PerformanceObserverCallback } from "perf_hooks";
 import { IEvaluateNotebookMsg, IWorkerMsg } from "./worker";
 const cluster = require("cluster");
 
