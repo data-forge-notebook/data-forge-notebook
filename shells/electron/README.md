@@ -80,9 +80,18 @@ EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_mod
 
 ### MacOS 
 
+- Home path: /Users/<username>
 - Install directory: /Applications/data-forge-notebook-v2.app/Contents
+- Exe path: /Applications/data-forge-notebook-v2.app/Contents/MacOS/data-forge-notebook-v2
+- Nodejs path: /Applications/data-forge-notebook-v2.app/Contents/nodejs
+- Evalution engine path: /Applications/data-forge-notebook-v2.app/Contents/evaluation-engine
 - Settings: ~/Library/Application\ Support/data-forge-notebook-v2
 - Log file: ~/Library/Logs/data-forge-notebook-v2/log.log
+- App data: ~/Library/Application Support
+- User data: ~/Library/Application\ Support/data-forge-notebook-v2
+- Temp path: /var/folders/by/<guid>/T/
+- Documents path: ~/Documents
+- Downloads path: ~/Downloads
 
 ## Run a local build from the dev evaluation engine
 
