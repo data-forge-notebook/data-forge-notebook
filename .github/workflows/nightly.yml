@@ -32,7 +32,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, macos-latest]
+        include: 
+          - os: windows-latest 
+            files: 
+              - /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.exe
+          - os: macos-latest 
+            files: 
+              - /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.dmg
         # os: [ubuntu-latest, windows-latest, macos-latest] # Build for all platforms.
 
     runs-on: ${{ matrix.os }}
@@ -93,4 +100,4 @@ jobs:
           body: Nightly build
           draft: true
           prerelease: true
-          files: /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.exe
+          files: ${{ matrix.files }}
