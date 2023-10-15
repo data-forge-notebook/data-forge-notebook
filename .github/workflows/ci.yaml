@@ -40,11 +40,3 @@ jobs:
 
       - name: Run tests
         run: pnpm test
-      
-      - name: Build browser
-        run: pnpm run build-browser
-
-      - name: Build Electron
-        env:
-          BUILD_PARENT_DIR: c:\temp
-        run: pnpm run build-electron-win
