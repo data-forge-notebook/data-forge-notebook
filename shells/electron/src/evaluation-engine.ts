@@ -68,7 +68,7 @@ export function startEvaluationEngine(): void {
 
     console.log(`Starting evaluation engine with command:`);
     console.log(`${nodeExePath} ${args.join(" ")}`);
-    console.log(process.cwd());
+    console.log(`Working directory: ${process.cwd()});
 
     const options: SpawnOptions = {
         env: {
