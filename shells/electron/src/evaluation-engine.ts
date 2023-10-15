@@ -3,7 +3,6 @@ import * as os from "os";
 import { ChildProcess, spawn, SpawnOptions }  from "child_process";
 import * as path from "path";
 import { log } from "./electron-log";
-import * as os from "os";
 
 const platform = os.platform();
 const isWindows = platform === "win32";
