@@ -1,8 +1,14 @@
-import { app, ipcMain } from "electron";
+import { app } from "electron";
 import * as os from "os";
 import { ChildProcess, spawn, SpawnOptions }  from "child_process";
 import * as path from "path";
 import { log } from "./electron-log";
+import * as os from "os";
+
+const platform = os.platform();
+const isWindows = platform === "win32";
+const isMacOS = platform === "darwin";
+const isLinux = platform === "linux";
 
 //
 // The evaluation engine process.
@@ -12,18 +18,27 @@ let evaluatorEngineProcess: ChildProcess | undefined = undefined;
 //
 // Gets the path for data installed with the application.
 //
-export function getAppDataPath(): string {
-    const appDataPath = process.env.APP_DATA_PATH || path.dirname(app.getPath("exe"));
-    console.log(`Using app data dir = ${appDataPath}`);
-    return appDataPath;
+export function getInstallPath(): string {
+    if (process.env.INSTALL_PATH) {
+        // Override for development and testing.
+        return process.env.INSTALL_PATH;
+    }
+
+    if (isMacOS) {
+        // Go two levels up from the exe on MacOS.
+        return path.dirname(path.dirname(app.getPath("exe")));
+    }
+    else {
+        return path.dirname(app.getPath("exe"));
+    }
 }
 
 //
 // Gets the local install path for Node.js.
 //
 export function getNodejsInstallPath(): string {
-    const appDataPath = getAppDataPath();
-    const nodeJsPath = `${appDataPath}/nodejs`;
+    const installPath = getInstallPath();
+    const nodeJsPath = `${installPath}/nodejs`;
     return nodeJsPath;
 }
 
@@ -32,9 +47,9 @@ export function getNodejsInstallPath(): string {
 //
 export function startEvaluationEngine(): void {
     const relEvalEnginePath = `evaluation-engine/`;
-    const appDataPath = getAppDataPath();
-    console.log(`App data path = ${appDataPath}`);
-    const evalEnginePath = process.env.DEV_EVAL_ENGINE_DIR || path.join(appDataPath, relEvalEnginePath);
+    const installPath = getInstallPath();
+    console.log(`Install path = ${installPath}`);
+    const evalEnginePath = process.env.DEV_EVAL_ENGINE_DIR || path.join(installPath, relEvalEnginePath);
     console.log(`Running eval engine from ${evalEnginePath}`);
     const evalEngineScriptFile = `build/index.js`;
     const evalEngineScriptFilePath = path.join(evalEnginePath, evalEngineScriptFile);

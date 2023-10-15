@@ -68,9 +68,18 @@ EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_mod
 
 ### Windows
 
-- Settings directory: C:\Users\ash\AppData\Roaming\data-forge-notebook-v2
+- Home directory: C:\Users\<username>
 - Install directory: C:\Users\ash\AppData\Local\Programs\data-forge-notebook-v2
-- Log file: C:\Users\ash\AppData\Roaming\data-forge-notebook-v2\log.log
+- Exe path: C:\Users\<username>\AppData\Local\Programs\data-forge-notebook-v2\data-forge-notebook-v2.exe
+- INSTALL_PATH: C:\Users\<username>\AppData\Local\Programs\data-forge-notebook-v2
+- Node.js path: %INSTALL_PATH%\nodejs
+- Evaluation engine path: %INSTALL_PATH%\evaluation-engine
+- DATA_PATH: C:\Users\<username>\AppData\Roaming\data-forge-notebook-v2
+- Settings directory: %DATA_PATH%
+- Log file: %DATA_PATH%\log.log
+- Temp path: C:\Users\<username>\AppData\Local\Temp
+- Documents path: C:\Users\<username>\Documents
+- Downloads path: C:\Users\<username>\Downloads
 
 ### Linux
 
@@ -80,15 +89,15 @@ EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_mod
 
 ### MacOS 
 
-- Home path: /Users/<username>
+- Home directory: /Users/<username>
 - Install directory: /Applications/data-forge-notebook-v2.app/Contents
 - Exe path: /Applications/data-forge-notebook-v2.app/Contents/MacOS/data-forge-notebook-v2
-- Nodejs path: /Applications/data-forge-notebook-v2.app/Contents/nodejs
-- Evalution engine path: /Applications/data-forge-notebook-v2.app/Contents/evaluation-engine
-- Settings: ~/Library/Application\ Support/data-forge-notebook-v2
+- INSTALL_PATH: /Applications/data-forge-notebook-v2.app/Contents
+- Nodejs path: $INSTALL_PATH/nodejs
+- Evalution engine path: $INSTALL_PATH/evaluation-engine
+- DATA_PATH: ~/Library/Application\ Support/data-forge-notebook-v2
+- Settings directory: $DATA_PATH
 - Log file: ~/Library/Logs/data-forge-notebook-v2/log.log
-- App data: ~/Library/Application Support
-- User data: ~/Library/Application\ Support/data-forge-notebook-v2
 - Temp path: /var/folders/by/<guid>/T/
 - Documents path: ~/Documents
 - Downloads path: ~/Downloads
@@ -117,18 +126,20 @@ Note: Make sure you compile the evaluation engine first. Run `pnpm run compile` 
 
 ## Run a local build from the installed app data path
 
+This picks up the installed version of Node.js and the evaluation engine.
+
 Set the environment variable to the installed path:
 
 On Windows:
 
 ```bash
-set APP_DATA_PATH=C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
+set INSTALL_PATH=C:\Users\Ash\AppData\Local\Programs\data-forge-notebook-v2
 ```
 
 On MacOS:
 
 ```bash
-export APP_DATA_PATH=/Applications/data-forge-notebook-v2.app/Contents
+export INSTALL_PATH=/Applications/data-forge-notebook-v2.app/Contents
 ```
 
 Run it this way:
