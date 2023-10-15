@@ -35,9 +35,11 @@ jobs:
         os: [windows-latest, macos-latest]
         include: 
           - os: windows-latest 
+            build_script: build-electron-win
             files: |
               /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.exe
           - os: macos-latest 
+            build_script: build-electron-mac
             files: | 
               /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.dmg
         # os: [ubuntu-latest, windows-latest, macos-latest] # Build for all platforms.
@@ -89,7 +91,7 @@ jobs:
 
       - name: Build installer
         run: |
-          pnpm run build-electron-win
+          pnpm run ${{ matrix.build_script }}
           ls /temp/dfn-build/build/installer
 
       - name: Create GitHub Release
