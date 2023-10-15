@@ -66,7 +66,10 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
     console.log(`Evaluating notebook in path ${projectPath}.`);
     console.log(`Working directory: ${process.cwd()}`);
 
-    const npm = new Npm(path.dirname(process.argv0), "./tmp/cache", log);
+    const nodeJsPath = path.dirname(process.argv0);
+    console.log(`Nodejs from path: ${nodeJsPath}`);
+
+    const npm = new Npm(nodeJsPath, "./tmp/cache", log);
     const codeEvaluator = new CodeEvaluator(process, notebook, cells, `notebook-${notebook.getInstanceId()}`, projectPath, npm, log, NOTEBOOK_TIMEOUT_MS);
     codeEvaluator.onCellEvalStarted = cellId => {
         onEvent("evaluation-event", { event: "cell-eval-started", cellId });

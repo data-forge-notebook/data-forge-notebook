@@ -33,6 +33,7 @@ export function getNodejsInstallPath(): string {
 export function startEvaluationEngine(): void {
     const relEvalEnginePath = `evaluation-engine/`;
     const appDataPath = getAppDataPath();
+    console.log(`App data path = ${appDataPath}`);
     const evalEnginePath = process.env.DEV_EVAL_ENGINE_DIR || path.join(appDataPath, relEvalEnginePath);
     console.log(`Running eval engine from ${evalEnginePath}`);
     const evalEngineScriptFile = `build/index.js`;
@@ -41,6 +42,8 @@ export function startEvaluationEngine(): void {
     const platform = os.platform();
     const isWindows = platform === "win32";
     const nodeJsPath = getNodejsInstallPath();
+    console.log(`Node.js path ${nodeJsPath}`);
+
     const nodeExePath = path.join(nodeJsPath, isWindows ? "node" : "bin/node");
     const args = [
         "--expose-gc",

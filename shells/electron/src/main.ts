@@ -17,6 +17,15 @@ import { killEvaluationEngine, startEvaluationEngine } from "./evaluation-engine
 const windowManager = new WindowManager();
 registerSingleton(IWindowManagerId, windowManager);
 
+console.log(`home path: ${app.getPath("home")}`);
+console.log(`appData path: ${app.getPath("appData")}`);
+console.log(`userData path: ${app.getPath("userData")}`);
+console.log(`temp path: ${app.getPath("temp")}`);
+console.log(`documents path: ${app.getPath("documents")}`);
+console.log(`downloads path: ${app.getPath("downloads")}`);
+console.log(`exe path: ${app.getPath("exe")}`);
+console.log(`logs path: ${app.getPath("logs")}`);
+
 //
 // Set to true when the application is shutting down.
 //
