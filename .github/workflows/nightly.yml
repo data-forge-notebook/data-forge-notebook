@@ -19,9 +19,9 @@ jobs:
       - name: Set the release tag
         run: |
           echo "Setting the release tag"
-          echo "HELLO=WORLD" >> $GITHUB_ENV
-          echo "RELEASE_TAG=nightly-$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-          echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          echo "HELLO=WORLD" >> $GITHUB_OUTPUT
+          echo "RELEASE_TAG=nightly-$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
       
       - name: Print latest_commit
         run: echo ${{ github.sha }}
@@ -30,7 +30,7 @@ jobs:
         continue-on-error: true
         name: Check latest commit is less than a day
         if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
+        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "should_run=false" >> "$GITHUB_OUTPUT"
 
   publish:
     needs: check_date
@@ -59,13 +59,13 @@ jobs:
 
     env:
       BUILD_PARENT_DIR: ${{ matrix.build_parent_dir }}
+      RELEASE_TAG: ${{ needs.check_date.outputs.RELEASE_TAG }}
 
     steps:
       - name: Print release tag
         run: |
-          echo "${{ toJson(env) }}"
-          echo "${{ env.RELEASE_TAG }}"
-          echo "${RELEASE_TAG}"
+          echo "${{ toJson(needs.check_date.outputs) }}"
+          echo "${{ needs.check_date.outputs.RELEASE_TAG }}"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -93,7 +93,7 @@ jobs:
 
       - name: Create version file
         run: |
-          echo "export const version = \"2.0.0-${{ env.RELEASE_TAG }}\"; export const sha = \"${{ github.sha }}\";" > shells/electron/src/version.ts
+          echo "export const version = \"2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}\"; export const sha = \"${{ github.sha }}\";" > shells/electron/src/version.ts
           cat shells/electron/src/version.ts
 
       - name: Compile
@@ -114,7 +114,7 @@ jobs:
       #   uses: softprops/action-gh-release@v1
       #   with:
       #     name: Nightly ${{ env.CURRENT_DATE }}
-      #     tag_name: 2.0.0-${{ env.RELEASE_TAG }}
+      #     tag_name: 2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}
       #     body: Nightly build
       #     draft: true
       #     prerelease: true
