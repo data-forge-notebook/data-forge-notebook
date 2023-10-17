@@ -18,6 +18,8 @@ jobs:
 
       - name: Set the release tag
         run: |
+          echo "Setting the release tag"
+          echo "HELLO=WORLD" >> $GITHUB_ENV
           echo "RELEASE_TAG=nightly-$(date +'%Y-%m-%d')" >> $GITHUB_ENV
           echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
       
@@ -61,8 +63,9 @@ jobs:
     steps:
       - name: Print release tag
         run: |
-          echo ${{ env.RELEASE_TAG }}
-          echo ${RELEASE_TAG}
+          echo "${{ toJson(env) }}"
+          echo "${{ env.RELEASE_TAG }}"
+          echo "${RELEASE_TAG}"
 
       - name: Checkout
         uses: actions/checkout@v2
