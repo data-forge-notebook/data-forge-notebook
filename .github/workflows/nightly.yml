@@ -85,7 +85,7 @@ jobs:
 
       - name: Create version file
         run: |
-          echo "{ \"version\": \"2.0.0-${{ env.RELEASE_TAG }}\", \"sha\": \"${{ github.sha }}\" }" > version.json 
+          echo "export const version = \"2.0.0-${{ env.RELEASE_TAG }}\"; export const sha = \"${{ github.sha }}\";" > shells/electron/src/version.ts
           cat version.json
 
       - name: Compile

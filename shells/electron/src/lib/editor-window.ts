@@ -2,15 +2,25 @@ import { BrowserWindow, dialog, shell, screen } from "electron";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { EventSource, IEventSource, IIdGenerator, IIdGeneratorId, ILog, ILogId, SenderEventHandler } from "utils";
 import { IWindowManager, IWindowManagerId } from "./window-manager";
+import { version, sha } from "../version";
 
 const remote = require("@electron/remote/main");
 remote.initialize();
 
-const versionNo = "v2.0.0"; //TODO: This needs to be produced by the build pipeline.
-
 let EDITOR_HTML = process.env.EDITOR_HTML as string;
 if (!EDITOR_HTML) {
     EDITOR_HTML = "dist/index.html";
+}
+
+//
+// Creates the title for the applications.
+//
+export function formatTitle(): string {
+    let title = `Data-Forge Notebook ${version}`;
+    if (sha) {
+        title += ` (${sha})`;
+    }
+    return title;
 }
 
 //
@@ -191,7 +201,7 @@ export class EditorWindow implements IEditorWindow {
         ];
 
         this.browserWindow = new BrowserWindow({
-            title: `Data-Forge Notebook ${versionNo}`,
+            title: formatTitle(),
             x: newWindowCoords.x,
             y: newWindowCoords.y,
             width: newWindowCoords.width,
@@ -399,7 +409,7 @@ export class EditorWindow implements IEditorWindow {
             windowTitle += "* ";
         }
 
-        windowTitle += `- Data-Forge Notebook ${versionNo}`;
+        windowTitle += `- ${formatTitle()}`;
 
         this.browserWindow!.setTitle(windowTitle);
     }

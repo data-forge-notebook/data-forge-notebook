@@ -5,18 +5,19 @@
 import { registerSingleton } from "@codecapers/fusion";
 import { app, ipcMain } from "electron";
 import minimist from "minimist";
-import { EditorWindow, IEditorWindow } from "./lib/editor-window";
+import { EditorWindow, IEditorWindow, formatTitle } from "./lib/editor-window";
 import { IMainMenu, MainMenu } from "./lib/main-menu";
 import { IWindowManagerId, WindowManager } from "./lib/window-manager";
 import * as os from "os";
+import { killEvaluationEngine, startEvaluationEngine } from "./evaluation-engine";
 
 import "./services/platform";
 import { log } from "./electron-log";
-import { killEvaluationEngine, startEvaluationEngine } from "./evaluation-engine";
 
 const windowManager = new WindowManager();
 registerSingleton(IWindowManagerId, windowManager);
 
+console.log(`Started ${formatTitle()}`);
 console.log(`home path: ${app.getPath("home")}`);
 console.log(`appData path: ${app.getPath("appData")}`);
 console.log(`userData path: ${app.getPath("userData")}`);
