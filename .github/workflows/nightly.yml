@@ -94,7 +94,7 @@ jobs:
       - name: Build installer
         run: |
           pnpm run ${{ matrix.build_script }}
-          ls /temp/dfn-build/build/installer
+          ls ${{ matrix.build_parent_dir }}/dfn-build/build/installer
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
