@@ -6,6 +6,8 @@ import { ISerializedNotebook1, Notebook } from "model";
 import { evaluateNotebook } from "./evaluation-engine";
 import * as fs from "fs-extra";
 import { sleep } from "utils";
+import path = require("path");
+import { NOTEBOOK_TMP_PATH } from "./config";
 
 const workerId = process.env.ID;
 if (!workerId) {
@@ -72,7 +74,7 @@ async function main(): Promise<void> {
     if (msg.cmd === "eval-notebook") {
         const evaluateNotebookMsg = msg as IEvaluateNotebookMsg;
         const notebookId = evaluateNotebookMsg.notebookId;
-        const projectPath = evaluateNotebookMsg.containingPath || `./tmp/notebooks/${notebookId}`;
+        const projectPath = evaluateNotebookMsg.containingPath || path.join(NOTEBOOK_TMP_PATH, notebookId);
         await fs.ensureDir(projectPath); 
 
         const notebook = Notebook.deserialize(evaluateNotebookMsg.notebook);

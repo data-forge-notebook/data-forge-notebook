@@ -199,13 +199,8 @@ export class Npm implements INpm {
             "--cache", this.npmCachePath,
             "--prefer-offline",
             "--no-audit",
+            "--ignore-scripts", // Don't run postinstall scripts.
         ];
-
-        /* Haven't really needed this.
-        if (disablePostInstall) {
-            fullArgs = fullArgs.concat(["--ignore-scripts"]); // Prevents Electron being installed under Nightmare.
-        }
-        */
 
         const output = await cmd(
             {

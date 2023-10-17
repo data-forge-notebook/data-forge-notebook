@@ -6,7 +6,7 @@ import * as _ from "lodash";
 import { Npm } from "evaluation-engine";
 import * as path from "path";
 import { stringify } from "./lib/json";
-import { NOTEBOOK_TIMEOUT_MS } from "./config";
+import { NOTEBOOK_TIMEOUT_MS, NPM_CACHE_PATH } from "./config";
 
 //
 // Evaluate a series of cells in a notebook.
@@ -69,7 +69,7 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
     const nodeJsPath = path.dirname(process.argv0);
     console.log(`Nodejs from path: ${nodeJsPath}`);
 
-    const npm = new Npm(nodeJsPath, "./tmp/cache", log);
+    const npm = new Npm(nodeJsPath, NPM_CACHE_PATH, log);
     const codeEvaluator = new CodeEvaluator(process, notebook, cells, `notebook-${notebook.getInstanceId()}`, projectPath, npm, log, NOTEBOOK_TIMEOUT_MS);
     codeEvaluator.onCellEvalStarted = cellId => {
         onEvent("evaluation-event", { event: "cell-eval-started", cellId });

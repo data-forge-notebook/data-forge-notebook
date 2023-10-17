@@ -2,11 +2,12 @@ import * as express from "express";
 import * as cors from "cors";
 import * as fs from "fs-extra";
 import { api } from "./routes";
+import { NOTEBOOK_TMP_PATH } from "./config";
 
 //
 // Remove previously evaluated notebooks.
 //
-fs.removeSync("./tmp");
+fs.removeSync(NOTEBOOK_TMP_PATH);
 
 const port = process.env.PORT || 3000;
 

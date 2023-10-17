@@ -70,10 +70,18 @@ export function startEvaluationEngine(): void {
     console.log(`${nodeExePath} ${args.join(" ")}`);
     console.log(`Working directory: ${process.cwd()}`);
 
+    const env = Object.assign({}, process.env, {
+        PORT: "9000",
+    });
+
+    //
+    // Delete NODE_ENV, because leaving it set to "production"
+    // disables dev dependencies and breaks TypeScript notebooks (because TypeScript doesn't get installed).
+    //
+    delete env.NODE_ENV;
+
     const options: SpawnOptions = {
-        env: {
-            PORT: "9000",
-        },
+        env: env,
         stdio: ['ignore', 'pipe', 'pipe'],
         cwd: evalEnginePath,
     };
