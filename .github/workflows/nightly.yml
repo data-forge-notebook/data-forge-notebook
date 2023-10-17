@@ -38,16 +38,18 @@ jobs:
             build_script: build-electron-win
             files: |
               /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.exe
+            build_parent_dir: /temp
           - os: macos-latest 
             build_script: build-electron-mac
             files: | 
-              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.dmg
+              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.dmg
+            build_parent_dir: /tmp
         # os: [ubuntu-latest, windows-latest, macos-latest] # Build for all platforms.
 
     runs-on: ${{ matrix.os }}
 
     env:
-      BUILD_PARENT_DIR: /temp
+      BUILD_PARENT_DIR: ${{ matrix.build_parent_dir }}
       GIT_SHA: ${{ github.sha }}
 
     steps:
