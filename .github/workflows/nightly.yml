@@ -102,17 +102,17 @@ jobs:
       - name: Build plugins 
         run: pnpm run build-plugins
 
-      - name: Build installer
-        run: |
-          pnpm run ${{ matrix.build_script }}
-          ls ${{ matrix.build_parent_dir }}/dfn-build/build/installer
+      # - name: Build installer
+      #   run: |
+      #     pnpm run ${{ matrix.build_script }}
+      #     ls ${{ matrix.build_parent_dir }}/dfn-build/build/installer
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: Nightly ${{ env.CURRENT_DATE }}
-          tag_name: 2.0.0-${{ env.RELEASE_TAG }}
-          body: Nightly build
-          draft: true
-          prerelease: true
-          files: ${{ matrix.files }}
+      # - name: Create GitHub Release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     name: Nightly ${{ env.CURRENT_DATE }}
+      #     tag_name: 2.0.0-${{ env.RELEASE_TAG }}
+      #     body: Nightly build
+      #     draft: true
+      #     prerelease: true
+      #     files: ${{ matrix.files }}
