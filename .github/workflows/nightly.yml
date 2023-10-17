@@ -42,14 +42,14 @@ jobs:
           - os: windows-latest 
             build_script: build-electron-win
             files: |
-              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-%RELEASE_TAG%.exe
-              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-%RELEASE_TAG%.zip
+              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-*.exe
+              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-*.zip
             build_parent_dir: /temp
           - os: macos-latest 
             build_script: build-electron-mac
             files: | 
-              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${RELEASE_TAG}.dmg
-              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${RELEASE_TAG}.tar.gz
+              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-*.dmg
+              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-*.tar.gz
             build_parent_dir: /tmp
         # os: [ubuntu-latest, windows-latest, macos-latest] # Build for all platforms.
 
@@ -59,6 +59,11 @@ jobs:
       BUILD_PARENT_DIR: ${{ matrix.build_parent_dir }}
 
     steps:
+      - name: Print release tag
+        run: |
+          echo ${{ env.RELEASE_TAG }}
+          echo ${RELEASE_TAG}
+
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -86,7 +91,7 @@ jobs:
       - name: Create version file
         run: |
           echo "export const version = \"2.0.0-${{ env.RELEASE_TAG }}\"; export const sha = \"${{ github.sha }}\";" > shells/electron/src/version.ts
-          cat version.json
+          cat shells/electron/src/version.ts
 
       - name: Compile
         run: pnpm run compile

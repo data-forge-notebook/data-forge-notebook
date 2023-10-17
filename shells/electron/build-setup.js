@@ -41,6 +41,9 @@ async function main() {
     if (releaseTag) {
         package.version = `2.0.0-${releaseTag}`;
     }
+    else {
+        package.version = `2.0.0-development`;
+    }
     fs.writeFileSync(`${buildDir}/package.json`, JSON.stringify(package, null, 2));
 
     //
