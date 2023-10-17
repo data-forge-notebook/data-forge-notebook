@@ -37,9 +37,9 @@ async function main() {
     const package = JSON.parse(fs.readFileSync(`package.json`, 'utf8'));
     package.name = "data-forge-notebook-v2"; // Have to change the name so that DFN is installed to the right directory!
 
-    const sha = process.env.GIT_SHA;
-    if (sha) {
-        package.version = `2.0.0-${sha}`;
+    const releaseTag = process.env.RELEASE_TAG;
+    if (releaseTag) {
+        package.version = `2.0.0-${releaseTag}`;
     }
     fs.writeFileSync(`${buildDir}/package.json`, JSON.stringify(package, null, 2));
 

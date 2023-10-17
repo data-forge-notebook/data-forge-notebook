@@ -16,6 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Set the release tag
+        run: |
+          echo "RELEASE_TAG=nightly-$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      
       - name: Print latest_commit
         run: echo ${{ github.sha }}
 
@@ -37,14 +42,14 @@ jobs:
           - os: windows-latest 
             build_script: build-electron-win
             files: |
-              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.exe
-              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.zip
+              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-%RELEASE_TAG%.exe
+              /temp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-%RELEASE_TAG%.zip
             build_parent_dir: /temp
           - os: macos-latest 
             build_script: build-electron-mac
             files: | 
-              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.dmg
-              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${{ github.sha }}.tar.gz
+              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${RELEASE_TAG}.dmg
+              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup - 2.0.0-${RELEASE_TAG}.tar.gz
             build_parent_dir: /tmp
         # os: [ubuntu-latest, windows-latest, macos-latest] # Build for all platforms.
 
@@ -52,7 +57,6 @@ jobs:
 
     env:
       BUILD_PARENT_DIR: ${{ matrix.build_parent_dir }}
-      GIT_SHA: ${{ github.sha }}
 
     steps:
       - name: Checkout
@@ -81,7 +85,7 @@ jobs:
 
       - name: Create version file
         run: |
-          echo "{ \"version\": \"nightly-${{ github.sha }}\" }" > version.json 
+          echo "{ \"version\": \"2.0.0-${{ env.RELEASE_TAG }}\", \"sha\": \"${{ github.sha }}\" }" > version.json 
           cat version.json
 
       - name: Compile
@@ -101,8 +105,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Nightly ${{ github.sha }}
-          tag_name: ${{ github.sha }}
+          name: Nightly ${{ env.CURRENT_DATE }}
+          tag_name: 2.0.0-${{ env.RELEASE_TAG }}
           body: Nightly build
           draft: true
           prerelease: true
