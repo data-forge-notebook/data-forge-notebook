@@ -42,30 +42,27 @@ jobs:
           - os: windows-latest 
             build_script: build-electron-win
             files: |
-              c:/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.exe
-              c:/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.zip
-            build_parent_dir: c:/temp
+                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.exe
+                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.zip
             platform: win
           - os: macos-latest 
             build_script: build-electron-mac
             files: | 
-              /tmp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.dmg
-              /tmp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.tar.gz
-            build_parent_dir: /tmp
+                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.dmg
+                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.tar.gz
             platform: mac
           - os: ubuntu-latest 
             build_script: build-electron-linux
             files: | 
-              /tmp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.tar.gz
-            build_parent_dir: /tmp
+                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.tar.gz
             platform: linux
 
     runs-on: ${{ matrix.os }}
 
     env:
-      BUILD_PARENT_DIR: ${{ matrix.build_parent_dir }}
-      RELEASE_TAG: ${{ needs.check_date.outputs.RELEASE_TAG }}
-      PLATFORM: ${{ matrix.platform }}
+        BUILD_PARENT_DIR: ./temp
+        RELEASE_TAG: ${{ needs.check_date.outputs.RELEASE_TAG }}
+        PLATFORM: ${{ matrix.platform }}
 
     steps:
       - name: Checkout
@@ -108,15 +105,7 @@ jobs:
 
       - name: Build installer
         working-directory: shells/electron
-        run: |
-          echo "Build instaler...."
-          pnpm run pack
-          pnpm run build-setup
-          cd ${{ matrix.build_parent_dir }}/dfn-build/build
-          pwd
-          pnpm run package-electron -- --${{ matrix.build_parent_dir }}
-          ls ${{ matrix.build_parent_dir }}/dfn-build/build/installer
-          echo "Done"
+        run: pnpm run build-electron-${{ matrix.platform }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
