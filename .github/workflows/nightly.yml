@@ -92,7 +92,7 @@ jobs:
 
       - name: Create version file
         run: |
-          echo "export const version = \"2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}\"; export const sha = \"${{ github.sha }}\";" > shells/electron/src/version.ts
+          echo "export const version = '2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}'; export const sha = '${{ github.sha }}';" > shells/electron/src/version.ts
           cat shells/electron/src/version.ts
 
       - name: Compile
