@@ -68,7 +68,7 @@
         "asar": true,
         "appId": "com.codecapers.dataforgenotebook.v2",
         "productName": "data-forge-notebook-v2",
-        "artifactName": "Data-Forge Notebook v2 Setup - ${version}.${ext}",
+        "artifactName": "Data-Forge Notebook v2 Setup-${os}-${version}.${ext}",
         "copyright": "Copyright @ 2023 Ashley Davis",
         "directories": {
             "output": "installer"
@@ -101,12 +101,10 @@
         "linux": {
             "target": [
                 {
-                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "AppImage",
                     "arch": "x64"
                 },
                 {
-                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "tar.gz",
                     "arch": "x64"
                 }
@@ -115,12 +113,10 @@
         "win": {
             "target": [
                 {
-                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "nsis",
                     "arch": "x64"
                 },
                 {
-                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "zip",
                     "arch": "x64"
                 }
@@ -129,12 +125,10 @@
         "mac": {
             "target": [
                 {
-                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "dmg",
                     "arch": "x64"
                 },
                 {
-                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "tar.gz",
                     "arch": "x64"
                 }
