@@ -60,12 +60,6 @@ jobs:
       RELEASE_TAG: ${{ needs.check_date.outputs.RELEASE_TAG }}
 
     steps:
-      - name: Print release tag
-        run: |
-          echo "${{ toJson(needs.check_date.outputs) }}"
-          echo "${{ needs.check_date.outputs.RELEASE_TAG }}"
-          echo "${{ needs.check_date.outputs.CURRENT_DATE }}"
-
       - name: Checkout
         uses: actions/checkout@v2
 
