@@ -82,6 +82,9 @@ async function main() {
         nodejsInstallBasename = `node-v${nodejsVersion}-linux-x64`;
         nodejsInstallFile = `${nodejsInstallBasename}.tar.xz`;
     }
+    else {
+        throw new Error(`Unsupported platform: ${PLATFORM}`);
+    }
 
     const nodeJsUnpackDir = `${cacheDir}/${nodejsInstallBasename}`;
     if (!fs.existsSync(nodeJsUnpackDir)) {
