@@ -213,6 +213,7 @@ main()
     .catch(err => {
         console.error(`Build setup failed.`);
         console.error(err);
+        process.exit(1);
     });
 
 
