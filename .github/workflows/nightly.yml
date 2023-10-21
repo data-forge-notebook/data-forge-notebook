@@ -109,12 +109,14 @@ jobs:
       - name: Build installer
         working-directory: shells/electron
         run: |
+          echo "Build instaler...."
           pnpm run pack
           pnpm run build-setup
           cd ${{ matrix.build_parent_dir }}/dfn-build/build
           pwd
           pnpm run package-electron -- --${{ matrix.build_parent_dir }}
           ls ${{ matrix.build_parent_dir }}/dfn-build/build/installer
+          echo "Done"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
