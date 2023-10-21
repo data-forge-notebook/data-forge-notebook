@@ -101,10 +101,12 @@
         "linux": {
             "target": [
                 {
+                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "AppImage",
                     "arch": "x64"
                 },
                 {
+                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "tar.gz",
                     "arch": "x64"
                 }
@@ -113,10 +115,12 @@
         "win": {
             "target": [
                 {
+                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "nsis",
                     "arch": "x64"
                 },
                 {
+                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "zip",
                     "arch": "x64"
                 }
@@ -125,10 +129,12 @@
         "mac": {
             "target": [
                 {
+                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "dmg",
                     "arch": "x64"
                 },
                 {
+                    "artifactName": "${productName}-${os}-${version}.${ext}",
                     "target": "tar.gz",
                     "arch": "x64"
                 }
