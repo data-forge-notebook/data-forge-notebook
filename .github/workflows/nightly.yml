@@ -11,21 +11,19 @@ jobs:
 
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run }}
-      
+      RELEASE_TAG: ${{ steps.set_release_tag.outputs.RELEASE_TAG }}
+      CURRENT_DATE: ${{ steps.set_release_tag.outputs.CURRENT_DATE }}
+        
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set the release tag
+      - id: set_release_tag
+        name: Set the release tag
         run: |
-          echo "Setting the release tag"
-          echo "HELLO=WORLD" >> $GITHUB_OUTPUT
           echo "RELEASE_TAG=nightly-$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
           echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
       
-      - name: Print latest_commit
-        run: echo ${{ github.sha }}
-
       - id: should_run
         continue-on-error: true
         name: Check latest commit is less than a day
@@ -66,6 +64,7 @@ jobs:
         run: |
           echo "${{ toJson(needs.check_date.outputs) }}"
           echo "${{ needs.check_date.outputs.RELEASE_TAG }}"
+          echo "${{ needs.check_date.outputs.CURRENT_DATE }}"
 
       - name: Checkout
         uses: actions/checkout@v2
