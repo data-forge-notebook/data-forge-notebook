@@ -42,19 +42,19 @@ jobs:
           - os: windows-latest 
             build_script: build-electron-win
             files: |
-                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.exe
-                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.zip
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.exe
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.zip
             platform: win
           - os: macos-latest 
             build_script: build-electron-mac
             files: | 
-                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.dmg
-                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.tar.gz
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.dmg
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.tar.gz
             platform: mac
           - os: ubuntu-latest 
             build_script: build-electron-linux
             files: | 
-                ./temp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.tar.gz
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.tar.gz
             platform: linux
 
     runs-on: ${{ matrix.os }}
@@ -106,7 +106,7 @@ jobs:
       - name: Build installer
         run: |
             pnpm run build-electron-${{ matrix.platform }}
-            ls ./temp/dfn-build/build/installer
+            ls ./shells/electron/temp/dfn-build/build/installer
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
