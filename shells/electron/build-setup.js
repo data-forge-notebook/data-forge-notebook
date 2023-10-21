@@ -91,10 +91,14 @@ async function main() {
         const nodejsDownloadPath = `${cacheDir}/${nodejsInstallFile}`;
         if (!fs.existsSync(nodejsDownloadPath)) {
             const nodejs_install_url = `https://nodejs.org/dist/v${nodejsVersion}/${nodejsInstallFile}`;
-            console.log(`Downloading Node.js from ${nodejs_install_url}`); 
+            console.log(`Downloading Node.js from ${nodejs_install_url} to ${nodejsDownloadPath}`); 
             const response = await axios.get(nodejs_install_url, { responseType: "stream" });
             await downloadStreamToFile(response.data, nodejsDownloadPath);
         }
+
+        const files = fs.readdirSync(cacheDir);
+        console.log(`Cached files:`);
+        console.log(files);
     
         //
         // Unpack Node.js.
