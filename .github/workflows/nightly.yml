@@ -42,8 +42,8 @@ jobs:
           - os: windows-latest 
             build_script: build-electron-win
             files: |
-              /temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.exe
-              /temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.zip
+              c:/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.exe
+              c:/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.zip
             build_parent_dir: c:/temp
           - os: macos-latest 
             build_script: build-electron-mac
