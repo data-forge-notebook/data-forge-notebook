@@ -104,7 +104,6 @@ jobs:
         run: pnpm run build-plugins
 
       - name: Build installer
-        working-directory: shells/electron
         run: pnpm run build-electron-${{ matrix.platform }}
 
       - name: Create GitHub Release
