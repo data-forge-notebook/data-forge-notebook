@@ -37,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
         include: 
           - os: windows-latest 
             build_script: build-electron-win
@@ -51,7 +51,12 @@ jobs:
               /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup-mac-2.0.0-*.dmg
               /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup-mac-2.0.0-*.tar.gz
             build_parent_dir: /tmp
-        # os: [ubuntu-latest, windows-latest, macos-latest] # Build for all platforms.
+          - os: ubuntu-latest 
+            build_script: build-electron-linux
+            files: | 
+              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup-linux-2.0.0-*.AppImage
+              /tmp/dfn-build/build/installer/Data-Forge Notebook v2 Setup-linux-2.0.0-*.tar.gz
+            build_parent_dir: /tmp
 
     runs-on: ${{ matrix.os }}
 
