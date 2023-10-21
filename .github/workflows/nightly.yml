@@ -113,7 +113,7 @@ jobs:
           pnpm run build-setup
           cd ${{ matrix.build_parent_dir }}/dfn-build/build
           pwd
-          run package-electron -- --${{ matrix.build_parent_dir }}
+          pnpm run package-electron -- --${{ matrix.build_parent_dir }}
           ls ${{ matrix.build_parent_dir }}/dfn-build/build/installer
 
       - name: Create GitHub Release
