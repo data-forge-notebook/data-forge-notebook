@@ -54,7 +54,6 @@ jobs:
           - os: ubuntu-latest 
             build_script: build-electron-linux
             files: | 
-              /tmp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.AppImage
               /tmp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.tar.gz
             build_parent_dir: /tmp
 
