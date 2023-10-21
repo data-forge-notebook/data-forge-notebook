@@ -78,7 +78,7 @@ async function main() {
         nodejsInstallBasename = `node-v${nodejsVersion}-darwin-x64`;
         nodejsInstallFile = `${nodejsInstallBasename}.tar.gz`;
     }
-    else if (PLATFORM === "linx") {
+    else if (PLATFORM === "linux") {
         nodejsInstallBasename = `node-v${nodejsVersion}-linux-x64`;
         nodejsInstallFile = `${nodejsInstallBasename}.tar.xz`;
     }
