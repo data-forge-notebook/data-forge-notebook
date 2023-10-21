@@ -65,7 +65,7 @@ jobs:
     env:
       BUILD_PARENT_DIR: ${{ matrix.build_parent_dir }}
       RELEASE_TAG: ${{ needs.check_date.outputs.RELEASE_TAG }}
-      PLATFORM: $${ matrix.platform }}
+      PLATFORM: ${{ matrix.platform }}
 
     steps:
       - name: Checkout
