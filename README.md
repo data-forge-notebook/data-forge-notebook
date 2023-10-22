@@ -1,4 +1,4 @@
-# editor-core
+# data-forge-notebook
 
 Data-Forge Notebook is a cross-platform notebook application for JavaScript.
 
@@ -17,7 +17,7 @@ The core repository for Data-Forge Notebook.
 A birds eye view of this project:
 
 ```
-└───editor-core ------------ The DFN v2 monorepo.
+└───data-forge-notebook ------ The DFN v2 monorepo.
     ├───packages --------------- Packages shared within the monorepo.
     │   ├───host-bridge ------------ Communication between the DFN and plugins.
     │   ├───evaluation-engine ------ Implements the code evaluation engine.
