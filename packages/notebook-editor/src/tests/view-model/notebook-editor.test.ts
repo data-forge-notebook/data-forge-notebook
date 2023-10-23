@@ -15,6 +15,7 @@ describe('view-model / notebook-editor', () => {
 
         const mockLog: any = {
             info: () => {},
+            error: () => {},
         };
         notebookEditor.log = mockLog;
 
@@ -54,6 +55,11 @@ describe('view-model / notebook-editor', () => {
             setNotebookEditor: () => {},
         };
         notebookEditor.commander = mockCommander;
+
+        const mockRecentFiles: any = {
+            addRecentFile: () => {},
+        };
+        notebookEditor.recentFiles = mockRecentFiles;
 
         return { 
             notebookEditor, 
