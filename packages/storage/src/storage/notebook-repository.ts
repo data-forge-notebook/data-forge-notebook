@@ -19,12 +19,22 @@ export interface INotebookStorageId {
     // Gets the containing path of the notebook (if known).
     //
     getContainingPath(): string | undefined;
+
+    //
+    // Get the string representation of the storage id.
+    //
+    toString(): string | undefined;
 }
 
 //
 // Interface to a repository of notebooks. Used to load and save notebooks.
 //
 export interface INotebookRepository {
+
+    //
+    // Loads a storage id from a string.
+    //
+    idFromString(id: string): INotebookStorageId;
 
     //
     // Writes a notebook to storage.

@@ -13,9 +13,8 @@ import { killEvaluationEngine, startEvaluationEngine } from "./evaluation-engine
 
 import "./services/platform";
 import { log } from "./electron-log";
-
-const windowManager = new WindowManager();
-registerSingleton(IWindowManagerId, windowManager);
+import { MainSettings } from "./services/electron-main-settings";
+import { RECENT_FILES_SETTINGS_KEY } from "notebook-editor/build/services/recent-files";
 
 console.log(`Started ${formatTitle()}`);
 console.log(`home path: ${app.getPath("home")}`);
@@ -26,6 +25,14 @@ console.log(`documents path: ${app.getPath("documents")}`);
 console.log(`downloads path: ${app.getPath("downloads")}`);
 console.log(`exe path: ${app.getPath("exe")}`);
 console.log(`logs path: ${app.getPath("logs")}`);
+
+const settings = new MainSettings();
+registerSingleton("ISettings", settings);
+
+settings.loadSettings();
+
+const windowManager = new WindowManager();
+registerSingleton(IWindowManagerId, windowManager);
 
 //
 // Set to true when the application is shutting down.
@@ -144,6 +151,13 @@ function createEditorWindow(): IEditorWindow {
 async function onEditorWindowShow(editorWindow: IEditorWindow): Promise<void> {
 
     log.info(`== Editor window is ready to show.`);
+
+    settings.onSettingsChanged.attach(async (key) => {
+        if (key === RECENT_FILES_SETTINGS_KEY) {
+            // Rebuild the menu when recent files have been added.
+            mainMenu.buildEditorMenu();
+        }
+    });
 
     //
     // Rebuild the main menu whenever a new editor window is shown.

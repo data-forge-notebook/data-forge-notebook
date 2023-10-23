@@ -76,6 +76,18 @@ export class NotebookStorageId implements INotebookStorageId {
     setContainingPath(path: string): void {
         this.containingPath = path;
     }
+
+    //
+    // Gets the string representation of the id.
+    //
+    toString(): string | undefined { 
+        if (this.containingPath && this.fileName) {
+            return path.join(this.containingPath, this.fileName);
+        }
+        else {
+            return this.fileName;
+        }
+    }
 }
 
 //
@@ -92,6 +104,13 @@ export class NotebookRepository implements INotebookRepository {
 
     @InjectProperty(IIdGeneratorId)
     idGenerator!: IIdGenerator;
+
+    //
+    // Loads a storage id from a string.
+    //
+    idFromString(id: string): INotebookStorageId {
+        return NotebookStorageId.fromFilePath(id);
+    }
 
     //
     // Writes a notebook to storage.

@@ -33,12 +33,12 @@ export interface ICommander {
     //
     // Invoke a command by id on a particular cell.
     //    
-    invokeNamedCommand(commandId: string, contextInitializer?: IActionContextInitializer): Promise<void>;
+    invokeNamedCommand(commandId: string, contextInitializer?: IActionContextInitializer, params?: any): Promise<void>;
 
     //
     // Invoke a command that operates on a cell.
     //
-    invokeCommand(command: ICommand, contextInitializer?: IActionContextInitializer): Promise<void>;
+    invokeCommand(command: ICommand, contextInitializer?: IActionContextInitializer, params?: any): Promise<void>;
 }
 
 @InjectableSingleton(ICommanderId)

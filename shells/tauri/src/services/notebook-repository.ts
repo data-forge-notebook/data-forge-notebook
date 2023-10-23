@@ -94,6 +94,13 @@ export class NotebookRepository implements INotebookRepository {
     idGenerator!: IIdGenerator;
 
     //
+    // Loads a storage id from a string.
+    //
+    idFromString(id: string): INotebookStorageId {
+        return NotebookStorageId.fromFilePath(id);
+    }
+
+    //
     // Writes a notebook to storage.
     //
     async writeNotebook(notebook: ISerializedNotebook1, notebookId: INotebookStorageId): Promise<void> {

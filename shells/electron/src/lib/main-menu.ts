@@ -17,8 +17,12 @@ import "notebook-editor/build/actions/save-notebook-action";
 import "notebook-editor/build/actions/save-notebook-as-action";
 import "notebook-editor/build/actions/toggle-hotkeys-action";
 import "notebook-editor/build/actions/toggle-command-palette-action";
+import "notebook-editor/build/actions/clear-recent-files-action";
+import "notebook-editor/build/actions/toggle-recent-file-picker-action";
 import { IWindowManager, IWindowManagerId } from "./window-manager";
 import { getNodejsInstallPath } from "../evaluation-engine";
+import { ISettings, ISettings_ID } from "notebook-editor/build/services/settings";
+import { RECENT_FILES_SETTINGS_KEY } from "notebook-editor/build/services/recent-files";
 
 const devMenuTemplate = {
     label: "Development",
@@ -87,10 +91,20 @@ export class MainMenu implements IMainMenu {
     @InjectProperty(IWindowManagerId)
     windowManager!: IWindowManager;
 
+    @InjectProperty(ISettings_ID)
+    settings!: ISettings;
+
     private createSeparator(): MenuItemConstructorOptions {
         return {
             type: "separator",
         };
+    }
+
+    //
+    // Invokes a command in the notebook editor in the Electron renderer process.
+    //
+    private invokeCommand(commandId: string, params?: any): void {
+        BrowserWindow.getFocusedWindow()!.webContents.send("invoke-command", { commandId, params });
     }
     
     private createMenu(commandId: string): MenuItemConstructorOptions {
@@ -107,11 +121,49 @@ export class MainMenu implements IMainMenu {
             label: commandDef.label,
             accelerator: expandAccelerator(commandDef.accelerator, this.platform),
             click: () => {
-                BrowserWindow.getFocusedWindow()!.webContents.send("invoke-command", { commandId });
+                this.invokeCommand(commandId);
             }
         };
     }
     
+    private createOpenRecentMenu(): MenuItemConstructorOptions {
+        //todo: why doesn't this use the injected recent files interface?
+        const recentFilesList = this.settings.get<string[]>(RECENT_FILES_SETTINGS_KEY) || [];
+        const recentFilesMenuItems: MenuItemConstructorOptions[] = recentFilesList
+            .map(recentFilePath => {
+                return {
+                    label: path.basename(recentFilePath) + " - " + recentFilePath,
+                    click: () => {
+                        this.invokeCommand("open-notebook", { file: recentFilePath });
+                    },
+                };
+            });
+    
+        let openRecentMenu: MenuItemConstructorOptions[];
+    
+        if (recentFilesMenuItems.length > 0) {
+            openRecentMenu = [
+                    this.createMenu("clear-recent-files"),
+                    this.createMenu("toggle-recent-file-picker"),
+                    this.createSeparator(),
+                ]
+                .concat(recentFilesMenuItems);
+        }
+        else {
+            openRecentMenu = [
+                {
+                    label: "no recent files",
+                    enabled: false,
+                },
+            ];
+        }    
+    
+        return {
+            label: "Open Recent",
+            submenu: openRecentMenu,
+        };
+    }
+
     //
     // Switch to the main editor menu.
     //
@@ -133,6 +185,7 @@ export class MainMenu implements IMainMenu {
                     this.createSeparator(),
 
                     this.createMenu("open-notebook"),
+                    this.createOpenRecentMenu(),
 
                     this.createSeparator(),
 

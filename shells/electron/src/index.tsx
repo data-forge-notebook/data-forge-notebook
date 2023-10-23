@@ -12,7 +12,9 @@ import "./services/confirmation-dialog";
 import "./services/dialogs.impl";
 import "./services/notebook-repository";
 import "./services/platform";
+import "./services/recent-files";
 import { NotebookRepository, NotebookStorageId } from "./services/notebook-repository";
+import { RendererSettings } from "./services/electron-renderer-settings";
 
 export let editorWindowId = "";
 
@@ -30,6 +32,11 @@ if (!editorWindowId || editorWindowId.length <= 0) {
 
 const log = new ElectronWindowLog(`editor-window/${editorWindowId.substring(0, 5)}`);
 registerSingleton(ILogId, log);
+
+const settings = new RendererSettings();
+registerSingleton("ISettings", settings);
+
+settings.loadSettings();
 
 const notebookRepository = instantiateSingleton<NotebookRepository>(INotebookRepositoryId);
 const storageId = notebookRepository.makeUntitledNotebookId();
@@ -83,8 +90,8 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 const commander = instantiateSingleton<ICommander>(ICommanderId);
 
-ipcRenderer.on("invoke-command", (event: any, args: any) => {
+ipcRenderer.on("invoke-command", (event, args) => {
     handleAsyncErrors(async () => {
-        await commander.invokeNamedCommand(args.commandId);
+        await commander.invokeNamedCommand(args.commandId, undefined, args.params);
     });
 });

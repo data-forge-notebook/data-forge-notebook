@@ -10,6 +10,8 @@ export * from "./services/evaluator-client";
 export * from "./services/commander";
 export * from "./services/command";
 export * from "./services/platform";
+export * from "./services/settings";
+export * from "./services/recent-files";
 
 import "./services/impl/plugin-repository";
 import "./services/impl/date-provider";
@@ -24,7 +26,10 @@ import "./actions/save-notebook-as-action";
 import "./actions/reload-notebook-action";
 import "./actions/toggle-hotkeys-action";
 import "./actions/toggle-command-palette-action";
+import "./actions/clear-recent-files-action";
+import "./actions/toggle-recent-file-picker-action";
 
 import "./actions/undo-action";
 import "./actions/redo-action";
+
     

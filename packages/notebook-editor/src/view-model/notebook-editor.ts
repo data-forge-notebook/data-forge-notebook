@@ -16,6 +16,7 @@ import { CellErrorViewModel } from "./cell-error";
 import { ICommander, ICommanderId } from "../services/commander";
 import { IUndoRedo, IUndoRedoId } from "../services/undoredo";
 import { IHotkeysOverlayViewModel } from "../components/hotkeys-overlay";
+import { IRecentFiles, IRecentFiles_ID } from "../services/recent-files";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -151,7 +152,15 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     //
     onToggleCommandPalette: IEventSource<BasicEventHandler>;
 
+    //
+    // Opens or closes the recent file picker.
+    //
+    toggleRecentFilePicker(): Promise<void>;
 
+    //
+    // Event raised to toggle the recent file picker.
+    //
+    onToggleRecentFilePicker: IEventSource<BasicEventHandler>;
 }
 
 @InjectableClass()
@@ -180,6 +189,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
     @InjectProperty(IUndoRedoId)
     undoRedo!: IUndoRedo;
+
+    @InjectProperty(IRecentFiles_ID)
+    recentFiles!: IRecentFiles;
 
     //
     // The currently open notebook.
@@ -434,6 +446,10 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 			const { data, readOnly } = await this.notebookRepository.readNotebook(notebookId);
 			const notebook = NotebookViewModel.deserialize(notebookId, false, readOnly, defaultNodejsVersion, data);
 			await this.setNotebook(notebook, isReload);
+            const filePath = notebookId.toString();
+            if (filePath) {
+                this.recentFiles.addRecentFile(filePath);
+            }
 
 			this.log.info("Opened notebook: " + notebookId.displayName());
 
@@ -489,6 +505,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         await this.onOpenNotebookWillChange.raise();
 
         await notebook.saveAs(newStorageId);
+        this.recentFiles.addRecentFile(newStorageId.toString()!);
 
         await this.notifyOpenNotebookChanged(false);
     }
@@ -720,4 +737,16 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Event raised to toggle the command palette.
     //
     onToggleCommandPalette: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+    //
+    // Opens or closes the recent file picker.
+    //
+    async toggleRecentFilePicker(): Promise<void> {
+        await this.onToggleRecentFilePicker.raise();
+    }
+
+    //
+    // Event raised to toggle the recent file picker.
+    //
+    onToggleRecentFilePicker: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }

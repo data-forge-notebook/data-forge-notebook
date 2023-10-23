@@ -636,6 +636,9 @@ importers:
       fs-extra:
         specifier: ^10.1.0
         version: 10.1.0
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       minimist:
         specifier: ^1.2.5
         version: 1.2.6
@@ -667,6 +670,9 @@ importers:
       '@types/jest':
         specifier: ^27.5.1
         version: 27.5.1
+      '@types/lodash':
+        specifier: ^4.14.179
+        version: 4.14.182
       '@types/minimist':
         specifier: ^1.2.2
         version: 1.2.2

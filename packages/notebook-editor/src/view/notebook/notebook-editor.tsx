@@ -9,6 +9,9 @@ import FuzzyPicker from "../../lib/fuzzy-picker/fuzzy-picker";
 import { ICommander, ICommanderId } from "../../services/commander";
 import { humanizeAccelerator, ICommand } from "../../services/command";
 import { IPlatform, IPlatformId } from "../../services/platform";
+import * as path from "path";
+import { INotebookRepository, INotebookRepositoryId } from "storage";
+import { IRecentFiles, IRecentFiles_ID } from "../../services/recent-files";
 
 export interface INotebookEditorProps {
     model: INotebookEditorViewModel;
@@ -29,6 +32,12 @@ export interface INotebookEditorState {
     // Set to true to display the cmd palette.
     //
     isCommandPaletteOpen: boolean;
+
+    //
+    // Set to true to display the recent files picker.
+    //
+    isRecentFilesPickerOpen: boolean;
+
 }
 
 @InjectableClass()
@@ -40,12 +49,19 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     @InjectProperty(IPlatformId)
     platform!: IPlatform;
 
+    @InjectProperty(INotebookRepositoryId)
+    notebookRepository!: INotebookRepository;
+
+    @InjectProperty(IRecentFiles_ID)
+    recentFiles!: IRecentFiles;
+
     constructor (props: any) {
         super(props);
 
         this.state = {
             isSettingsOpen: false,
             isCommandPaletteOpen: false,
+            isRecentFilesPickerOpen: false,
         };
     }
 
@@ -60,6 +76,7 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     componentDidMount() {
         this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
         this.props.model.onToggleCommandPalette.attach(this.toggleCommandPalette);
+        this.props.model.onToggleRecentFilePicker.attach(this.toggleRecentFilesPicker);
 
         this.props.model.mount();
     }
@@ -67,8 +84,34 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     componentWillUnmount(): void {
         this.props.model.onOpenNotebookChanged.detach(this.onOpenNotebookChanged);
         this.props.model.onToggleCommandPalette.detach(this.toggleCommandPalette);
+        this.props.model.onToggleRecentFilePicker.detach(this.toggleRecentFilesPicker);
 
         this.props.model.unmount();
+    }
+
+    private closeRecentFilesPicker = async (): Promise<void> => {
+        await updateState(this, { isRecentFilesPickerOpen: false });
+    }
+
+    private toggleRecentFilesPicker = async (): Promise<void> => {
+        await updateState(this, { isRecentFilesPickerOpen: !this.state.isRecentFilesPickerOpen });
+    }
+
+    //
+    // Opens a recent notebook.
+    //
+    private openRecentFile = async (filePath: string): Promise<void> => {
+        await this.closeRecentFilesPicker();
+        const notebookStorageId = this.notebookRepository.idFromString(filePath);
+        await this.props.model.openSpecificNotebook(notebookStorageId);
+
+    }
+
+    //
+    // Gets the list of recent files.
+    //
+    private getRecentFiles(): string[] {
+        return this.recentFiles.getRecentFileList();
     }
 
     private closeCommandPalette = async (): Promise<void> => {
@@ -133,6 +176,32 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                         
                     </div>
                 </div>
+
+                <FuzzyPicker
+                        label="Recent files"
+                        isOpen={this.state.isRecentFilesPickerOpen}
+                        onClose={this.closeRecentFilesPicker}
+                        autoCloseOnEnter={true}
+                        onChange={this.openRecentFile}
+                        items={this.getRecentFiles()}
+                        showAllItems={true}
+                        renderItem={(filePath: string) => 
+                            <div className="flex flex-row">
+                                <div className="flex flex-col flex-grow">
+                                    <div>{path.basename(filePath)}</div>
+                                    <div
+                                        style={{
+                                            fontSize: "0.8em",
+                                        }}
+                                        >
+                                        {path.dirname(filePath)}
+                                    </div>
+                                </div>
+                            </div>    
+                        }
+                        itemValue={(filePath: string) => filePath}
+                        pickExactItem={true}
+                        />
 
                 <FuzzyPicker
                         label="Commands"
