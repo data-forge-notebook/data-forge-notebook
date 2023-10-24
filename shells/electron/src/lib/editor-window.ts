@@ -206,7 +206,7 @@ export class EditorWindow implements IEditorWindow {
             y: newWindowCoords.y,
             width: newWindowCoords.width,
             height: newWindowCoords.height,
-            show: false,
+            show: true, //todo: false,
             webPreferences: {
                 nodeIntegration: true,
                 nodeIntegrationInWorker: true, // Enabled this to prevent errors in Monaco Editor workers.
