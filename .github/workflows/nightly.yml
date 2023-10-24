@@ -107,6 +107,7 @@ jobs:
         run: |
             pnpm run build-electron-${{ matrix.platform }}
             ls ./shells/electron/temp/dfn-build/build/installer
+            ls ./shells/electron/temp/dfn-build/cache
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
