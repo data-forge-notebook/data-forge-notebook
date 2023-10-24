@@ -12,6 +12,7 @@ import { IPlatform, IPlatformId } from "../../services/platform";
 import * as path from "path";
 import { INotebookRepository, INotebookRepositoryId } from "storage";
 import { IRecentFiles, IRecentFiles_ID } from "../../services/recent-files";
+import { WelcomeScreen } from "./welcome-screen";
 
 export interface INotebookEditorProps {
     model: INotebookEditorViewModel;
@@ -171,7 +172,9 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                                 key={this.props.model.getOpenNotebook().getInstanceId()}
                                 model={this.props.model.getOpenNotebook()} 
                                 />
-                            : <div>Notebook not loaded {/*todo have a button here to load the notebook? or not?*/} </div>
+                            : <WelcomeScreen
+                                model={this.props.model}
+                                />
                         }
                         
                     </div>

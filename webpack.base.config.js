@@ -119,6 +119,10 @@ module.exports = function (env) {
                         from: `${__dirname}/styles`,
                         to: outputDir,
                     },
+                    {
+                        from: `${__dirname}/assets`,
+                        to: outputDir,
+                    },
                 ],
             }),
         ],

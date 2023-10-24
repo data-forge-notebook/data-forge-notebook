@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { NotebookEditor, NotebookViewModel, NotebookEditorViewModel, ICommander, ICommanderId, INotebookRepositoryId } from "notebook-editor";
+import { NotebookEditor, NotebookEditorViewModel, ICommander, ICommanderId } from "notebook-editor";
 import { ipcRenderer } from "electron";
-import { testNotebook } from "./test-notebook";
 import { handleAsyncErrors, ILogId } from "utils";
 import { instantiateSingleton, registerSingleton } from "@codecapers/fusion";
 import { ElectronWindowLog } from "./services/electron-renderer-log";
@@ -13,7 +12,8 @@ import "./services/dialogs.impl";
 import "./services/notebook-repository";
 import "./services/platform";
 import "./services/recent-files";
-import { NotebookRepository, NotebookStorageId } from "./services/notebook-repository";
+import "./services/electron-renderer-open";
+import { NotebookStorageId } from "./services/notebook-repository";
 import { RendererSettings } from "./services/electron-renderer-settings";
 
 export let editorWindowId = "";
@@ -38,12 +38,12 @@ registerSingleton("ISettings", settings);
 
 settings.loadSettings();
 
-const notebookRepository = instantiateSingleton<NotebookRepository>(INotebookRepositoryId);
-const storageId = notebookRepository.makeUntitledNotebookId();
-const notebookViewModel = NotebookViewModel.deserialize(storageId, true, false, "v16", testNotebook);
-const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
+const notebookEditorViewModel = new NotebookEditorViewModel();
 
 async function onNotebookSet() {
+    if (!notebookEditorViewModel.isNotebookOpen()) {
+        return;
+    }
     const notebook = notebookEditorViewModel.getOpenNotebook();
     const notebookId = notebook.getStorageId() as NotebookStorageId;
     const fileName = notebookId.getFileName();

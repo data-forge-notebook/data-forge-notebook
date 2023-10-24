@@ -12,6 +12,7 @@ export * from "./services/command";
 export * from "./services/platform";
 export * from "./services/settings";
 export * from "./services/recent-files";
+export * from "./services/open";
 
 import "./services/impl/plugin-repository";
 import "./services/impl/date-provider";
