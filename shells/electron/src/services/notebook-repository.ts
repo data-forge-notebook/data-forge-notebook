@@ -5,6 +5,8 @@ import { IIdGenerator, IIdGeneratorId } from "utils";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { IDialogs, IDialogsId } from "./dialogs";
 import { ISerializedNotebook1 } from "model";
+import globby from 'globby';
+import { IPaths, IPaths_ID } from "notebook-editor";
 
 //
 // Identifies a notebook in storage.
@@ -105,6 +107,9 @@ export class NotebookRepository implements INotebookRepository {
     @InjectProperty(IIdGeneratorId)
     idGenerator!: IIdGenerator;
 
+    @InjectProperty(IPaths_ID)
+    paths!: IPaths;
+
     //
     // Loads a storage id from a string.
     //
@@ -183,4 +188,11 @@ export class NotebookRepository implements INotebookRepository {
         return NotebookStorageId.fromFilePath(filePath);
     }
     
+    //
+    // Gets the list of example notebooks.
+    //
+    async getExampleNotebooks(): Promise<string[]> {
+        const exampleNotebooks = await globby("*.notebook", { cwd: this.paths.getExamplesPath() });
+        return exampleNotebooks
+    }
 }

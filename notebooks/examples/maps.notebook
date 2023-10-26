@@ -1,0 +1,208 @@
+{
+    "version": 2,
+    "sheet": {
+        "id": "039c79a0-5163-11ea-bf0c-b756e3e74b46",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "61db5db0-839a-11ea-b847-239c4f95efcb",
+                "cellType": "markdown",
+                "code": "# Maps example!\r\n\r\n## Plot markers on a map\r\n\r\nPlot markers by specifying an array of coordinates (lattitude, longitude).",
+                "lastEvaluationDate": "2020-04-21T16:38:55.935+10:00",
+                "output": [],
+                "errors": [],
+                "height": 160
+            },
+            {
+                "id": "039ceed0-5163-11ea-bf0c-b756e3e74b46",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "display.geo({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        [51.505, -0.1],\r\n        [51.5, -0.09],\r\n        [51.51, -0.08]\r\n    ],\r\n});",
+                "lastEvaluationDate": "2020-06-22T17:15:38.382+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "geo",
+                            "data": {
+                                "location": [
+                                    51.505,
+                                    -0.1
+                                ],
+                                "zoom": 13,
+                                "markers": [
+                                    [
+                                        51.505,
+                                        -0.1
+                                    ],
+                                    [
+                                        51.5,
+                                        -0.09
+                                    ],
+                                    [
+                                        51.51,
+                                        -0.08
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 622
+            },
+            {
+                "id": "8a190840-839a-11ea-b847-239c4f95efcb",
+                "cellType": "markdown",
+                "code": "## Customize your markers\r\n\r\nSet the icon, size and tooltip for your markers.",
+                "lastEvaluationDate": "2020-04-21T16:38:55.937+10:00",
+                "output": [],
+                "errors": [],
+                "height": 102
+            },
+            {
+                "id": "e77c6110-8397-11ea-a633-d3cbf0040317",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const iconUrl = \"marker.png\"; // Relative to notebook path.\r\nconst iconSize = [30, 49]; // Optional pixel dimensions of the marker icon.\r\nconst tooltip = \"Such a great marker!\"; // Tooltip for the marker.\r\n\r\ndisplay.geo({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        {\r\n            location: [51.505, -0.1],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n        {\r\n            location: [51.5, -0.09],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n        {\r\n            location: [51.51, -0.08],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n    ],\r\n});",
+                "lastEvaluationDate": "2020-06-22T17:15:38.616+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "geo",
+                            "data": {
+                                "location": [
+                                    51.505,
+                                    -0.1
+                                ],
+                                "zoom": 13,
+                                "markers": [
+                                    {
+                                        "location": [
+                                            51.505,
+                                            -0.1
+                                        ],
+                                        "iconUrl": "marker.png",
+                                        "iconSize": [
+                                            30,
+                                            49
+                                        ],
+                                        "tooltip": "Such a great marker!"
+                                    },
+                                    {
+                                        "location": [
+                                            51.5,
+                                            -0.09
+                                        ],
+                                        "iconUrl": "marker.png",
+                                        "tooltip": "Such a great marker!"
+                                    },
+                                    {
+                                        "location": [
+                                            51.51,
+                                            -0.08
+                                        ],
+                                        "iconUrl": "marker.png",
+                                        "tooltip": "Such a great marker!"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 983
+            },
+            {
+                "id": "989698b0-839a-11ea-b847-239c4f95efcb",
+                "cellType": "markdown",
+                "code": "## Go pro with GeoJSON\r\n\r\nUse GeoJSON to render points, lines and shapes.\r\n\r\nLearn more about GeoJSON [here](https://en.wikipedia.org/wiki/GeoJSON) and [here](https://developer.here.com/blog/an-introduction-to-geojson).",
+                "lastEvaluationDate": "2020-04-21T16:38:55.937+10:00",
+                "output": [],
+                "errors": [],
+                "height": 131
+            },
+            {
+                "id": "69b73220-586b-11ea-8d94-596749211a4d",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "display.geo({\r\n    location: [ 37.830124319877235, -122.47979164123535 ],\r\n    zoom: 13,\r\n    geojson: {\r\n        \"type\": \"FeatureCollection\",\r\n        \"features\": [\r\n            {\r\n                \"type\": \"Feature\",\r\n                \"properties\": {},\r\n                \"geometry\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -122.47867584228514,\r\n                        37.81893781173967\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"type\": \"Feature\",\r\n                \"properties\": {},\r\n                \"geometry\": {\r\n                    \"type\": \"Polygon\",\r\n                    \"coordinates\": [\r\n                        [\r\n                            [\r\n                                -122.49700069427489,\r\n                                37.821887146654376\r\n                            ],\r\n                            [\r\n                                -122.4991464614868,\r\n                                37.82171764783966\r\n                            ],\r\n                            [\r\n                                -122.49850273132326,\r\n                                37.81798857543524\r\n                            ],\r\n                            [\r\n                                -122.50923156738281,\r\n                                37.82090404811055\r\n                            ],\r\n                            [\r\n                                -122.51232147216798,\r\n                                37.823344820392535\r\n                            ],\r\n                            [\r\n                                -122.50150680541992,\r\n                                37.8271414168374\r\n                            ],\r\n                            [\r\n                                -122.48743057250977,\r\n                                37.83093781796035\r\n                            ],\r\n                            [\r\n                                -122.48313903808594,\r\n                                37.82822612280363\r\n                            ],\r\n                        ]\r\n                    ]\r\n                }\r\n            }\r\n        ]\r\n    }\r\n});",
+                "lastEvaluationDate": "2020-06-22T17:15:38.900+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "geo",
+                            "data": {
+                                "location": [
+                                    37.830124319877235,
+                                    -122.47979164123535
+                                ],
+                                "zoom": 13,
+                                "geojson": {
+                                    "type": "FeatureCollection",
+                                    "features": [
+                                        {
+                                            "type": "Feature",
+                                            "properties": {},
+                                            "geometry": {
+                                                "type": "Point",
+                                                "coordinates": [
+                                                    -122.47867584228514,
+                                                    37.81893781173967
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "type": "Feature",
+                                            "properties": {},
+                                            "geometry": {
+                                                "type": "Polygon",
+                                                "coordinates": [
+                                                    [
+                                                        [
+                                                            -122.49700069427489,
+                                                            37.821887146654376
+                                                        ],
+                                                        [
+                                                            -122.4991464614868,
+                                                            37.82171764783966
+                                                        ],
+                                                        [
+                                                            -122.49850273132326,
+                                                            37.81798857543524
+                                                        ],
+                                                        [
+                                                            -122.50923156738281,
+                                                            37.82090404811055
+                                                        ],
+                                                        [
+                                                            -122.51232147216798,
+                                                            37.823344820392535
+                                                        ],
+                                                        [
+                                                            -122.50150680541992,
+                                                            37.8271414168374
+                                                        ],
+                                                        [
+                                                            -122.48743057250977,
+                                                            37.83093781796035
+                                                        ],
+                                                        [
+                                                            -122.48313903808594,
+                                                            37.82822612280363
+                                                        ]
+                                                    ]
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 1648
+            }
+        ]
+    }
+}

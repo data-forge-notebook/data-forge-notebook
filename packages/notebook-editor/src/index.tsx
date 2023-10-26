@@ -13,6 +13,7 @@ export * from "./services/platform";
 export * from "./services/settings";
 export * from "./services/recent-files";
 export * from "./services/open";
+export * from "./services/paths";
 
 import "./services/impl/plugin-repository";
 import "./services/impl/date-provider";
@@ -29,6 +30,8 @@ import "./actions/toggle-hotkeys-action";
 import "./actions/toggle-command-palette-action";
 import "./actions/clear-recent-files-action";
 import "./actions/toggle-recent-file-picker-action";
+import "./actions/open-example-notebook-action";
+import "./actions/toggle-examples-browser-action";
 
 import "./actions/undo-action";
 import "./actions/redo-action";

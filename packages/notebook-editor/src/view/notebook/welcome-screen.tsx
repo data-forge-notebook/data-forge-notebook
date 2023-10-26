@@ -10,6 +10,7 @@ import { asyncHandler, ILog, ILogId } from 'utils';
 import { updateState } from 'browser-utils';
 import { INotebookRepository, INotebookRepositoryId } from 'storage';
 import { Button } from '@blueprintjs/core';
+import { IPaths, IPaths_ID } from '../../services/paths';
 
 const headingStyle = {
     fontSize: "1.2em",
@@ -55,6 +56,9 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
     @InjectProperty(INotebookRepositoryId)
     notebookRepository!: INotebookRepository;
 
+    @InjectProperty(IPaths_ID)
+    paths!: IPaths;
+
     constructor (props: IWelcomeScreenProps) {
         super(props);
 
@@ -94,7 +98,15 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
     }
     
     render() {
+        const examplesPath = this.paths.getExamplesPath();
         const exampleNotebooks: [string, string][] = [
+            ["Intro notebook", path.join(examplesPath, "viz.notebook")],
+            ["Visualization example", path.join(examplesPath, "viz.notebook")],
+            ["Charts example", path.join(examplesPath, "charts.notebook")],
+            ["Maps example", path.join(examplesPath, "maps.notebook")],
+            ["CSV example", path.join(examplesPath, "csv-file-example.notebook")],
+            ["JSON example", path.join(examplesPath, "json-file-example.notebook")],
+            ["REST API example", path.join(examplesPath, "rest-api-example.notebook")],
         ];
 
         const recentFiles = this.recentFiles.getRecentFileList();
@@ -177,7 +189,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                         </div>
                         <div style={bigTextStyle}>
                             <p>
-                                You can also watch the 
+                                Watch the 
                                 <a  
                                     className="ml-1 mr-1"
                                     target="_blank"
@@ -185,7 +197,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                     >
                                     Getting Started Video
                                 </a>
-                                online. Or read the
+                                online, read the
                                 <a  
                                     className="ml-1"
                                     target="_blank"
@@ -193,7 +205,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                     >
                                     Getting Started Guide
                                 </a>
-                                .
+                                , or open the {this.makeNotebookLink("Intro notebook", path.join(examplesPath, "intro.notebook"), false)}.
                             </p>
                         </div>
                     </div>
@@ -214,7 +226,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                             <div className="mb-1"
                                 style={headingStyle}
                                 >
-                                Recent
+                                Recent notebooks
                             </div>
                             <div 
                                 style={textStyle}
@@ -225,7 +237,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                     </div>
                                 )}
                             </div>
-                            <div style={bigTextStyle} className="mt-1">
+                            {/* <div style={bigTextStyle} className="mt-1">
                                 <a 
                                     onClick={() => {
                                         this.commander.invokeNamedCommand("clear-recent-files");
@@ -234,10 +246,13 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                     >
                                     Clear recent files
                                 </a>
-                            </div>
+                            </div> */}
                             <div style={bigTextStyle} className="mt-1">
-                                See <em>File</em> menu for full list
+                                <a onClick={() => this.commander.invokeNamedCommand("toggle-recent-files-browser")}>
+                                    Browse recent notebooks
+                                </a>
                             </div>
+
                         </div>
                     </div>
                 }
@@ -259,7 +274,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                     <div style={textStyle}>
                         <div
                             >
-                            <a onClick={() => this.commander.invokeNamedCommand("new-javascript-notebook")}>
+                            <a onClick={() => this.commander.invokeNamedCommand("new-notebook")}>
                                 New JavaScript notebook
                             </a>
                         </div>
@@ -273,10 +288,15 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 Open notebook...
                             </a>
                         </div>
+                        <div>
+                            <a onClick={() => this.commander.invokeNamedCommand("open-example-notebook")}>
+                                Open example notebook...
+                            </a>
+                        </div>
                     </div>
                 </div>
             
-                {/* <div 
+                <div 
                     className="flex flex-col p-1 pl-2 m-1 mb-3"
                     style={{
                         border: "1px dashed #C5DAE9",
@@ -304,10 +324,10 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                     </div>
                     <div style={bigTextStyle} className="mt-1">
                         <a onClick={() => this.commander.invokeNamedCommand("toggle-examples-browser")}>
-                            See all examples
+                            Browse examples
                         </a>
                     </div>
-                </div> */}
+                </div>
 
                 <div 
                     className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
@@ -332,7 +352,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                         </div>
 
                         <div>
-                            {/*todo: Open the {this.makeNotebookLink("Intro notebook", path.join(introPath, "intro.notebook"), false)}. */}
+                            Open the {this.makeNotebookLink("Intro notebook", path.join(examplesPath, "intro.notebook"), false)}.
                         </div>
 
                         <div>

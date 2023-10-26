@@ -141,8 +141,12 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         </ButtonGroup>
                     }
 
-                    {makeButton(this.commander, "toggle-hotkeys", { pos: Position.BOTTOM }, this.platform)}
-                    {makeButton(this.commander, "toggle-command-palette", { pos: Position.BOTTOM }, this.platform)}
+                    <ButtonGroup className="ml-2">
+                        {makeButton(this.commander, "toggle-hotkeys", { pos: Position.BOTTOM }, this.platform)}
+                        {makeButton(this.commander, "toggle-recent-file-picker", { pos: Position.BOTTOM }, this.platform)}
+                        {makeButton(this.commander, "toggle-examples-browser", { pos: Position.BOTTOM }, this.platform)}
+                        {makeButton(this.commander, "toggle-command-palette", { pos: Position.BOTTOM }, this.platform)}
+                    </ButtonGroup>
 
                     <span className="flex-grow ml-2" />
 

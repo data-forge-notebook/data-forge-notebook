@@ -13,6 +13,7 @@ import * as path from "path";
 import { INotebookRepository, INotebookRepositoryId } from "storage";
 import { IRecentFiles, IRecentFiles_ID } from "../../services/recent-files";
 import { WelcomeScreen } from "./welcome-screen";
+import { asyncHandler } from "utils";
 
 export interface INotebookEditorProps {
     model: INotebookEditorViewModel;
@@ -39,6 +40,15 @@ export interface INotebookEditorState {
     //
     isRecentFilesPickerOpen: boolean;
 
+    //
+    // Set to true to open the example notebooks picker.
+    //
+    isExampleBrowserOpen: boolean;
+
+    //
+    // List of example noteboks.
+    //
+    exampleNotebooks?: string[];
 }
 
 @InjectableClass()
@@ -63,7 +73,10 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
             isSettingsOpen: false,
             isCommandPaletteOpen: false,
             isRecentFilesPickerOpen: false,
+            isExampleBrowserOpen: false,
         };
+
+        this.componentDidMount = asyncHandler(this, this.componentDidMount);
     }
 
     private onOpenNotebookChanged = async (isReload: boolean): Promise<void> => {
@@ -74,10 +87,16 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
         this.props.model.onToggleCommandPalette.attach(this.toggleCommandPalette);
         this.props.model.onToggleRecentFilePicker.attach(this.toggleRecentFilesPicker);
+        this.props.model.onToggleExamplesBrowser.attach(this.toggleExampleBrowser);
+
+        const exampleNotebooks = await this.notebookRepository.getExampleNotebooks();
+        await updateState(this, {
+            exampleNotebooks: exampleNotebooks,
+        });
 
         this.props.model.mount();
     }
@@ -86,6 +105,7 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
         this.props.model.onOpenNotebookChanged.detach(this.onOpenNotebookChanged);
         this.props.model.onToggleCommandPalette.detach(this.toggleCommandPalette);
         this.props.model.onToggleRecentFilePicker.detach(this.toggleRecentFilesPicker);
+        this.props.model.onToggleExamplesBrowser.detach(this.toggleExampleBrowser);
 
         this.props.model.unmount();
     }
@@ -141,6 +161,27 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
         }
     }
 
+    //
+    // Opens an example notebook.
+    //
+    private async openExampleNotebook(filePath: string): Promise<void> {
+        await this.closeExampleBrowser();
+        const storageId = this.notebookRepository.idFromString(filePath);
+        await this.props.model.openSpecificNotebook(storageId);
+    }
+
+    private openExampleBrowser = async (): Promise<void> => {
+        await updateState(this, { isExampleBrowserOpen: true });
+    }
+
+    private closeExampleBrowser = async (): Promise<void> => {
+        await updateState(this, { isExampleBrowserOpen: false });
+    }
+
+    private toggleExampleBrowser = async (): Promise<void> => {
+        await updateState(this, { isExampleBrowserOpen: !this.state.isExampleBrowserOpen });
+    }
+
     render () {
         return (
             <div 
@@ -180,13 +221,14 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                     </div>
                 </div>
 
-                <FuzzyPicker
-                        label="Recent files"
-                        isOpen={this.state.isRecentFilesPickerOpen}
-                        onClose={this.closeRecentFilesPicker}
+                {this.state.exampleNotebooks 
+                        && <FuzzyPicker
+                        label="Example browser"
+                        isOpen={this.state.isExampleBrowserOpen}
+                        onClose={this.closeExampleBrowser}
                         autoCloseOnEnter={true}
-                        onChange={this.openRecentFile}
-                        items={this.getRecentFiles()}
+                        onChange={this.openExampleNotebook}
+                        items={this.state.exampleNotebooks}
                         showAllItems={true}
                         renderItem={(filePath: string) => 
                             <div className="flex flex-row">
@@ -205,33 +247,60 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                         itemValue={(filePath: string) => filePath}
                         pickExactItem={true}
                         />
+                }
 
                 <FuzzyPicker
-                        label="Commands"
-                        isOpen={this.state.isCommandPaletteOpen}
-                        onClose={this.closeCommandPalette}
-                        autoCloseOnEnter={true}
-                        onChange={this.invokeCommand}
-                        items={this.commander.getCommands()}
-                        showAllItems={true}
-                        renderItem={(command: ICommand) => 
-                            <div className="flex flex-row">
-                                <div className="flex flex-col flex-grow">
-                                    <div>{command.getLabel().replace(/&/g, "")}</div>
-                                    <div
-                                        style={{
-                                            fontSize: "0.8em",
-                                        }}
-                                        >
-                                        {command.getDesc()}
-                                    </div>
+                    label="Recent files"
+                    isOpen={this.state.isRecentFilesPickerOpen}
+                    onClose={this.closeRecentFilesPicker}
+                    autoCloseOnEnter={true}
+                    onChange={this.openRecentFile}
+                    items={this.getRecentFiles()}
+                    showAllItems={true}
+                    renderItem={(filePath: string) => 
+                        <div className="flex flex-row">
+                            <div className="flex flex-col flex-grow">
+                                <div>{path.basename(filePath)}</div>
+                                <div
+                                    style={{
+                                        fontSize: "0.8em",
+                                    }}
+                                    >
+                                    {path.dirname(filePath)}
                                 </div>
-                                <div>{humanizeAccelerator(command.getAccelerator(), this.platform)}</div>
-                            </div>    
-                        }
-                        itemValue={(command: ICommand) => command.getDesc()}
-                        pickExactItem={true}
-                        />
+                            </div>
+                        </div>    
+                    }
+                    itemValue={(filePath: string) => filePath}
+                    pickExactItem={true}
+                    />
+
+                <FuzzyPicker
+                    label="Commands"
+                    isOpen={this.state.isCommandPaletteOpen}
+                    onClose={this.closeCommandPalette}
+                    autoCloseOnEnter={true}
+                    onChange={this.invokeCommand}
+                    items={this.commander.getCommands()}
+                    showAllItems={true}
+                    renderItem={(command: ICommand) => 
+                        <div className="flex flex-row">
+                            <div className="flex flex-col flex-grow">
+                                <div>{command.getLabel().replace(/&/g, "")}</div>
+                                <div
+                                    style={{
+                                        fontSize: "0.8em",
+                                    }}
+                                    >
+                                    {command.getDesc()}
+                                </div>
+                            </div>
+                            <div>{humanizeAccelerator(command.getAccelerator(), this.platform)}</div>
+                        </div>    
+                    }
+                    itemValue={(command: ICommand) => command.getDesc()}
+                    pickExactItem={true}
+                    />
 
                 <HotkeysOverlay model={this.props.model} />
 

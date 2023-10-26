@@ -1,0 +1,172 @@
+{
+    "version": 2,
+    "sheet": {
+        "id": "715b0bf0-a773-11e8-be47-d189ccafed88",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "715b3300-a773-11e8-be47-d189ccafed88",
+                "cellType": "markdown",
+                "code": "# JSON example\r\n\r\nAn example that shows how to load, transform and save a JSON file using [the Data-Forge library](http://data-forge-js.com/).\r\n\r\n**NOTE**: This example is pretty much the same as *csv file example.notebook* except for the file type.",
+                "lastEvaluationDate": "2018-10-31T08:49:29.332+10:00",
+                "output": [],
+                "errors": [],
+                "height": 144
+            },
+            {
+                "id": "8d98d040-a773-11e8-be47-d189ccafed88",
+                "cellType": "markdown",
+                "code": "## Loading a JSON file\r\n\r\nLoad the file \"example.json\", which is placed to next to where this notebook is saved.",
+                "lastEvaluationDate": "2018-10-31T08:49:29.332+10:00",
+                "output": [],
+                "errors": [],
+                "height": 102
+            },
+            {
+                "id": "715b3301-a773-11e8-be47-d189ccafed88",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const dataForge = require('data-forge');\r\nrequire('data-forge-fs');\r\n\r\nconst inputData = await dataForge.readFile(\"./example.json\").parseJSON();\r\n\r\ndisplay(inputData.head(3));",
+                "lastEvaluationDate": "2020-06-22T17:15:14.598+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "table",
+                            "data": {
+                                "rows": [
+                                    {
+                                        "Name": "Alex",
+                                        "Sex": "M",
+                                        "Age": 41,
+                                        "Height (in)": 74,
+                                        "Weight (lbs)": 170
+                                    },
+                                    {
+                                        "Name": "Bert",
+                                        "Sex": "M",
+                                        "Age": 42,
+                                        "Height (in)": 68,
+                                        "Weight (lbs)": 166
+                                    },
+                                    {
+                                        "Name": "Carl",
+                                        "Sex": "M",
+                                        "Age": 32,
+                                        "Height (in)": 70,
+                                        "Weight (lbs)": 155
+                                    }
+                                ],
+                                "columnNames": [
+                                    "Name",
+                                    "Sex",
+                                    "Age",
+                                    "Height (in)",
+                                    "Weight (lbs)"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 286
+            },
+            {
+                "id": "9a0ae3d0-a774-11e8-a675-a582b1f571c7",
+                "cellType": "markdown",
+                "code": "## Apply a transformation\r\n\r\nLet's convert to the metric system of measurement!",
+                "lastEvaluationDate": "2018-10-31T08:49:29.341+10:00",
+                "output": [],
+                "errors": [],
+                "height": 102
+            },
+            {
+                "id": "8a9ad280-a773-11e8-be47-d189ccafed88",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const transformedData = inputData\r\n    .transformSeries({\r\n        \"Height (in)\": height => height * 2.54,             // Inches to centimeters.\r\n        \"Weight (lbs)\": weight => weight * 0.453592         // Pounds to kilograms.\r\n    })\r\n    .renameSeries({                                         // Now let's rename the columns so they make sense.\r\n        \"Height (in)\": \"Height (cm)\",\r\n        \"Weight (lbs)\": \"Weight (kgs)\"\r\n    });\r\n\r\ndisplay(transformedData.head(5));",
+                "lastEvaluationDate": "2020-06-22T17:15:15.192+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "table",
+                            "data": {
+                                "rows": [
+                                    {
+                                        "Name": "Alex",
+                                        "Sex": "M",
+                                        "Age": 41,
+                                        "Height (cm)": 187.96,
+                                        "Weight (kgs)": 77.11064
+                                    },
+                                    {
+                                        "Name": "Bert",
+                                        "Sex": "M",
+                                        "Age": 42,
+                                        "Height (cm)": 172.72,
+                                        "Weight (kgs)": 75.296272
+                                    },
+                                    {
+                                        "Name": "Carl",
+                                        "Sex": "M",
+                                        "Age": 32,
+                                        "Height (cm)": 177.8,
+                                        "Weight (kgs)": 70.30676
+                                    },
+                                    {
+                                        "Name": "Dave",
+                                        "Sex": "M",
+                                        "Age": 39,
+                                        "Height (cm)": 182.88,
+                                        "Weight (kgs)": 75.749864
+                                    },
+                                    {
+                                        "Name": "Elly",
+                                        "Sex": "F",
+                                        "Age": 30,
+                                        "Height (cm)": 167.64000000000001,
+                                        "Weight (kgs)": 56.245408
+                                    }
+                                ],
+                                "columnNames": [
+                                    "Name",
+                                    "Sex",
+                                    "Age",
+                                    "Height (cm)",
+                                    "Weight (kgs)"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 441
+            },
+            {
+                "id": "5a096ee0-a775-11e8-a675-a582b1f571c7",
+                "cellType": "markdown",
+                "code": "## Saving a JSON file\r\n\r\nNow let's save our transformed JSON file to the current directory.",
+                "lastEvaluationDate": "2018-10-31T08:49:29.349+10:00",
+                "output": [],
+                "errors": [],
+                "height": 102
+            },
+            {
+                "id": "7dd392b0-a775-11e8-a675-a582b1f571c7",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "await transformedData.asCSV().writeFile(\"transformed.json\");\r\n\r\nconsole.log(\"Transformed JSON file has been written to \" + process.cwd());",
+                "lastEvaluationDate": "2020-06-22T17:15:15.404+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "string",
+                            "data": "Transformed JSON file has been written to C:\\projects\\data-forge-notebook\\data-forge-notebook-git\\examples\n"
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 123
+            }
+        ]
+    }
+}

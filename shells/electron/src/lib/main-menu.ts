@@ -19,6 +19,8 @@ import "notebook-editor/build/actions/toggle-hotkeys-action";
 import "notebook-editor/build/actions/toggle-command-palette-action";
 import "notebook-editor/build/actions/clear-recent-files-action";
 import "notebook-editor/build/actions/toggle-recent-file-picker-action";
+import "notebook-editor/build/actions/open-example-notebook-action";
+import "notebook-editor/build/actions/toggle-examples-browser-action";
 import { IWindowManager, IWindowManagerId } from "./window-manager";
 import { getNodejsInstallPath } from "../evaluation-engine";
 import { ISettings, ISettings_ID } from "notebook-editor/build/services/settings";
@@ -185,6 +187,7 @@ export class MainMenu implements IMainMenu {
                     this.createSeparator(),
 
                     this.createMenu("open-notebook"),
+                    this.createMenu("open-example-notebook"),
                     this.createOpenRecentMenu(),
 
                     this.createSeparator(),
@@ -223,6 +226,8 @@ export class MainMenu implements IMainMenu {
             {
                 label: "&View",
                 submenu: [
+                    this.createMenu("toggle-recent-file-picker"),
+                    this.createMenu("toggle-examples-browser"),
                     this.createMenu("toggle-command-palette"),
                 ],
             },

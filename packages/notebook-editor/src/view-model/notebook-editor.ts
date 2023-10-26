@@ -161,6 +161,16 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     // Event raised to toggle the recent file picker.
     //
     onToggleRecentFilePicker: IEventSource<BasicEventHandler>;
+
+    //
+    // Opens or closes the example notebook browser.
+    //
+    toggleExamplesBrowser(): Promise<void>;
+
+    //
+    // Event raised to toggle the example notebook browser.
+    //
+    onToggleExamplesBrowser: IEventSource<BasicEventHandler>;
 }
 
 @InjectableClass()
@@ -749,4 +759,16 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Event raised to toggle the recent file picker.
     //
     onToggleRecentFilePicker: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+    //
+    // Opens or closes the example notebook browser.
+    //
+    async toggleExamplesBrowser(): Promise<void> {
+        await this.onToggleExamplesBrowser.raise();
+    }
+
+    //
+    // Event raised to toggle the example notebook browser.
+    //
+    onToggleExamplesBrowser: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }

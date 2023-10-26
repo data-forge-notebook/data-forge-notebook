@@ -1,0 +1,126 @@
+{
+    "version": 2,
+    "sheet": {
+        "id": "f0078d20-accd-11e8-acc9-1f4073078ebd",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "f0078d21-accd-11e8-acc9-1f4073078ebd",
+                "cellType": "markdown",
+                "code": "# REST API example\r\n\r\nData-Forge example that retreives CSV data from a REST API.",
+                "lastEvaluationDate": "2018-10-31T08:48:52.021+10:00",
+                "output": [],
+                "errors": [],
+                "height": 115
+            },
+            {
+                "id": "f0078d22-accd-11e8-acc9-1f4073078ebd",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const axios = require('axios');\r\nconst dataForge = require('data-forge');\r\n\r\nconst url = \"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo&datatype=csv\";\r\nconst response = await axios(url);\r\nconst df = dataForge.fromCSV(response.data, { dynamicTyping: true })\r\n    .parseDates(\"timestamp\", \"YYYY-MM-DD\")\r\n    .setIndex(\"timestamp\")\r\n    .reverse();\r\n\r\ndisplay(df.head(10));",
+                "lastEvaluationDate": "2021-01-17T14:36:01.316+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "table",
+                            "data": {
+                                "rows": [
+                                    {
+                                        "timestamp": "2020-08-24T14:00:00.000Z",
+                                        "open": 213.1,
+                                        "high": 216.61,
+                                        "low": 213.1,
+                                        "close": 216.47,
+                                        "volume": 23043696
+                                    },
+                                    {
+                                        "timestamp": "2020-08-25T14:00:00.000Z",
+                                        "open": 217.88,
+                                        "high": 222.09,
+                                        "low": 217.36,
+                                        "close": 221.15,
+                                        "volume": 39600828
+                                    },
+                                    {
+                                        "timestamp": "2020-08-26T14:00:00.000Z",
+                                        "open": 222.89,
+                                        "high": 231.15,
+                                        "low": 219.4,
+                                        "close": 226.58,
+                                        "volume": 57602195
+                                    },
+                                    {
+                                        "timestamp": "2020-08-27T14:00:00.000Z",
+                                        "open": 228.18,
+                                        "high": 230.644,
+                                        "low": 226.58,
+                                        "close": 228.91,
+                                        "volume": 26292896
+                                    },
+                                    {
+                                        "timestamp": "2020-08-30T14:00:00.000Z",
+                                        "open": 227,
+                                        "high": 228.7,
+                                        "low": 224.31,
+                                        "close": 225.53,
+                                        "volume": 28774156
+                                    },
+                                    {
+                                        "timestamp": "2020-08-31T14:00:00.000Z",
+                                        "open": 225.51,
+                                        "high": 227.45,
+                                        "low": 224.43,
+                                        "close": 227.27,
+                                        "volume": 25791235
+                                    },
+                                    {
+                                        "timestamp": "2020-09-01T14:00:00.000Z",
+                                        "open": 227.97,
+                                        "high": 232.86,
+                                        "low": 227.35,
+                                        "close": 231.65,
+                                        "volume": 34080839
+                                    },
+                                    {
+                                        "timestamp": "2020-09-02T14:00:00.000Z",
+                                        "open": 229.27,
+                                        "high": 229.31,
+                                        "low": 214.9602,
+                                        "close": 217.3,
+                                        "volume": 58400288
+                                    },
+                                    {
+                                        "timestamp": "2020-09-03T14:00:00.000Z",
+                                        "open": 215.1,
+                                        "high": 218.3599,
+                                        "low": 205.19,
+                                        "close": 214.25,
+                                        "volume": 59664072
+                                    },
+                                    {
+                                        "timestamp": "2020-09-07T14:00:00.000Z",
+                                        "open": 206.5,
+                                        "high": 210.03,
+                                        "low": 202.2,
+                                        "close": 202.66,
+                                        "volume": 52924330
+                                    }
+                                ],
+                                "columnNames": [
+                                    "timestamp",
+                                    "open",
+                                    "high",
+                                    "low",
+                                    "close",
+                                    "volume"
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 637
+            }
+        ]
+    }
+}

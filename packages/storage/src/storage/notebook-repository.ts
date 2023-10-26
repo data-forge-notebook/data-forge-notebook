@@ -60,4 +60,9 @@ export interface INotebookRepository {
     // Shows a dialog to allow the user to save their notebook to a new location.
     //
     showNotebookSaveAsDialog(existingNotebookId: INotebookStorageId): Promise<INotebookStorageId | undefined>;
+
+    //
+    // Gets the list of example notebooks.
+    //
+    getExampleNotebooks(): Promise<string[]>;
 }

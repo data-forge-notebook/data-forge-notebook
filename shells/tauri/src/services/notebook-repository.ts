@@ -171,4 +171,11 @@ export class NotebookRepository implements INotebookRepository {
         return NotebookStorageId.fromFilePath(filePath);
     }
     
+    //
+    // Gets the list of example notebooks.
+    //
+    async getExampleNotebooks(): Promise<string[]> {
+        return [];
+    }
+
 }
