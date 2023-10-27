@@ -1,5 +1,5 @@
 {
-  "name": "editor-core",
+  "name": "data-forge-notebook",
   "description": "Data-Forge Notebook is a cross-platform notebook application for JavaScript.",
   "author": "ashley@codecapers.com.au",
   "scripts": {

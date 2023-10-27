@@ -2,15 +2,19 @@
 
 Data-Forge Notebook is a cross-platform notebook application for JavaScript.
 
-The core repository for Data-Forge Notebook.
+The is the mono repo for Data-Forge Notebook.
 
-[Read more about the decision here](https://github.com/data-forge-notebook/wiki/wiki/Future-Plans)
-
-[See the issues page to contribute to the discussion](https://github.com/data-forge-notebook/editor-core/issues)
-
-[Follow the developer on Twitter for more frequent news and updates](https://twitter.com/codecapers)
+**WARNING**: Nightly builds are now being automatically released whenever work has been done on that day. Please be aware that the official v2 release is not ready yet. The nightly builds are **slow and buggy**. Please only use them if you are helping me test DFN.
 
 [Data-Forge Notebook v1 available here](https://www.data-forge-notebook.com/)
+
+[Read more about the open source decision here](https://github.com/data-forge-notebook/wiki/wiki/Future-Plans)
+
+[Read the wiki](https://github.com/data-forge-notebook/wiki/wiki)
+
+[See the issues page to contribute to the discussion](https://github.com/data-forge-notebook/data-forge-notebook/issues)
+
+[Follow the developer on Twitter for more frequent news and updates](https://twitter.com/codecapers)
 
 ## Project structure
 
@@ -19,7 +23,7 @@ A birds eye view of this project:
 ```
 └───data-forge-notebook ------ The DFN v2 monorepo.
     ├───packages --------------- Packages shared within the monorepo.
-    │   ├───host-bridge ------------ Communication between the DFN and plugins.
+    │   ├───host-bridge ------------ Communication between DFN and plugins.
     │   ├───evaluation-engine ------ Implements the code evaluation engine.
     │   ├───model ------------------ The data model for a notebook.
     │   ├───notebook-editor -------- Implements the notebook editor.
@@ -41,7 +45,7 @@ A birds eye view of this project:
 ## Quickstart - Electron
 
 ```bash
-cd editor-core
+cd data-forge-notebook
 pnpm install
 pnpm run compile
 pnpm run electron:dev
@@ -50,7 +54,7 @@ pnpm run electron:dev
 ## Quickstart - Browser
 
 ```bash
-cd editor-core
+cd data-forge-notebook
 pnpm install
 pnpm run compile
 pnpm run start
@@ -71,6 +75,7 @@ npm install -g pnpm
 Install dependencies for this project:
 
 ```bash
+cd data-forge-notebook
 pnpm install
 ```
 
@@ -81,6 +86,7 @@ Before you should do anything you should compile all TypeScript code to JavaScri
 ```bash
 pnpm run compile
 ```
+Compiled JavaScript code is output to the `build` subdirectory for each project.
 
 You can also compile all packages in watch mode which can be useful if you are changing code and want them to recompile automatically:
 
@@ -105,7 +111,7 @@ pnpm start
 
 It runs in "dev" mode with live reload enabled.
 
-The plugins (which are complete web pages in their own right) and also served in "dev" mode from the `./plugins` directory. You can edit the code for the plugins, but you might have to manually refresh the browser to
+The plugins (which are complete web pages in their own right) and also served in "dev" mode from the `./plugins` directory. You can edit the code for the plugins, but you might have to manually refresh the browser to see updated plugins.
 
 ## Build a static web page
 
@@ -123,7 +129,7 @@ The plugins are automatically built and inlined into the package.
 
 Note: You need Rust installed for the Tauri build.
 
-WARNING: Tauri build doesn't work yet.
+**WARNING**: Tauri build doesn't work yet.
 
 This runs the whole notebook editor in Tauri (with a static build):
 
@@ -153,7 +159,7 @@ pnpm run electron:dev
 
 ## Build the Tauri installer
 
-WARNING: The Tauri build doesn't work. It seems to crash while buliding the project.
+**WARNING**: The Tauri build doesn't work. It seems to crash while buliding the project.
 
 NOTE: You need Rust installed for the Tauri build.
 
@@ -177,7 +183,7 @@ Or debug:
 pnpm run build-tauri-debug
 ```
 
-### Build the Electron installer
+## Build the Electron installer
 
 First set the parent temporary directory required for building. 
 
@@ -218,8 +224,6 @@ Storybook showcases various configurations for UI components.
 ```bash
 pnpm run storybook
 ```
-
-Compiled JavaScript code is output to the `build` subdirectory for each project.
 
 ## Run automated tests
 
