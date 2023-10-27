@@ -44,6 +44,11 @@ export interface IEditorWindow {
     getId(): string;
 
     //
+    // Returns true if a notebook has been opened in this editor window.
+    //
+    isNotebookSet(): boolean;
+
+    //
     // Get the name of the file open in this editor.
     //
     getFileName(): string | undefined;
@@ -138,6 +143,11 @@ export class EditorWindow implements IEditorWindow {
     private showCalled: boolean = false;
 
     //
+    // Set to true when the notebook editor is ready.
+    //
+    private editorReady: boolean = false;
+
+    //
     // Set to true when a notebook has been set.
     //
     private notebookSet: boolean = false;
@@ -157,6 +167,13 @@ export class EditorWindow implements IEditorWindow {
     //
     getId(): string {
         return this.editorWindowId;
+    }
+
+    //
+    // Returns true if a notebook has been opened in this editor window.
+    //
+    isNotebookSet(): boolean {
+        return this.notebookSet;
     }
 
     //
@@ -295,6 +312,11 @@ export class EditorWindow implements IEditorWindow {
             return false;
         }
 
+        if (this.editorReady) {
+            this.log.info(`++ Ready to show window, the editor ready event has been received for window ${this.getId()}.`);
+            return true; // The editor is ready for use, even if a notebook is not loaded.
+        }
+
         if (this.notebookSet) {
             this.log.info(`++ Ready to show window, a notebook has been set for window ${this.getId()}.`);
             return true; // A notebook has been set, we are definitely ready to show the window.
@@ -425,9 +447,7 @@ export class EditorWindow implements IEditorWindow {
         onEditorReady: () => {
             this.log.info(`++ The notebook editor is ready ${this.getId()}`);
 
-            this.notebookSet = true;
-            this.fileName = undefined;
-            this.isModified = false;
+            this.editorReady = true;
 
             this.showIfReady();
         },

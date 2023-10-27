@@ -269,7 +269,9 @@ export class MainMenu implements IMainMenu {
                 label: "&Windows",
                 submenu: this.windowManager.getEditorWindows()
                     .map(editorWindow => {
-                        let fileName = editorWindow.getFileName() || "untitled";
+                        let fileName = editorWindow.isNotebookSet()
+                            ? editorWindow.getFileName() || "Untitled"
+                            : "Welcome Screen";
                         return {
                             label: fileName,
                             click: () => {
