@@ -41,6 +41,20 @@ settings.loadSettings();
 
 const notebookEditorViewModel = new NotebookEditorViewModel();
 
+//
+// Raises the event in the main process that the notebook editor is ready.
+//
+async function onEditorReady() {
+    ipcRenderer.send("notebook-editor-event", {
+        editorWindowId: editorWindowId,
+        eventName: "onEditorReady",
+        payload: {},
+    });
+}
+
+//
+// Raises the event in the main process that a new notebook has been set.
+//
 async function onNotebookSet() {
     if (!notebookEditorViewModel.isNotebookOpen()) {
         return;
@@ -59,6 +73,9 @@ async function onNotebookSet() {
     });
 }
 
+//
+// Raises the event in the main process that the notebook has been modified.
+//
 async function onNotebookModified() {
     const notebook = notebookEditorViewModel.getOpenNotebook();
     const isModified = notebook.isModified();
@@ -71,6 +88,7 @@ async function onNotebookModified() {
     });
 }
 
+notebookEditorViewModel.onEditorReady.attach(onEditorReady);
 notebookEditorViewModel.onOpenNotebookChanged.attach(onNotebookSet);
 notebookEditorViewModel.onModified.attach(onNotebookModified);
 

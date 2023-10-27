@@ -133,6 +133,16 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     onModified: IEventSource<BasicEventHandler>;
 
     //
+    // Notify that the editor is ready for use.
+    //
+    notifyEditorReady(): Promise<void>;
+
+    //
+    // Event raised when the notebook editor is ready for use.
+    //
+    onEditorReady: IEventSource<BasicEventHandler>;
+
+    //
     // Event raised when the open notebook is about to change.
     //
     onOpenNotebookWillChange: IEventSource<BasicEventHandler>;
@@ -691,6 +701,18 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Event raised when the content of the notebook has been modified.
     //
     onModified: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+    //
+    // Notify that the editor is ready for use.
+    //
+    async notifyEditorReady(): Promise<void> {
+        await this.onEditorReady.raise();
+    }
+
+    //
+    // Event raised when the notebook editor is ready for use.
+    //
+    onEditorReady: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // Event raised when the open notebook is about to change.

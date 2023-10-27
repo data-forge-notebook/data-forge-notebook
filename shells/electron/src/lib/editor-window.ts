@@ -206,7 +206,7 @@ export class EditorWindow implements IEditorWindow {
             y: newWindowCoords.y,
             width: newWindowCoords.width,
             height: newWindowCoords.height,
-            show: true, //todo: false,
+            show: false,
             webPreferences: {
                 nodeIntegration: true,
                 nodeIntegrationInWorker: true, // Enabled this to prevent errors in Monaco Editor workers.
@@ -418,6 +418,19 @@ export class EditorWindow implements IEditorWindow {
     // Handlers for events received from the notebook editor.
     //
     private editorEvents: any = {
+
+        //
+        // The notebook editor is ready to use.
+        //
+        onEditorReady: () => {
+            this.log.info(`++ The notebook editor is ready ${this.getId()}`);
+
+            this.notebookSet = true;
+            this.fileName = undefined;
+            this.isModified = false;
+
+            this.showIfReady();
+        },
 
         //
         // A notebook has been set in this editor window.
