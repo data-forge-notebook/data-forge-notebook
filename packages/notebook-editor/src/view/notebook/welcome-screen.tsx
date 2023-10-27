@@ -256,7 +256,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 </a>
                             </div> */}
                             <div style={bigTextStyle} className="mt-1">
-                                <a onClick={() => this.commander.invokeNamedCommand("toggle-recent-files-browser")}>
+                                <a onClick={() => this.commander.invokeNamedCommand("toggle-recent-file-picker")}>
                                     Browse recent notebooks
                                 </a>
                             </div>
