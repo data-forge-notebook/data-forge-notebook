@@ -316,6 +316,9 @@ importers:
       styled-components:
         specifier: ^5.3.5
         version: 5.3.5(react-dom@17.0.2)(react-is@18.1.0)(react@17.0.2)
+      typy:
+        specifier: ^3.3.0
+        version: 3.3.0
       utils:
         specifier: workspace:*
         version: link:../utils

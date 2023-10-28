@@ -4,15 +4,16 @@ export interface ITextProps {
     //
     // Text to be displayed.
     //
-    text?: string;
+    text?: any;
 }
 
 export class Text extends React.Component<ITextProps, {}> {
     
     render () {
+
         let text = this.props.text;
-        if (this.props.text !== undefined && typeof(this.props.text) !== "string") {
-            text = JSON.stringify(text, null, 4);
+        if (text !== undefined && typeof(text) !== "string") {
+            text = text.toString();
         }
 
         return (
@@ -24,7 +25,7 @@ export class Text extends React.Component<ITextProps, {}> {
                     paddingBottom: "12px",
                 }}  
                 >
-                {this.props.text}
+                {text}
             </pre>
         );
     }

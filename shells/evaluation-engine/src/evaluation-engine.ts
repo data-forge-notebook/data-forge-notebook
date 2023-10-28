@@ -1,11 +1,9 @@
-import { INotebook } from "model";
+import { INotebook, ISerializedCellOutputValue1 } from "model";
 import { ICell } from "model";
 import { CodeEvaluator } from "evaluation-engine";
-import { ISerializedCellOutput1 } from "model";
 import * as _ from "lodash";
 import { Npm } from "evaluation-engine";
 import * as path from "path";
-import { stringify } from "./lib/json";
 import { NOTEBOOK_TIMEOUT_MS, NPM_CACHE_PATH } from "./config";
 
 //
@@ -39,7 +37,7 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
     };
 
     let cellOutputs: any[] = [];
-    function queueOutput(cellId: string, outputs: ISerializedCellOutput1[]) {
+    function queueOutput(cellId: string, output: ISerializedCellOutputValue1) {
         /* #if debug */
         // logBack.info(`Queuing output for cell ${cellId}:`);
         // logBack.info(JSON.stringify(outputs, null, 4));
@@ -47,7 +45,7 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
 
         cellOutputs.push({
             cellId: cellId,
-            outputs: stringify(outputs),
+            output: output,
         });
         sendOutputs();
     }

@@ -18,7 +18,7 @@ export interface IPluginConfig {
     //
     // The display type that this plugin matches.
     //
-    displayType: string | [string];
+    displayType: string[];
 
     //
     // Default height for the plugin.

@@ -1,0 +1,27 @@
+{
+    "version": 3,
+    "nodejs": "v16.14.0",
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "08856060-7556-11ee-b5da-717cda7e35a7",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "console.log(\"Stdout is displayed as text\");\r\n\r\ndisplay(\"A string is displayed as text\");\r\n\r\ndisplay(42); // Number is displayed as text.\r\n\r\ndisplay(true); // Boolean is displayed as text.\r\n\r\ndisplay({ something: \"An object is displayed as data\", another: \"value\" });\r\n\r\ndisplay([\r\n    \"An array is displayed as data\",\r\n    \"More data..\",\r\n]);\r\n\r\ndisplay({\r\n    columns: [\"A\", \"B\"],\r\n    rows: [\r\n        [1, 2],\r\n        [3, 4],\r\n    ]\r\n}, \"table\");\r\n\r\ndisplay({\r\n    a: 1,\r\n    b: 2,\r\n}, \"table\");\r\n\r\ndisplay([\r\n    [\"A\", \"B\"],\r\n    [1, 2],\r\n    [3, 4]\r\n], \"table\");\r\n\r\ndisplay([\r\n    { A: 1, B: 2 },\r\n    { A: 3, B: 4 }\r\n], \"table\");",
+            "lastEvaluationDate": "2023-10-28T17:23:15.047+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "table",
+                        "data": {
+                            "a": 1,
+                            "b": 2
+                        }
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 936
+        }
+    ]
+}

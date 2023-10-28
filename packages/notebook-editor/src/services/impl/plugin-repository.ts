@@ -6,6 +6,7 @@ import { InjectableSingleton } from "@codecapers/fusion";
 import { IPluginRepo, IPluginRepo_ID, IPluginConfig } from "../plugin-repository";
 import * as path from "path";
 import { IPluginRequest } from "host-bridge";
+import typy from "typy";
 
 //
 // A lookup table of plugins.
@@ -83,7 +84,15 @@ function loadEmbeddedPlugins(): IPluginMap {
 
 const pluginMap = loadEmbeddedPlugins();
 const plugins = Object.values(pluginMap);
-const defaultPlugin = plugins.filter(plugin => plugin.displayType === "*")[0];
+const defaultPlugin = plugins.filter(plugin => {
+    for (const displayType of plugin.displayType) {
+        if (displayType === "*") {
+            return true;
+        }
+    }
+
+    return false;
+})[0];
 if (defaultPlugin === undefined) {
     throw new Error(`Default plugin not found, you need a plugin with displayType = "*"`);
 }
@@ -96,18 +105,29 @@ export class PluginRepo implements IPluginRepo {
     //
     private matchPlugin(pluginRequest: IPluginRequest): IPluginConfig | undefined {
 
-        if (pluginRequest.displayType) {
+        let displayType = pluginRequest.displayType;
+        if (displayType === undefined)  {
+            //
+            // Default based on the data type.
+            //
+            if (typy(pluginRequest.data).isArray) {
+                displayType = "array";
+            }
+            else if (typy(pluginRequest.data).isObject) {
+                displayType = "object";
+            }
+            else {
+                displayType = typeof(pluginRequest.data);
+            }
+
+            console.log(`Defaulted display type to "${displayType}"`);
+        }
+
+        if (displayType) {
             for (const plugin of plugins) {
-                if (typeof(plugin.displayType) === "string") {
-                    if (pluginRequest.displayType === plugin.displayType) {
+                for (const pluginDisplayType of plugin.displayType) {
+                    if (displayType === pluginDisplayType) {
                         return plugin;
-                    }
-                }
-                else {
-                    for (const pluginDisplayType of plugin.displayType) {
-                        if (pluginRequest.displayType === pluginDisplayType) {
-                            return plugin;
-                        }
                     }
                 }
             }

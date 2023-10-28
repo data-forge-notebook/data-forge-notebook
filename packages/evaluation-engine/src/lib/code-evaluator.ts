@@ -1,7 +1,6 @@
-import { INotebook } from "model";
+import { INotebook, ISerializedCellOutputValue1 } from "model";
 import { ICell } from "model";
 import { BasicEventHandler } from "utils";
-import { convertDisplayValue } from "./convert-value";
 import { CodeGenerator } from "./code-generator";
 import { ILog } from "utils";
 import * as vm from 'vm';
@@ -12,9 +11,7 @@ import { ProjectGenerator } from "./project-generator";
 import { CellType } from "model";
 import { IAsyncTracker, AsyncTracker } from "./async-tracker";
 import { AsyncResource, executionAsyncId } from "async_hooks";
-import { handleAsyncErrors } from "utils";
 import * as fs from "fs";
-import { ISerializedCellOutput1 } from "model";
 import { EventEmitter } from "events";
 import { INpm } from "./npm";
 import { performance } from "perf_hooks";
@@ -38,7 +35,7 @@ export type CellEventHandler = (cellId: string) => void;
 //
 // Event raised when a particular cell displays some output.
 //
-export type DisplayEventHandler = (cellId: string, outputs: ISerializedCellOutput1[]) => void;
+export type DisplayEventHandler = (cellId: string, output: ISerializedCellOutputValue1) => void;
 
 //
 // Event raised when a particular cell has an error.
@@ -298,62 +295,36 @@ export class CodeEvaluator implements ICodeEvaluator {
         return this.cellIds[cellIndex];
     }
 
-    private display = (...args: any[]): void => {
+    private display = (data: any, displayType?: string): void => {
 
         // this.log.info(`Displaying ${args.join(',')} in async context ${executionAsyncId()} for cell ${this.getCurCellId()}.`);
 
         if (!this.isOutputCapped()) {
             if (this.onDisplay) {
-                const converted = args.map(arg => ({ value: convertDisplayValue(arg) }));
-                this.onDisplay(this.getCurCellId(), converted);
+                this.onDisplay(this.getCurCellId(), {
+                    displayType: displayType,
+                    data: data,
+                });
             }
         }
     };
 
-    private displayType(displayType: string, args: any[], converter?: (args: any[]) => any[]): void {
-        if (!this.isOutputCapped()) {
-            if (this.onDisplay) {
-                if (converter) {
-                    args = converter(args);
-                }
-                const converted = args.map(arg => ({
-                    value: {
-                        displayType,
-                        data: arg,
-                    },
-                }));
-                this.onDisplay(this.getCurCellId(), converted);
-            }
-        }
-    }
-
-    private displayTable(...args: any[]): void {
-        if (!this.isOutputCapped()) {
-            if (this.onDisplay) {
-                const converted = args.map(arg => ({ 
-                    value: convertDisplayValue(arg, "table"),
-                }));
-                this.onDisplay(this.getCurCellId(), converted);
-            }
-        }
-    }
-
     //
     // Captures standard output while evaluating a notebook.
     //
-    private stdoutWriteOverride = (...args: any[]): boolean => {
+    private stdoutWriteOverride = (value: string): boolean => {
 
         // this.log.info(`Stdout ${args[0]} in async context ${executionAsyncId()} for cell ${this.getCurCellId()}.`);
 
         if (!this.isOutputCapped()) {
             if (this.onDisplay) {
-                const converted = {
-                    value: convertDisplayValue(args[0].toString()),
-                };
-                this.onDisplay(this.getCurCellId(), [ converted ]);
+                this.onDisplay(this.getCurCellId(), {
+                    displayType: "text",
+                    data: value,
+                });
             }
 
-            return this.oldStdoutWrite.apply(this.process.stdout, args);
+            return this.oldStdoutWrite.apply(this.process.stdout, value);
         }
         else {
             return true;

@@ -1,6 +1,6 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { BasicEventHandler, IEventSource, EventSource, ILogId, ILog } from "utils";
-import { CellError, CellOutput, CellScope, CellType } from "model";
+import { CellError, CellOutput, CellOutputValue, CellScope, CellType } from "model";
 import { notebookVersion } from "model";
 import { ISerializedNotebook1 } from "model";
 import { IIdGenerator, IIdGeneratorId } from "utils/src/lib/id-generator";
@@ -613,10 +613,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             for (const cellOutput of args.outputs) {
                 const cell = this.getOpenNotebook().findCell(cellOutput.cellId) as ICodeCellViewModel;
                 if (cell) {
-                    const outputs = JSON.parse(cellOutput.outputs);
-                    for (const output of outputs) {
-                        cell.addOutput(new CellOutputViewModel(CellOutput.deserialize(output)));
-                    }
+                    cell.addOutput(new CellOutputViewModel(CellOutput.deserialize({ value:  cellOutput.output })));
                 }
                 else {
                     this.log.error("receive-display: Failed to find cell " + cellOutput.cellId);
