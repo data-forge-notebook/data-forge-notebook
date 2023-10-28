@@ -89,7 +89,10 @@ describe("evaluation engine shell", () => {
                     "outputs": [
                         {
                             "cellId": "f0627130-2e9c-11e9-9f0a-97b474081a71",
-                            "outputs": "[{\"value\":{\"displayType\":\"string\",\"data\":\"fooey\\n\"}}]"
+                            "output": {
+                                "displayType": "text",
+                                "data": "fooey\n"
+                            }
                         }
                     ]
                 },
