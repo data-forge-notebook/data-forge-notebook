@@ -6,7 +6,7 @@ import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "
 import { IDialogs, IDialogsId } from "./dialogs";
 import { ISerializedNotebook1 } from "model";
 import globby from 'globby';
-import { IPaths, IPaths_ID } from "notebook-editor";
+import { IPaths, IPaths_ID } from "notebook-editor/build/services/paths";
 
 //
 // Identifies a notebook in storage.
