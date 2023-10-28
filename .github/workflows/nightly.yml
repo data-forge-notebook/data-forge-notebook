@@ -115,6 +115,6 @@ jobs:
           name: Nightly ${{ needs.check_date.outputs.CURRENT_DATE }}
           tag_name: 2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}
           body: Nightly build
-          draft: true
+          draft: false
           prerelease: true
           files: ${{ matrix.files }}
