@@ -1,64 +1,61 @@
 {
-    "version": 2,
-    "sheet": {
-        "id": "039c79a0-5163-11ea-bf0c-b756e3e74b46",
-        "language": "javascript",
-        "cells": [
-            {
-                "id": "61db5db0-839a-11ea-b847-239c4f95efcb",
-                "cellType": "markdown",
-                "code": "# A simple maps example\r\n\r\nUse `display.geo` to plot markers on a map:",
-                "lastEvaluationDate": "2020-04-21T16:38:55.935+10:00",
-                "output": [],
-                "errors": [],
-                "height": 115
-            },
-            {
-                "id": "039ceed0-5163-11ea-bf0c-b756e3e74b46",
-                "cellType": "code",
-                "cellScope": "global",
-                "code": "display.geo({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        [51.505, -0.1],\r\n        [51.5, -0.09],\r\n        [51.51, -0.08]\r\n    ],\r\n});",
-                "lastEvaluationDate": "2020-10-13T16:20:32.650+10:00",
-                "output": [
-                    {
-                        "value": {
-                            "displayType": "geo",
-                            "data": {
-                                "location": [
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "61db5db0-839a-11ea-b847-239c4f95efcb",
+            "cellType": "markdown",
+            "code": "# A simple maps example\r\n\r\nUse `display.geo` to plot markers on a map:",
+            "lastEvaluationDate": "2020-04-21T16:38:55.935+10:00",
+            "output": [],
+            "errors": [],
+            "height": 115
+        },
+        {
+            "id": "039ceed0-5163-11ea-bf0c-b756e3e74b46",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "display({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        [51.505, -0.1],\r\n        [51.5, -0.09],\r\n        [51.51, -0.08]\r\n    ],\r\n}, \"geo\");",
+            "lastEvaluationDate": "2020-10-13T16:20:32.650+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "geo",
+                        "data": {
+                            "location": [
+                                51.505,
+                                -0.1
+                            ],
+                            "zoom": 13,
+                            "markers": [
+                                [
                                     51.505,
                                     -0.1
                                 ],
-                                "zoom": 13,
-                                "markers": [
-                                    [
-                                        51.505,
-                                        -0.1
-                                    ],
-                                    [
-                                        51.5,
-                                        -0.09
-                                    ],
-                                    [
-                                        51.51,
-                                        -0.08
-                                    ]
+                                [
+                                    51.5,
+                                    -0.09
+                                ],
+                                [
+                                    51.51,
+                                    -0.08
                                 ]
-                            }
+                            ]
                         }
                     }
-                ],
-                "errors": [],
-                "height": 622
-            },
-            {
-                "id": "8a190840-839a-11ea-b847-239c4f95efcb",
-                "cellType": "markdown",
-                "code": "## What's next?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [See more maps](http://open-notebook=./maps.notebook)\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
-                "lastEvaluationDate": "2020-04-21T16:38:55.937+10:00",
-                "output": [],
-                "errors": [],
-                "height": 283
-            }
-        ]
-    }
+                }
+            ],
+            "errors": [],
+            "height": 385
+        },
+        {
+            "id": "8a190840-839a-11ea-b847-239c4f95efcb",
+            "cellType": "markdown",
+            "code": "## What's next?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [See more maps](http://open-notebook=./maps.notebook)\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+            "lastEvaluationDate": "2020-04-21T16:38:55.937+10:00",
+            "output": [],
+            "errors": [],
+            "height": 283
+        }
+    ]
 }

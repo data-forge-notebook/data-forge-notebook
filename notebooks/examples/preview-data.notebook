@@ -1,158 +1,155 @@
 {
-    "version": 2,
-    "sheet": {
-        "id": "19000f50-a804-11e8-b3eb-53e94e633165",
-        "language": "javascript",
-        "cells": [
-            {
-                "id": "d0647090-2e9c-11e9-9f0a-97b474081a71",
-                "cellType": "markdown",
-                "code": "# Preview data in Data-Forge Notebok\r\n\r\nHere are some ways to preview data in Data-Forge Notebook.",
-                "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-                "output": [],
-                "errors": [],
-                "height": 115
-            },
-            {
-                "id": "dd75ede0-2e9c-11e9-9f0a-97b474081a71",
-                "cellType": "markdown",
-                "code": "## Any JavaScript value\r\n\r\nThe `display` function is Data-Forge Notebook's visualization workhorse.\r\n\r\nUse it to preview any value in JavaScript:",
-                "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-                "output": [],
-                "errors": [],
-                "height": 131
-            },
-            {
-                "id": "b3c95bf0-9cd0-11ea-89b4-d59a11d5b26f",
-                "cellType": "code",
-                "cellScope": "local",
-                "code": "const value = 5;\r\ndisplay(value);",
-                "lastEvaluationDate": "2020-10-13T16:20:10.064+10:00",
-                "output": [
-                    {
-                        "value": {
-                            "displayType": "string",
-                            "data": "5"
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "d0647090-2e9c-11e9-9f0a-97b474081a71",
+            "cellType": "markdown",
+            "code": "# Preview data in Data-Forge Notebok\r\n\r\nHere are some ways to preview data in Data-Forge Notebook.",
+            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
+            "output": [],
+            "errors": [],
+            "height": 115
+        },
+        {
+            "id": "dd75ede0-2e9c-11e9-9f0a-97b474081a71",
+            "cellType": "markdown",
+            "code": "## Any JavaScript value\r\n\r\nThe `display` function is Data-Forge Notebook's visualization workhorse.\r\n\r\nUse it to preview any value in JavaScript:",
+            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
+            "output": [],
+            "errors": [],
+            "height": 131
+        },
+        {
+            "id": "b3c95bf0-9cd0-11ea-89b4-d59a11d5b26f",
+            "cellType": "code",
+            "cellScope": "local",
+            "code": "const value = 5;\r\ndisplay(value);",
+            "lastEvaluationDate": "2020-10-13T16:20:10.064+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "string",
+                        "data": "5"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 252
+        },
+        {
+            "id": "bbe3caa0-9cd0-11ea-89b4-d59a11d5b26f",
+            "cellType": "markdown",
+            "code": "## JavaScript array\r\n\r\nPreview JavaScript arrays:",
+            "lastEvaluationDate": "2020-05-23T18:44:32.777+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "1b752e00-a804-11e8-b3eb-53e94e633165",
+            "cellType": "code",
+            "cellScope": "local",
+            "code": "const data = [1, 2, 3, 4];\r\ndisplay(data);",
+            "lastEvaluationDate": "2020-10-13T16:20:10.080+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "array",
+                        "data": [
+                            1,
+                            2,
+                            3,
+                            4
+                        ]
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 252
+        },
+        {
+            "id": "e33a5ea0-2e9c-11e9-9f0a-97b474081a71",
+            "cellType": "markdown",
+            "code": "## JavaScript object\r\n\r\nPreview JavaScript objects:",
+            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
+            "cellType": "code",
+            "cellScope": "local",
+            "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data);",
+            "lastEvaluationDate": "2020-10-13T16:20:10.111+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "object",
+                        "data": {
+                            "A": 1,
+                            "B": "hello"
                         }
                     }
-                ],
-                "errors": [],
-                "height": 106
-            },
-            {
-                "id": "bbe3caa0-9cd0-11ea-89b4-d59a11d5b26f",
-                "cellType": "markdown",
-                "code": "## JavaScript array\r\n\r\nPreview JavaScript arrays:",
-                "lastEvaluationDate": "2020-05-23T18:44:32.777+10:00",
-                "output": [],
-                "errors": [],
-                "height": 102
-            },
-            {
-                "id": "1b752e00-a804-11e8-b3eb-53e94e633165",
-                "cellType": "code",
-                "cellScope": "local",
-                "code": "const data = [1, 2, 3, 4];\r\ndisplay(data);",
-                "lastEvaluationDate": "2020-10-13T16:20:10.080+10:00",
-                "output": [
-                    {
-                        "value": {
-                            "displayType": "array",
-                            "data": [
-                                1,
-                                2,
-                                3,
-                                4
+                }
+            ],
+            "errors": [],
+            "height": 252
+        },
+        {
+            "id": "02b6d330-2e9d-11e9-9f0a-97b474081a71",
+            "cellType": "markdown",
+            "code": "## Preview tabular data\r\n\r\nPreview tablular data with `display.table`:",
+            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "c6a99850-2e9c-11e9-9f0a-97b474081a71",
+            "cellType": "code",
+            "cellScope": "local",
+            "code": "const data = [\r\n    { \"A\": 1, \"B\": \"Hello\" },\r\n    { \"A\": 2, \"B\": \"Computer!\" },\r\n    { \"A\": 5, \"B\": \"View all the data!\" }\r\n];\r\ndisplay(data, \"table\");",
+            "lastEvaluationDate": "2020-10-13T16:20:10.125+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "table",
+                        "data": {
+                            "rows": [
+                                {
+                                    "A": 1,
+                                    "B": "Hello"
+                                },
+                                {
+                                    "A": 2,
+                                    "B": "Computer!"
+                                },
+                                {
+                                    "A": 5,
+                                    "B": "View all the data!"
+                                }
+                            ],
+                            "columnNames": [
+                                "A",
+                                "B"
                             ]
                         }
                     }
-                ],
-                "errors": [],
-                "height": 199
-            },
-            {
-                "id": "e33a5ea0-2e9c-11e9-9f0a-97b474081a71",
-                "cellType": "markdown",
-                "code": "## JavaScript object\r\n\r\nPreview JavaScript objects:",
-                "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-                "output": [],
-                "errors": [],
-                "height": 102
-            },
-            {
-                "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
-                "cellType": "code",
-                "cellScope": "local",
-                "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data);",
-                "lastEvaluationDate": "2020-10-13T16:20:10.111+10:00",
-                "output": [
-                    {
-                        "value": {
-                            "displayType": "object",
-                            "data": {
-                                "A": 1,
-                                "B": "hello"
-                            }
-                        }
-                    }
-                ],
-                "errors": [],
-                "height": 159
-            },
-            {
-                "id": "02b6d330-2e9d-11e9-9f0a-97b474081a71",
-                "cellType": "markdown",
-                "code": "## Preview tabular data\r\n\r\nPreview tablular data with `display.table`:",
-                "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-                "output": [],
-                "errors": [],
-                "height": 102
-            },
-            {
-                "id": "c6a99850-2e9c-11e9-9f0a-97b474081a71",
-                "cellType": "code",
-                "cellScope": "local",
-                "code": "const data = [\r\n    { \"A\": 1, \"B\": \"Hello\" },\r\n    { \"A\": 2, \"B\": \"Computer!\" },\r\n    { \"A\": 5, \"B\": \"View all the data!\" }\r\n];\r\ndisplay.table(data);",
-                "lastEvaluationDate": "2020-10-13T16:20:10.125+10:00",
-                "output": [
-                    {
-                        "value": {
-                            "displayType": "table",
-                            "data": {
-                                "rows": [
-                                    {
-                                        "A": 1,
-                                        "B": "Hello"
-                                    },
-                                    {
-                                        "A": 2,
-                                        "B": "Computer!"
-                                    },
-                                    {
-                                        "A": 5,
-                                        "B": "View all the data!"
-                                    }
-                                ],
-                                "columnNames": [
-                                    "A",
-                                    "B"
-                                ]
-                            }
-                        }
-                    }
-                ],
-                "errors": [],
-                "height": 213
-            },
-            {
-                "id": "8864e670-f3cd-11e9-97b7-a975ba8f6456",
-                "cellType": "markdown",
-                "code": "## What's the next step?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
-                "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
-                "output": [],
-                "errors": [],
-                "height": 283
-            }
-        ]
-    }
+                }
+            ],
+            "errors": [],
+            "height": 190
+        },
+        {
+            "id": "8864e670-f3cd-11e9-97b7-a975ba8f6456",
+            "cellType": "markdown",
+            "code": "## What's the next step?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+            "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
+            "output": [],
+            "errors": [],
+            "height": 283
+        }
+    ]
 }
