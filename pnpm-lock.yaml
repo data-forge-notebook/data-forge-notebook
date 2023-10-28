@@ -525,6 +525,9 @@ importers:
       react-dom:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
+      typy:
+        specifier: ^3.3.0
+        version: 3.3.0
     devDependencies:
       '@babel/core':
         specifier: ^7.17.2
