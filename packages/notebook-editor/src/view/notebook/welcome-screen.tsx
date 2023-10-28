@@ -108,7 +108,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
     render() {
         const examplesPath = this.paths.getExamplesPath();
         const exampleNotebooks: [string, string][] = [
-            ["Intro notebook", path.join(examplesPath, "viz.notebook")],
+            ["Intro notebook", path.join(examplesPath, "intro.notebook")],
             ["Visualization example", path.join(examplesPath, "viz.notebook")],
             ["Charts example", path.join(examplesPath, "charts.notebook")],
             ["Maps example", path.join(examplesPath, "maps.notebook")],
