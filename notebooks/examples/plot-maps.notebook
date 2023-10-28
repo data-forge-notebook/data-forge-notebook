@@ -53,7 +53,7 @@
             {
                 "id": "8a190840-839a-11ea-b847-239c4f95efcb",
                 "cellType": "markdown",
-                "code": "## What's next?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [See more maps](http://open-notebook=../examples/maps.notebook)\r\n- [Plot charts](http://open-notebook=plot-charts.notebook)\r\n- [Work with CSV data files](http://open-notebook=../examples/csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=../examples/json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=../examples/viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+                "code": "## What's next?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [See more maps](http://open-notebook=./maps.notebook)\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
                 "lastEvaluationDate": "2020-04-21T16:38:55.937+10:00",
                 "output": [],
                 "errors": [],

@@ -2349,7 +2349,7 @@
             {
                 "id": "62d370f0-6fc7-11e9-94b2-f3da84de5535",
                 "cellType": "markdown",
-                "code": "## There's a lot more you can do!\r\n\r\nThere's so much more you can do with charts in Data-Forge Notebook. \r\n\r\nLook out for new examples coming soon!\r\n\r\n[See the visualization notebook for the full suite of what you can visualize with Data-Forge Notebook](http://open-notebook=viz.notebook)",
+                "code": "## There's a lot more you can do!\r\n\r\nThere's so much more you can do with charts in Data-Forge Notebook. \r\n\r\nLook out for new examples coming soon!\r\n\r\n[See the visualization notebook for the full suite of what you can visualize with Data-Forge Notebook](http://open-notebook=./viz.notebook)",
                 "lastEvaluationDate": "2019-05-06T16:40:38.342+10:00",
                 "output": [],
                 "errors": [],

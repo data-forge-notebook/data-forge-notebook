@@ -1020,7 +1020,7 @@
             {
                 "id": "53a712d0-8845-11e9-94c3-054beaa0f30f",
                 "cellType": "markdown",
-                "code": "## More charts!\r\n\r\nWant to see more charts?\r\n\r\n[Click here to see the charts example](http://open-example=charts.notebook).",
+                "code": "## More charts!\r\n\r\nWant to see more charts?\r\n\r\n[Click here to see the charts example](http://open-example=./charts.notebook).",
                 "lastEvaluationDate": "2019-06-06T20:25:48.286+10:00",
                 "output": [],
                 "errors": [],
@@ -1029,7 +1029,7 @@
             {
                 "id": "0ce2bcc0-9cd3-11ea-89b4-d59a11d5b26f",
                 "cellType": "markdown",
-                "code": "## More maps!\r\n\r\nWant to see more maps?\r\n\r\n[See the maps example](http://open-example=maps.notebook)",
+                "code": "## More maps!\r\n\r\nWant to see more maps?\r\n\r\n[See the maps example](http://open-example=./maps.notebook)",
                 "lastEvaluationDate": "2020-05-23T18:55:16.762+10:00",
                 "output": [],
                 "errors": [],

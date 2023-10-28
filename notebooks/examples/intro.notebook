@@ -33,7 +33,7 @@
             {
                 "id": "918df810-8837-11e9-aff6-77f042ccdcdd",
                 "cellType": "markdown",
-                "code": "## Ready for more?\r\n\r\n[See how to preview data in Data-Forge Notebook](http://open-notebook=preview-data.notebook)",
+                "code": "## Ready for more?\r\n\r\n[See how to preview data in Data-Forge Notebook](http://open-notebook=./preview-data.notebook)",
                 "lastEvaluationDate": "2019-06-06T18:47:09.307+10:00",
                 "output": [],
                 "errors": [],
