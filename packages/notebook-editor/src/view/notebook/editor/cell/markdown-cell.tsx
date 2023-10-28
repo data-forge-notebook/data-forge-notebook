@@ -5,6 +5,9 @@ import { handleAsyncErrors } from 'utils';
 import { forceUpdate } from 'browser-utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
 import ReactMarkdown from 'react-markdown';
+import { InjectProperty, InjectableClass } from '@codecapers/fusion';
+import { ICommander, ICommanderId } from '../../../../services/commander';
+import { IOpen, IOpen_ID } from '../../../../services/open';
 
 const MIN_HEIGHT = 46;
 
@@ -23,7 +26,14 @@ export interface IMarkdownCellProps {
 export interface IMarkdownCellState {
 }
 
+@InjectableClass()
 export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdownCellState> {
+
+    @InjectProperty(ICommanderId)
+    commander!: ICommander;
+
+    @InjectProperty(IOpen_ID)
+    open!: IOpen;
 
     //
     // The HTML element that contains the rendered markdown
@@ -102,7 +112,29 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
             await forceUpdate(this);
         }
     }
-    
+
+    //
+    // Handle a link click in the markdown.
+    //
+    onLinkClick = async (link: string): Promise<void> => {
+        const openExampleLinkPrefix = "http://open-example=";
+        const openFileLinkPrefix = "http://open-notebook=";
+        const cmdLinkPrefix = "http://command+";
+        if (link.startsWith(cmdLinkPrefix)) {
+            const cmd = link.substring(cmdLinkPrefix.length);
+            await this.commander.invokeNamedCommand(cmd, { cell: this.props.model });
+        }
+        else if (link.startsWith(openFileLinkPrefix)) {
+            await this.commander.invokeNamedCommand("open-notebook", undefined, { file: link.substring(openFileLinkPrefix.length) });
+        }
+        else if (link.startsWith(openExampleLinkPrefix)) {
+            await this.commander.invokeNamedCommand("open-notebook", undefined, { file: link.substring(openFileLinkPrefix.length) });
+        }
+        else {
+            await this.open.openUrl(link);
+        }
+    }
+
     render () {
         const inEditMode = this.props.model.isEditing();
         if (inEditMode) {
@@ -165,6 +197,21 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
                             >
                             <ReactMarkdown
                                 children={this.props.model.getText()} 
+                                components={{
+                                    a: (props: any) => {
+                                        return (
+                                            <a 
+                                                onClick={async e => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    await this.onLinkClick(props.href);
+                                                }}
+                                                >
+                                                {props.children}
+                                            </a>
+                                        );
+                                    },
+                                }}
                                 />
                         </div>
                     </div>
