@@ -54,7 +54,8 @@ jobs:
     env:
         BUILD_PARENT_DIR: ./temp
         RELEASE_TAG: ${{ needs.check_date.outputs.RELEASE_TAG }}
-        PLATFORM: ${{ matrix.platform }}
+        # PLATFORM: ${{ matrix.platform }}
+        PLATFORM: win
 
     steps:
       - name: Checkout
@@ -95,18 +96,28 @@ jobs:
       - name: Build plugins 
         run: pnpm run build-plugins
 
-      - name: Build installer
-        run: |
-            pnpm run build-electron-${{ matrix.platform }}
-            ls ./shells/electron/temp/dfn-build/build/installer
-            ls ./shells/electron/temp/dfn-build/cache
+      - run: |
+          cd shells\electron
+          pnpm run pack 
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: Adhoc ${{ needs.check_date.outputs.CURRENT_DATE }}
-          tag_name: 2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}
-          body: Adhoc build
-          draft: false
-          prerelease: true
-          files: ${{ matrix.files }}
+      - run: |
+          cd shells\electron
+          pnpm run build-setup 
+
+      - run: |
+          cd shells\electron
+          cd temp
+          cd dfn-build\build
+          pwd
+          ls
+          pnpm run package-electron -- --win
+
+    #   - name: Create GitHub Release
+    #     uses: softprops/action-gh-release@v1
+    #     with:
+    #       name: Adhoc ${{ needs.check_date.outputs.CURRENT_DATE }}
+    #       tag_name: 2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}
+    #       body: Adhoc build
+    #       draft: false
+    #       prerelease: true
+    #       files: ${{ matrix.files }}
