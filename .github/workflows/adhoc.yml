@@ -1,0 +1,112 @@
+name: Adhoc
+on:
+  workflow_dispatch:
+
+jobs:
+  check_date:
+    runs-on: ubuntu-latest
+    name: Check latest commit
+
+    outputs:
+      RELEASE_TAG: ${{ steps.set_release_tag.outputs.RELEASE_TAG }}
+      CURRENT_DATE: ${{ steps.set_release_tag.outputs.CURRENT_DATE }}
+        
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - id: set_release_tag
+        name: Set the release tag
+        run: |
+          echo "RELEASE_TAG=adhoc-${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+      
+
+  publish:
+    needs: check_date
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        # os: [windows-latest, macos-latest, ubuntu-latest]
+        include: 
+          - os: windows-latest 
+            build_script: build-electron-win
+            files: |
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.exe
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.zip
+            platform: win
+        #   - os: macos-latest 
+        #     build_script: build-electron-mac
+        #     files: | 
+        #         ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.dmg
+        #         ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.tar.gz
+        #     platform: mac
+        #   - os: ubuntu-latest 
+        #     build_script: build-electron-linux
+        #     files: | 
+        #         ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.tar.gz
+        #     platform: linux
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+        BUILD_PARENT_DIR: ./temp
+        RELEASE_TAG: ${{ needs.check_date.outputs.RELEASE_TAG }}
+        PLATFORM: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 8.6.7
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+    #   - name: Cache
+    #     id: cache
+    #     uses: actions/cache@v2
+    #     with:
+    #       path: cache
+    #       key: ${{ runner.os }}-cache
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Create version file
+        run: |
+          echo "export const version = '2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}'; export const sha = '${{ github.sha }}';" > shells/electron/src/version.ts
+          cat shells/electron/src/version.ts
+
+      - name: Compile
+        run: pnpm run compile
+
+    #   - name: Test
+    #     run: pnpm test
+
+      - name: Build plugins 
+        run: pnpm run build-plugins
+
+      - name: Build installer
+        run: |
+            pnpm run build-electron-${{ matrix.platform }}
+            ls ./shells/electron/temp/dfn-build/build/installer
+            ls ./shells/electron/temp/dfn-build/cache
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Adhoc ${{ needs.check_date.outputs.CURRENT_DATE }}
+          tag_name: 2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}
+          body: Adhoc build
+          draft: false
+          prerelease: true
+          files: ${{ matrix.files }}
