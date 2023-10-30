@@ -22,9 +22,9 @@ import "notebook-editor/build/actions/toggle-recent-file-picker-action";
 import "notebook-editor/build/actions/open-example-notebook-action";
 import "notebook-editor/build/actions/toggle-examples-browser-action";
 import { IWindowManager, IWindowManagerId } from "./window-manager";
-import { getNodejsInstallPath } from "../evaluation-engine";
 import { ISettings, ISettings_ID } from "notebook-editor/build/services/settings";
 import { RECENT_FILES_SETTINGS_KEY } from "notebook-editor/build/services/recent-files";
+import { getNodejsInstallPath } from "../services/path-main";
 
 const devMenuTemplate = {
     label: "Development",

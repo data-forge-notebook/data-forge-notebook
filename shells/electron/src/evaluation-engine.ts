@@ -1,45 +1,17 @@
 import { app } from "electron";
-import * as os from "os";
 import { ChildProcess, spawn, SpawnOptions }  from "child_process";
 import * as path from "path";
 import { log } from "./electron-log";
+import { getInstallPath, getNodejsInstallPath } from "./services/path-main";
+import * as os from "os";
 
 const platform = os.platform();
 const isWindows = platform === "win32";
-const isMacOS = platform === "darwin";
-const isLinux = platform === "linux";
 
 //
 // The evaluation engine process.
 //
 let evaluatorEngineProcess: ChildProcess | undefined = undefined;
-
-//
-// Gets the path for data installed with the application.
-//
-export function getInstallPath(): string {
-    if (process.env.INSTALL_PATH) {
-        // Override for development and testing.
-        return process.env.INSTALL_PATH;
-    }
-
-    if (isMacOS) {
-        // Go two levels up from the exe on MacOS.
-        return path.dirname(path.dirname(app.getPath("exe")));
-    }
-    else {
-        return path.dirname(app.getPath("exe"));
-    }
-}
-
-//
-// Gets the local install path for Node.js.
-//
-export function getNodejsInstallPath(): string {
-    const installPath = getInstallPath();
-    const nodeJsPath = `${installPath}/nodejs`;
-    return nodeJsPath;
-}
 
 //
 // Starts the evaluation engine.
@@ -53,8 +25,6 @@ export function startEvaluationEngine(): void {
     const evalEngineScriptFile = `build/index.js`;
     const evalEngineScriptFilePath = path.join(evalEnginePath, evalEngineScriptFile);
     
-    const platform = os.platform();
-    const isWindows = platform === "win32";
     const nodeJsPath = getNodejsInstallPath();
     console.log(`Node.js path ${nodeJsPath}`);
 

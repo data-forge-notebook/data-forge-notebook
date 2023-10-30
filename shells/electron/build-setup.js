@@ -51,7 +51,7 @@ async function main() {
     //
     fs.copySync('build', `${buildDir}/build`);
     fs.copySync('dist', `${buildDir}/dist`);
-    fs.copySync(`../../notebooks`, `${buildDir}/notebooks`);
+    fs.copySync(`../../notebooks/examples`, `${buildDir}/notebooks`);
 
     //
     // Copy and hoist node-modules.
