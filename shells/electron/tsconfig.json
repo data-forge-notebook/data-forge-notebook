@@ -73,6 +73,7 @@
       "packages",
       "build-setup.js",
       "jest.config.js",
-      "webpack.config.js"
+      "webpack.config.js",
+      "coverage"
   ]
 }
