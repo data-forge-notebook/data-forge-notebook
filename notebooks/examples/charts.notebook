@@ -24,7 +24,7 @@
             "id": "3a6eda41-6fc3-11e9-8a9b-9ba94dd2c7a5",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const { readCsv } = require(\"datakit\");\r\nconst dayjs = require(\"dayjs\");\r\n\r\nlet data = await readCsv(\"./MSFT.csv\", { dynamicTyping: true }); // Load data.\r\ndisplay([data, {}, { x: \"timestamp\", y: \"close\" } ], \"plot\"); // Plot chart.",
+            "code": "const { readCsv } = require(\"datakit\");\r\nconst dayjs = require(\"dayjs\");\r\n\r\nlet data = await readCsv(\"./MSFT.csv\", { dynamicTyping: true }); // Load data.\r\ndisplay(data, { type: \"plot\", x: \"timestamp\", y: \"close\" }); // Plot chart.",
             "lastEvaluationDate": "2022-03-22T14:46:38.172+10:00",
             "output": [
                 {
@@ -589,7 +589,7 @@
                 }
             ],
             "errors": [],
-            "height": 575
+            "height": 556
         },
         {
             "id": "57e4ce10-52f5-11eb-9ff4-470a5bd6783e",
@@ -604,7 +604,7 @@
             "id": "58da2a90-52f5-11eb-9ff4-470a5bd6783e",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const bars = data.map(row => ({\r\n    timestamp: row.timestamp,\r\n    candle: [\r\n        row.open,\r\n        row.high,\r\n        row.low,\r\n        row.close,\r\n    ],\r\n}));\r\n\r\ndisplay([bars, { chartType: \"candlestick\" }, { x: \"timestamp\", y: \"candle\" }], \"plot\");",
+            "code": "const bars = data.map(row => ({\r\n    timestamp: row.timestamp,\r\n    candle: [\r\n        row.open,\r\n        row.high,\r\n        row.low,\r\n        row.close,\r\n    ],\r\n}));\r\n\r\ndisplay(bars, { type: \"plot\", chartType: \"candlestick\", x: \"timestamp\", y: \"candle\" });",
             "lastEvaluationDate": "2022-03-22T14:46:38.477+10:00",
             "output": [
                 {
@@ -1155,7 +1155,7 @@
             "id": "026c40d0-a966-11ec-a065-4906e6263aee",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const data = [\r\n    {\r\n        date: \"Jan 2015\",\r\n        box: [\r\n            54,\r\n            66,\r\n            69,\r\n            75,\r\n            88\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2016\",\r\n        box: [\r\n            43,\r\n            65,\r\n            69,\r\n            76,\r\n            81\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2017\",\r\n        box: [\r\n            31,\r\n            39,\r\n            45,\r\n            51,\r\n            59\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2018\",\r\n        box: [\r\n            39,\r\n            46,\r\n            55,\r\n            65,\r\n            71\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2019\",\r\n        box: [\r\n            29,\r\n            31,\r\n            35,\r\n            39,\r\n            44\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2020\",\r\n        box: [\r\n            41,\r\n            49,\r\n            58,\r\n            61,\r\n            67\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2021\",\r\n        box: [\r\n            54,\r\n            59,\r\n            66,\r\n            71,\r\n            88\r\n        ]\r\n    }\r\n];\r\n\r\ndisplay([data, { chartType: \"boxPlot\" }, { x: \"date\", y: \"box\" }], \"plot\");",
+            "code": "const data = [\r\n    {\r\n        date: \"Jan 2015\",\r\n        box: [\r\n            54,\r\n            66,\r\n            69,\r\n            75,\r\n            88\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2016\",\r\n        box: [\r\n            43,\r\n            65,\r\n            69,\r\n            76,\r\n            81\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2017\",\r\n        box: [\r\n            31,\r\n            39,\r\n            45,\r\n            51,\r\n            59\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2018\",\r\n        box: [\r\n            39,\r\n            46,\r\n            55,\r\n            65,\r\n            71\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2019\",\r\n        box: [\r\n            29,\r\n            31,\r\n            35,\r\n            39,\r\n            44\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2020\",\r\n        box: [\r\n            41,\r\n            49,\r\n            58,\r\n            61,\r\n            67\r\n        ]\r\n    },\r\n    {\r\n        date: \"Jan 2021\",\r\n        box: [\r\n            54,\r\n            59,\r\n            66,\r\n            71,\r\n            88\r\n        ]\r\n    }\r\n];\r\n\r\ndisplay(data, { type: \"plot\", chartType: \"boxPlot\", x: \"date\", y: \"box\" });",
             "lastEvaluationDate": "2022-03-22T14:46:38.610+10:00",
             "output": [
                 {
@@ -1258,7 +1258,7 @@
                 }
             ],
             "errors": [],
-            "height": 1943
+            "height": 1867
         },
         {
             "id": "f5d14590-52f5-11eb-9ff4-470a5bd6783e",
@@ -1273,7 +1273,7 @@
             "id": "f87626d0-52f5-11eb-9ff4-470a5bd6783e",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const plotData = {\r\n    // Data for the chart.\r\n    values: data, \r\n\r\n    // Anotations for the chart.\r\n    annotations: { \r\n        timestamp: [\r\n            {\r\n                value: \"2020-01-16\",\r\n                style: \"buy\",\r\n            },\r\n            {\r\n                value: \"2020-02-24\",\r\n                style: \"sell\",\r\n            },\r\n        ],\r\n        close: [\r\n            {\r\n                value: 188.70,\r\n                text: \"Peak value\",\r\n                style: \"info\",\r\n            },\r\n        ],\r\n    }\r\n};\r\n\r\n// Style and configuration for the chart.\r\nconst plotConfig = {\r\n    y: {\r\n        max: 200,\r\n    },\r\n    annotations: {\r\n        buy: {\r\n            lineColor: \"green\",\r\n            label: {\r\n                text: \"Buy\",\r\n                backgroundColor: \"green\",\r\n                font: {\r\n                    color: \"white\",\r\n                },\r\n            },\r\n        },\r\n        sell: {\r\n            lineColor: \"red\",\r\n            label: {\r\n                text: \"Sell\",\r\n                backgroundColor: \"red\",\r\n                font: {\r\n                    color: \"white\",\r\n                },\r\n            },\r\n        },\r\n        info: {\r\n            lineColor: \"blue\",\r\n            label: {\r\n                offsetX: \"60px\",\r\n                position: \"left\",\r\n                backgroundColor: \"blue\",\r\n                font: {\r\n                    color: \"white\",\r\n                },\r\n            },\r\n        },\r\n    },\r\n};\r\n\r\ndisplay([plotData, plotConfig, { x: \"timestamp\", y: \"close\" } ], \"plot\"); // Render the chart.",
+            "code": "const plotData = {\r\n    // Data for the chart.\r\n    values: data, \r\n\r\n    // Anotations for the chart.\r\n    annotations: { \r\n        timestamp: [\r\n            {\r\n                value: \"2020-01-16\",\r\n                style: \"buy\",\r\n            },\r\n            {\r\n                value: \"2020-02-24\",\r\n                style: \"sell\",\r\n            },\r\n        ],\r\n        close: [\r\n            {\r\n                value: 188.70,\r\n                text: \"Peak value\",\r\n                style: \"info\",\r\n            },\r\n        ],\r\n    }\r\n};\r\n\r\n// Style and configuration for the chart.\r\nconst plotConfig = {\r\n    type: \"plot\",\r\n    axis: { x: \"timestamp\", y: \"close\" },\r\n    y: {\r\n        max: 200,\r\n    },\r\n    annotations: {\r\n        buy: {\r\n            lineColor: \"green\",\r\n            label: {\r\n                text: \"Buy\",\r\n                backgroundColor: \"green\",\r\n                font: {\r\n                    color: \"white\",\r\n                },\r\n            },\r\n        },\r\n        sell: {\r\n            lineColor: \"red\",\r\n            label: {\r\n                text: \"Sell\",\r\n                backgroundColor: \"red\",\r\n                font: {\r\n                    color: \"white\",\r\n                },\r\n            },\r\n        },\r\n        info: {\r\n            lineColor: \"blue\",\r\n            label: {\r\n                offsetX: \"60px\",\r\n                position: \"left\",\r\n                backgroundColor: \"blue\",\r\n                font: {\r\n                    color: \"white\",\r\n                },\r\n            },\r\n        },\r\n    },\r\n};\r\n\r\ndisplay(plotData, plotConfig); // Render the chart.",
             "lastEvaluationDate": "2022-03-22T14:46:38.651+10:00",
             "output": [
                 {
@@ -1411,7 +1411,7 @@
                 }
             ],
             "errors": [],
-            "height": 1867
+            "height": 1772
         },
         {
             "id": "8d5a9650-6fc7-11e9-94b2-f3da84de5535",
@@ -1426,7 +1426,7 @@
             "id": "93cb4ca0-6fc7-11e9-94b2-f3da84de5535",
             "cellType": "code",
             "cellScope": "global",
-            "code": "let data2 = await readCsv(\"./example.csv\", { dynamicTyping: true }); // Load data.\r\n\r\ndisplay([data2, { chartType: \"bar\", y: { min: 60 } }, { x: \"Name\", y: \"Height (in)\" }], \"plot\");",
+            "code": "let data2 = await readCsv(\"./example.csv\", { dynamicTyping: true }); // Load data.\r\n\r\ndisplay(data2, { type: \"plot\", chartType: \"bar\", x: \"Name\", y: { series: \"Height (in)\", min: 60 } } });",
             "lastEvaluationDate": "2022-03-22T14:46:38.652+10:00",
             "output": [
                 {
@@ -1581,7 +1581,7 @@
                 }
             ],
             "errors": [],
-            "height": 613
+            "height": 537
         },
         {
             "id": "19f10900-6fc8-11e9-94b2-f3da84de5535",
@@ -1596,7 +1596,7 @@
             "id": "22f821a0-6fc8-11e9-94b2-f3da84de5535",
             "cellType": "code",
             "cellScope": "global",
-            "code": "display([data, { chartType: \"area\" }, { x: \"timestamp\", y: \"close\" } ], \"plot\");",
+            "code": "\r\ndisplay(data, { type: \"plot\", chartType: \"area\", x: \"timestamp\", y: \"close\" });",
             "lastEvaluationDate": "2022-03-22T14:46:38.652+10:00",
             "output": [
                 {
@@ -1699,7 +1699,7 @@
                 }
             ],
             "errors": [],
-            "height": 575
+            "height": 518
         },
         {
             "id": "6439e950-6fc8-11e9-94b2-f3da84de5535",
@@ -1714,7 +1714,7 @@
             "id": "6f6b5c00-6fc8-11e9-94b2-f3da84de5535",
             "cellType": "code",
             "cellScope": "global",
-            "code": "display([data, { x: \"timestamp\", y: [\"close\", \"SMA\"] } ], \"plot\");",
+            "code": "display(data, { type: \"plot\", x: \"timestamp\", y: [\"close\", \"SMA\"] } ]);",
             "lastEvaluationDate": "2022-03-22T14:46:38.652+10:00",
             "output": [
                 {
@@ -1820,7 +1820,7 @@
                 }
             ],
             "errors": [],
-            "height": 556
+            "height": 491
         },
         {
             "id": "091ff630-6fc9-11e9-94b2-f3da84de5535",
@@ -1835,7 +1835,7 @@
             "id": "124bfbf0-6fc9-11e9-94b2-f3da84de5535",
             "cellType": "code",
             "cellScope": "global",
-            "code": "display([data2, { chartType: \"bar\", y: { min: 60 } }, { x: \"Name\", y: \"Height (in)\", y2: \"Age\" } ], \"plot\");",
+            "code": "\r\ndisplay(data2, {\r\n    type: \"plot\",\r\n    chartType: \"bar\",\r\n    x: \"Name\",\r\n    y: {\r\n        series: \"Height (in)\",\r\n        min: 60,\r\n    },\r\n    y2: \"Age\"\r\n});",
             "lastEvaluationDate": "2022-03-22T14:46:38.652+10:00",
             "output": [
                 {
@@ -1997,7 +1997,7 @@
                 }
             ],
             "errors": [],
-            "height": 594
+            "height": 670
         },
         {
             "id": "2a18aa80-6fc9-11e9-94b2-f3da84de5535",
@@ -2012,7 +2012,7 @@
             "id": "3744b4b0-6fc9-11e9-94b2-f3da84de5535",
             "cellType": "code",
             "cellScope": "global",
-            "code": "display([ data, { chartType: \"line\" }, { x: \"timestamp\", y: \"close\" } ], \"plot\");\r\ndisplay([ data, { chartType: \"bar\" }, { x: \"timestamp\", y: \"volume\" } ], \"plot\");",
+            "code": "\r\ndisplay(data, { type: \"plot\", chartType: \"line\", x: \"timestamp\", y: \"close\" });\r\ndisplay(data, { type: \"plot\", chartType: \"bar\", x: \"timestamp\", y: \"volume\" });",
             "lastEvaluationDate": "2022-03-22T14:46:38.653+10:00",
             "output": [
                 {
@@ -2213,7 +2213,7 @@
                 }
             ],
             "errors": [],
-            "height": 926
+            "height": 945
         },
         {
             "id": "df910fe0-699d-11eb-97c6-030cfc280186",
@@ -2228,7 +2228,7 @@
             "id": "eeac66f0-699d-11eb-97c6-030cfc280186",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const plotConfig = {\r\n    series: {\r\n        close: {\r\n            chartType: \"line\"\r\n        },\r\n        SMA: {\r\n            chartType: \"area\"\r\n        }\r\n    }\r\n};\r\n\r\ndisplay([ data, plotConfig, { x: \"timestamp\", y: [\"close\", \"SMA\"] } ], \"plot\");",
+            "code": "const plotConfig = {\r\n    type: \"plot\",\r\n    x: \"timestamp\",\r\n    y: [\"close\", \"SMA\"],\r\n    series: {\r\n        close: {\r\n            chartType: \"line\"\r\n        },\r\n        SMA: {\r\n            chartType: \"area\"\r\n        }\r\n    }\r\n};\r\n\r\ndisplay(data, plotConfig);",
             "lastEvaluationDate": "2022-03-22T14:46:38.653+10:00",
             "output": [
                 {
@@ -2342,7 +2342,7 @@
                 }
             ],
             "errors": [],
-            "height": 689
+            "height": 746
         },
         {
             "id": "62d370f0-6fc7-11e9-94b2-f3da84de5535",
