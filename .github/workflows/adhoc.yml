@@ -109,7 +109,7 @@ jobs:
           cd temp
           cd dfn-build\build
           pwd
-          ls
+          npx electron-builder --version
           pnpm run package-electron -- --win
 
     #   - name: Create GitHub Release
