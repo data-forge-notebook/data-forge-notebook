@@ -103,6 +103,6 @@ jobs:
           name: Adhoc ${{ needs.check_date.outputs.CURRENT_DATE }}
           tag_name: 2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}
           body: Adhoc build
-          draft: false
+          draft: true
           prerelease: true
           files: ${{ matrix.files }}
