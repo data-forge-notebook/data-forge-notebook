@@ -54,8 +54,7 @@ jobs:
     env:
         BUILD_PARENT_DIR: ./temp
         RELEASE_TAG: ${{ needs.check_date.outputs.RELEASE_TAG }}
-        # PLATFORM: ${{ matrix.platform }}
-        PLATFORM: win
+        PLATFORM: ${{ matrix.platform }}
 
     steps:
       - name: Checkout
@@ -90,28 +89,15 @@ jobs:
       - name: Compile
         run: pnpm run compile
 
-    #   - name: Test
-    #     run: pnpm test
-
       - name: Build plugins 
         run: pnpm run build-plugins
 
-      - run: |
-          cd shells\electron
-          pnpm run pack 
-
-      - run: |
-          cd shells\electron
-          pnpm run build-setup 
-
-      - run: |
-          cd shells\electron
-          cd temp
-          cd dfn-build\build
-          pwd
-          npx electron-builder --version
-          pnpm run package-electron -- --win
-
+      - name: Build installer
+        run: |
+            pnpm run build-electron-${{ matrix.platform }}
+            ls ./shells/electron/temp/dfn-build/build/installer
+            ls ./shells/electron/temp/dfn-build/cache
+  
     #   - name: Create GitHub Release
     #     uses: softprops/action-gh-release@v1
     #     with:
