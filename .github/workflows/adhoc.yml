@@ -28,8 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
-        # os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
         include: 
           - os: windows-latest 
             build_script: build-electron-win
@@ -37,17 +36,17 @@ jobs:
                 ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.exe
                 ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-2.0.0-*.zip
             platform: win
-        #   - os: macos-latest 
-        #     build_script: build-electron-mac
-        #     files: | 
-        #         ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.dmg
-        #         ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.tar.gz
-        #     platform: mac
-        #   - os: ubuntu-latest 
-        #     build_script: build-electron-linux
-        #     files: | 
-        #         ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.tar.gz
-        #     platform: linux
+          - os: macos-latest 
+            build_script: build-electron-mac
+            files: | 
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.dmg
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-2.0.0-*.tar.gz
+            platform: mac
+          - os: ubuntu-latest 
+            build_script: build-electron-linux
+            files: | 
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-linux-2.0.0-*.tar.gz
+            platform: linux
 
     runs-on: ${{ matrix.os }}
 
@@ -98,12 +97,12 @@ jobs:
             ls ./shells/electron/temp/dfn-build/build/installer
             ls ./shells/electron/temp/dfn-build/cache
   
-    #   - name: Create GitHub Release
-    #     uses: softprops/action-gh-release@v1
-    #     with:
-    #       name: Adhoc ${{ needs.check_date.outputs.CURRENT_DATE }}
-    #       tag_name: 2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}
-    #       body: Adhoc build
-    #       draft: false
-    #       prerelease: true
-    #       files: ${{ matrix.files }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Adhoc ${{ needs.check_date.outputs.CURRENT_DATE }}
+          tag_name: 2.0.0-${{ needs.check_date.outputs.RELEASE_TAG }}
+          body: Adhoc build
+          draft: false
+          prerelease: true
+          files: ${{ matrix.files }}
