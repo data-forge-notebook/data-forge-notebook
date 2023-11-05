@@ -49,6 +49,21 @@ export class Plot extends React.Component<IPlotProps, {}> {
             return;
         }
 
+        if (this.props.data.chart === undefined) {
+            // Default.
+            this.props.data.chart = {};
+        }
+
+        if (this.props.data.chart.height === undefined) {
+            // Default to height of container.
+            this.props.data.chart.height = "100%";
+        }
+
+        if (this.props.data.chart.type === undefined) {
+            // Default to line charts.
+            this.props.data.chart.type = "line";
+        }
+
         try {
             this.chart = new ApexCharts(this.containerElement.current!, this.props.data);
             this.chart.render();
