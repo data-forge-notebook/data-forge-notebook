@@ -8,9 +8,7 @@ The is the mono repo for Data-Forge Notebook.
 
 [Data-Forge Notebook v1 available here](https://www.data-forge-notebook.com/)
 
-[Read more about the open source decision here](https://github.com/data-forge-notebook/wiki/wiki/Future-Plans)
-
-[Read the wiki](https://github.com/data-forge-notebook/wiki/wiki)
+[Read the wiki](https://github.com/data-forge-notebook/data-forge-notebook/wiki)
 
 [See the issues page to contribute to the discussion](https://github.com/data-forge-notebook/data-forge-notebook/issues)
 
