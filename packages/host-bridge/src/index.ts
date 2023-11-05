@@ -33,7 +33,7 @@ export interface IPluginRequest {
     //
     // Auxilliary configuration.
     //
-    aux: IPluginAux;
+    aux?: IPluginAux;
 }
 
 //
