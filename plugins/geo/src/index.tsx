@@ -32,7 +32,10 @@ class App extends React.Component<{}, IAppState> {
 
     render() {
         return (
-            <Geo data={this.state.config?.data} />
+            <Geo 
+                data={this.state.config?.data} 
+                aux={this.state.config?.aux}
+                />
         );
     }
 }

@@ -26,13 +26,17 @@ class App extends React.Component<{}, IAppState> {
                         [51.51, -0.08]
                     ],
                 },
+                aux: {},
             },
         };
     }
 
     render() {
         return (
-            <Geo data={this.state.config?.data} />
+            <Geo 
+                data={this.state.config?.data} 
+                aux={this.state.config?.aux} 
+                />
         );
     }
 }

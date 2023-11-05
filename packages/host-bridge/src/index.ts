@@ -1,6 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
 //
+// Auxillary data to pass to the plugin.
+//
+export interface IPluginAux {
+    //
+    // Current working directory for DFN (if applicable).
+    //
+    cwd?: string;
+}
+
+//
 // Requests/configures the plugin.
 //
 export interface IPluginRequest {
@@ -19,6 +29,11 @@ export interface IPluginRequest {
     // Data to be rendered by the plugin.
     //
     data: any;
+
+    //
+    // Auxilliary configuration.
+    //
+    aux: IPluginAux;
 }
 
 //

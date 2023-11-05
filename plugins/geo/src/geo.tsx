@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Map, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
 import * as L from "leaflet";
+import { IPluginAux } from 'host-bridge';
 
 //
 // Data to configure each marker.
@@ -41,7 +42,12 @@ export interface IGeoProps {
     //
     // Configuration and data for the plot to be displayed.
     //
-    data?: any;
+    data?: IGeoData;
+
+    //
+    // Auxillary data to pass to the plugin.
+    //
+    aux?: IPluginAux;
 }
 
 export class Geo extends React.Component<IGeoProps, {}> {
@@ -78,7 +84,12 @@ export class Geo extends React.Component<IGeoProps, {}> {
                         || marker.iconUrl.startsWith("file://")) {
                         iconDef.iconUrl = marker.iconUrl;
                     }
+                    else if (marker.iconUrl.startsWith("./")) {
+                        // Assume relative path to marker icon.
+                        iconDef.iconUrl = `file://${this.props.aux?.cwd}/${marker.iconUrl}`;
+                    }
                     else {
+                        // Assume absolute path to marker icon.
                         iconDef.iconUrl = `file://${marker.iconUrl}`;
                     }
                 }
