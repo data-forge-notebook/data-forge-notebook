@@ -5,11 +5,11 @@
         {
             "id": "a27e68d0-6fc3-11e9-8a9b-9ba94dd2c7a5",
             "cellType": "markdown",
-            "code": "# Charts of all kinds!\r\n\r\nData-Forge Notebook allows you to create charts using Apex Charts.",
+            "code": "# Charts of all kinds!\r\n\r\nData-Forge Notebook allows you to create charts using Apex Charts.\r\n\r\nYou can use almost any chart configuration that Apex offers.",
             "lastEvaluationDate": "2019-05-06T16:12:39.291+10:00",
             "output": [],
             "errors": [],
-            "height": 115
+            "height": 144
         },
         {
             "id": "c41afe40-6fc3-11e9-8a9b-9ba94dd2c7a5",
@@ -25,7 +25,7 @@
             "cellType": "code",
             "cellScope": "global",
             "code": "var options = {\r\n    series: [{\r\n        name: \"Desktops\",\r\n        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]\r\n    }],\r\n    chart: {\r\n        height: \"100%\",\r\n        type: 'line',\r\n    },\r\n    title: {\r\n        text: 'Product Trends',\r\n    },\r\n    xaxis: {\r\n        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],\r\n    }\r\n};\r\n\r\ndisplay(options, \"apex\");",
-            "lastEvaluationDate": "2023-11-05T13:29:52.114+10:00",
+            "lastEvaluationDate": "2023-11-06T19:47:43.532+10:00",
             "output": [
                 {
                     "value": {
@@ -68,21 +68,685 @@
                                 ]
                             }
                         }
-                    },
-                    "height": 316
+                    }
                 }
             ],
             "errors": [],
-            "height": 719
+            "height": 803
+        },
+        {
+            "id": "c41afe40-6fc3-11e9-8a9b-9ba94dd2c7a1",
+            "cellType": "markdown",
+            "code": "## Column charts",
+            "lastEvaluationDate": "2019-05-06T16:12:39.292+10:00",
+            "output": [],
+            "errors": [],
+            "height": 73
+        },
+        {
+            "id": "3a6eda41-6fc3-11e9-8a9b-9ba94dd2c7a2",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "var options = {\r\n    series: [{\r\n        name: 'Net Profit',\r\n        data: [44, 55, 57, 56, 61, 58, 63, 60, 66]\r\n    }, {\r\n        name: 'Revenue',\r\n        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]\r\n    }, {\r\n        name: 'Free Cash Flow',\r\n        data: [35, 41, 36, 26, 45, 48, 52, 53, 41]\r\n    }],\r\n    chart: {\r\n        type: 'bar',\r\n    },\r\n    xaxis: {\r\n        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],\r\n    },\r\n    yaxis: {\r\n        title: {\r\n            text: '$ (thousands)'\r\n        }\r\n    },\r\n};\r\n\r\ndisplay(options, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:47:43.481+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "apex",
+                        "data": {
+                            "series": [
+                                {
+                                    "name": "Net Profit",
+                                    "data": [
+                                        44,
+                                        55,
+                                        57,
+                                        56,
+                                        61,
+                                        58,
+                                        63,
+                                        60,
+                                        66
+                                    ]
+                                },
+                                {
+                                    "name": "Revenue",
+                                    "data": [
+                                        76,
+                                        85,
+                                        101,
+                                        98,
+                                        87,
+                                        105,
+                                        91,
+                                        114,
+                                        94
+                                    ]
+                                },
+                                {
+                                    "name": "Free Cash Flow",
+                                    "data": [
+                                        35,
+                                        41,
+                                        36,
+                                        26,
+                                        45,
+                                        48,
+                                        52,
+                                        53,
+                                        41
+                                    ]
+                                }
+                            ],
+                            "chart": {
+                                "type": "bar"
+                            },
+                            "xaxis": {
+                                "categories": [
+                                    "Feb",
+                                    "Mar",
+                                    "Apr",
+                                    "May",
+                                    "Jun",
+                                    "Jul",
+                                    "Aug",
+                                    "Sep",
+                                    "Oct"
+                                ]
+                            },
+                            "yaxis": {
+                                "title": {
+                                    "text": "$ (thousands)"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 936
+        },
+        {
+            "id": "c41afe40-6fc3-11e9-8a9b-9ba94dd2c7a3",
+            "cellType": "markdown",
+            "code": "## Candlestick charts",
+            "lastEvaluationDate": "2019-05-06T16:12:39.292+10:00",
+            "output": [],
+            "errors": [],
+            "height": 73
+        },
+        {
+            "id": "3a6eda41-6fc3-11e9-8a9b-9ba94dd2c7a4",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "var options = {\r\n    series: [{\r\n        data: [\r\n            { x: new Date(1538778600000), y: [6629.81, 6650.5, 6623.04, 6633.33] },\r\n            { x: new Date(1538780400000), y: [6632.01, 6643.59, 6620, 6630.11] },\r\n            { x: new Date(1538782200000), y: [6630.71, 6648.95, 6623.34, 6635.65] },\r\n            { x: new Date(1538784000000), y: [6635.65, 6651, 6629.67, 6638.24] },\r\n            { x: new Date(1538785800000), y: [6638.24, 6640, 6620, 6624.47] },\r\n            { x: new Date(1538787600000), y: [6624.53, 6636.03, 6621.68, 6624.31] },\r\n            { x: new Date(1538789400000), y: [6624.61, 6632.2, 6617, 6626.02] },\r\n            { x: new Date(1538791200000), y: [6627, 6627.62, 6584.22, 6603.02] },\r\n            { x: new Date(1538793000000), y: [6605, 6608.03, 6598.95, 6604.01] },\r\n            { x: new Date(1538794800000), y: [6604.5, 6614.4, 6602.26, 6608.02] },\r\n            { x: new Date(1538796600000), y: [6608.02, 6610.68, 6601.99, 6608.91] },\r\n            { x: new Date(1538798400000), y: [6608.91, 6618.99, 6608.01, 6612] },\r\n            { x: new Date(1538800200000), y: [6612, 6615.13, 6605.09, 6612] },\r\n            { x: new Date(1538802000000), y: [6612, 6624.12, 6608.43, 6622.95] },\r\n            { x: new Date(1538803800000), y: [6623.91, 6623.91, 6615, 6615.67] },\r\n            { x: new Date(1538805600000), y: [6618.69, 6618.74, 6610, 6610.4] },\r\n            { x: new Date(1538807400000), y: [6611, 6622.78, 6610.4, 6614.9] },\r\n            { x: new Date(1538809200000), y: [6614.9, 6626.2, 6613.33, 6623.45] },\r\n            { x: new Date(1538811000000), y: [6623.48, 6627, 6618.38, 6620.35] },\r\n         ]\r\n    }],\r\n    chart: {\r\n        type: 'candlestick',\r\n    },\r\n    title: {\r\n        text: 'CandleStick Chart',\r\n    },\r\n    xaxis: {\r\n        type: 'datetime'\r\n    },\r\n};\r\n\r\ndisplay(options, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:47:43.485+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "apex",
+                        "data": {
+                            "series": [
+                                {
+                                    "data": [
+                                        {
+                                            "x": "2018-10-05T22:30:00.000Z",
+                                            "y": [
+                                                6629.81,
+                                                6650.5,
+                                                6623.04,
+                                                6633.33
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-05T23:00:00.000Z",
+                                            "y": [
+                                                6632.01,
+                                                6643.59,
+                                                6620,
+                                                6630.11
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-05T23:30:00.000Z",
+                                            "y": [
+                                                6630.71,
+                                                6648.95,
+                                                6623.34,
+                                                6635.65
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T00:00:00.000Z",
+                                            "y": [
+                                                6635.65,
+                                                6651,
+                                                6629.67,
+                                                6638.24
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T00:30:00.000Z",
+                                            "y": [
+                                                6638.24,
+                                                6640,
+                                                6620,
+                                                6624.47
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T01:00:00.000Z",
+                                            "y": [
+                                                6624.53,
+                                                6636.03,
+                                                6621.68,
+                                                6624.31
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T01:30:00.000Z",
+                                            "y": [
+                                                6624.61,
+                                                6632.2,
+                                                6617,
+                                                6626.02
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T02:00:00.000Z",
+                                            "y": [
+                                                6627,
+                                                6627.62,
+                                                6584.22,
+                                                6603.02
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T02:30:00.000Z",
+                                            "y": [
+                                                6605,
+                                                6608.03,
+                                                6598.95,
+                                                6604.01
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T03:00:00.000Z",
+                                            "y": [
+                                                6604.5,
+                                                6614.4,
+                                                6602.26,
+                                                6608.02
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T03:30:00.000Z",
+                                            "y": [
+                                                6608.02,
+                                                6610.68,
+                                                6601.99,
+                                                6608.91
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T04:00:00.000Z",
+                                            "y": [
+                                                6608.91,
+                                                6618.99,
+                                                6608.01,
+                                                6612
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T04:30:00.000Z",
+                                            "y": [
+                                                6612,
+                                                6615.13,
+                                                6605.09,
+                                                6612
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T05:00:00.000Z",
+                                            "y": [
+                                                6612,
+                                                6624.12,
+                                                6608.43,
+                                                6622.95
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T05:30:00.000Z",
+                                            "y": [
+                                                6623.91,
+                                                6623.91,
+                                                6615,
+                                                6615.67
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T06:00:00.000Z",
+                                            "y": [
+                                                6618.69,
+                                                6618.74,
+                                                6610,
+                                                6610.4
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T06:30:00.000Z",
+                                            "y": [
+                                                6611,
+                                                6622.78,
+                                                6610.4,
+                                                6614.9
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T07:00:00.000Z",
+                                            "y": [
+                                                6614.9,
+                                                6626.2,
+                                                6613.33,
+                                                6623.45
+                                            ]
+                                        },
+                                        {
+                                            "x": "2018-10-06T07:30:00.000Z",
+                                            "y": [
+                                                6623.48,
+                                                6627,
+                                                6618.38,
+                                                6620.35
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "chart": {
+                                "type": "candlestick"
+                            },
+                            "title": {
+                                "text": "CandleStick Chart"
+                            },
+                            "xaxis": {
+                                "type": "datetime"
+                            }
+                        }
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 1145
+        },
+        {
+            "id": "c41afe40-6fc3-11e9-8a9b-9ba94dd2c7a6",
+            "cellType": "markdown",
+            "code": "## Box plot",
+            "lastEvaluationDate": "2019-05-06T16:12:39.292+10:00",
+            "output": [],
+            "errors": [],
+            "height": 73
+        },
+        {
+            "id": "3a6eda41-6fc3-11e9-8a9b-9ba94dd2c7a7",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "var options = {\r\n    series: [\r\n        {\r\n            name: 'box',\r\n            type: 'boxPlot',\r\n            data: [\r\n                { x: new Date('2017-01-01').getTime(), y: [54, 66, 69, 75, 88] },\r\n                { x: new Date('2018-01-01').getTime(), y: [43, 65, 69, 76, 81] },\r\n                { x: new Date('2019-01-01').getTime(), y: [31, 39, 45, 51, 59] },\r\n                { x: new Date('2020-01-01').getTime(), y: [39, 46, 55, 65, 71] },\r\n                { x: new Date('2021-01-01').getTime(), y: [29, 31, 35, 39, 44] }\r\n            ]\r\n        },\r\n        {\r\n            name: 'outliers',\r\n            type: 'scatter',\r\n            data: [\r\n                { x: new Date('2017-01-01').getTime(), y: 32 },\r\n                { x: new Date('2018-01-01').getTime(), y: 25 },\r\n                { x: new Date('2019-01-01').getTime(), y: 64 },\r\n                { x: new Date('2020-01-01').getTime(), y: 27 },\r\n                { x: new Date('2020-01-01').getTime(), y: 78 },\r\n                { x: new Date('2021-01-01').getTime(), y: 15 }\r\n            ]\r\n        }\r\n    ],\r\n    chart: {\r\n        type: 'boxPlot',\r\n    },\r\n    colors: ['#008FFB', '#FEB019'],\r\n    title: {\r\n        text: 'BoxPlot - Scatter Chart',\r\n    },\r\n    xaxis: {\r\n        type: 'datetime',\r\n    },\r\n};\r\n\r\ndisplay(options, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:47:43.488+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "apex",
+                        "data": {
+                            "series": [
+                                {
+                                    "name": "box",
+                                    "type": "boxPlot",
+                                    "data": [
+                                        {
+                                            "x": 1483228800000,
+                                            "y": [
+                                                54,
+                                                66,
+                                                69,
+                                                75,
+                                                88
+                                            ]
+                                        },
+                                        {
+                                            "x": 1514764800000,
+                                            "y": [
+                                                43,
+                                                65,
+                                                69,
+                                                76,
+                                                81
+                                            ]
+                                        },
+                                        {
+                                            "x": 1546300800000,
+                                            "y": [
+                                                31,
+                                                39,
+                                                45,
+                                                51,
+                                                59
+                                            ]
+                                        },
+                                        {
+                                            "x": 1577836800000,
+                                            "y": [
+                                                39,
+                                                46,
+                                                55,
+                                                65,
+                                                71
+                                            ]
+                                        },
+                                        {
+                                            "x": 1609459200000,
+                                            "y": [
+                                                29,
+                                                31,
+                                                35,
+                                                39,
+                                                44
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "outliers",
+                                    "type": "scatter",
+                                    "data": [
+                                        {
+                                            "x": 1483228800000,
+                                            "y": 32
+                                        },
+                                        {
+                                            "x": 1514764800000,
+                                            "y": 25
+                                        },
+                                        {
+                                            "x": 1546300800000,
+                                            "y": 64
+                                        },
+                                        {
+                                            "x": 1577836800000,
+                                            "y": 27
+                                        },
+                                        {
+                                            "x": 1577836800000,
+                                            "y": 78
+                                        },
+                                        {
+                                            "x": 1609459200000,
+                                            "y": 15
+                                        }
+                                    ]
+                                }
+                            ],
+                            "chart": {
+                                "type": "boxPlot"
+                            },
+                            "colors": [
+                                "#008FFB",
+                                "#FEB019"
+                            ],
+                            "title": {
+                                "text": "BoxPlot - Scatter Chart"
+                            },
+                            "xaxis": {
+                                "type": "datetime"
+                            }
+                        }
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 1202
+        },
+        {
+            "id": "c41afe40-6fc3-11e9-8a9b-9ba94dd2c7a8",
+            "cellType": "markdown",
+            "code": "## Scatter plot",
+            "lastEvaluationDate": "2019-05-06T16:12:39.292+10:00",
+            "output": [],
+            "errors": [],
+            "height": 73
+        },
+        {
+            "id": "3a6eda41-6fc3-11e9-8a9b-9ba94dd2c7a9",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "var options = {\r\n    series: [{\r\n        name: \"SAMPLE A\",\r\n        data: [\r\n            [16.4, 5.4], [21.7, 2], [25.4, 3], [19, 2], [10.9, 1], [13.6, 3.2]]\r\n    }, {\r\n        name: \"SAMPLE B\",\r\n        data: [\r\n            [36.4, 13.4], [1.7, 11], [5.4, 8], [9, 17], [1.9, 4], [3.6, 12.2]]\r\n    }, {\r\n        name: \"SAMPLE C\",\r\n        data: [\r\n            [21.7, 3], [23.6, 3.5], [24.6, 3], [29.9, 3], [21.7, 20], [23, 2]]\r\n    }],\r\n    chart: {\r\n        type: 'scatter',\r\n    },\r\n};\r\n\r\ndisplay(options, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:47:43.492+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "apex",
+                        "data": {
+                            "series": [
+                                {
+                                    "name": "SAMPLE A",
+                                    "data": [
+                                        [
+                                            16.4,
+                                            5.4
+                                        ],
+                                        [
+                                            21.7,
+                                            2
+                                        ],
+                                        [
+                                            25.4,
+                                            3
+                                        ],
+                                        [
+                                            19,
+                                            2
+                                        ],
+                                        [
+                                            10.9,
+                                            1
+                                        ],
+                                        [
+                                            13.6,
+                                            3.2
+                                        ]
+                                    ]
+                                },
+                                {
+                                    "name": "SAMPLE B",
+                                    "data": [
+                                        [
+                                            36.4,
+                                            13.4
+                                        ],
+                                        [
+                                            1.7,
+                                            11
+                                        ],
+                                        [
+                                            5.4,
+                                            8
+                                        ],
+                                        [
+                                            9,
+                                            17
+                                        ],
+                                        [
+                                            1.9,
+                                            4
+                                        ],
+                                        [
+                                            3.6,
+                                            12.2
+                                        ]
+                                    ]
+                                },
+                                {
+                                    "name": "SAMPLE C",
+                                    "data": [
+                                        [
+                                            21.7,
+                                            3
+                                        ],
+                                        [
+                                            23.6,
+                                            3.5
+                                        ],
+                                        [
+                                            24.6,
+                                            3
+                                        ],
+                                        [
+                                            29.9,
+                                            3
+                                        ],
+                                        [
+                                            21.7,
+                                            20
+                                        ],
+                                        [
+                                            23,
+                                            2
+                                        ]
+                                    ]
+                                }
+                            ],
+                            "chart": {
+                                "type": "scatter"
+                            }
+                        }
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 841
+        },
+        {
+            "id": "c41afe40-6fc3-11e9-8a9b-9ba94dd2c7a8",
+            "cellType": "markdown",
+            "code": "## Mixed charts!",
+            "lastEvaluationDate": "2019-05-06T16:12:39.292+10:00",
+            "output": [],
+            "errors": [],
+            "height": 73
+        },
+        {
+            "id": "3a6eda41-6fc3-11e9-8a9b-9ba94dd2c7af",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "var options = {\r\n    series: [{\r\n        name: 'TEAM A',\r\n        type: 'column',\r\n        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]\r\n    }, {\r\n        name: 'TEAM B',\r\n        type: 'area',\r\n        data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43]\r\n    }, {\r\n        name: 'TEAM C',\r\n        type: 'line',\r\n        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]\r\n    }],\r\n    chart: {\r\n        stacked: false,\r\n    },\r\n    stroke: {\r\n        width: [0, 2, 5],\r\n        curve: 'smooth'\r\n    },\r\n    labels: ['01/01/2003', '02/01/2003', '03/01/2003', '04/01/2003', '05/01/2003', '06/01/2003', '07/01/2003', '08/01/2003', '09/01/2003', '10/01/2003', '11/01/2003' ],\r\n    xaxis: {\r\n        type: 'datetime'\r\n    },\r\n    yaxis: {\r\n        title: {\r\n            text: 'Points',\r\n        },\r\n        min: 0\r\n    },\r\n};\r\n\r\ndisplay(options, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:47:43.509+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "apex",
+                        "data": {
+                            "series": [
+                                {
+                                    "name": "TEAM A",
+                                    "type": "column",
+                                    "data": [
+                                        23,
+                                        11,
+                                        22,
+                                        27,
+                                        13,
+                                        22,
+                                        37,
+                                        21,
+                                        44,
+                                        22,
+                                        30
+                                    ]
+                                },
+                                {
+                                    "name": "TEAM B",
+                                    "type": "area",
+                                    "data": [
+                                        44,
+                                        55,
+                                        41,
+                                        67,
+                                        22,
+                                        43,
+                                        21,
+                                        41,
+                                        56,
+                                        27,
+                                        43
+                                    ]
+                                },
+                                {
+                                    "name": "TEAM C",
+                                    "type": "line",
+                                    "data": [
+                                        30,
+                                        25,
+                                        36,
+                                        30,
+                                        45,
+                                        35,
+                                        64,
+                                        52,
+                                        59,
+                                        36,
+                                        39
+                                    ]
+                                }
+                            ],
+                            "chart": {
+                                "stacked": false
+                            },
+                            "stroke": {
+                                "width": [
+                                    0,
+                                    2,
+                                    5
+                                ],
+                                "curve": "smooth"
+                            },
+                            "labels": [
+                                "01/01/2003",
+                                "02/01/2003",
+                                "03/01/2003",
+                                "04/01/2003",
+                                "05/01/2003",
+                                "06/01/2003",
+                                "07/01/2003",
+                                "08/01/2003",
+                                "09/01/2003",
+                                "10/01/2003",
+                                "11/01/2003"
+                            ],
+                            "xaxis": {
+                                "type": "datetime"
+                            },
+                            "yaxis": {
+                                "title": {
+                                    "text": "Points"
+                                },
+                                "min": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 1126
         },
         {
             "id": "62d370f0-6fc7-11e9-94b2-f3da84de5535",
             "cellType": "markdown",
-            "code": "## There's a lot more you can do!\r\n\r\nSee the Apex Charts web page for many more examples.\r\n\r\n[https://apexcharts.com/javascript-chart-demos/](https://apexcharts.com/javascript-chart-demos/)\r\n\r\n[See the visualization notebook for the other kinds of visualizations.](http://open-notebook=./viz.notebook)",
+            "code": "## There's a lot more you can do!\r\n\r\nSee the Apex Charts web page for many more examples and docs:\r\n- [https://apexcharts.com/javascript-chart-demos/](https://apexcharts.com/javascript-chart-demos/)\r\n- [https://apexcharts.com/docs/series/](https://apexcharts.com/docs/series/)\r\n\r\n[See the visualization notebook for the other kinds of visualizations.](http://open-notebook=./viz.notebook)",
             "lastEvaluationDate": "2019-05-06T16:40:38.342+10:00",
             "output": [],
             "errors": [],
-            "height": 215
+            "height": 187
         }
     ]
 }

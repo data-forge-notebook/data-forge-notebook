@@ -14,7 +14,7 @@
         {
             "id": "dd75ede0-2e9c-11e9-9f0a-97b474081a71",
             "cellType": "markdown",
-            "code": "## Any JavaScript value\r\n\r\nThe `display` function is Data-Forge Notebook's visualization workhorse.\r\n\r\nUse it to preview any value in JavaScript:",
+            "code": "## Any JavaScript value\r\n\r\nThe `display` function is Data-Forge Notebook's visualization workhorse.\r\n\r\nVisualize any value in JavaScript.",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
             "errors": [],
@@ -40,7 +40,7 @@
         {
             "id": "bbe3caa0-9cd0-11ea-89b4-d59a11d5b26f",
             "cellType": "markdown",
-            "code": "## JavaScript array\r\n\r\nPreview JavaScript arrays:",
+            "code": "## JavaScript array\r\n\r\nVisualize JavaScript arrays.",
             "lastEvaluationDate": "2020-05-23T18:44:32.777+10:00",
             "output": [],
             "errors": [],
@@ -71,7 +71,7 @@
         {
             "id": "e33a5ea0-2e9c-11e9-9f0a-97b474081a71",
             "cellType": "markdown",
-            "code": "## JavaScript object\r\n\r\nPreview JavaScript objects:",
+            "code": "## JavaScript object\r\n\r\nVisualize JavaScript objects.",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
             "errors": [],
@@ -95,12 +95,12 @@
                 }
             ],
             "errors": [],
-            "height": 252
+            "height": 173
         },
         {
             "id": "02b6d330-2e9d-11e9-9f0a-97b474081a71",
             "cellType": "markdown",
-            "code": "## Preview tabular data\r\n\r\nPreview tablular data with `display.table`:",
+            "code": "## Tabular data\r\n\r\nVisualize tablular data with `table` plugin.",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
             "errors": [],

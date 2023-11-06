@@ -14,7 +14,33 @@
         {
             "id": "ea3ea260-2e9c-11e9-9f0a-97b474081a71",
             "cellType": "markdown",
-            "code": "## Plain ole' console logging\r\n\r\nUse `console.log` to output whatever you want:",
+            "code": "## Automatic display\r\n\r\nThe last expression in a cell will be automatically displayed using the default viz plugin for its type.",
+            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
+            "cellType": "code",
+            "cellScope": "local",
+            "code": "5 + 3",
+            "lastEvaluationDate": "2023-11-06T19:11:24.092+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "Whatever you want to log!\n"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 244
+        },
+        {
+            "id": "ea3ea260-2e9c-11e9-9f0a-97b474081a71",
+            "cellType": "markdown",
+            "code": "## Plain ole' console logging\r\n\r\nUse `console.log` to output whatever you want.",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
             "errors": [],
@@ -35,7 +61,7 @@
                 }
             ],
             "errors": [],
-            "height": 252
+            "height": 148
         },
         {
             "id": "dd75ede0-2e9c-11e9-9f0a-97b474081a71",
@@ -51,7 +77,7 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const data = [1, 2, 3, 4];\r\ndisplay(data);",
-            "lastEvaluationDate": "2023-10-28T17:39:03.552+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.731+10:00",
             "output": [
                 {
                     "value": {
@@ -81,7 +107,7 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data);",
-            "lastEvaluationDate": "2023-10-28T17:39:03.558+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.736+10:00",
             "output": [
                 {
                     "value": {
@@ -98,7 +124,7 @@
         {
             "id": "02b6d330-2e9d-11e9-9f0a-97b474081a71",
             "cellType": "markdown",
-            "code": "## JavaScript object as table\r\n\r\nWe can use `display` to visualize a JavaScript object as tabular data:",
+            "code": "## JavaScript object as table\r\n\r\nUse the `display` function and `table` plugin to visualize a JavaScript object as tabular data:",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
             "errors": [],
@@ -109,7 +135,7 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data, \"table\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.567+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.743+10:00",
             "output": [
                 {
                     "value": {
@@ -122,12 +148,12 @@
                 }
             ],
             "errors": [],
-            "height": 224
+            "height": 252
         },
         {
             "id": "466a7d20-f3cd-11e9-97b7-a975ba8f6456",
             "cellType": "markdown",
-            "code": "## JavaScript array as table\r\n\r\nWe can also use `display` to visualize a JavaScript array as tabular data.",
+            "code": "## JavaScript array as table\r\n\r\nUse the `display` function with the `table` plugin to visualize a JavaScript array as tabular data.",
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
             "errors": [],
@@ -138,7 +164,7 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const data = [{ A: 1, B: \"Hello\" }, { A: 2, B: \"Computer!\" }];\r\ndisplay(data, \"table\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.582+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.750+10:00",
             "output": [
                 {
                     "value": {
@@ -157,23 +183,23 @@
                 }
             ],
             "errors": [],
-            "height": 224
+            "height": 252
         },
         {
             "id": "6743dc40-fb65-11e9-b87a-47633ef72d4e",
             "cellType": "markdown",
-            "code": "## JSON data\r\n\r\nUse `display.json` to render textual JSON data without having to parse it.",
+            "code": "## JSON data\r\n\r\nUse the `display` function with the `json` plugin to render JSON text as structured data without having to parse it.",
             "lastEvaluationDate": "2019-10-31T08:36:01.792+10:00",
             "output": [],
             "errors": [],
-            "height": 102
+            "height": 121
         },
         {
             "id": "74ae4f00-fb65-11e9-b87a-47633ef72d4e",
             "cellType": "code",
             "cellScope": "global",
             "code": "const data = '[ { \"A\": 1, \"B\": \"Hello\" }, { \"A\": 2, \"B\": \"Computer!\" } ]';\r\ndisplay(data, \"json\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.587+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.758+10:00",
             "output": [
                 {
                     "value": {
@@ -183,7 +209,7 @@
                 }
             ],
             "errors": [],
-            "height": 148
+            "height": 252
         },
         {
             "id": "abc0e040-f4ab-11e9-bc75-6b676fbda00a",
@@ -199,7 +225,7 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const text = \"Hello!\\nThis is some preformatted text with newlines baked in :)\";\r\ndisplay(text);",
-            "lastEvaluationDate": "2023-10-28T17:39:03.594+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.765+10:00",
             "output": [
                 {
                     "value": {
@@ -208,12 +234,12 @@
                 }
             ],
             "errors": [],
-            "height": 163
+            "height": 252
         },
         {
             "id": "0ee8ed00-2e9d-11e9-9f0a-97b474081a71",
             "cellType": "markdown",
-            "code": "## Preview data from CSV file\r\n\r\nUse the [datakit](https://www.npmjs.com/package/datakit) library to read CSV and preview with the `display.table` function.",
+            "code": "## Preview data from CSV file\r\n\r\nUse the [datakit](https://www.npmjs.com/package/datakit) library to read a CSV data file and view it as a table.",
             "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
             "output": [],
             "errors": [],
@@ -224,7 +250,7 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data.slice(0, 5), \"table\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.635+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.772+10:00",
             "output": [
                 {
                     "value": {
@@ -275,7 +301,7 @@
         {
             "id": "c5c26fb0-1335-11ea-ba9f-279dfd8c67c3",
             "cellType": "markdown",
-            "code": "## Preview data from JSON file\r\n\r\nUse the [datakit](https://www.npmjs.com/package/datakit) library to read JSON and preview with the `display.table` function.",
+            "code": "## Preview data from JSON file\r\n\r\nUse the [datakit](https://www.npmjs.com/package/datakit) library to read a JSON data file and view it as a table.",
             "lastEvaluationDate": "2019-11-30T15:55:19.803+10:00",
             "output": [],
             "errors": [],
@@ -286,7 +312,7 @@
             "cellType": "code",
             "cellScope": "global",
             "code": "const datakit = require('datakit');\r\nconst data = await datakit.readJson(\"./example.json\");\r\ndisplay(data.slice(0, 3), \"table\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.641+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.780+10:00",
             "output": [
                 {
                     "value": {
@@ -323,22 +349,22 @@
         {
             "id": "fc067e40-f3cd-11e9-97b7-a975ba8f6456",
             "cellType": "markdown",
-            "code": "## Charts: Plot any ole JavaScript data!\r\n\r\nEasily create charts from JavaScript data using the function `display.plot`.\r\n\r\n### Plot arrays of numbers",
+            "code": "## Charts: Plot any ole JavaScript data!\r\n\r\nEasily create charts from JavaScript data using the `apex` plugin with the `display` function.\r\n\r\n## Plot arrays of numbers",
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
             "errors": [],
-            "height": 147
+            "height": 155
         },
         {
             "id": "f879ae00-f3cd-11e9-97b7-a975ba8f6456",
             "cellType": "code",
             "cellScope": "local",
-            "code": "const data = [50, 20, 10, 40, 15, 25];\r\ndisplay(data, \"plot\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.654+10:00",
+            "code": "const data = [50, 20, 10, 40, 15, 25];\r\ndisplay(data, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:11:24.787+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "plot",
+                        "displayType": "apex",
                         "data": [
                             50,
                             20,
@@ -356,22 +382,22 @@
         {
             "id": "21231020-1332-11ea-b4ba-813ffa5b9c8b",
             "cellType": "markdown",
-            "code": "### Plot arrays of JavaScript objects",
+            "code": "## Plot arrays of JavaScript objects",
             "lastEvaluationDate": "2019-11-30T15:33:11.656+10:00",
             "output": [],
             "errors": [],
-            "height": 72
+            "height": 73
         },
         {
             "id": "24ef35e0-f3ce-11e9-97b7-a975ba8f6456",
             "cellType": "code",
             "cellScope": "local",
-            "code": "const data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay(data, \"plot\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.660+10:00",
+            "code": "const data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay(data, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:11:24.810+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "plot",
+                        "displayType": "apex",
                         "data": [
                             {
                                 "D1": 50,
@@ -409,12 +435,12 @@
             "id": "48cae350-1332-11ea-b4ba-813ffa5b9c8b",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const data = {\r\n    D1: [30, 10, 50, 15],\r\n    D2: [300, 20, 10, 150],\r\n};\r\ndisplay(data, \"plot\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.669+10:00",
+            "code": "const data = {\r\n    D1: [30, 10, 50, 15],\r\n    D2: [300, 20, 10, 150],\r\n};\r\ndisplay(data, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:11:24.827+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "plot",
+                        "displayType": "apex",
                         "data": {
                             "D1": [
                                 30,
@@ -448,12 +474,12 @@
             "id": "3736bd70-a804-11e8-b3eb-53e94e633165",
             "cellType": "code",
             "cellScope": "local",
-            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data, \"plot\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.674+10:00",
+            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:11:24.840+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "plot",
+                        "displayType": "apex",
                         "data": [
                             {
                                 "Name": "Alex",
@@ -592,12 +618,12 @@
             "id": "913a48b0-1332-11ea-b4ba-813ffa5b9c8b",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readJson(\"./example.json\");\r\ndisplay(data, \"plot\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.681+10:00",
+            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readJson(\"./example.json\");\r\ndisplay(data, \"apex\");",
+            "lastEvaluationDate": "2023-11-06T19:11:24.847+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "plot",
+                        "displayType": "apex",
                         "data": [
                             {
                                 "Name": "Alex",
@@ -746,7 +772,7 @@
             "cellType": "code",
             "cellScope": "global",
             "code": "display({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        [51.505, -0.10],\r\n        [51.5, -0.09],\r\n        [51.51, -0.08]\r\n    ],\r\n}, \"geo\");",
-            "lastEvaluationDate": "2023-10-28T17:39:03.686+10:00",
+            "lastEvaluationDate": "2023-11-06T19:11:24.858+10:00",
             "output": [
                 {
                     "value": {
@@ -776,7 +802,7 @@
                 }
             ],
             "errors": [],
-            "height": 281
+            "height": 632
         },
         {
             "id": "53a712d0-8845-11e9-94c3-054beaa0f30f",
