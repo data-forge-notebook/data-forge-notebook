@@ -99,6 +99,22 @@ export class Plot extends React.Component<IPlotProps, {}> {
                 };
             }
         }
+        else if (typeof data === "object") {
+            if (data.series === undefined) {
+                //
+                // It's not a normal Apex chart data object.
+                // Assume each field contains a series.
+                //
+                data = {
+                    series: Object.keys(data).map((columnName: string) => {
+                        return {
+                            name: columnName,
+                            data: data[columnName],
+                        };
+                    }),
+                };
+            }
+        }
 
         if (data.chart === undefined) {
             // Default.
