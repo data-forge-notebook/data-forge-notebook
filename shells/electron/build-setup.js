@@ -98,6 +98,9 @@ async function main() {
             const response = await axios.get(nodejs_install_url, { responseType: "stream" });
             await downloadStreamToFile(response.data, nodejsDownloadPath);
         }
+        else {
+            console.log(`Already have Node.js downloaded.`);
+        }
 
         const files = fs.readdirSync(cacheDir);
         console.log(`Cached files:`);
@@ -116,6 +119,9 @@ async function main() {
         else if (PLATFORM === "linux") {
             await runCmd("tar", ["xf", nodejsDownloadPath, "-C", cacheDir]);
         }
+    }
+    else {
+        console.log(`Already have Node.js unpacked.`);
     }
 
     await fs.copySync(nodeJsUnpackDir, `${buildDir}/nodejs`);

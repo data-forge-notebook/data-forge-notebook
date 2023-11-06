@@ -79,12 +79,12 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-    #   - name: Cache
-    #     id: cache
-    #     uses: actions/cache@v2
-    #     with:
-    #       path: cache
-    #       key: ${{ runner.os }}-cache
+      - name: Cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ./shells/electron/temp/dfn-build/cache
+          key: ${{ runner.os }}-cache
 
       - name: Install dependencies
         run: pnpm install
