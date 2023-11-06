@@ -44,28 +44,79 @@ export class Plot extends React.Component<IPlotProps, {}> {
 
         this.destroyChart();
 
-        if (!this.props.data) {
+        let data = this.props.data;
+
+        if (!data) {
             // No chart data to render.
             return;
         }
 
-        if (this.props.data.chart === undefined) {
+        if (Array.isArray(data)) {
+            //
+            // Transform the data.
+            //
+            if (data.length === 0) {
+                // Nothing to render.
+                return;
+            }
+
+            if (Array.isArray(data[0])) {
+                //
+                // Data looks like a table, an array of rows.
+                //
+                const columnNames = data.shift();
+                data = {
+                    series: columnNames.map((columnName: string, columnIndex: number) => {
+                        return {
+                            name: columnName,
+                            data: data.map((row: any[]) => row[columnIndex]),
+                        };
+                    }),
+                };
+            }
+            else if (typeof data[0] === "object") {
+                //
+                // Data looks like an array of objects.
+                //
+                const columnNames = Object.keys(data[0]);
+                data = {
+                    series: columnNames.map((columnName: string) => {
+                        return {
+                            name: columnName,
+                            data: data.map((row: any) => row[columnName]),
+                        };
+                    }),
+                };
+            }
+            else {
+                //
+                // Just assume an array of primitives (eg numbers).
+                //
+                data = {
+                    series: [{
+                        data: data,
+                    }],
+                };
+            }
+        }
+
+        if (data.chart === undefined) {
             // Default.
-            this.props.data.chart = {};
+            data.chart = {};
         }
 
-        if (this.props.data.chart.height === undefined) {
+        if (data.chart.height === undefined) {
             // Default to height of container.
-            this.props.data.chart.height = "100%";
+            data.chart.height = "100%";
         }
 
-        if (this.props.data.chart.type === undefined) {
+        if (data.chart.type === undefined) {
             // Default to line charts.
-            this.props.data.chart.type = "line";
+            data.chart.type = "line";
         }
 
         try {
-            this.chart = new ApexCharts(this.containerElement.current!, this.props.data);
+            this.chart = new ApexCharts(this.containerElement.current!, data);
             this.chart.render();
         }
         catch (err: any) {
