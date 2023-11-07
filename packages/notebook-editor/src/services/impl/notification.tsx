@@ -82,7 +82,7 @@ export class Notification implements INotification {
                                         {action.text}
                                     </span>
                                 </a>
-                            </div>                            
+                            </div>
                         );
                     })}
                 </div>
