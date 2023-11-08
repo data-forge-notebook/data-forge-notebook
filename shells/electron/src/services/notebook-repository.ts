@@ -192,7 +192,8 @@ export class NotebookRepository implements INotebookRepository {
     // Gets the list of example notebooks.
     //
     async getExampleNotebooks(): Promise<string[]> {
-        const exampleNotebooks = await globby("*.notebook", { cwd: this.paths.getExamplesPath() });
-        return exampleNotebooks
+        const examplesPath = this.paths.getExamplesPath();
+        const exampleNotebooks = await globby("*.notebook", { cwd: examplesPath });
+        return exampleNotebooks.map(fileName => path.join(examplesPath, fileName));
     }
 }
