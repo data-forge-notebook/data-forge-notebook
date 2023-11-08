@@ -59,8 +59,6 @@ async function buildPlugin(pluginName, pluginsDir, outputDir) {
     
     console.log(`Building plugin "${pluginName}"...`);
     
-    //TODO: Only build if any file is later than the output.
-    
     try {
         const buildCmd = `pnpm -r --filter ${pluginName} run build`;
         await exec(buildCmd);
@@ -70,6 +68,7 @@ async function buildPlugin(pluginName, pluginsDir, outputDir) {
         console.error(err.output.toString());
         process.exit(1);
     }
+    
     console.log(`Built plugin "${pluginName}".`);
     
     const contentFile = path.join(pluginsDir, `${pluginName}/out/index.html`);
