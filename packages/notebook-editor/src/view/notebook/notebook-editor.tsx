@@ -164,7 +164,7 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     //
     // Opens an example notebook.
     //
-    private async openExampleNotebook(filePath: string): Promise<void> {
+    private openExampleNotebook = async (filePath: string): Promise<void> => {
         await this.closeExampleBrowser();
         const storageId = this.notebookRepository.idFromString(filePath);
         await this.props.model.openSpecificNotebook(storageId);
