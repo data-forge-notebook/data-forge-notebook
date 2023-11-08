@@ -43,6 +43,14 @@ const devMenuTemplate = {
                 BrowserWindow.getFocusedWindow()!.webContents.toggleDevTools();
             }
         },
+        {
+            label: "Open install path",
+            click: () => {
+                const platform = os.platform();
+                const path = directories[platform].installPath;
+                opn(path);
+            }
+        },
     ],
 };
 
@@ -211,6 +219,13 @@ export class MainMenu implements IMainMenu {
                     this.createMenu("save-notebook"),
                     this.createMenu("save-notebook-as"),
 
+                    this.createSeparator(),
+
+                    this.createMenu("open-notebook-in-filesystem"),
+                    this.createMenu("copy-file-path-to-clipboard"),
+                    this.createMenu("copy-file-name-to-clipboard"),
+
+                    this.createSeparator(),
                 ].concat(
                     !this.platform.isMacOS()
                         ? [
@@ -232,6 +247,41 @@ export class MainMenu implements IMainMenu {
                 submenu: [
                     this.createMenu("undo"),
                     this.createMenu("redo"),
+
+                    this.createSeparator(),
+                    
+                    // These need to be cast, because they don't specify an 'on' event handler.
+                    <MenuItemConstructorOptions> { label: "Cu&t", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+                    <MenuItemConstructorOptions> { label: "&Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+                    <MenuItemConstructorOptions> { label: "&Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+                    <MenuItemConstructorOptions> { label: "Select &All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
+
+                    this.createSeparator(),
+                    
+                    this.createMenu("focus-next-cell"),
+                    this.createMenu("focus-prev-cell"),
+                    this.createMenu("focus-top-cell"),
+                    this.createMenu("focus-bottom-cell"),
+
+                    this.createSeparator(),
+                    
+                    this.createMenu("insert-code-cell-above"),
+                    this.createMenu("insert-code-cell-below"),
+                    this.createMenu("insert-markdown-cell-above"),
+                    this.createMenu("insert-markdown-cell-below"),
+                    this.createMenu("move-cell-up"),
+                    this.createMenu("move-cell-down"),
+
+                    this.createSeparator(),
+
+                    this.createMenu("cut-cell"),
+                    this.createMenu("copy-cell"),
+                    this.createMenu("paste-cell-above"),
+                    this.createMenu("paste-cell-below"),
+
+                    this.createSeparator(),
+                    
+                    this.createMenu("delete-cell"),
                 ],
             },
 
@@ -248,6 +298,10 @@ export class MainMenu implements IMainMenu {
                 label: "&Run",
                 submenu: [
                     this.createMenu("eval-notebook"),
+
+                    this.createSeparator(),
+
+                    this.createMenu("clear-outputs"),
                 ],
             },
 

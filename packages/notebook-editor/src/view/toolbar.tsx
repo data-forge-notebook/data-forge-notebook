@@ -1,11 +1,13 @@
-import { ButtonGroup, Icon, Popover, PopoverInteractionKind, PopoverPosition, Position, Spinner } from '@blueprintjs/core';
+import { Button, ButtonGroup, Icon, Menu, MenuItem, Popover, PopoverInteractionKind, PopoverPosition, Position, Spinner, Tooltip } from '@blueprintjs/core';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { forceUpdate } from 'browser-utils';
 import * as React from 'react';
 import { ICommander, ICommanderId } from '../services/commander';
 import { IPlatform, IPlatformId } from '../services/platform';
 import { INotebookEditorViewModel } from '../view-model/notebook-editor';
-import { makeButton } from './make-button';
+import { BUTTON_TOOLTIP_DELAY, makeButton } from './make-button';
+import { makeMenuItem } from './make-menu';
+import { IZoom, IZoomId } from '../services/zoom';
 
 const FPSStats = require("react-fps-stats").default;
 
@@ -24,6 +26,9 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     
     @InjectProperty(IPlatformId)
     platform!: IPlatform;
+
+    @InjectProperty(IZoomId)
+    zoom!: IZoom;
 
     constructor (props: IToolbarProps) {
         super(props);
@@ -141,6 +146,33 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         </ButtonGroup>
                     }
 
+                    {this.props.model.isNotebookOpen()
+                        && <Popover
+                            className="ml-2"
+                            autoFocus={false}
+                            usePortal={false}
+                            position={PopoverPosition.BOTTOM}
+                            content={
+                                <Menu>
+                                    <MenuItem text="Insert above">
+                                        {makeMenuItem(this.commander, "insert-code-cell-above", this.platform, { notebook })}
+                                        {makeMenuItem(this.commander, "insert-markdown-cell-above", this.platform, { notebook })}
+                                    </MenuItem>
+                                    <MenuItem text="Insert below">
+                                        {makeMenuItem(this.commander, "insert-code-cell-below", this.platform, { notebook })}
+                                        {makeMenuItem(this.commander, "insert-markdown-cell-below", this.platform, { notebook })}
+                                    </MenuItem>
+                                </Menu>
+                            } 
+                            >
+                            <Button
+                                icon="plus"
+                                small
+                                minimal
+                                />
+                        </Popover>
+                    }
+
                     <ButtonGroup className="ml-2">
                         {makeButton(this.commander, "toggle-hotkeys", { pos: Position.BOTTOM }, this.platform)}
                         {makeButton(this.commander, "toggle-recent-file-picker", { pos: Position.BOTTOM }, this.platform)}
@@ -148,6 +180,71 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         {makeButton(this.commander, "toggle-command-palette", { pos: Position.BOTTOM }, this.platform)}
                     </ButtonGroup>
 
+                    {this.props.model.isNotebookOpen()
+                        &&<ButtonGroup className="ml-2">
+                            {makeButton(this.commander, "clear-outputs", { pos: Position.BOTTOM }, this.platform)}
+                            {makeButton(this.commander, "restart-eval-engine", { pos: Position.BOTTOM }, this.platform)}
+                        </ButtonGroup>
+                    }
+
+                    <ButtonGroup className="ml-2">
+                        <Tooltip
+                            content="Resets the zoom level to default"
+                            hoverOpenDelay={BUTTON_TOOLTIP_DELAY}
+                            >
+                            <Button
+                                small
+                                minimal
+                                icon="zoom-to-fit"
+                                onClick={() => this.zoom.resetZoom()}
+                                >
+                            </Button>
+                        </Tooltip>
+                        <Tooltip
+                            content="Zooms out to see more of your notebook"
+                            hoverOpenDelay={BUTTON_TOOLTIP_DELAY}
+                            >
+                            <Button
+                                className="ml-1"
+                                small
+                                minimal
+                                icon="zoom-out"
+                                onClick={() => this.zoom.zoomOut()}
+                                >
+                            </Button>
+                        </Tooltip>
+                        <Tooltip
+                            content="Zooms in your notebook to make the test and graphics larger"
+                            hoverOpenDelay={BUTTON_TOOLTIP_DELAY}
+                            >
+                            <Button
+                                small
+                                minimal
+                                icon="zoom-in"
+                                onClick={() => this.zoom.zoomIn()}
+                                >
+                            </Button>
+                        </Tooltip>
+                    </ButtonGroup>
+
+                    {this.props.model.isNotebookOpen()
+                        &&<ButtonGroup className="ml-2">
+                            {makeButton(this.commander, "split-cell", { pos: Position.BOTTOM }, this.platform)}
+                            {makeButton(this.commander, "merge-cell-up", { pos: Position.BOTTOM }, this.platform)}
+                            {makeButton(this.commander, "merge-cell-down", { pos: Position.BOTTOM }, this.platform)}
+                            {makeButton(this.commander, "duplicate-cell", { pos: Position.BOTTOM }, this.platform)}
+                        </ButtonGroup>
+                    }
+
+                    {this.props.model.isNotebookOpen()
+                        &&<ButtonGroup className="ml-2">
+                            {makeButton(this.commander, "focus-top-cell", { pos: Position.BOTTOM }, this.platform)}
+                            {makeButton(this.commander, "focus-prev-cell", { pos: Position.BOTTOM }, this.platform)}
+                            {makeButton(this.commander, "focus-next-cell", { pos: Position.BOTTOM }, this.platform)}
+                            {makeButton(this.commander, "focus-bottom-cell", { pos: Position.BOTTOM }, this.platform)}
+                        </ButtonGroup>
+                    }
+                    
                     <span className="flex-grow ml-2" />
 
                     {language 
