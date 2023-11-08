@@ -244,7 +244,11 @@ export class EditorWindow implements IEditorWindow {
 
         remote.enable(this.browserWindow.webContents);
 
-        this.browserWindow.webContents.openDevTools();
+        //
+        // Dev tools disabled by default:
+        //
+        // this.browserWindow.webContents.openDevTools();
+        //
         
         // Handle link clicks in OS browser.
         this.browserWindow.webContents.on('new-window', (event, url) => {
