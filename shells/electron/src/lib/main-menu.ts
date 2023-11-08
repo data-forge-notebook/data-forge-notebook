@@ -167,6 +167,18 @@ export class MainMenu implements IMainMenu {
     }
 
     //
+    // Create a menu item that links to a web page.
+    //
+    private createLinkMenuItem(label: string, link: string): MenuItemConstructorOptions {
+        return {
+            label: label,
+            click: () => {
+                shell.openExternal(link);
+            }
+        };
+    }
+
+    //
     // Switch to the main editor menu.
     //
     buildEditorMenu(): void {
@@ -285,7 +297,83 @@ export class MainMenu implements IMainMenu {
                 label: "&Help",
                 submenu: [
                     this.createMenu("toggle-hotkeys"),
+                    this.createMenu("open-example-notebook"),
+                    this.createSeparator(),
+
+                    {
+                        label: "Getting Started",
+                        submenu: [
+                            this.createLinkMenuItem("Guide", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/getting-started"),
+                            this.createLinkMenuItem("Video", "https://video.data-forge-notebook.com/getting-started"),
+                            this.createLinkMenuItem("How do I visualize my data?", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/visualizing-data"),
+                        ],
+                    },
+                    this.createSeparator(),
+                    {
+                        label: "Data-Forge Notebook",
+                        submenu: [
+                            this.createLinkMenuItem("Home page", "http://www.data-forge-notebook.com/"),
+                            this.createLinkMenuItem("Videos", "https://youtube.com/playlist?list=PLQrB0_KjTmHijAPAk0uUDVVFa5wqBqJPj"),
+                            this.createLinkMenuItem("Wiki", "https://github.com/data-forge-notebook/data-forge-notebook/wiki"),
+                            this.createLinkMenuItem("Overview", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/overview"),
+                            this.createLinkMenuItem("Road map", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/road-map"),
+                            //todo: this.createLinkMenuItem("Commands and hotkeys", "todo"),
+                            this.createLinkMenuItem("Code evaluation", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/code-evaluation"),
+                            this.createLinkMenuItem("Visualizing data", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/visualizing-data"),
+                        ],
+                    },
+                    {
+                        label: "JavaScript",
+                        submenu: [
+                            this.createLinkMenuItem("Tutorial", "https://javascript.info/"),
+                        ],
+                    },
+                    {
+                        label: "Node.js",
+                        submenu: [
+                            this.createLinkMenuItem("Tutorial", "https://www.nodebeginner.org/"),
+                            this.createLinkMenuItem("Home page", "http://nodejs.org"),
+                            this.createLinkMenuItem("API docs", "https://nodejs.org/dist/latest/docs/api/"),
+                        ],
+                    },
+                    {
+                        label: "Markdown",
+                        submenu: [
+                            this.createLinkMenuItem("Markdown in 60 seconds", "https://commonmark.org/help/"),
+                            this.createLinkMenuItem("Markdown in 10 minutes", "https://commonmark.org/help/tutorial/"),
+                            this.createLinkMenuItem("Markdown specification", "https://commonmark.org/"),
+                            this.createLinkMenuItem("Syntax extensions", "https://github.com/jonschlinkert/remarkable#syntax-extensions"),                            
+                        ],
+                    },
+
+                    {
+                        label: "GeoJSON",
+                        submenu: [
+                            this.createLinkMenuItem("GeoJSON on Wikipedia", "https://en.wikipedia.org/wiki/GeoJSON"),
+                            this.createLinkMenuItem("An introduction to GeoJSON", "https://developer.here.com/blog/an-introduction-to-geojson"),
+                        ],
+                    },
+
+                    this.createLinkMenuItem("Devdocs.io", "https://devdocs.io/"),
                     
+                    this.createSeparator(),
+
+                    this.createLinkMenuItem("Terms and conditions", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/terms-and-conditions"),
+                    this.createLinkMenuItem("Privacy policy", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/privacy-policy"),
+
+                    this.createSeparator(),
+                    
+                    this.createLinkMenuItem("Wiki", "https://github.com/data-forge-notebook/data-forge-notebook/wiki"),
+                    this.createLinkMenuItem("Release history", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/release-history"),
+                    this.createLinkMenuItem("Road map", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/road-map"),
+
+                    this.createSeparator(),
+
+                    this.createLinkMenuItem("Report a problem", "https://github.com/data-forge-notebook/data-forge-notebook/issues/new"),
+
+                    this.createSeparator(),
+
+                    this.createLinkMenuItem("About Data-Forge Notebook", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/quick-overview"),
                 ],
             },
         ];
