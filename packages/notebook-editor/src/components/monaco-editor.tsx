@@ -347,6 +347,16 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         else {
             this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyY, () => this.invokeNamedCommand("redo"), "");
         }
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyC, () => this.invokeNamedCommand("copy-cell"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyX, () => this.invokeNamedCommand("cut-cell"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyV, () => this.invokeNamedCommand("paste-cell-below"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.DownArrow, () => this.invokeNamedCommand("focus-next-cell"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.UpArrow, () => this.invokeNamedCommand("focus-prev-cell"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.UpArrow, () => this.invokeNamedCommand("focus-top-cell"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.DownArrow, () => this.invokeNamedCommand("focus-bottom-cell"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => this.invokeNamedCommand("insert-markdown-cell-below"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.DownArrow, () => this.invokeNamedCommand("move-cell-down"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.UpArrow, () => this.invokeNamedCommand("move-cell-up"), "");
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Slash, () => this.invokeNamedCommand("toggle-hotkeys"), "");
 
         if (this.props.onEscapeKey) {
