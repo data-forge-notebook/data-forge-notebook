@@ -8,6 +8,7 @@ import { INotebookEditorViewModel } from '../view-model/notebook-editor';
 import { BUTTON_TOOLTIP_DELAY, makeButton } from './make-button';
 import { makeMenuItem } from './make-menu';
 import { IZoom, IZoomId } from '../services/zoom';
+import { IEvaluatorClient, IEvaluatorId } from '../services/evaluator-client';
 
 const FPSStats = require("react-fps-stats").default;
 
@@ -29,6 +30,9 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
 
     @InjectProperty(IZoomId)
     zoom!: IZoom;
+
+    @InjectProperty(IEvaluatorId)
+    evaluator!: IEvaluatorClient;
 
     constructor (props: IToolbarProps) {
         super(props);
@@ -91,7 +95,6 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     render(): JSX.Element {
         const isNotebookOpen = this.props.model.isNotebookOpen();
         const notebook = this.props.model.isNotebookOpen() && this.props.model.getOpenNotebook() || undefined;
-        const isExecuting = notebook && notebook.isExecuting() || false;
         let language = notebook && notebook.getLanguage();
         if (language === "javascript") {
             language = "JavaScript";
@@ -123,7 +126,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                 { 
                                     notebook
                                 }, 
-                                isExecuting ? "executing" : "notExecuting"
+                                this.evaluator.isWorking() ? "executing" : "notExecuting"
                             )}
                         </ButtonGroup>
                     }
@@ -273,7 +276,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                         padding: "5px",
                                     }}
                                     >
-                                    {isExecuting ? "Evaluating notebook" : "Idle"}
+                                    {this.evaluator.getCurrentJobName()}
                                 </div>
                             )}
                             >
@@ -286,7 +289,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                     height: "20px",
                                 }}
                                 >
-                                {isExecuting
+                                {this.evaluator.isWorking()
                                     && <Spinner
                                         size={15}
                                         />

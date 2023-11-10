@@ -82,6 +82,11 @@ export interface ICodeEvaluator {
     // Evaluate code for a notebook.
     //
     evalCode(): void;
+
+    //
+    // Installs the notebook.
+    //
+    installNotebook(): Promise<void>;
 }
 
 export class CodeEvaluator implements ICodeEvaluator {
@@ -214,11 +219,6 @@ export class CodeEvaluator implements ICodeEvaluator {
     private finalSourceMap?: ISourceMap;
 
     //
-    // Puts maximum time on syncrhonous code execution before the process is terminated.
-    //
-    private timeout: number | undefined;
-    
-    //
     // Records the time that evaluation took.
     //
     private startTime: number | undefined = undefined;
@@ -228,16 +228,12 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     private process: NodeJS.Process;
 
-    constructor(process: NodeJS.Process, notebook: INotebook, allCells: ICell[], fileName: string, projectPath: string, npm: INpm, log: ILog, timeout: number | undefined) {
+    constructor(process: NodeJS.Process, notebook: INotebook, allCells: ICell[], fileName: string, projectPath: string, npm: INpm, log: ILog) {
         this.process = process;
-        this.timeout = timeout;
         this.npm = npm;
         this.log = log;
         this.notebook = notebook;
         this.cells = allCells.filter(cell => cell.getCellType() === CellType.Code);
-        if (this.cells.length === 0) {
-            throw new Error("Need some code cells!");
-        }
         this.cellIds = this.cells.map(cell => cell.getId());
 
         const numCells = this.cells.length;
@@ -455,16 +451,6 @@ export class CodeEvaluator implements ICodeEvaluator {
             return;
         }
 
-        if (this.timeout !== undefined) {
-            const runningTime = performance.now() - this.startTime!;
-            if (runningTime > this.timeout) {
-                // Notebook has exceed its timeout.
-                this.reportError(ErrorSource.CodeEvaluation, this.getCurCellId(), "Notebook exceeded timeout", undefined, undefined);
-                this.onFinished();
-                return;
-            }
-        }
-
         if (global.gc) {
             global.gc();
         }
@@ -607,15 +593,6 @@ export class CodeEvaluator implements ICodeEvaluator {
             displayErrors: true,
         };
 
-        if (this.timeout !== undefined) {
-            //
-            // This doesn't take into account async code, so it's not the only solution for preventing
-            // log running code, but it does prevent simple sync code like "while (true) {}" from locking up the
-            // eval engine.
-            //
-            options.timeout = this.timeout;
-        }
-
         try {
             fn = vm.runInThisContext(this.code!, options);
         }
@@ -662,12 +639,7 @@ export class CodeEvaluator implements ICodeEvaluator {
         //
         // Make sure the project is setup before evaluating.
         //
-        const language = this.notebook.getLanguage();
-        const projectGenerator = new ProjectGenerator(this.projectPath, language, this.npm, this.log);
-
-        await projectGenerator.ensureProject(false);
-
-        await this.ensureRequiredModules(this.notebook, this.cells, this.projectPath);
+        await this.installNotebook();
 
         this.log.info("Generating code for notebook " + this.fileName);
         this.log.info("Setting working dir to " + this.projectPath);
@@ -718,6 +690,18 @@ export class CodeEvaluator implements ICodeEvaluator {
                 this.reportError(ErrorSource.Compiler, this.getCurCellId(), diagnostic.message, diagnostic.location, undefined);
             }
         }
+    }
+
+    //
+    // Installs the notebook.
+    //
+    async installNotebook(): Promise<void> {
+        const language = this.notebook.getLanguage();
+        const projectGenerator = new ProjectGenerator(this.projectPath, language, this.npm, this.log);
+
+        await projectGenerator.ensureProject(false);
+
+        await this.ensureRequiredModules(this.notebook, this.cells, this.projectPath);
     }
 
     //

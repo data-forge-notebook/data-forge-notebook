@@ -3,7 +3,7 @@
 //
 
 import { ISerializedNotebook1, Notebook } from "model";
-import { evaluateNotebook } from "./evaluation-engine";
+import { evaluateNotebook, installNotebook } from "./evaluation-engine";
 import * as fs from "fs-extra";
 import { sleep } from "utils";
 import path = require("path");
@@ -27,6 +27,24 @@ export interface IWorkerMsg {
     notebookId: string;
 }
 
+//
+// Message payload for installing the notebook.
+//
+export interface IInstallNotebookMsg extends IWorkerMsg {
+    //
+    // The notebook to install.
+    //
+    notebook: ISerializedNotebook1;
+
+    //
+    // The containing path of the notebook, if known.
+    //
+    containingPath?: string;
+}
+
+//
+// Message playload for notebook evaluation.
+//
 export interface IEvaluateNotebookMsg extends IWorkerMsg {
 
     //
@@ -50,8 +68,6 @@ export interface IEvaluateNotebookMsg extends IWorkerMsg {
     containingPath?: string;
 }
 
-const msg: IWorkerMsg = JSON.parse(process.env.INIT as string);
-
 // console.log(`Started worker ${workerId} from ${__dirname}/${__filename}`);
 // console.log(`With args:`);
 // console.log(process.argv);
@@ -61,9 +77,54 @@ const msg: IWorkerMsg = JSON.parse(process.env.INIT as string);
 // console.log(process.env);
 
 async function main(): Promise<void> {
-    
 
-    if (msg.cmd === "eval-notebook") {
+    //
+    // Handle messages from the primary process.
+    //
+    process.on("message", onMessage);
+
+    //
+    // Worker is ready to accept messages.
+    //
+    console.log(`Worker ${workerId} is sending ready event.`);
+    process.send!({
+        event: "worker-ready", 
+        workerId: workerId,
+    });
+}
+
+//
+// Hnadles a message from primary process.
+//
+async function onMessage(msg: IWorkerMsg): Promise<void> {
+
+    if (msg.cmd === "install-notebook") {
+        //
+        // Installs the notebook.
+        //
+        const evaluateNotebookMsg = msg as IInstallNotebookMsg;
+        const notebookId = evaluateNotebookMsg.notebookId;
+        const projectPath = evaluateNotebookMsg.containingPath || path.join(NOTEBOOK_TMP_PATH, notebookId);
+        await fs.ensureDir(projectPath); 
+
+        const notebook = Notebook.deserialize(evaluateNotebookMsg.notebook);
+            await installNotebook(process, projectPath, notebook, (name: string, args: any): void => {
+                process.send!({
+                    event: "notebook-event", // Raise event on primary.
+                    workerId: workerId,
+                    args: {
+                        name: name,
+                        args: args,
+                        notebookId: notebookId
+                    },
+                });
+            }
+        );
+    }
+    else if (msg.cmd === "eval-notebook") {
+        //
+        // Evaluates the notebook.
+        //
         const evaluateNotebookMsg = msg as IEvaluateNotebookMsg;
         const notebookId = evaluateNotebookMsg.notebookId;
         const projectPath = evaluateNotebookMsg.containingPath || path.join(NOTEBOOK_TMP_PATH, notebookId);
@@ -121,10 +182,6 @@ async function main(): Promise<void> {
                     event: "completed", // Signal normal completion onNotebookEvent master.
                     workerId: workerId,
                 });
-
-                setTimeout(() => {
-                    process.exit(0); // Ensure a clean exit.
-                }, 100);
             }
         );
     }

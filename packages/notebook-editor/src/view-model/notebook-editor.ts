@@ -345,6 +345,10 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         this.notebook.onModified.attach(this.notifyModified);
 
         await this.notifyOpenNotebookChanged(isReload);
+
+        this.evaluator.installNotebook(notebook.getInstanceId(), notebook.serialize(), notebook.getStorageId().getContainingPath());
+        
+        await this.onEvaluationStarted();
     }
 
     //
@@ -603,17 +607,30 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         // Don't wait for evaluation engine to notify that evaluation has started, start it immediately.
         //
         const notebook = this.getOpenNotebook();
-        await notebook.notifyCodeEvalStarted();
 
         await notebook.flushChanges();
 
         this.evaluator.evalNotebook(notebook.getInstanceId(), notebook.serialize(), notebook.getStorageId().getContainingPath());
+
+        await this.onEvaluationStarted();
     }
 
     //
     // Event handlers for the evaluation engine.
     //
     private evaluatorEventHandlers: { [index: string]: (args: any) => Promise<void> } = {
+
+        "notebook-install-started": async (args: any): Promise<void> => {
+            // Nothing yet.
+        },
+
+        "notebook-install-completed": async (args: any): Promise<void> => {
+            await this.onEvaluationFinished();
+        },
+
+        "notebook-eval-started": async (args: any): Promise<void> => {
+            // Nothing yet.
+        },
 
         "cell-eval-started": async (args: any): Promise<void> => {
             const cell = this.getOpenNotebook().findCell(args.cellId);
@@ -623,6 +640,20 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             else {
                 this.log.error("cell-eval-started: Failed to find cell " + args.cellId);
             }
+        },
+
+        "cell-eval-completed": async (args: any): Promise<void> => {
+            const cell = this.getOpenNotebook().findCell(args.cellId);
+            if (cell) {
+                await cell.notifyCodeEvalComplete();
+            }
+            else {
+                this.log.error("cell-eval-completed: Failed to find cell " + args.cellId);
+            }
+        },
+
+        "notebook-eval-completed": async (args: any): Promise<void> => {
+            await this.onEvaluationFinished();
         },
 
         "output-capped": async () => {
@@ -643,20 +674,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         "receive-error": async (args: any): Promise<void> => {
             this.reportError(args.cellId, args.error);
-        },
-
-        "notebook-eval-completed": async (args: any): Promise<void> => {
-            await this.onEvaluationFinished();
-        },
-
-        "cell-eval-completed": async (args: any): Promise<void> => {
-            const cell = this.getOpenNotebook().findCell(args.cellId);
-            if (cell) {
-                await cell.notifyCodeEvalComplete();
-            }
-            else {
-                this.log.error("cell-eval-completed: Failed to find cell " + args.cellId);
-            }
         },
     };
 
@@ -719,7 +736,14 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     }
 
     //
-    // Notification that code evaluation has completed.
+    // Notification that evaluation has started.
+    //
+    private async onEvaluationStarted(): Promise<void> {
+        await this.getOpenNotebook().notifyCodeEvalStarted();
+    }
+
+    //
+    // Notification that evaluation has completed.
     //
     private async onEvaluationFinished(): Promise<void> {
 

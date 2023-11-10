@@ -4,7 +4,50 @@ import { CodeEvaluator } from "evaluation-engine";
 import * as _ from "lodash";
 import { Npm } from "evaluation-engine";
 import * as path from "path";
-import { NOTEBOOK_TIMEOUT_MS, NPM_CACHE_PATH } from "./config";
+import { NPM_CACHE_PATH } from "./config";
+
+//
+// Installs a notebook.
+//
+export async function installNotebook(process: NodeJS.Process, projectPath: string, notebook: INotebook, onEvent: (name: string, args: any) => void): Promise<void> {
+
+    console.log(`Evaluating notebook in path ${projectPath}.`);
+    console.log(`Working directory: ${process.cwd()}`);
+
+    const nodeJsPath = path.dirname(process.argv0);
+    console.log(`Nodejs from path: ${nodeJsPath}`);
+
+    const log = {
+        info: (msg: string): void => {
+            onEvent("debug-log", { level: "info", msg });
+            console.log(msg);
+        },
+        warn: (msg: string): void => {
+            onEvent("debug-log", { level: "warn", msg });
+            console.warn(msg);
+        },
+        error: (msg: string): void => {
+            onEvent("debug-log", { level: "error", msg });
+            console.error(msg);
+        },
+        verbose: (msg: string): void => {
+            onEvent("debug-log", { level: "verbose", msg });
+            console.log(msg);
+        },
+        debug: (msg: string): void => {
+            onEvent("debug-log", { level: "debug", msg });
+            console.log(msg);
+        },
+    };
+
+    onEvent("evaluation-event", { event: "notebook-install-started" });
+
+    const npm = new Npm(nodeJsPath, NPM_CACHE_PATH, log);
+    const codeEvaluator = new CodeEvaluator(process, notebook, [], `notebook-${notebook.getInstanceId()}`, projectPath, npm, log);
+    await codeEvaluator.installNotebook();
+
+    onEvent("evaluation-event", { event: "notebook-install-completed" });
+}
 
 //
 // Evaluate a series of cells in a notebook.
@@ -67,8 +110,10 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
     const nodeJsPath = path.dirname(process.argv0);
     console.log(`Nodejs from path: ${nodeJsPath}`);
 
+    onEvent("evaluation-event", { event: "notebook-eval-started" });
+
     const npm = new Npm(nodeJsPath, NPM_CACHE_PATH, log);
-    const codeEvaluator = new CodeEvaluator(process, notebook, cells, `notebook-${notebook.getInstanceId()}`, projectPath, npm, log, NOTEBOOK_TIMEOUT_MS);
+    const codeEvaluator = new CodeEvaluator(process, notebook, cells, `notebook-${notebook.getInstanceId()}`, projectPath, npm, log);
     codeEvaluator.onCellEvalStarted = cellId => {
         onEvent("evaluation-event", { event: "cell-eval-started", cellId });
     };

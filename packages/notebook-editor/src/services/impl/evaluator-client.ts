@@ -9,6 +9,27 @@ const baseUrl = process.env.EVALUATION_ENGINE_URL as string || "http://127.0.0.1
 console.log(`Connecting to evaluation engine via ${baseUrl}`);
 
 //
+// Payload to the /install endpoint in the evaluation engine that evaluates a notebook.
+//
+interface IInstallNotebookPayload {
+
+    //
+    // The ID of the notebook to be installed.
+    //
+    notebookId: string;
+
+    //
+    // The notebook to install.
+    //
+    notebook: ISerializedNotebook1;
+
+    //
+    // The containing path of the notebook (if known).
+    //
+    containingPath?: string;
+}
+
+//
 // Payload to the /evaluate endpoint in the evaluation engine that evaluates a notebook.
 //
 interface IEvaluateNotebookPayload {
@@ -56,6 +77,11 @@ export class EvaluatorClient implements IEvaluatorClient {
     private intervalTimer?: NodeJS.Timer;
 
     //
+    // The name of the current job the evaluator is performing.
+    //
+    private jobName?: string;
+
+    //
     // Starts the message pump.
     //
     private startMessagePump() {
@@ -98,10 +124,12 @@ export class EvaluatorClient implements IEvaluatorClient {
 
             for (const event of data.messages) {
                 if (event.name === "evaluation-event") {
-                    if (event.args.event === "notebook-eval-completed") {
+                    if (event.args.event === "notebook-install-completed" 
+                        || event.args.event === "notebook-eval-completed") {
                         console.log(`Evaluation completed!`);
 
                         this.notebookId = undefined;
+                        this.jobName = undefined;
 
                         //
                         // Wait a moment then stop the message pump.
@@ -120,6 +148,43 @@ export class EvaluatorClient implements IEvaluatorClient {
                 }
             }
         }
+    }
+
+    //
+    // Returns true if the evaluator is currentling doing someting.
+    //
+    isWorking(): boolean {
+        return this.notebookId !== undefined;
+    }
+
+    //
+    // Returns the name of the current job the evaluator is performing.
+    //
+    getCurrentJobName(): string {
+        return this.jobName || "Idle";
+    }
+
+    //
+    // Installs the notebook.
+    //
+    installNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void {
+        console.log(`Install notebook`); 
+
+        this.notebookId = notebookId;
+        this.jobName = `Installing notebook`;
+        this.startMessagePump();
+
+        const installNotebookPayload: IInstallNotebookPayload = {
+            notebookId: notebookId,
+            notebook: notebook,
+            containingPath: containingPath,
+        };
+
+        axios.post(`${baseUrl}/install`, installNotebookPayload)
+            .catch((err: any) => {
+                console.error(`API failed:`);
+                console.error(err && err.stack || err);
+            });
     }
 
     //
@@ -154,6 +219,7 @@ export class EvaluatorClient implements IEvaluatorClient {
     //
     private startEvaluation(notebookId: string, notebook: ISerializedNotebook1, cellId?: string, singleCell?: boolean, containingPath?: string) {
         this.notebookId = notebookId;
+        this.jobName = `Evaluating notebook`;
         this.startMessagePump();
 
         const evaluateNotebookPayload: IEvaluateNotebookPayload = {

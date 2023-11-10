@@ -1,7 +1,6 @@
 import * as express from "express";
-import { NOTEBOOK_TIMEOUT_MS } from "./config";
 import * as path from "path";
-import { IEvaluateNotebookMsg, IWorkerMsg } from "./worker";
+import { IEvaluateNotebookMsg, IInstallNotebookMsg as IInstallNotebookMsg, IWorkerMsg } from "./worker";
 const cluster = require("cluster");
 
 const api: express.Router = express.Router();
@@ -34,6 +33,11 @@ interface IWorker {
     handle: any;
 
     //
+    // Set to true when the worker is doing someting.
+    //
+    working: boolean;
+
+    //
     // Set to true when the worker has completed successfully.
     //
     success: boolean;
@@ -54,10 +58,16 @@ const messages: any = {};
 // Gets stats about the server.
 //
 api.get("/status", (req, res) => {
-    const notebookIds = Object.keys(workers);
+    const notebooks = Object.entries(workers)
+        .map(([notebookId, worker]) => {
+            return {
+                notebookId,
+                working: worker.working,
+                success: worker.success,
+            };
+        });
     res.json({
-        numEvaluations: notebookIds.length,
-        notebookIds: notebookIds,
+        notebooks,
     });
 });
 
@@ -82,10 +92,10 @@ api.post("/messages", (req, res) => {
 //
 // Tests that the process can surive the death of the evaluator.
 //
-api.post("/test-death", (req, res) => {
+api.post("/test-death", async (req, res) => {
     console.log("Starting notebook eval with simulated death.");
     
-    forkEvalWorker({
+    await sendWorkerMessage({
         cmd: "test-death",
         notebookId: "test-death",
     });
@@ -96,10 +106,10 @@ api.post("/test-death", (req, res) => {
 //
 // Tests that the process can survive an exception in the worker.
 //
-api.post("/test-exception", (req, res) => {
+api.post("/test-exception", async (req, res) => {
     console.log("Starting notebook eval that throws an exception.");
 
-    forkEvalWorker({
+    await sendWorkerMessage({
         cmd: "test-exception",
         notebookId: "test-exception",
     });
@@ -110,10 +120,10 @@ api.post("/test-exception", (req, res) => {
 //
 // Tests that the process can terminate a long running notebook.
 //
-api.post("/test-long", (req, res) => {
+api.post("/test-long", async (req, res) => {
     console.log("Staring a long running notebook.");
 
-    forkEvalWorker({
+    await sendWorkerMessage({
         cmd: "test-long",
         notebookId: "test-long",
     });
@@ -122,16 +132,36 @@ api.post("/test-long", (req, res) => {
 });
 
 //
-// Evaluates a notebook.
+// Installs the notebook and primes the worker.
 //
-api.post("/evaluate", (req, res) => {
-    console.log(`Eval notebook:`);
+api.post("/install", async (req, res) => {
+    console.log(`Install notebook:`);
     console.log(JSON.stringify(req.body, null, 4));
 
     const body = req.body;
 
     // Kill any existing workers before starting a new evaluation.
     killWorkers(body.notebookId);
+
+    const installNotebookMsg: IInstallNotebookMsg = {
+        cmd: "install-notebook",
+        notebookId: body.notebookId,
+        notebook: body.notebook,
+        containingPath: body.containingPath,
+    };
+    await sendWorkerMessage(installNotebookMsg);
+
+    res.status(200).end();
+});
+
+//
+// Evaluates a notebook.
+//
+api.post("/evaluate", async (req, res) => {
+    console.log(`Eval notebook:`);
+    console.log(JSON.stringify(req.body, null, 4));
+
+    const body = req.body;
 
     const evaluateNotebookMsg: IEvaluateNotebookMsg = {
         cmd: "eval-notebook",
@@ -141,7 +171,7 @@ api.post("/evaluate", (req, res) => {
         singleCell: body.singleCell || false,
         containingPath: body.containingPath,
     };
-    forkEvalWorker(evaluateNotebookMsg);
+    await sendWorkerMessage(evaluateNotebookMsg);
 
     res.status(200).end();
 });
@@ -158,111 +188,113 @@ api.post("/stop-evaluation", (req, res) => {
     res.status(200).end();
 });
 
+//
+// Sends a message to a worker.
+//
+async function sendWorkerMessage(msg: IWorkerMsg): Promise<void> {
+
+    const notebookId = msg.notebookId;
+    
+    if (workers[notebookId] === undefined) {
+        //
+        // Start the worker.
+        //
+        await forkEvalWorker(notebookId);
+    }
+
+    //
+    // Send the message to the worker.
+    //
+    const worker = workers[notebookId];
+    worker.working = true;
+    worker.handle.send(msg);
+}
 
 //
 // Work a worker to do an evaluation.
 //
-function forkEvalWorker(msg: IWorkerMsg): void {
+function forkEvalWorker(notebookId: string): Promise<void> {
 
-    const notebookId = msg.notebookId;
-
-    const workerHandle = cluster.fork({
-        "ID": notebookId,
-        "INIT": JSON.stringify(msg),
-    });
-
-    console.log(`Starting worker ${notebookId} (Node.js id ${workerHandle.id})`);
-
-    workers[notebookId] = {
-        handle: workerHandle,
-        success: false,
-    };
-    messages[notebookId] = [];
-
-    let notebookTimeout: NodeJS.Timeout | undefined = setTimeout(() => {
-        //
-        // When the timeout expires abort the notebooks process.
-        //
-        console.log(`Notebook timed out.`);
-
-        onNotebookTimeout(notebookId);
-
-        //
-        // Kill the worker.
-        //
-        workerHandle.kill();
-
-        notebookTimeout = undefined;
-        
-    }, NOTEBOOK_TIMEOUT_MS);
-
-    workerHandle.on("error", (err: any) => {
-        console.error(`Error from worker:`);
-        console.error(err);
-    });
-
-    workerHandle.on("exit", () => {
-        console.log(`Worker exited.`);
-
-        const worker = workers[notebookId];
-        if (worker) {
-            if (notebookTimeout) {
-                // Cancel the timeout.
-                clearTimeout(notebookTimeout);
-                notebookTimeout = undefined;
-            }
-
-            if (worker.success) {
-                //
-                // The work has already completed successfully.
-                //
-                onWorkerCompletion(notebookId);
-            }
-            else {
-                //
-                // As far as we know the worker should still be running.
-                //
-                onUnexpectedWorkerCompletion(notebookId);
-            }
-        }
-    });
-
-    workerHandle.on("message", (message: any) => {
-        // console.log("Worker message:");
-        // console.log(message);
-
-        if (message.workerId === undefined) {
-            //
-            // Ignore messages that don't declare their ID.
-            //
-            return;
-        }
-        
-        if (workers[notebookId] === undefined) {
-            //
-            // Ignore messages from workers that have completed.
-            //
-            return;
-        }
-
-        if (message.event === "notebook-event") {
-            onNotebookEvent(message.args);
-        }
-        else if (message.event === "completed") {
-            if (notebookTimeout) {
-                // Cancel the timeout.
-                clearTimeout(notebookTimeout);
-                notebookTimeout = undefined;
-            }
-
-            const worker = workers[message.workerId];
+    return new Promise<void>((resolve, reject) => {
+        const workerHandle = cluster.fork({
+            "ID": notebookId,
+        });
+    
+        console.log(`Starting worker ${notebookId} (Node.js id ${workerHandle.id})`);
+    
+        workers[notebookId] = {
+            handle: workerHandle,
+            working: false,
+            success: false,
+        };
+        messages[notebookId] = [];
+    
+        workerHandle.on("error", (err: any) => {
+            console.error(`Error from worker:`);
+            console.error(err);
+            reject(err);
+        });
+    
+        workerHandle.on("exit", () => {
+            console.log(`Worker exited.`);
+    
+            const worker = workers[notebookId];
             if (worker) {
-                //
-                // Note that notebook evaluation has completed successfully.
-                //
-                worker.success = true;
+                if (worker.success) {
+                    //
+                    // The work has already completed successfully.
+                    //
+                    onWorkerCompletion(notebookId);
+                }
+                else {
+                    //
+                    // As far as we know the worker should still be running.
+                    //
+                    worker.working = false;
+                    onUnexpectedWorkerCompletion(notebookId);
+                }
             }
-        }
+        });
+
+        workerHandle.on("message", (message: any) => {
+            console.log("Worker message:");
+            console.log(message);
+    
+            if (message.event === "worker-ready") {
+                // Worker is ready.
+                console.log(`Worker ${notebookId} is ready.`);
+                resolve();
+                return;
+            }
+
+            if (message.workerId === undefined) {
+                //
+                // Ignore messages that don't declare their ID.
+                //
+                return;
+            }
+            
+            if (workers[notebookId] === undefined) {
+                //
+                // Ignore messages from workers that have completed.
+                //
+                return;
+            }
+        
+            if (message.event === "notebook-event") {
+                onNotebookEvent(message.args);
+            }
+            else if (message.event === "completed") {
+                const worker = workers[message.workerId];
+                if (worker) {
+                    //
+                    // Note that notebook evaluation has completed successfully.
+                    //
+                    worker.working = false;
+                    worker.success = true;
+                }
+            }
+        });
     });
 }
 
