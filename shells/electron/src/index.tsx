@@ -15,6 +15,7 @@ import "./services/recent-files";
 import "./services/electron-renderer-open";
 import "./services/paths-renderer";
 import "./services/zoom";
+import "./services/clipboard";
 import { NotebookStorageId } from "./services/notebook-repository";
 import { RendererSettings } from "./services/electron-renderer-settings";
 

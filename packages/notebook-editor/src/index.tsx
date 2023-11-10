@@ -15,6 +15,7 @@ export * from "./services/recent-files";
 export * from "./services/open";
 export * from "./services/paths";
 export * from "./services/zoom";
+export * from "./services/clipboard";
 
 import "./services/impl/plugin-repository";
 import "./services/impl/date-provider";
