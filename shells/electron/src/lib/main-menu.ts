@@ -273,12 +273,12 @@ export class MainMenu implements IMainMenu {
                     this.createMenu("redo"),
 
                     this.createSeparator(),
-                    
-                    // These need to be cast, because they don't specify an 'on' event handler.
-                    <MenuItemConstructorOptions> { label: "Cu&t", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-                    <MenuItemConstructorOptions> { label: "&Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-                    <MenuItemConstructorOptions> { label: "&Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-                    <MenuItemConstructorOptions> { label: "Select &All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
+
+                    // Menu items with builtin roles.
+                    { label: "Cu&t", accelerator: "CmdOrCtrl+X", role: "cut" },
+                    { label: "&Copy", accelerator: "CmdOrCtrl+C", role: "copy" },
+                    { label: "&Paste", accelerator: "CmdOrCtrl+V", role: "paste" },
+                    { label: "Select &All", accelerator: "CmdOrCtrl+A", role: "selectAll" },
 
                     this.createSeparator(),
                     
