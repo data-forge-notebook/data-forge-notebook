@@ -8,7 +8,7 @@ import { IEditorCaretPosition } from '../view-model/editor-caret-position';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { ICommander, ICommanderId } from '../services/commander';
 import { IUndoRedo, IUndoRedoId } from '../services/undoredo';
-import { CellTextChange } from '../actions/cell-text-change';
+import { CellTextChange } from '../changes/cell-text-change';
 import { IPlatform, IPlatformId } from '../services/platform';
 
 let monacoInitialised = false;

@@ -16,6 +16,9 @@ import { WelcomeScreen } from "./welcome-screen";
 import { asyncHandler } from "utils";
 
 export interface INotebookEditorProps {
+    //
+    // The view model for the notebook editor.
+    //
     model: INotebookEditorViewModel;
 }
 
@@ -66,7 +69,7 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     @InjectProperty(IRecentFiles_ID)
     recentFiles!: IRecentFiles;
 
-    constructor (props: any) {
+    constructor (props: INotebookEditorProps) {
         super(props);
 
         this.state = {

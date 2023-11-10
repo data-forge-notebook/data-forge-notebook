@@ -31,10 +31,7 @@ export function makeMenuItem(
     ): JSX.Element | undefined {
     const command = commandTable[commandId];
     if (!command) {
-        //TODO:
-        // throw new Error("Failed to find command " + commandId);
-        console.error("Failed to find command " + commandId);
-        return undefined;
+        throw new Error("Failed to find command " + commandId + "\r\nAvailable commands: " + Object.keys(commandTable).join(", "));
     }
     const commandDef = command.getDef();
     let iconName: string;

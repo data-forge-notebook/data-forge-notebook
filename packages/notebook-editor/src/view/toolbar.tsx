@@ -183,7 +183,6 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                     {this.props.model.isNotebookOpen()
                         &&<ButtonGroup className="ml-2">
                             {makeButton(this.commander, "clear-outputs", { pos: Position.BOTTOM }, this.platform)}
-                            {makeButton(this.commander, "restart-eval-engine", { pos: Position.BOTTOM }, this.platform)}
                         </ButtonGroup>
                     }
 

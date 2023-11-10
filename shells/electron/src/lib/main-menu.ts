@@ -21,6 +21,30 @@ import "notebook-editor/build/actions/clear-recent-files-action";
 import "notebook-editor/build/actions/toggle-recent-file-picker-action";
 import "notebook-editor/build/actions/open-example-notebook-action";
 import "notebook-editor/build/actions/toggle-examples-browser-action";
+import "notebook-editor/build/actions/open-notebook-in-file-system-action";
+import "notebook-editor/build/actions/copy-notebook-file-path-to-clipboard-action";
+import "notebook-editor/build/actions/copy-notebook-file-name-to-clipboard-action";
+import "notebook-editor/build/actions/focus-next-cell-action";
+import "notebook-editor/build/actions/focus-prev-cell-action";
+import "notebook-editor/build/actions/focus-top-cell-action";
+import "notebook-editor/build/actions/focus-bottom-cell-action";
+import "notebook-editor/build/actions/insert-code-cell-above-action";
+import "notebook-editor/build/actions/insert-code-cell-below-action";
+import "notebook-editor/build/actions/insert-markdown-cell-above-action";
+import "notebook-editor/build/actions/insert-markdown-cell-below-action";
+import "notebook-editor/build/actions/move-cell-up-action";
+import "notebook-editor/build/actions/move-cell-down-action";
+import "notebook-editor/build/actions/cut-cell-action";
+import "notebook-editor/build/actions/copy-cell-action";
+import "notebook-editor/build/actions/paste-cell-above-action";
+import "notebook-editor/build/actions/paste-cell-below-action";
+import "notebook-editor/build/actions/delete-cell-action";
+import "notebook-editor/build/actions/clear-outputs-action";
+import "notebook-editor/build/actions/split-cell-action";
+import "notebook-editor/build/actions/merge-cell-down-action";
+import "notebook-editor/build/actions/merge-cell-up-action";
+import "notebook-editor/build/actions/duplicate-cell-action";
+
 import { IWindowManager, IWindowManagerId } from "./window-manager";
 import { ISettings, ISettings_ID } from "notebook-editor/build/services/settings";
 import { RECENT_FILES_SETTINGS_KEY } from "notebook-editor/build/services/recent-files";
@@ -120,7 +144,7 @@ export class MainMenu implements IMainMenu {
     private createMenu(commandId: string): MenuItemConstructorOptions {
         const command = commandTable[commandId];
         if (!command) {
-            throw new Error("Failed to find command " + commandId);
+            throw new Error("Failed to find command " + commandId + "\r\nAvailable commands: " + Object.keys(commandTable).join(", "));
         }
 
         const commandDef = command.getDef();

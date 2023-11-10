@@ -1,4 +1,4 @@
-import { CellTextChange } from "../../actions/cell-text-change";
+import { CellTextChange } from "../../changes/cell-text-change";
 
 describe('services / undoredo / cell-text-change', () => {
 

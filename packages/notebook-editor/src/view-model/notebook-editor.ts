@@ -1,6 +1,6 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { BasicEventHandler, IEventSource, EventSource, ILogId, ILog } from "utils";
-import { CellError, CellOutput, CellOutputValue, CellScope, CellType } from "model";
+import { CellError, CellOutput, CellOutputValue, CellScope, CellType, ISerializedCell1 } from "model";
 import { notebookVersion } from "model";
 import { ISerializedNotebook1 } from "model";
 import { IIdGenerator, IIdGeneratorId } from "utils/src/lib/id-generator";
@@ -123,6 +123,21 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     evaluateNotebook(): Promise<void>;
     
     //
+    // Set the cell currently in the clipboard.
+    //
+    setCellClipboard(cell: ISerializedCell1): void;
+
+    //
+    // Get the cell currently in the clipboard, if any.
+    //
+    getCellClipboard(): ISerializedCell1 | undefined;
+
+    //
+    // Clear the cell clipboard.
+    //
+    clearCellClipboard(): void;
+
+    //
     // Notify the app that a notebook was modified.
     //
     notifyModified(): Promise<void>;
@@ -227,6 +242,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Set to true when the hotkeys overlay is open.
     //
     private showHotkeysOverlay: boolean = false;
+
+    //
+    // Cell currently in the clipboard to be pasted.
+    //
+    private cellClipboard: ISerializedCell1 | undefined;
 
     constructor(notebook?: INotebookViewModel) { 
         if (notebook) {
@@ -639,6 +659,27 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             }
         },
     };
+
+    //
+    // Set the cell currently in the clipboard.
+    //
+    setCellClipboard(cell: ISerializedCell1): void {
+        this.cellClipboard = cell;
+    }
+
+    //
+    // Get the cell currently in the clipboard, if any.
+    //
+    getCellClipboard(): ISerializedCell1 | undefined {
+        return this.cellClipboard;
+    }
+
+    //
+    // Clear the cell clipboard.
+    //
+    clearCellClipboard(): void {
+        this.cellClipboard = undefined;
+    }
 
     //
     // Report an error to a particular cell.
