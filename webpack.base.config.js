@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
+// const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require("path");
@@ -95,7 +95,7 @@ module.exports = function (env) {
             }),
     
             new ForkTsCheckerWebpackPlugin(),
-            new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript', excludeWarnings: false }),        
+            // new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript', excludeWarnings: false }),
     
             new CopyWebpackPlugin({
                 patterns: [
