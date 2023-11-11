@@ -244,14 +244,14 @@ function forkEvalWorker(notebookId: string): Promise<void> {
                     //
                     // The work has already completed successfully.
                     //
-                    onWorkerCompletion(notebookId);
+                    onWorkerExited(notebookId);
                 }
                 else {
                     //
                     // As far as we know the worker should still be running.
                     //
                     worker.working = false;
-                    onUnexpectedWorkerCompletion(notebookId);
+                    onUnexpectedWorkerExit(notebookId);
                 }
             }
         });
@@ -307,16 +307,16 @@ function killWorkers(notebookId: string): void {
     if (worker) {
         console.log(`Killing worker for notebook ${notebookId}.`);
 
-        onWorkerCompletion(notebookId);
+        onWorkerExited(notebookId);
         
         worker.handle.kill();
     }
 }
 
 //
-// Event raised on worker completion.
+// Event raised on worker exit.
 //
-function onWorkerCompletion(notebookId: string): void {
+function onWorkerExited(notebookId: string): void {
 
     // the worker process has exited... there are no more messages coming
     // if there are no messages remaining we are dont.
@@ -339,11 +339,11 @@ function onWorkerCompletion(notebookId: string): void {
 }
 
 //
-// Event raised when a worker has completed unexpectedly.
+// Event raised when a worker has exited unexpectedly.
 //
-function onUnexpectedWorkerCompletion(notebookId: string): void {
+function onUnexpectedWorkerExit(notebookId: string): void {
     console.log(`Worker ${notebookId} completed unexpectedly.`);
-    onWorkerCompletion(notebookId);
+    onWorkerExited(notebookId);
 
     if (messages[notebookId]) {
         messages[notebookId].push({
