@@ -69,7 +69,7 @@ EPERM: operation not permitted, open 'C:\temp\dfn-build\tmp-eval-engine\node_mod
 ### Windows
 
 - Home directory: C:\Users\<username>
-- Install directory: C:\Users\ash\AppData\Local\Programs\data-forge-notebook-v2
+- Install directory: C:\Users\<username>\AppData\Local\Programs\data-forge-notebook-v2
 - Exe path: C:\Users\<username>\AppData\Local\Programs\data-forge-notebook-v2\data-forge-notebook-v2.exe
 - INSTALL_PATH: C:\Users\<username>\AppData\Local\Programs\data-forge-notebook-v2
 - Node.js path: %INSTALL_PATH%\nodejs
