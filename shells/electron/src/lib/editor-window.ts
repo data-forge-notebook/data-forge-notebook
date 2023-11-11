@@ -3,6 +3,8 @@ import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { EventSource, IEventSource, IIdGenerator, IIdGeneratorId, ILog, ILogId, SenderEventHandler } from "utils";
 import { IWindowManager, IWindowManagerId } from "./window-manager";
 import { version, sha } from "../version";
+import { getInstallPath } from "../services/path-main";
+import * as path from "path";
 
 const remote = require("@electron/remote/main");
 remote.initialize();
@@ -217,6 +219,10 @@ export class EditorWindow implements IEditorWindow {
             "--id=" + this.editorWindowId,
         ];
 
+        
+        const iconPath = path.join(getInstallPath(), "assets/icon.png");
+        this.log.info(`^^^^ Loading icon from ${iconPath}`);
+
         this.browserWindow = new BrowserWindow({
             title: formatTitle(),
             x: newWindowCoords.x,
@@ -224,6 +230,7 @@ export class EditorWindow implements IEditorWindow {
             width: newWindowCoords.width,
             height: newWindowCoords.height,
             show: false,
+            icon: iconPath,
             webPreferences: {
                 nodeIntegration: true,
                 nodeIntegrationInWorker: true, // Enabled this to prevent errors in Monaco Editor workers.

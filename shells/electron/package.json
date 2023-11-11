@@ -97,7 +97,7 @@
         "extraFiles": [
             "./evaluation-engine/**/*",
             "./nodejs/**/*",
-            "./resources/icon.png"
+            "./assets/**/*"
         ],
         "extraResources": [
             "./notebooks/**/*"

@@ -51,6 +51,7 @@ async function main() {
     //
     fs.copySync('build', `${buildDir}/build`);
     fs.copySync('dist', `${buildDir}/dist`);
+    fs.copySync('assets', `${buildDir}/assets`);
     fs.copySync(`../../notebooks/examples`, `${buildDir}/notebooks`);
 
     //
