@@ -236,7 +236,7 @@ function forkEvalWorker(notebookId: string): Promise<void> {
         });
     
         workerHandle.on("exit", () => {
-            console.log(`Worker exited.`);
+            // console.log(`Worker exited.`);
     
             const worker = workers[notebookId];
             if (worker) {
