@@ -366,33 +366,6 @@ function onUnexpectedWorkerCompletion(notebookId: string): void {
 };
 
 //
-// Event raised when a notebook has timed out.
-//
-function onNotebookTimeout(notebookId: string): void {
-    console.log(`Worker ${notebookId} exceeded its time limit.`);
-    onWorkerCompletion(notebookId);
-
-    if (messages[notebookId]) {
-        messages[notebookId].push({
-            name: "evaluation-event",
-            args: {
-                event: "receive-error",
-                error: "Notebook evaluation terminated unexpectedly.",
-            },
-            notebookId: notebookId,
-        });
-
-        messages[notebookId].push({
-            name: "evaluation-event",
-            args: {
-                event: "notebook-eval-completed",
-            },
-            notebookId: notebookId,
-        });
-    }
-}
-
-//
 // Event raised from the worker for a notebook event.
 //
 function onNotebookEvent(event: any): void {
