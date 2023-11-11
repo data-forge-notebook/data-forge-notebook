@@ -71,7 +71,7 @@
     "build": {
         "asar": true,
         "appId": "com.codecapers.dataforgenotebook.v2",
-        "productName": "data-forge-notebook-v2",
+        "productName": "Data-Forge Notebook v2",
         "artifactName": "Data-Forge Notebook v2-${os}-${version}.${ext}",
         "copyright": "Copyright @ 2023 Ashley Davis",
         "directories": {
