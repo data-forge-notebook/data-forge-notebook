@@ -19,7 +19,11 @@ describe('view-model / notebook-editor', () => {
         };
         notebookEditor.log = mockLog;
 
-        const mockNotebookId: any = { a: "notebook id", displayName: () => "/a/path" };
+        const mockNotebookId: any = { 
+            a: "notebook id", 
+            displayName: () => "/a/path",
+            getContainingPath: () => "/a/path",
+        };
         const mockRepository: any = {
             makeUntitledNotebookId: () => mockNotebookId,
             readNotebook: async (notebookId: INotebookStorageId) => {
@@ -47,6 +51,7 @@ describe('view-model / notebook-editor', () => {
         notebookEditor.undoRedo = mockUndoRedo;
 
         const mockEvaluator: any = {
+            installNotebook: () => {},
             onEvaluationEvent: new EventSource<BasicEventHandler>(),
         };
         notebookEditor.evaluator = mockEvaluator;
@@ -159,7 +164,11 @@ describe('view-model / notebook-editor', () => {
 
         let notebookWasLoaded = false;
 
-        const notebookToOpenId: any = { a: "another notebook id", displayName: () => "/a/path" };
+        const notebookToOpenId: any = { 
+            a: "another notebook id", 
+            displayName: () => "/a/path",
+            getContainingPath: () => "/a/path",
+        };
         mockRepository.showNotebookOpenDialog = async () => notebookToOpenId;
         mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
             expect(notebookId).toBe(notebookToOpenId);
@@ -213,7 +222,11 @@ describe('view-model / notebook-editor', () => {
 
         let notebookWasLoaded = false;
 
-        const notebookToOpenId: any = { a: "another notebook id", displayName: () => "/a/path" };
+        const notebookToOpenId: any = { 
+            a: "another notebook id", 
+            displayName: () => "/a/path",
+            getContainingPath: () => "/a/path",
+        };
         mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
             expect(notebookId).toBe(notebookToOpenId);
 
@@ -242,7 +255,11 @@ describe('view-model / notebook-editor', () => {
 
         notebookEditor.promptSave = jest.fn(async () => true);
 
-        const notebookToOpenId: any = { a: "another notebook id", displayName: () => "/a/path" };
+        const notebookToOpenId: any = { 
+            a: "another notebook id", 
+            displayName: () => "/a/path",
+            getContainingPath: () => "/a/path",
+        };
         await notebookEditor.openSpecificNotebook(notebookToOpenId);
 
         expect(notebookEditor.promptSave).toHaveBeenCalledTimes(1);
@@ -280,7 +297,11 @@ describe('view-model / notebook-editor', () => {
 
         const { notebookEditor, notebook, mockRepository } = await createNotebookEditorWithNotebook();
 
-        const notebookToSaveId: any = { a: "another notebook id", displayName: () => "/a/path" };
+        const notebookToSaveId: any = { 
+            a: "another notebook id", 
+            displayName: () => "/a/path",
+            getContainingPath: () => "/a/path",
+        };
         mockRepository.showNotebookSaveAsDialog = async () => notebookToSaveId;
 
         notebook.saveAs = jest.fn();
@@ -348,6 +369,9 @@ describe('view-model / notebook-editor', () => {
     test("constructing the view model with a notebook clears the undo stack", () => {
 
         const mockNotebook: any = {
+            getStorageId: () => ({
+                getContainingPath: () => "/a/path",
+            }),
             onModified: new EventSource<BasicEventHandler>(),
         };
 
