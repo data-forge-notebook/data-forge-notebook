@@ -108,18 +108,24 @@ async function onMessage(msg: IWorkerMsg): Promise<void> {
         await fs.ensureDir(projectPath); 
 
         const notebook = Notebook.deserialize(evaluateNotebookMsg.notebook);
-            await installNotebook(process, projectPath, notebook, (name: string, args: any): void => {
-                process.send!({
-                    event: "notebook-event", // Raise event on primary.
-                    workerId: workerId,
-                    args: {
-                        name: name,
-                        args: args,
-                        notebookId: notebookId
-                    },
-                });
-            }
-        );
+
+        await installNotebook(process, projectPath, notebook, (name: string, args: any): void => {
+            process.send!({
+                event: "notebook-event", // Raise event on primary.
+                workerId: workerId,
+                args: {
+                    name: name,
+                    args: args,
+                    notebookId: notebookId
+                },
+            });
+        });
+
+        process.send!({
+            event: "completed", // Signal normal completion.
+            workerId: workerId,
+        });
+
     }
     else if (msg.cmd === "eval-notebook") {
         //
@@ -179,7 +185,7 @@ async function onMessage(msg: IWorkerMsg): Promise<void> {
                 console.log(`!!!!!!!!!!!!! Evaluation completed.`);
 
                 process.send!({
-                    event: "completed", // Signal normal completion onNotebookEvent master.
+                    event: "completed", // Signal normal completion.
                     workerId: workerId,
                 });
             }
