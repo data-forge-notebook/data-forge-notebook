@@ -162,7 +162,7 @@ export class EvaluatorClient implements IEvaluatorClient {
     }
 
     //
-    // Returns true if the evaluator is currentling doing someting.
+    // Returns true if the evaluator is currently doing someting.
     //
     isWorking(): boolean {
         return this.notebookId !== undefined;

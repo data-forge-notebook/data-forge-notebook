@@ -608,10 +608,16 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return;
         }
 
-        //
-        // Don't wait for evaluation engine to notify that evaluation has started, start it immediately.
-        //
         const notebook = this.getOpenNotebook();
+
+        if (this.evaluator.isWorking()) {
+            //
+            // Trying to start an evaluation while one is already in progress will stop it.
+            //
+            this.evaluator.stopEvaluation(notebook.getInstanceId());
+            await this.onEvaluationFinished();
+            return;
+        }
 
         await notebook.flushChanges();
 
