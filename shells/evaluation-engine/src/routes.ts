@@ -220,6 +220,8 @@ function forkEvalWorker(notebookId: string): Promise<void> {
             "ID": notebookId,
         });
     
+        let ready = false;
+
         console.log(`Starting worker ${notebookId} (Node.js id ${workerHandle.id})`);
     
         workers[notebookId] = {
@@ -232,7 +234,9 @@ function forkEvalWorker(notebookId: string): Promise<void> {
         workerHandle.on("error", (err: any) => {
             console.error(`Error from worker:`);
             console.error(err);
-            reject(err);
+            if (!ready) {
+                reject(err);
+            }
         });
     
         workerHandle.on("exit", () => {
@@ -254,6 +258,10 @@ function forkEvalWorker(notebookId: string): Promise<void> {
                     onUnexpectedWorkerExit(notebookId);
                 }
             }
+    
+            if (!ready) {
+                reject(new Error(`Worker exited unexpectedly.`));
+            }
         });
 
         workerHandle.on("message", (message: any) => {
@@ -263,6 +271,7 @@ function forkEvalWorker(notebookId: string): Promise<void> {
             if (message.event === "worker-ready") {
                 // Worker is ready.
                 console.log(`Worker ${notebookId} is ready.`);
+                ready = true;
                 resolve();
                 return;
             }
