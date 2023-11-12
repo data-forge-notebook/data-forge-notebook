@@ -59,7 +59,7 @@ describe("evaluation engine shell", () => {
             const statusResponse = await request().get("/status");
 
             //
-            // Collect messages produces by the evaluation.
+            // Collect messages produced by the evaluation.
             //
             const messagesResponse = await request()
                 .post("/messages")
@@ -75,13 +75,12 @@ describe("evaluation engine shell", () => {
             }
         }
 
-        //
-        // TODO: This breaks the next test!
-        //
-        // const stopResponse = await request()
-        //     .post("/stop-evaluation")
-        //     .send({ notebookId });
-        // expect(stopResponse.status).toBe(200);
+        const stopResponse = await request()
+            .post("/stop-evaluation")
+            .send({ notebookId });
+        expect(stopResponse.status).toBe(200);
+
+        await sleep(100); // Give the worker a chance to stop.
 
         //
         // Remove debug messages.
@@ -140,7 +139,7 @@ describe("evaluation engine shell", () => {
             const statusResponse = await request().get("/status");
 
             //
-            // Collect messages produces by the evaluation.
+            // Collect messages produced by the evaluation.
             //
             const messagesResponse = await request()
                 .post("/messages")
@@ -160,6 +159,8 @@ describe("evaluation engine shell", () => {
             .post("/stop-evaluation")
             .send({ notebookId });
         expect(stopResponse.status).toBe(200);
+
+        await sleep(100); // Give the worker a chance to stop.
 
         //
         // Remove debug messages.
