@@ -339,6 +339,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         if (this.notebook) {
             this.notebook.onModified.detach(this.notifyModified);
+
+            //
+            // Stop evaluation of whatever  notebook is being unloaded.
+            //
+            this.evaluator.stopEvaluation(this.notebook.getInstanceId());
         }
         
         this.notebook = notebook;

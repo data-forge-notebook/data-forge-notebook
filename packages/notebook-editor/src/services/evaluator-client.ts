@@ -27,6 +27,11 @@ export interface IEvaluatorClient {
     installNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void;
 
     //
+    // Stops evaluation of the notebook.
+    //
+    stopEvaluation(notebookId: string): void;
+
+    //
     // Evaluate up to a particular cell.
     //
     evalToCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string, containingPath?: string): void;

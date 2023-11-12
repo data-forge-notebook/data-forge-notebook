@@ -30,6 +30,17 @@ interface IInstallNotebookPayload {
 }
 
 //
+// Payload to the /stop-evaluation endpoint in the evaluation engine that stops evaluation of a notebook.
+//
+interface IStopEvaluationNotebookPayload {
+
+    //
+    // The ID of the notebook to be stopped.
+    //
+    notebookId: string;
+}
+
+//
 // Payload to the /evaluate endpoint in the evaluation engine that evaluates a notebook.
 //
 interface IEvaluateNotebookPayload {
@@ -181,6 +192,26 @@ export class EvaluatorClient implements IEvaluatorClient {
         };
 
         axios.post(`${baseUrl}/install`, installNotebookPayload)
+            .catch((err: any) => {
+                console.error(`API failed:`);
+                console.error(err && err.stack || err);
+            });
+    }
+
+    //
+    // Stops evaluation of the notebook.
+    //
+    stopEvaluation(notebookId: string): void {
+        
+        const stopNotebookPayload: IStopEvaluationNotebookPayload = {
+            notebookId: notebookId,
+        };
+
+        this.notebookId = undefined;
+        this.jobName = undefined;
+        this.stopMessagePump();
+
+        axios.post(`${baseUrl}/stop-evaluation`, stopNotebookPayload)
             .catch((err: any) => {
                 console.error(`API failed:`);
                 console.error(err && err.stack || err);
