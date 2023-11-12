@@ -52,6 +52,7 @@ describe('view-model / notebook-editor', () => {
 
         const mockEvaluator: any = {
             installNotebook: () => {},
+            stopEvaluation: () => {},
             onEvaluationEvent: new EventSource<BasicEventHandler>(),
         };
         notebookEditor.evaluator = mockEvaluator;
