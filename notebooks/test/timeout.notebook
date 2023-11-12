@@ -1,0 +1,17 @@
+{
+    "version": 1,
+    "sheet": {
+        "id": "3d179450-a482-11e9-8e45-4d2559ce1a05",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "3d179451-a482-11e9-8e45-4d2559ce1a05",
+                "cellType": "code",
+                "code": "console.log(\"A\");\r\n\r\nsetTimeout(() => { \r\n    console.log(\"C\");\r\n}, 5000);\r\n\r\nconsole.log(\"B\");",
+                "lastEvaluationDate": "2019-07-12T20:29:26.406+10:00",
+                "output": [],
+                "errors": []
+            }
+        ]
+    }
+}
