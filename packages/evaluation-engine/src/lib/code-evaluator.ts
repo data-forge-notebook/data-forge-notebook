@@ -559,7 +559,6 @@ export class CodeEvaluator implements ICodeEvaluator {
             this.onCellEvalStarted(cellId);
         }
 
-        //todo: Some of this code should be moved into the async tracker.
         const cellAsyncContext = new AsyncResource("__async_context");
         cellAsyncContext.runInAsyncScope(() => { // Run the code cell in its own async scope so it can be async tracked.
             const asyncContextId = executionAsyncId();
