@@ -44,6 +44,13 @@ export function getNodejsInstallPath(): string {
 export class Paths implements IPaths {
 
     //
+    // Gets the current working directory.
+    //
+    getWorkingDirectory() {
+        return process.cwd();
+    }
+
+    //
     // Get the path for example notebooks.
     //
     getExamplesPath(): string {

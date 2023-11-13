@@ -35,7 +35,7 @@ export class Zoom implements IZoom {
         }
     }
 
-    init(): void { //TODO: This really wants to be abstracted behind a view model!
+    init(): void {
         this.settings.onSettingsChanged.attach(this.onSettingsChanged);
 
         this.updateZoom();
