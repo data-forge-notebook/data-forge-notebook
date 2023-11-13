@@ -1,0 +1,48 @@
+{
+    "version": 3,
+    "nodejs": "12.18.3",
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "aacb9891-3372-11eb-8d89-59dcf51bc52c",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "// From:\r\n// https://javascript.info/async-iterators-generators\r\n//\r\n\r\nasync function* generateSequence(start, end) {\r\n\r\n    for (let i = start; i <= end; i++) {\r\n\r\n        // Wow, can use await!\r\n        await new Promise(resolve => setTimeout(resolve, 1000));\r\n\r\n        yield i;\r\n    }\r\n\r\n}\r\n\r\nfor await (const value of generateSequence(1, 5)) {\r\n    console.log(value);\r\n}",
+            "lastEvaluationDate": "2023-11-14T07:44:59.420+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "1\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "2\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "3\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "4\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "5\n"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 699
+        }
+    ]
+}

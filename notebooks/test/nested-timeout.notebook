@@ -1,0 +1,48 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "3d179451-a482-11e9-8e45-4d2559ce1a05",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "console.log(\"A\");\r\n\r\nsetTimeout(() => { \r\n    console.log(\"C\");\r\n\r\n    setTimeout(() => {\r\n        console.log(\"D\");\r\n    }, 5000);\r\n\r\n    console.log(\"E\");\r\n    \r\n}, 5000);\r\n\r\nconsole.log(\"B\");",
+            "lastEvaluationDate": "2023-11-14T07:51:26.825+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "A\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "B\n"
+                    },
+                    "height": 49
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "C\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "E\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "D\n"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 604
+        }
+    ]
+}

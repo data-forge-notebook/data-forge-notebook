@@ -1,0 +1,16 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "faef6380-f6ef-11e9-a75d-a94b4e8537c4",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const request = require(\"request\");\r\nconst fs = require(\"fs\");\r\nrequest('http://google.com').pipe(fs.createWriteStream('google.html'))",
+            "lastEvaluationDate": "2023-11-14T07:56:56.891+10:00",
+            "output": [],
+            "errors": [],
+            "height": 109
+        }
+    ]
+}

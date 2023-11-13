@@ -1,0 +1,26 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "9308bc42-8430-11e8-98d7-1b57ff7e4edd",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const express = require('express');\r\ndisplay(express);",
+            "lastEvaluationDate": "2018-09-05T18:44:58.978+10:00",
+            "output": [],
+            "errors": [],
+            "height": 90
+        },
+        {
+            "id": "9308bc43-8430-11e8-98d7-1b57ff7e4edd",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "",
+            "lastEvaluationDate": "2018-09-05T18:44:58.989+10:00",
+            "output": [],
+            "errors": [],
+            "height": 82
+        }
+    ]
+}

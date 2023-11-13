@@ -1,0 +1,39 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "895e7280-7fc3-11ea-9f3a-996dbd3e7d08",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "let x = 1;\r\nconst y = 2;\r\ndisplay(x);\r\nsetTimeout(() => {\r\n    x = [1, 4, 10];\r\n}, 1000);",
+            "lastEvaluationDate": "2023-11-14T07:55:05.459+10:00",
+            "output": [
+                {
+                    "value": {
+                        "data": 1
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 224
+        },
+        {
+            "id": "aeac2910-7fc3-11ea-9f3a-996dbd3e7d08",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const a = 3;\r\nconst b = 4;\r\ndisplay(x);",
+            "lastEvaluationDate": "2023-11-14T07:55:04.476+10:00",
+            "output": [
+                {
+                    "value": {
+                        "data": 1
+                    },
+                    "height": 49
+                }
+            ],
+            "errors": [],
+            "height": 167
+        }
+    ]
+}

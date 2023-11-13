@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "sheet": {
+        "id": "3d344ac0-f629-11e9-9262-d96d156d0976",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "3d344ac1-f629-11e9-9262-d96d156d0976",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const fs = require(\"fs\");\r\n\r\nconst readStream = fs.createReadStream('../examples/example.csv');\r\nconst writeStream = fs.createWriteStream('');\r\nreadStream.pipe(writeStream);",
+                "lastEvaluationDate": "2020-03-18T14:22:58.716+10:00",
+                "output": [],
+                "errors": [
+                    {
+                        "msg": "ENOENT: no such file or directory, open ''"
+                    }
+                ]
+            }
+        ]
+    }
+}

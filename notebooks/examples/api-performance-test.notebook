@@ -1,0 +1,123 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "e2820790-e351-11ea-b82c-7bc38953f9a2",
+            "cellType": "markdown",
+            "code": "# REST API performance test\r\n\r\nThis example makes a request against a REST API every minute and measures its performance.\r\n\r\nWhen finished running you open `api-performance-test.csv` to check your results. You can load this file in Data-Forge Notebook and plot a chart from it to see if there's any intermittent spikes in the performance of your API.\r\n\r\n**NOTE**: This notebook never stops. You have to manually stop it when you are finished. While running it logs the time for the HTTP request once every minute.",
+            "lastEvaluationDate": "2020-08-21T12:00:37.300+10:00",
+            "output": [],
+            "errors": [],
+            "height": 192
+        },
+        {
+            "id": "3eedf0f0-e363-11ea-8b12-51555c95deb0",
+            "cellType": "markdown",
+            "code": "## Import required dependencies\r\n\r\nWe are using [axios](https://www.npmjs.com/package/axios), [cron](https://www.npmjs.com/package/cron), [statman-stopwatch](https://www.npmjs.com/package/statman-stopwatch), [csv-write-stream](https://www.npmjs.com/package/csv-write-stream) and [dayjs](https://www.npmjs.com/package/dayjs).",
+            "lastEvaluationDate": "2020-08-21T14:13:13.418+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "8f6352a0-e363-11ea-8b12-51555c95deb0",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const axios = require('axios');\r\nconst { CronJob } = require('cron');\r\nconst Stopwatch = require('statman-stopwatch');\r\nconst fs = require('fs');\r\nconst csvWriter = require('csv-write-stream');\r\nconst dayjs = require('dayjs');",
+            "lastEvaluationDate": "2020-08-21T14:11:29.250+10:00",
+            "output": [],
+            "errors": [],
+            "height": 166
+        },
+        {
+            "id": "9b1abe30-e363-11ea-8b12-51555c95deb0",
+            "cellType": "markdown",
+            "code": "## Create output file\r\n\r\nCreate a streaming CSV output file that we can write results to as we go.",
+            "lastEvaluationDate": "2020-08-21T14:13:13.418+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "a96e7f80-e363-11ea-8b12-51555c95deb0",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const writer = csvWriter({ headers: [\"Date\", \"Elapsed\"] });\r\nwriter.pipe(fs.createWriteStream(\"api-performance-test.csv\"));",
+            "lastEvaluationDate": "2020-08-21T14:11:29.259+10:00",
+            "output": [],
+            "errors": [],
+            "height": 90
+        },
+        {
+            "id": "ba560b10-e363-11ea-8b12-51555c95deb0",
+            "cellType": "markdown",
+            "code": "## Create a timing function\r\n\r\nThis is a helper function that can call another funciton and measure the time that it takes.",
+            "lastEvaluationDate": "2020-08-21T14:13:13.419+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "cdea4010-e363-11ea-8b12-51555c95deb0",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "\r\nasync function timeIt(fn) {\r\n    const stopwatch = new Stopwatch();\r\n    stopwatch.start();\r\n    await fn();\r\n    const elapsedSeconds = stopwatch.stop() / 1000;\r\n    writer.write({ Date: dayjs().format(\"YYYY-MM-DD HH:mm:ss\"), Elapsed: elapsedSeconds });\r\n    console.log(`Request time: ${elapsedSeconds} seconds.`);\r\n}",
+            "lastEvaluationDate": "2020-08-21T14:11:29.251+10:00",
+            "output": [],
+            "errors": [],
+            "height": 223
+        },
+        {
+            "id": "d82df760-e363-11ea-8b12-51555c95deb0",
+            "cellType": "markdown",
+            "code": "## Make a HTTP request\r\n\r\nCreate a function that makes a request to a REST API.\r\n\r\nThe URL can be whatever you want.",
+            "lastEvaluationDate": "2020-08-21T14:13:13.419+10:00",
+            "output": [],
+            "errors": [],
+            "height": 131
+        },
+        {
+            "id": "d45fff70-e363-11ea-8b12-51555c95deb0",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const url = \"https://jsonplaceholder.typicode.com/todos/1\";\r\n\r\nasync function makeRequest() {\r\n    await axios.get(url);\r\n}",
+            "lastEvaluationDate": "2020-08-21T14:11:29.252+10:00",
+            "output": [],
+            "errors": [],
+            "height": 147
+        },
+        {
+            "id": "f6b73250-e363-11ea-8b12-51555c95deb0",
+            "cellType": "markdown",
+            "code": "## Put it on repeat!\r\n\r\nUse cron to repeate the HTTP request very minute.\r\n\r\nTo use a different schedule [please see these examples](https://crontab.guru/examples.html).",
+            "lastEvaluationDate": "2020-08-21T14:13:13.419+10:00",
+            "output": [],
+            "errors": [],
+            "height": 131
+        },
+        {
+            "id": "26cc20c1-e2a3-11ea-9532-6385a90dc9a3",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const oneMinuteSchedule = \"0 */1 * * * *\";\r\n\r\nconst job = new CronJob(\r\n    oneMinuteSchedule,\r\n    () => {\r\n        timeIt(makeRequest);    \r\n    \r\n    },\r\n    null,\r\n    true,\r\n    'Australia/Brisbane'\r\n);\r\n\r\njob.start(); // Starts the job.",
+            "lastEvaluationDate": "2020-08-21T14:13:10.330+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "string",
+                        "data": "Request time: 0.17383570000005422 seconds.\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "string",
+                        "data": "Request time: 0.15284640100004618 seconds.\n"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 433
+        }
+    ]
+}

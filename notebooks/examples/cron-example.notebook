@@ -1,0 +1,132 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "4b2d7130-f31a-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "markdown",
+            "code": "# Cron example\r\n\r\nThis notebook shows how to use Cron to create scheduled tasks in JavaScript. You can use this as a template for creating your own scheduled jobs.\r\n\r\nUses the [Cron package](https://www.npmjs.com/package/cron) from [npm](https://www.npmjs.com/).\r\n\r\nPlease see [Crontab guru](https://crontab.guru/) for a nice visual explanation of the Cron format.\r\n\r\nThey also have [many more examples of Cron schedules](https://crontab.guru/examples.html).\r\n\r\n**WARNING:** When you run this notebook it won't ever complete. That's because the Cron job repeats forwever. Please click the stop button in the toolbar when you are ready to stop this notebook from running.",
+            "lastEvaluationDate": "2020-09-10T14:17:21.382+10:00",
+            "output": [],
+            "errors": [],
+            "height": 250
+        },
+        {
+            "id": "c20024b0-f31a-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "markdown",
+            "code": "## Setup\r\n\r\nImport the `cron` library:",
+            "lastEvaluationDate": "2020-09-10T14:17:21.382+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "3a081950-f31a-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const { CronJob } = require(\"cron\");",
+            "lastEvaluationDate": "2023-11-14T08:06:22.588+10:00",
+            "output": [],
+            "errors": [],
+            "height": 82
+        },
+        {
+            "id": "24943260-f31b-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "markdown",
+            "code": "## Configure a schedule\r\n\r\nCreate a schedule using the Cron format.",
+            "lastEvaluationDate": "2020-09-10T14:17:21.382+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "301b3f20-f31b-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const schedule = \"0 * * * * *\"; // This schedule runs once per minute.",
+            "lastEvaluationDate": "2023-11-14T08:06:22.590+10:00",
+            "output": [],
+            "errors": [],
+            "height": 82
+        },
+        {
+            "id": "2b07d970-f31c-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "markdown",
+            "code": "## Create a job handler\r\n\r\nCreate a function that is executed each time the job is invoked.",
+            "lastEvaluationDate": "2020-09-10T14:17:21.382+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "37b3de30-f31c-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "function doJob() {\r\n    console.log('You will see this message every minute!');\r\n\r\n    // Do whatever work you want here ...\r\n}",
+            "lastEvaluationDate": "2023-11-14T08:06:22.592+10:00",
+            "output": [],
+            "errors": [],
+            "height": 147
+        },
+        {
+            "id": "fe8e9d80-f31a-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "markdown",
+            "code": "## Create a job\r\n\r\nCreate a scheduled Cron job that will be invoked at the frequency set by the schedule.\r\n\r\nThis first job runs once per minute (please wait a minute to see the output).",
+            "lastEvaluationDate": "2020-09-10T14:17:21.382+10:00",
+            "output": [],
+            "errors": [],
+            "height": 131
+        },
+        {
+            "id": "1ac3fd60-f31b-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const job = new CronJob(\r\n    schedule,\r\n    doJob, // Pass in your job handler.\r\n    null,\r\n    true,\r\n    \"America/Los_Angeles\" // Set this to your timezone.\r\n);",
+            "lastEvaluationDate": "2020-09-10T14:16:57.734+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "You will see this message every minute!\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "You will see this message every minute!\n"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 404
+        },
+        {
+            "id": "70a9bc60-f31b-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "markdown",
+            "code": "## Start the job\r\n\r\nCall the `start` function to start the Cron job.",
+            "lastEvaluationDate": "2020-09-10T14:17:21.383+10:00",
+            "output": [],
+            "errors": [],
+            "height": 102
+        },
+        {
+            "id": "7d360420-f31b-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "job.start();",
+            "lastEvaluationDate": "2023-11-14T08:06:22.594+10:00",
+            "output": [],
+            "errors": [],
+            "height": 82
+        },
+        {
+            "id": "d10da3a0-f31b-11ea-bfbc-fb3fa6416ecf",
+            "cellType": "markdown",
+            "code": "# That's it!\r\n\r\nThis Cron job runs once per minute, but you can set the schedule to any frequency that you like. \r\n\r\nCheck out [the example schedules here](https://crontab.guru/examples.html).",
+            "lastEvaluationDate": "2020-09-10T14:17:21.383+10:00",
+            "output": [],
+            "errors": [],
+            "height": 144
+        }
+    ]
+}

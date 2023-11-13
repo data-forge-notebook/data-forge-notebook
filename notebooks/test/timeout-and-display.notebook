@@ -1,0 +1,22 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "441bda10-a46c-11e9-b0d1-f548be82b332",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "setTimeout(() => display(123), 5000);",
+            "lastEvaluationDate": "2023-11-14T08:03:49.088+10:00",
+            "output": [
+                {
+                    "value": {
+                        "data": 123
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 244
+        }
+    ]
+}

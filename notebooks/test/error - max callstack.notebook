@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "sheet": {
+        "id": "24e88db0-7ecc-11ea-9242-4de01fe6c59f",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "24e88db1-7ecc-11ea-9242-4de01fe6c59f",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "function blowstack() {\r\n    blowstack();\r\n}\r\n\r\nblowstack();",
+                "lastEvaluationDate": "2020-04-15T13:50:51.872+10:00",
+                "output": [],
+                "errors": [
+                    {
+                        "msg": "Maximum call stack size exceeded\r\nat blowstack, line 1\nat blowstack, line 2\nat blowstack, line 2\nat blowstack, line 2\nat blowstack, line 2\nat blowstack, line 2\nat blowstack, line 2\nat blowstack, line 2\nat blowstack, line 2\nat blowstack, line 2"
+                    }
+                ]
+            }
+        ]
+    }
+}
