@@ -7,9 +7,18 @@ import { EventSource, ILogId, ConsoleLog, handleAsyncErrors } from "utils";
 const hotkeys = require("hotkeys-js").default;
 
 import "./services/platform";
+import "./services/recent-files";
+import "./services/settings";
+import "./services/open";
+import "./services/zoom";
+import "./services/clipboard";
+import "./services/paths";
 
 registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.
+    getExampleNotebooks() {
+        return [];
+    }
 });
 
 registerSingleton(IConfirmationDialogId, {

@@ -83,9 +83,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                 displayType: this.props.model.getValue().getDisplayType(),
                 plugin: this.props.model.getValue().getPlugin(),
                 data: this.props.model.getValue().getData(),
-                aux: {
-                    cwd: process.cwd(),
-                },
             },
         };
     }

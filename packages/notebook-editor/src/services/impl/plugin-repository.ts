@@ -2,11 +2,12 @@
 // Interface to find plugins.
 //
 
-import { InjectableSingleton } from "@codecapers/fusion";
+import { InjectProperty, InjectableSingleton } from "@codecapers/fusion";
 import { IPluginRepo, IPluginRepo_ID, IPluginConfig } from "../plugin-repository";
 import * as path from "path";
 import { IPluginRequest } from "host-bridge";
 import typy from "typy";
+import { IPaths, IPaths_ID } from "../paths";
 
 //
 // A lookup table of plugins.
@@ -100,6 +101,9 @@ if (defaultPlugin === undefined) {
 @InjectableSingleton(IPluginRepo_ID)
 export class PluginRepo implements IPluginRepo {
 
+    @InjectProperty(IPaths_ID)
+    paths!: IPaths;
+
     //
     // Inspect the data and retreive the configuration for a plugin.
     //
@@ -143,6 +147,10 @@ export class PluginRepo implements IPluginRepo {
 
         console.log(`Requesting plugin content:`);
         console.log(pluginRequest);
+
+        pluginRequest.aux = {
+            cwd: this.paths.getWorkingDirectory(),
+        };
 
         let matchedPlugin = this.matchPlugin(pluginRequest);
         if (!matchedPlugin) {

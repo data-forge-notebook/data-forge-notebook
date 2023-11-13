@@ -82,7 +82,7 @@ export const testNotebook: ISerializedNotebook1 = {
         {
             "id": "0ee8ed00-2e9d-11e9-9f0a-97b474081a71",
             "cellType": CellType.Markdown,
-            "code": "## Visualize data from CSV or JSON files\r\n\r\nUse [datakit](https://www.npmjs.com/package/datakit) to read data files and visualize with the `display.table` function.",
+            "code": "## Visualize data from CSV or JSON files\r\n\r\nUse [datakit](https://www.npmjs.com/package/datakit) to read data files and visualize with the `display` function.",
             "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
             "output": [],
             "errors": [],
@@ -92,7 +92,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "31ae9260-a804-11e8-b3eb-53e94e633165",
             "cellType": CellType.Code,
             "cellScope": CellScope.Global,
-            "code": "const datakit = require('datakit');\r\ndata = await datakit.readCsv(\"./example.csv\");\r\ndisplay.table(data.slice(0, 5));",
+            "code": "const datakit = require('datakit');\r\ndata = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data.slice(0, 5), \"table\");",
             "lastEvaluationDate": "2020-06-22T17:24:12.040+10:00",
             "output": [
                 {
@@ -154,7 +154,7 @@ export const testNotebook: ISerializedNotebook1 = {
         {
             "id": "fc067e40-f3cd-11e9-97b7-a975ba8f6456",
             "cellType": CellType.Markdown,
-            "code": "## Charts: Plot any ol' JavaScript data!\r\n\r\nEasily create charts from JavaScript data using the function `display.plot`.",
+            "code": "## Charts: Plot any ol' JavaScript data!\r\n\r\nEasily create charts from JavaScript data using the function `display`.",
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
             "errors": [],
@@ -164,7 +164,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "24ef35e0-f3ce-11e9-97b7-a975ba8f6456",
             "cellType": CellType.Code,
             "cellScope": CellScope.Global,
-            "code": "data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay.plot(data);",
+            "code": "data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay(data, \"apex\");",
             "lastEvaluationDate": "2020-06-22T17:24:12.895+10:00",
             "output": [
                 {
@@ -238,7 +238,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "48cae350-1332-11ea-b4ba-813ffa5b9c8b",
             "cellType": CellType.Code,
             "cellScope": CellScope.Global,
-            "code": "data = {\r\n    D1: [30, 10, 50, 15],\r\n    D2: [300, 20, 10, 150],\r\n};\r\ndisplay.plot(data);",
+            "code": "data = {\r\n    D1: [30, 10, 50, 15],\r\n    D2: [300, 20, 10, 150],\r\n};\r\ndisplay(data, \"apex\");",
             "lastEvaluationDate": "2020-06-22T17:24:13.179+10:00",
             "output": [
                 {
@@ -312,7 +312,7 @@ export const testNotebook: ISerializedNotebook1 = {
             "id": "3736bd70-a804-11e8-b3eb-53e94e633165",
             "cellType": CellType.Code,
             "cellScope": CellScope.Global,
-            "code": "data = await datakit.readCsv(\"./example.csv\");\r\ndisplay.plot(data);",
+            "code": "data = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data, \"apex\");",
             "lastEvaluationDate": "2020-06-22T17:24:13.431+10:00",
             "output": [
                 {

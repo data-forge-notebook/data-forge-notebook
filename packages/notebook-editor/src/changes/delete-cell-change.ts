@@ -4,7 +4,6 @@
 //
 
 import { InjectProperty, InjectableClass } from "@codecapers/fusion";
-import assert from "assert";
 import { IChange } from "../services/undoredo";
 import { ICellViewModel } from "../view-model/cell";
 import { INotebookViewModel } from "../view-model/notebook";
@@ -32,7 +31,6 @@ export class DeleteCellChange implements IChange {
     // Do a change.
     //
     async do(): Promise<void> {
-        assert(this.cellIndex >= 0, "Expected 0 or positive for deleted cell position.");
         this.notebook.deleteCell(this.cell, this.selectNextCell);
     }
 
@@ -40,7 +38,6 @@ export class DeleteCellChange implements IChange {
     // Redo a change.
     //
     async redo(): Promise<void> {
-        assert(this.cellIndex >= 0, "Expected 0 or positive for deleted cell position.");
         this.notebook.deleteCell(this.cell, false);
     }
 

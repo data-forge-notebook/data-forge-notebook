@@ -6,6 +6,7 @@ import { DeclareCommand } from "../services/command";
     desc: "Reloads the currently open notebook", 
     label: "&Reload notebook",
     icon: "reset",
+    notebookCommand: true,
 })
 export class ReloadNotebookAction implements IAction {
 
