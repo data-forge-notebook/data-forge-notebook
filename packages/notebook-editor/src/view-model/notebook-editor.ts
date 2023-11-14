@@ -17,6 +17,7 @@ import { ICommander, ICommanderId } from "../services/commander";
 import { IUndoRedo, IUndoRedoId } from "../services/undoredo";
 import { IHotkeysOverlayViewModel } from "../components/hotkeys-overlay";
 import { IRecentFiles, IRecentFiles_ID } from "../services/recent-files";
+import { IZoom, IZoomId } from "../services/zoom";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -228,6 +229,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     @InjectProperty(IRecentFiles_ID)
     recentFiles!: IRecentFiles;
 
+    @InjectProperty(IZoomId)
+    zoom!: IZoom;
+
     //
     // The currently open notebook.
     //
@@ -268,7 +272,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         if (this.notebook) {
             this.undoRedo.clearStack(this.getOpenNotebook());
-        }        
+        }
+
+        this.zoom.init();
     }
 
     // 
@@ -276,6 +282,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     unmount(): void {
         this.evaluator.onEvaluationEvent.detach(this.onEvaluatorEvent);
+
+        this.zoom.deinit();
     }
 
     //
