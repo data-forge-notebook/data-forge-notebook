@@ -557,6 +557,40 @@ importers:
         specifier: ^4.5.2
         version: 4.6.4
 
+  plugins/html:
+    dependencies:
+      host-bridge:
+        specifier: workspace:*
+        version: link:../../packages/host-bridge
+      react:
+        specifier: ^17.0.2
+        version: 17.0.2
+      react-dom:
+        specifier: ^17.0.2
+        version: 17.0.2(react@17.0.2)
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.17.2
+        version: 7.17.5
+      '@types/react':
+        specifier: ^17.0.37
+        version: 17.0.40
+      '@types/react-dom':
+        specifier: ^17.0.11
+        version: 17.0.13
+      fs-extra:
+        specifier: ^10.1.0
+        version: 10.1.0
+      inliner:
+        specifier: ^1.13.1
+        version: 1.13.1
+      live-server:
+        specifier: ^1.2.1
+        version: 1.2.2
+      typescript:
+        specifier: ^4.5.2
+        version: 4.6.4
+
   plugins/plot:
     dependencies:
       '@plotex/chart-def':
@@ -1403,7 +1437,7 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
-      '@babel/types': 7.18.2
+      '@babel/types': 7.9.5
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@7.17.12(@babel/core@7.17.5):
     resolution: {integrity: sha512-xCJQXl4EeQ3J9C4yOmpTrtVGmzpm2iSzyxbkZHw7UCnZBftHpF/hpII80uWVyVrc40ytIClHjgWGTG1g/yB+aw==}
