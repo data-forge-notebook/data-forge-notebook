@@ -33,6 +33,7 @@ class App extends React.Component<{}, IAppState> {
     render() {
         return (
             <StructuredData
+                displayType={this.state.config?.displayType}
                 data={this.state.config?.data}
                 />
         );

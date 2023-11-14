@@ -14,14 +14,25 @@ theme.base00 = '#FBFBFB'; // Set the background to match.
 
 export interface IStructuredDataProps {
     //
+    // The type of data being displayed.
+    //
+    displayType?: string;
+
+    //
     // Data to be displayed.
     //
     data: any;
 }
 
 export class StructuredData extends React.Component<IStructuredDataProps, {}> {
-    
+
     render () {
+
+        let data = this.props.data;
+        if (this.props.displayType === "json") {
+            data = JSON.parse(data);
+        }
+
         return (
             <div
                 style={{ 
@@ -32,10 +43,9 @@ export class StructuredData extends React.Component<IStructuredDataProps, {}> {
                 }}  
                 >
                 <JSONTree 
-                    data={this.props.data} 
+                    data={data} 
                     theme={theme}
                     invertTheme={false}
-                    hideRoot={true}
                     />
             </div>
         );
