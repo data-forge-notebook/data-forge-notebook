@@ -131,6 +131,17 @@ export class Plot extends React.Component<IPlotProps, {}> {
             data.chart.type = "line";
         }
 
+        if (data.chart.animations == undefined) {
+            // Default to no animations.
+            data.chart.animations = {
+                enabled: false,
+            };
+        }
+        else if (data.chart.animations.enabled === undefined) {
+            // Default to no animations.
+            data.chart.animations.enabled = false;
+        }
+
         try {
             this.chart = new ApexCharts(this.containerElement.current!, data);
             this.chart.render();
