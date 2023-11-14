@@ -269,7 +269,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                             hoverOpenDelay={50}
                             hoverCloseDelay={1000}
                             usePortal={false}
-                            position={PopoverPosition.BOTTOM}
+                            position={PopoverPosition.BOTTOM_RIGHT}
                             content={(
                                 <div
                                     style={{
