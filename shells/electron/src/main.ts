@@ -17,7 +17,7 @@ import { MainSettings } from "./services/electron-main-settings";
 import { RECENT_FILES_SETTINGS_KEY } from "notebook-editor/build/services/recent-files";
 
 console.log(`Started ${formatTitle()}`);
-console.log(`home path: ${app.getPath("home")}`);
+console.log(`home path: ${app.getPath("home")}`);   
 console.log(`appData path: ${app.getPath("appData")}`);
 console.log(`userData path: ${app.getPath("userData")}`);
 console.log(`temp path: ${app.getPath("temp")}`);
@@ -91,6 +91,14 @@ process.on("unhandledRejection", (err: any, promise: Promise<any>) => {
 });
 
 const argv = minimist(process.argv.slice(app.isPackaged ? 1 : 2));
+
+console.log(`Requesting single instance lock.`);
+
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+    log.info("Didn't get the single instance lock, have passed control to first instance, quitting now.");
+    immediateExit(0);
+}
 
 if (argv.geometry) {
     const geometryParts = argv.geometry.split("+");
@@ -279,6 +287,54 @@ app.on("will-quit", event => {
 //
 app.on("quit", event => {
     log.info("Event: quit");
+});
+
+//
+// Find the most recently used editor window.
+//
+function findMostRecentEditorWindow(): IEditorWindow | undefined {
+    const lastFocusedEditorWindow = windowManager.getLastFocusedEditorWindow();
+    if (lastFocusedEditorWindow) {
+        return lastFocusedEditorWindow; // Return the last focused window.
+    }
+
+    // Pick the latest window that was created.
+    const orderedWindows = windowManager.getEditorWindows();
+    if (orderedWindows.length > 0) {
+        return orderedWindows[orderedWindows.length - 1];
+    }
+
+    return undefined; // No windows available.
+}
+
+app.on("second-instance", (event, commandLine, workingDirectory) => {
+    log.info("== Another instance was started with the following details...");
+    log.info("Command line:");
+    log.info(JSON.stringify(commandLine, null, 4));
+    log.info("Working directory:");
+    log.info(JSON.stringify(workingDirectory, null, 4));
+
+    const argv = minimist(commandLine.slice(1))
+    log.info("Parsed command line: \r\n" + JSON.stringify(argv, null, 4));
+    
+    const openFilePath = argv._.length > 0 ? argv._[0] : undefined;
+    if (openFilePath) {
+        log.info(`Opening file requested by second-instance in new window: ${openFilePath}.`);
+        const editorWindow = createEditorWindow();
+        editorWindow.show();
+        return;
+    }
+
+    const mostRecentEditorWindow = findMostRecentEditorWindow();
+    if (mostRecentEditorWindow) {
+        log.info("Focusing most recent window in response to 'second-instance'.");
+        mostRecentEditorWindow.focus();
+    }
+    else {
+        log.info("Creating a new window in response to 'second-instance'.");
+        const editorWindow = createEditorWindow();
+        editorWindow.show();
+    }
 });
 
 //
