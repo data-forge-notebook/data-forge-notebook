@@ -67,6 +67,11 @@ describe('view-model / notebook-editor', () => {
         };
         notebookEditor.recentFiles = mockRecentFiles;
 
+        const mockZoom: any = {
+            init: () => {},
+        };
+        notebookEditor.zoom = mockZoom;
+
         return { 
             notebookEditor, 
             mockRepository,
