@@ -1,0 +1,20 @@
+{
+    "version": 3,
+    "language": "typescript",
+    "cells": [
+        {
+            "id": "05754c41-c7db-11ea-ba9d-e79152b00e7d",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const response = await fetch(\"https://www.google.com\")\r\nconst text = await response.text();\r\ndisplay(text);",
+            "lastEvaluationDate": "2020-07-17T13:11:30.917+10:00",
+            "output": [],
+            "errors": [
+                {
+                    "msg": "Notebook evaluation terminated unexpectedly."
+                }
+            ],
+            "height": 171
+        }
+    ]
+}

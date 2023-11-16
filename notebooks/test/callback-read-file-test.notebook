@@ -1,0 +1,16 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "6e25c8f1-a879-11e9-9ea2-6f5e11f0a88e",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "\r\nconst { readFile } = require(\"fs\");\r\n\r\nreadFile(\"./example.json\", \"utf8\", (err, f) => {\r\n    console.log(f);\r\n});",
+            "lastEvaluationDate": "2019-07-17T21:02:32.792+10:00",
+            "output": [],
+            "errors": [],
+            "height": 166
+        }
+    ]
+}

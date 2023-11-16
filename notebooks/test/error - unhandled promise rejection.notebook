@@ -1,0 +1,30 @@
+{
+    "version": 1,
+    "sheet": {
+        "id": "f0078d20-accd-11e8-acc9-1f4073078ebd",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "f0078d21-accd-11e8-acc9-1f4073078ebd",
+                "cellType": "markdown",
+                "code": "# REST API example\r\n\r\nData-Forge example that retreives CSV data from a REST API.",
+                "lastEvaluationDate": "2018-10-31T08:48:52.021+10:00",
+                "output": [],
+                "errors": []
+            },
+            {
+                "id": "f0078d22-accd-11e8-acc9-1f4073078ebd",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const request = require('request-promise');\r\n\r\n  request(\"donken\");",
+                "lastEvaluationDate": "2020-03-18T14:22:18.920+10:00",
+                "output": [],
+                "errors": [
+                    {
+                        "msg": "Error: Invalid URI \"donken\"\r\nat Code cell, line 3"
+                    }
+                ]
+            }
+        ]
+    }
+}

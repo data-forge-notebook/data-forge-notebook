@@ -1,0 +1,25 @@
+{
+    "version": 1,
+    "sheet": {
+        "id": "2a0bc261-84de-11e8-bd48-252399c91c27",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "fff1e850-84de-11e8-bd48-252399c91c27",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const donkey = require('woburt');\r\ndisplay(donkey);",
+                "lastEvaluationDate": "2020-03-18T13:43:43.127+10:00",
+                "output": [],
+                "errors": [
+                    {
+                        "msg": "Request failed with status code 404"
+                    },
+                    {
+                        "msg": "Cannot find module 'woburt'\nRequire stack:\n- C:\\projects\\data-forge-notebook\\data-forge-notebook-git\\test\\noop.js\r\nat Code cell, line 1"
+                    }
+                ]
+            }
+        ]
+    }
+}

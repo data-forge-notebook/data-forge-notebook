@@ -1,0 +1,28 @@
+{
+    "version": 2,
+    "sheet": {
+        "id": "3c0ca410-bac0-11ea-9157-73ec29f79923",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "f1ff3430-bac1-11ea-9157-73ec29f79923",
+                "cellType": "markdown",
+                "code": "This notebook was broken. An error installing sharp.\r\n\r\nWorks after I nuked the cache:\r\nrm -rf C:\\Users\\ash\\AppData\\Roaming\\data-forge-notebook\\npm-cache",
+                "lastEvaluationDate": "2020-06-30T21:09:06.569+10:00",
+                "output": [],
+                "errors": [],
+                "height": 129
+            },
+            {
+                "id": "3c0ccb20-bac0-11ea-9157-73ec29f79923",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const sharp = require(\"sharp\");",
+                "lastEvaluationDate": "2020-06-30T21:08:53.097+10:00",
+                "output": [],
+                "errors": [],
+                "height": 82
+            }
+        ]
+    }
+}

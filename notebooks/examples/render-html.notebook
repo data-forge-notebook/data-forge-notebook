@@ -1,0 +1,23 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "3b79dd01-948a-11e8-8960-155134b446b4",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "display(`<h1>Hello HTML!</h2><a href=\"https://www.google.com\">Google</a><p>HTML in the house.</p>`, \"html\");",
+            "lastEvaluationDate": "2021-08-10T14:29:52.083+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "html",
+                        "data": "<h1>Hello HTML!</h2><a href=\"https://www.google.com\">Google</a><p>HTML in the house.</p>"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 140
+        }
+    ]
+}

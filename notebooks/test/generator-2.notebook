@@ -1,0 +1,33 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "001fe5b1-b365-11e9-a906-d1917d87dc33",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const test = function* (input) {\r\n    let i = 0; \r\n    while (i < 10) {\r\n        ++i;\r\n        yield i;\r\n    }\r\n}\r\n\r\ndisplay(Array.from(test()));",
+            "lastEvaluationDate": "2023-11-14T07:44:32.717+10:00",
+            "output": [
+                {
+                    "value": {
+                        "data": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5,
+                            6,
+                            7,
+                            8,
+                            9,
+                            10
+                        ]
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 432
+        }
+    ]
+}

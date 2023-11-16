@@ -1,0 +1,193 @@
+{
+    "version": 2,
+    "sheet": {
+        "id": "f9795270-2012-11eb-bad8-a383365ef30a",
+        "language": "javascript",
+        "cells": [
+            {
+                "id": "1adbec20-2013-11eb-bad8-a383365ef30a",
+                "cellType": "markdown",
+                "code": "# Examples of pattern matching\r\n\r\n## Using the Z library!\r\n\r\nWeb page:\r\n\r\n[https://z-pattern-matching.github.io/](https://z-pattern-matching.github.io/)",
+                "lastEvaluationDate": "2020-11-06T19:34:21.731+10:00",
+                "output": [],
+                "errors": [],
+                "height": 189
+            },
+            {
+                "id": "7df2be60-2013-11eb-ab99-9d9ae846dc49",
+                "cellType": "markdown",
+                "code": "### Import the library:",
+                "lastEvaluationDate": "2020-11-06T19:38:40.121+10:00",
+                "output": [],
+                "errors": [],
+                "height": 73
+            },
+            {
+                "id": "f9795271-2012-11eb-bad8-a383365ef30a",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const { matches } = require('z')",
+                "lastEvaluationDate": "2020-11-06T20:03:14.953+10:00",
+                "output": [],
+                "errors": [],
+                "height": 82
+            },
+            {
+                "id": "7b57a120-2013-11eb-ab99-9d9ae846dc49",
+                "cellType": "markdown",
+                "code": "### Example: Matches by Object property",
+                "lastEvaluationDate": "2020-11-06T19:38:40.121+10:00",
+                "output": [],
+                "errors": [],
+                "height": 65
+            },
+            {
+                "id": "91444510-2013-11eb-ab99-9d9ae846dc49",
+                "cellType": "code",
+                "cellScope": "local",
+                "code": "const person = { name: 'Maria', phone: '1234' }\r\nmatches(person)(\r\n    (x = { name: 'John' }) => console.log('John you are not welcome!'),\r\n    (x) => console.log(`Hey ${x.name}, you are welcome!`)\r\n);",
+                "lastEvaluationDate": "2020-11-06T20:03:15.032+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "string",
+                            "data": "Hey Maria, you are welcome!\n"
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 176
+            },
+            {
+                "id": "ff4bd780-2013-11eb-bf49-b5f29c7984d1",
+                "cellType": "code",
+                "cellScope": "local",
+                "code": "const person = { name: 'John', phone: '1234' }\r\nmatches(person)(\r\n    (x = { name: 'John' }) => console.log('John you are not welcome!'),\r\n    (x) => console.log(`Hey ${x.name}, you are welcome!`)\r\n);",
+                "lastEvaluationDate": "2020-11-06T20:03:15.044+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "string",
+                            "data": "John you are not welcome!\n"
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 176
+            },
+            {
+                "id": "22f7c4f0-2014-11eb-bf49-b5f29c7984d1",
+                "cellType": "markdown",
+                "code": "### Example: Matches by type or instances",
+                "lastEvaluationDate": "2020-11-06T19:48:03.443+10:00",
+                "output": [],
+                "errors": [],
+                "height": 48
+            },
+            {
+                "id": "29181150-2014-11eb-bf49-b5f29c7984d1",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "display(matches(1)(\r\n    (x = 2) => 'number 2 is the best!!!',\r\n    (x = Number) => `number ${x} is not that good`,\r\n    (x = Date) => 'blaa.. dates are awful!'\r\n));",
+                "lastEvaluationDate": "2020-11-06T20:03:15.055+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "string",
+                            "data": "number 1 is not that good"
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 176
+            },
+            {
+                "id": "3c938e30-2014-11eb-bf49-b5f29c7984d1",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "display(matches(2)(\r\n    (x = 2) => 'number 2 is the best!!!',\r\n    (x = Number) => `number ${x} is not that good`,\r\n    (x = Date) => 'blaa.. dates are awful!'\r\n));",
+                "lastEvaluationDate": "2020-11-06T20:03:15.063+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "string",
+                            "data": "number 2 is the best!!!"
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 176
+            },
+            {
+                "id": "4cb00190-2014-11eb-bf49-b5f29c7984d1",
+                "cellType": "markdown",
+                "code": "### Example: matches Array content\r\n\r\nTo match array content you need create multiple arguments for the match function, such as (a, b, c, tail) => {} , then each variable match each item from array. Note: last variable contains all remaining array items, formally named tail. Examples:",
+                "lastEvaluationDate": "2020-11-06T19:48:03.444+10:00",
+                "output": [],
+                "errors": [],
+                "height": 122
+            },
+            {
+                "id": "51408630-2014-11eb-bf49-b5f29c7984d1",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "display(matches([1, 2, 3, 4, 5])(\r\n    (a, b, c, tail) => 'a = 1, b = 2, c = 3, tail = [4, 5]'\r\n));\r\n\r\ndisplay(matches([1, 2])(\r\n    (a, tail) => 'a = 1, tail = [2]'\r\n));\r\n\r\ndisplay(matches([1, 2])(\r\n    (a, b, tail) => 'Will not match here',\r\n    (a = 2, tail = []) => 'Will not match here',\r\n    (a = 1, tail) => 'Will match here, tail = []'\r\n));",
+                "lastEvaluationDate": "2020-11-06T20:03:15.074+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "string",
+                            "data": "a = 1, b = 2, c = 3, tail = [4, 5]"
+                        },
+                        "height": 30
+                    },
+                    {
+                        "value": {
+                            "displayType": "string",
+                            "data": "a = 1, tail = [2]"
+                        }
+                    },
+                    {
+                        "value": {
+                            "displayType": "string",
+                            "data": "Will match here, tail = []"
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 404
+            },
+            {
+                "id": "8db90600-2014-11eb-bf49-b5f29c7984d1",
+                "cellType": "markdown",
+                "code": "### Example: Powerful recursive code which will remove sequential repeated items from Array.\r\n\r\nCan be mind blowing if it’s the first time you meet pattern matching, but you are gonna understand it!",
+                "lastEvaluationDate": "2020-11-06T19:48:03.444+10:00",
+                "output": [],
+                "errors": [],
+                "height": 91
+            },
+            {
+                "id": "912fb630-2014-11eb-bf49-b5f29c7984d1",
+                "cellType": "code",
+                "cellScope": "global",
+                "code": "const compress = (numbers) => {\r\n    return matches(numbers)(\r\n        (x, y, xs) => x === y\r\n            ? compress([x].concat(xs))\r\n            : [x].concat(compress([y].concat(xs))),\r\n        (x, xs) => x // stopping condition\r\n    );\r\n};\r\n\r\ndisplay(compress([1, 1, 2, 3, 4, 4, 4]));",
+                "lastEvaluationDate": "2020-11-06T20:03:15.098+10:00",
+                "output": [
+                    {
+                        "value": {
+                            "displayType": "array",
+                            "data": [
+                                1,
+                                2,
+                                3,
+                                4
+                            ]
+                        }
+                    }
+                ],
+                "errors": [],
+                "height": 359
+            }
+        ]
+    }
+}

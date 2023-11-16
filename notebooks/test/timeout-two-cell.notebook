@@ -1,0 +1,64 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "3d179451-a482-11e9-8e45-4d2559ce1a05",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "console.log(\"A\");\r\n\r\nsetTimeout(() => { \r\n    console.log(\"C\");\r\n}, 5000);\r\n \r\nconsole.log(\"B\");",
+            "lastEvaluationDate": "2023-11-14T08:04:08.653+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "A\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "B\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "C\n"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 357
+        },
+        {
+            "id": "10376050-ebea-11e9-86a7-8fd3cc91d63a",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "console.log(\"D\");\r\n\r\nsetTimeout(() => {\r\n    console.log(\"F\");\r\n}, 5000);\r\n\r\nconsole.log(\"E\");",
+            "lastEvaluationDate": "2023-11-14T08:04:07.655+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "D\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "E\n"
+                    }
+                },
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "F\n"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 461
+        }
+    ]
+}

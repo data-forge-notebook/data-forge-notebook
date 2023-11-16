@@ -1,0 +1,23 @@
+{
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "a2e08261-e5c2-11ea-b1e7-8b9b77c699d1",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "var data = `\r\n\r\nHelló világ 'óüöóüáéű'\r\n\r\n`;\r\n\r\ndisplay(data, \"html\");",
+            "lastEvaluationDate": "2023-11-14T07:47:04.248+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "html",
+                        "data": "\n\nHelló világ 'óüöóüáéű'\n\n"
+                    }
+                }
+            ],
+            "errors": [],
+            "height": 347
+        }
+    ]
+}
