@@ -290,6 +290,36 @@ app.on("quit", event => {
 });
 
 //
+// Handle links starting with notebook:// and notebooks://
+//
+app.setAsDefaultProtocolClient('notebook');
+app.setAsDefaultProtocolClient('notebooks');
+
+//
+// File handler for osx
+//
+app.on('open-file', (event, filePath) => {
+    log.info("== Handled open-file event, requesting to open file: " + filePath);
+    event.preventDefault();
+
+    const editorWindow = createEditorWindow();
+    editorWindow.show();
+    editorWindow.sendEvent("open-notebook", { file: filePath });
+});
+
+//
+// Protocol handler for osx
+//
+app.on('open-url', (event, url) => {
+    log.info("== Handled open-url event, requesting to open url: " + url);
+    event.preventDefault();
+
+    const editorWindow = createEditorWindow();
+    editorWindow.show();
+    editorWindow.sendEvent("open-notebook", { file: url });
+});
+
+//
 // Find the most recently used editor window.
 //
 function findMostRecentEditorWindow(): IEditorWindow | undefined {
@@ -317,11 +347,12 @@ app.on("second-instance", (event, commandLine, workingDirectory) => {
     const argv = minimist(commandLine.slice(1))
     log.info("Parsed command line: \r\n" + JSON.stringify(argv, null, 4));
     
-    const openFilePath = argv._.length > 0 ? argv._[0] : undefined;
-    if (openFilePath) {
-        log.info(`Opening file requested by second-instance in new window: ${openFilePath}.`);
+    const filePath = argv._.length > 0 ? argv._[0] : undefined;
+    if (filePath) {
+        log.info(`Opening file requested by second-instance in new window: ${filePath}.`);
         const editorWindow = createEditorWindow();
         editorWindow.show();
+        editorWindow.sendEvent("open-notebook", { file: filePath });
         return;
     }
 
