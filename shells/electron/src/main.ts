@@ -34,6 +34,11 @@ const windowManager = new WindowManager();
 registerSingleton(IWindowManagerId, windowManager);
 
 //
+// Set to true after the app is ready.
+//
+let appStarted = false;
+
+//
 // Set to true when the application is shutting down.
 //
 let quitting: boolean = false;
@@ -224,6 +229,8 @@ async function onEditorWindowClosed(editorWindow: IEditorWindow): Promise<void> 
 // Called when the app is ready to start.
 //
 function appReady(): void {
+    appStarted = true;
+
     const newEditorWindow = createEditorWindow(openFilePath);
     openFilePath = undefined;
     newEditorWindow.show();
@@ -325,8 +332,13 @@ app.on('open-file', (event, filePath) => {
     log.info("== Handled open-file event, requesting to open file: " + filePath);
     event.preventDefault();
 
-    const editorWindow = createEditorWindow(filePath);
-    editorWindow.show();
+    if (appStarted) {
+        const editorWindow = createEditorWindow(filePath);
+        editorWindow.show();
+    }
+    else {
+        openFilePath = filePath;
+    }
 });
 
 //
@@ -336,8 +348,13 @@ app.on('open-url', (event, url) => {
     log.info("== Handled open-url event, requesting to open url: " + url);
     event.preventDefault();
 
-    const editorWindow = createEditorWindow(url);
-    editorWindow.show();
+    if (appStarted) {
+        const editorWindow = createEditorWindow(url);
+        editorWindow.show();
+    }
+    else {
+        openFilePath = url;
+    }
 });
 
 //
