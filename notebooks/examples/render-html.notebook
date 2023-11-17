@@ -7,17 +7,18 @@
             "cellType": "code",
             "cellScope": "global",
             "code": "display(`<h1>Hello HTML!</h2><a href=\"https://www.google.com\">Google</a><p>HTML in the house.</p>`, \"html\");",
-            "lastEvaluationDate": "2021-08-10T14:29:52.083+10:00",
+            "lastEvaluationDate": "2023-11-18T08:15:21.249+10:00",
             "output": [
                 {
                     "value": {
                         "displayType": "html",
                         "data": "<h1>Hello HTML!</h2><a href=\"https://www.google.com\">Google</a><p>HTML in the house.</p>"
-                    }
+                    },
+                    "height": 169
                 }
             ],
             "errors": [],
-            "height": 140
+            "height": 260
         }
     ]
 }
