@@ -4,7 +4,7 @@
     "scripts": {
         "clean": "rm -rf build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
-        "compile:watch": "tsc --incremental --watch",
+        "compile:watch": "tsc --incremental --watch --preserveWatchOutput",
         "c": "pnpm run compile",
         "cw": "pnpm run compile:watch"
     },

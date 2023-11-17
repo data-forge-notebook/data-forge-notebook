@@ -11,7 +11,7 @@
         "c": "npm run compile",
         "compile": "tsc --incremental",
         "cw": "npm run compile:watch",
-        "compile:watch": "tsc  --incremental --watch",
+        "compile:watch": "tsc  --incremental --watch --preserveWatchOutput",
         "t": "npm run test",
         "test": "jest --runInBand",
         "tw": "npm run test:watch",

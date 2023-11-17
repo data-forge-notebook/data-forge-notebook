@@ -4,7 +4,7 @@
     "scripts": {
         "clean": "rm -rf build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
-        "compile:watch": "tsc --incremental --watch",
+        "compile:watch": "tsc --incremental --watch --preserveWatchOutput",
         "test": "jest",
         "test:watch": "jest --watch",
         "s": "pnpm run start",

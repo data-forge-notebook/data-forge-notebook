@@ -9,7 +9,7 @@
         "c": "npm run compile",
         "compile": "tsc --incremental",
         "cw": "npm run compile:watch",
-        "compile:watch": "tsc  --incremental --watch"
+        "compile:watch": "tsc  --incremental --watch --preserveWatchOutput"
     },
     "keywords": [],
     "author": "ashley@codecapers.com.au",

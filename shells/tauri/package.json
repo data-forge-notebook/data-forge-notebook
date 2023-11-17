@@ -9,7 +9,7 @@
         "run-tauri-dev": "cargo tauri dev",
         "clean": "rm -rf ./dist build tsconfig.tsbuildinfo target resources/evaluation-engine",
         "compile": "tsc --incremental",
-        "compile:watch": "tsc --incremental --watch",
+        "compile:watch": "tsc --incremental --watch --preserveWatchOutput",
         "serve": "webpack serve --config webpack.config.js",
         "pack": "webpack --config webpack.config.js",
         "s": "pnpm run start",

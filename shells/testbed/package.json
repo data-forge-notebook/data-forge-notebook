@@ -4,7 +4,7 @@
         "start": "pnpm run serve",
         "clean": "rm -rf ./dist build tsconfig.tsbuildinfo",
         "compile": "tsc --incremental",
-        "compile:watch": "tsc --incremental --watch",
+        "compile:watch": "tsc --incremental --watch --preserveWatchOutput",
         "test": "jest --passWithNoTests",
         "test:watch": "jest --watch --passWithNoTests",
         "serve": "webpack serve --open index.html --config webpack.config.js",
