@@ -129,7 +129,22 @@ const args = process.argv.slice(app.isPackaged ? 1 : 2);
 //     }
 // }
 
-let openFilePath = args.length > 0 ? args[0] : undefined;
+//
+// Find the first file in the arguments.
+//
+function findfileInArgs(args: string[]): string | undefined {
+    for (const arg of args) {
+        if (arg.startsWith("-")) {
+            continue;
+        }
+
+        return arg;
+    }
+
+    return undefined;
+}
+
+let openFilePath = findfileInArgs(args);
 if (openFilePath) {
     log.info(`Command line request to open file: ${openFilePath}.`);
 }
@@ -353,7 +368,7 @@ app.on("second-instance", (event, commandLine, workingDirectory) => {
     const args = commandLine.slice(1);
     log.info("Parsed command line: \r\n" + JSON.stringify(args, null, 4));
     
-    const filePath = args.length > 0 ? args[0] : undefined;
+    const filePath = findfileInArgs(args);
     if (filePath) {
         log.info(`Opening file requested by second-instance in new window: ${filePath}.`);
         const editorWindow = createEditorWindow(filePath);
