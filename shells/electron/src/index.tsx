@@ -76,6 +76,20 @@ async function onNotebookSet() {
 }
 
 //
+// Raises the event in the main process to show the window after the notebook has been rendered.
+//
+async function onNotebookRendered() {
+    if (!notebookEditorViewModel.isNotebookOpen()) {
+        return;
+    }
+    ipcRenderer.send("notebook-editor-event", {
+        editorWindowId: editorWindowId,
+        eventName: "onNotebookRendered",
+        payload: {},
+    });
+}
+
+//
 // Raises the event in the main process that the notebook has been modified.
 //
 async function onNotebookModified() {
@@ -92,13 +106,10 @@ async function onNotebookModified() {
 
 notebookEditorViewModel.onEditorReady.attach(onEditorReady);
 notebookEditorViewModel.onOpenNotebookChanged.attach(onNotebookSet);
+notebookEditorViewModel.onNotebookRendered.attach(onNotebookRendered);
 notebookEditorViewModel.onModified.attach(onNotebookModified);
 
 class App extends React.Component {
-
-    async componentDidMount() {
-        await onNotebookSet();
-    }
 
     render() {
         return (

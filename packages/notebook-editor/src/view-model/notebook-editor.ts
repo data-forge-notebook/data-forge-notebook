@@ -169,6 +169,11 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     onOpenNotebookChanged: IEventSource<OpenNotebookChangedEventHandler>;
 
     //
+    // Event raised when the set notebook has been rendered.
+    //
+    onNotebookRendered: IEventSource<BasicEventHandler>;
+
+    //
     // Opens or closes the command palette.
     //
     toggleCommandPalette(): Promise<void>;
@@ -362,6 +367,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         this.evaluator.installNotebook(notebook.getInstanceId(), notebook.serialize(), notebook.getStorageId().getContainingPath());
         
         await this.onEvaluationStarted();
+
+        await this.onNotebookRendered.raise(); // Give the rendering a moment to catch up before we notify the main process.
     }
 
     //
@@ -813,6 +820,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Event raised when the open notebook have changed.
     //
     onOpenNotebookChanged: IEventSource<OpenNotebookChangedEventHandler> = new EventSource<OpenNotebookChangedEventHandler>();
+
+    //
+    // Event raised when the set notebook has been rendered.
+    //
+    onNotebookRendered: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // Event raised when code evaluation has completed.

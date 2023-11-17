@@ -127,6 +127,11 @@ if (argv.geometry) {
     }
 }
 
+let openFilePath = argv._.length > 0 ? argv._[0] : undefined;
+if (openFilePath) {
+    log.info(`Command line request to open file: ${openFilePath}.`);
+}
+
 //
 // Represents the application's main menu.
 //
@@ -139,9 +144,9 @@ mainMenu.onNewEditorWindow.attach(async () => {
 //
 // Creates a new editor window.
 //
-function createEditorWindow(): IEditorWindow {
+function createEditorWindow(openFilePath?: string): IEditorWindow {
     
-    const editorWindow = new EditorWindow();
+    const editorWindow = new EditorWindow(openFilePath);
     editorWindow.init();
     
     log.info(`== Allocated editor window ${editorWindow.getId()}.`);
@@ -202,7 +207,8 @@ async function onEditorWindowClosed(editorWindow: IEditorWindow): Promise<void> 
 // Called when the app is ready to start.
 //
 function appReady(): void {
-    const newEditorWindow = createEditorWindow();
+    const newEditorWindow = createEditorWindow(openFilePath);
+    openFilePath = undefined;
     newEditorWindow.show();
 
     if (process.env.EVALUATION_ENGINE_URL) {
@@ -302,9 +308,8 @@ app.on('open-file', (event, filePath) => {
     log.info("== Handled open-file event, requesting to open file: " + filePath);
     event.preventDefault();
 
-    const editorWindow = createEditorWindow();
+    const editorWindow = createEditorWindow(filePath);
     editorWindow.show();
-    editorWindow.sendEvent("open-notebook", { file: filePath });
 });
 
 //
@@ -314,9 +319,8 @@ app.on('open-url', (event, url) => {
     log.info("== Handled open-url event, requesting to open url: " + url);
     event.preventDefault();
 
-    const editorWindow = createEditorWindow();
+    const editorWindow = createEditorWindow(url);
     editorWindow.show();
-    editorWindow.sendEvent("open-notebook", { file: url });
 });
 
 //
@@ -350,9 +354,8 @@ app.on("second-instance", (event, commandLine, workingDirectory) => {
     const filePath = argv._.length > 0 ? argv._[0] : undefined;
     if (filePath) {
         log.info(`Opening file requested by second-instance in new window: ${filePath}.`);
-        const editorWindow = createEditorWindow();
+        const editorWindow = createEditorWindow(filePath);
         editorWindow.show();
-        editorWindow.sendEvent("open-notebook", { file: filePath });
         return;
     }
 

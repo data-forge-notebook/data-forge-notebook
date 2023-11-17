@@ -165,6 +165,15 @@ export class EditorWindow implements IEditorWindow {
     private forcingClose: boolean = false;
 
     //
+    // File to open in this window, if set.
+    //
+    private openFilePath?: string;
+
+    constructor(openFilePath?: string) {
+        this.openFilePath = openFilePath; // File to open in this window, if set.
+    }
+
+    //
     // Get the unique id of the editor window.
     //
     getId(): string {
@@ -254,7 +263,7 @@ export class EditorWindow implements IEditorWindow {
         //
         // Dev tools disabled by default:
         //
-        // this.browserWindow.webContents.openDevTools();
+        this.browserWindow.webContents.openDevTools();
         //
         
         // Handle link clicks in OS browser.
@@ -460,7 +469,15 @@ export class EditorWindow implements IEditorWindow {
 
             this.editorReady = true;
 
-            this.showIfReady();
+            if (this.openFilePath) {
+                this.log.info(`++ Opening requested file ${this.openFilePath}`);
+                this.sendEvent("invoke-command", { commandId: "open-notebook", params: { file: this.openFilePath } });
+                this.openFilePath = undefined;  
+            }
+            else {
+                this.showIfReady();
+            }
+
         },
 
         //
@@ -475,6 +492,14 @@ export class EditorWindow implements IEditorWindow {
             this.isModified = isModified;
         
             this.updateTitle();
+        },
+
+        //
+        // A notebook has been set and rendered.
+        //
+        onNotebookRendered: () => {
+            this.log.info(`++ Notebook rendered in editor ${this.getId()}`);
+
             this.showIfReady();
         },
 
