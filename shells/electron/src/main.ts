@@ -4,7 +4,6 @@
 
 import { registerSingleton } from "@codecapers/fusion";
 import { app, ipcMain } from "electron";
-import minimist from "minimist";
 import { EditorWindow, IEditorWindow, formatTitle } from "./lib/editor-window";
 import { IMainMenu, MainMenu } from "./lib/main-menu";
 import { IWindowManagerId, WindowManager } from "./lib/window-manager";
@@ -90,8 +89,6 @@ process.on("unhandledRejection", (err: any, promise: Promise<any>) => {
     immediateExit(21);
 });
 
-const argv = minimist(process.argv.slice(app.isPackaged ? 1 : 2));
-
 console.log(`Requesting single instance lock.`);
 
 const gotTheLock = app.requestSingleInstanceLock();
@@ -100,34 +97,39 @@ if (!gotTheLock) {
     immediateExit(0);
 }
 
-if (argv.geometry) {
-    const geometryParts = argv.geometry.split("+");
-    const geometryArgSyntax = `Invalid geometry argument, should be --geometry=<width>x<height>+<x>+y`;
-    if (geometryParts.length !== 3) {
-        throw new Error(geometryArgSyntax);
-    }
+const args = process.argv.slice(app.isPackaged ? 1 : 2);
+
+//
+//TODO:
+//
+// if (argv.geometry) {
+//     const geometryParts = argv.geometry.split("+");
+//     const geometryArgSyntax = `Invalid geometry argument, should be --geometry=<width>x<height>+<x>+y`;
+//     if (geometryParts.length !== 3) {
+//         throw new Error(geometryArgSyntax);
+//     }
     
-    const sizeParts = geometryParts[0].split("x");
-    if (sizeParts.length !== 2) {
-        throw new Error(geometryArgSyntax);
-    }
+//     const sizeParts = geometryParts[0].split("x");
+//     if (sizeParts.length !== 2) {
+//         throw new Error(geometryArgSyntax);
+//     }
 
-    try {
-        EditorWindow.nextWindowCoords = {
-            x: parseInt(geometryParts[1]),
-            y: parseInt(geometryParts[2]),
-            width: parseInt(sizeParts[0]),
-            height: parseInt(sizeParts[1]),
-        };
-    }
-    catch (err) {
-        log.error(`Error parsing --geometry argument:`);
-        log.error(err && err.stack || err);
-        throw new Error(geometryArgSyntax);
-    }
-}
+//     try {
+//         EditorWindow.nextWindowCoords = {
+//             x: parseInt(geometryParts[1]),
+//             y: parseInt(geometryParts[2]),
+//             width: parseInt(sizeParts[0]),
+//             height: parseInt(sizeParts[1]),
+//         };
+//     }
+//     catch (err) {
+//         log.error(`Error parsing --geometry argument:`);
+//         log.error(err && err.stack || err);
+//         throw new Error(geometryArgSyntax);
+//     }
+// }
 
-let openFilePath = argv._.length > 0 ? argv._[0] : undefined;
+let openFilePath = args.length > 0 ? args[0] : undefined;
 if (openFilePath) {
     log.info(`Command line request to open file: ${openFilePath}.`);
 }
@@ -348,10 +350,10 @@ app.on("second-instance", (event, commandLine, workingDirectory) => {
     log.info("Working directory:");
     log.info(JSON.stringify(workingDirectory, null, 4));
 
-    const argv = minimist(commandLine.slice(1))
-    log.info("Parsed command line: \r\n" + JSON.stringify(argv, null, 4));
+    const args = commandLine.slice(1);
+    log.info("Parsed command line: \r\n" + JSON.stringify(args, null, 4));
     
-    const filePath = argv._.length > 0 ? argv._[0] : undefined;
+    const filePath = args.length > 0 ? args[0] : undefined;
     if (filePath) {
         log.info(`Opening file requested by second-instance in new window: ${filePath}.`);
         const editorWindow = createEditorWindow(filePath);
