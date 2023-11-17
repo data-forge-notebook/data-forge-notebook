@@ -59,7 +59,12 @@ export interface INotebook {
     //
     // Serialize to a data structure suitable for serialization.
     //
-    serialize (): ISerializedNotebook1;
+    serialize(): ISerializedNotebook1;
+
+    //
+    // Serialize the notebook for evaluation. This excludes elements of the data that aren't needed for evaluation.
+    //
+    serializeForEval(): ISerializedNotebook1;
 }
 
 export class Notebook implements INotebook {
@@ -189,6 +194,18 @@ export class Notebook implements INotebook {
             nodejs: this.nodejsVersion,
             language: this.language,
             cells: this.cells.map(cell => cell.serialize()),
+        };
+    }
+
+    //
+    // Serialize the notebook for evaluation. This excludes elements of the data that aren't needed for evaluation.
+    //
+    serializeForEval(): ISerializedNotebook1 {
+        return {
+            version: notebookVersion,
+            nodejs: this.nodejsVersion,
+            language: this.language,
+            cells: this.cells.map(cell => cell.serializeForEval()),
         };
     }
 

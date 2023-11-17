@@ -201,6 +201,11 @@ export interface INotebookViewModel {
     serialize(): ISerializedNotebook1;
 
     //
+    // Serialize the notebook for evaluation. This excludes elements of the data that aren't needed for evaluation.
+    //
+    serializeForEval(): ISerializedNotebook1;
+
+    //
     // Save the notebook to the current filename.
     //
     save(): Promise<void>;
@@ -712,6 +717,13 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     serialize(): ISerializedNotebook1 {
         return this.notebook.serialize();
+    }
+
+    //
+    // Serialize the notebook for evaluation. This excludes elements of the data that aren't needed for evaluation.
+    //
+    serializeForEval(): ISerializedNotebook1 {
+        return this.notebook.serializeForEval();
     }
 
     //

@@ -123,6 +123,11 @@ export interface ICell {
     // Serialize to a data structure suitable for serialization.
     //
     serialize(): ISerializedCell1;
+
+    //
+    // Serialize the CELL for evaluation. This excludes elements of the data that aren't needed for evaluation.
+    //
+    serializeForEval(): ISerializedCell1;
 }
 
 export class Cell implements ICell {
@@ -376,6 +381,18 @@ export class Cell implements ICell {
             output: this.output.map(output => output.serialize()),
             errors: this.errors.map(error => error.serialize()),
             height: this.height,
+        };
+    }
+
+    //
+    // Serialize the CELL for evaluation. This excludes elements of the data that aren't needed for evaluation.
+    //
+    serializeForEval(): ISerializedCell1 {
+        return {
+            id: this.id,
+            cellType: this.cellType,
+            cellScope: this.cellType === CellType.Code && this.cellScope || undefined,
+            code: this.text,
         };
     }
 

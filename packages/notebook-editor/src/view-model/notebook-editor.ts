@@ -364,7 +364,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         await this.notifyOpenNotebookChanged(isReload);
 
-        this.evaluator.installNotebook(notebook.getInstanceId(), notebook.serialize(), notebook.getStorageId().getContainingPath());
+        this.evaluator.installNotebook(notebook.getInstanceId(), notebook.serializeForEval(), notebook.getStorageId().getContainingPath());
         
         await this.onEvaluationStarted();
 
@@ -636,7 +636,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         await notebook.flushChanges();
 
-        this.evaluator.evalNotebook(notebook.getInstanceId(), notebook.serialize(), notebook.getStorageId().getContainingPath());
+        this.evaluator.evalNotebook(notebook.getInstanceId(), notebook.serializeForEval(), notebook.getStorageId().getContainingPath());
 
         await this.onEvaluationStarted();
     }
