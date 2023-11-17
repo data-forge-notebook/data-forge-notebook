@@ -75,7 +75,9 @@
         "artifactName": "Data-Forge Notebook v2-${os}-${version}.${ext}",
         "copyright": "Copyright @ 2023 Ashley Davis",
         "directories": {
-            "output": "installer"
+            "output": "installer",
+            "buildResources": "assets"
+
         },
         "files": [
             "dist/*",
