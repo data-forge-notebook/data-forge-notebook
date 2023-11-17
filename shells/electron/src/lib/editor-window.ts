@@ -263,7 +263,7 @@ export class EditorWindow implements IEditorWindow {
         //
         // Dev tools disabled by default:
         //
-        this.browserWindow.webContents.openDevTools();
+        // this.browserWindow.webContents.openDevTools();
         //
         
         // Handle link clicks in OS browser.
