@@ -14,7 +14,6 @@ import { throttleAsync } from 'utils';
 import { forceUpdate } from 'browser-utils';
 import { isElementPartiallyInViewport } from 'browser-utils';
 import { CellType } from 'model';
-import { Lazy } from 'browser-utils';
 const classnames = require("classnames");
 
 export interface ICellProps {
@@ -256,35 +255,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                 onFocus={this.onCellFocused}
                 data-test={this.props.model.getHeight()}
                 >
-                <Lazy
-                    id={"cell-" + this.props.model.getId()}
-                    height={this.props.model.getHeight()}
-                    forceMount={this.props.model.isSelected()}
-                    onMounted={this._onHeightChanged}
-                    renderPlaceholder={this.renderCellPlaceholder}
-                    >
-                    {this.renderCellBody()}
-                </Lazy>
-            </div>
-        );
-    }
-
-    //
-    // Renders a placeholder for the cell, displayed before the cell is scrolled into view.
-    //
-    private renderCellPlaceholder = (): JSX.Element => {
-        const isSelected = this.props.model.isSelected();
-        return (
-            <div
-                className="centered-container cell-container pos-relative"
-                >
-                <div>
-                    <CellHandle
-                        cell={this}
-                        cellContainerElement={this.innerCellContainerElement}
-                        isSelected={isSelected}
-                        dragHandleProps={this.props.dragHandleProps} />
-                </div>
+                {this.renderCellBody()}
             </div>
         );
     }
