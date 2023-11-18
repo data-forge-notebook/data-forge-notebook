@@ -17,10 +17,12 @@ class App extends React.Component<{}, IAppState> {
 
         this.state = {
             config: {
-                data: {
-                    hello: "world",
-                    a: [1, 2, 3],
-                },
+                // data: 5,
+                data: "Hello world",
+                // data: {
+                //     hello: "world",
+                //     a: [1, 2, 3],
+                // },
             },
         };
     }
