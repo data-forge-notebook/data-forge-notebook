@@ -128,6 +128,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                 className="flex flex-col"
                 style={{
                     width: "100%",
+                    minWidth: "600px",
                     maxWidth: "1000px",
                     marginLeft: "auto",
                     marginRight: "auto",
@@ -265,168 +266,151 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                     </div>
                 }
 
-                <div 
-                    className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
-                    style={{
-                        border: "1px dashed #C5DAE9",
-                        backgroundColor: "#F8F8F8",
-                        borderRadius: "3px",
-                    }}
-                    >
-                    <div
-                        className="mb-1"
-                        style={headingStyle}
-                        >
-                        Start
-                    </div>
-                    <div style={textStyle}>
-                        <div
+                <div className="flex flex-row w-full mb-32">
+                    <div className="flex flex-col w-1/2">
+                        <div 
+                            className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
+                            style={{
+                                border: "1px dashed #C5DAE9",
+                                backgroundColor: "#F8F8F8",
+                                borderRadius: "3px",
+                            }}
                             >
-                            <a onClick={() => this.commander.invokeNamedCommand("new-notebook")}>
-                                New JavaScript notebook
-                            </a>
-                        </div>
-                        {/* <div>
-                            <a onClick={() => this.commander.invokeNamedCommand("new-typescript-notebook")}>
-                                New TypeScript notebook
-                            </a>
-                        </div> */}
-                        <div>
-                            <a onClick={() => this.commander.invokeNamedCommand("open-notebook")}>
-                                Open notebook...
-                            </a>
-                        </div>
-                        <div>
-                            <a onClick={() => this.commander.invokeNamedCommand("open-example-notebook")}>
-                                Open example notebook...
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            
-                <div 
-                    className="flex flex-col p-1 pl-2 m-1 mb-3"
-                    style={{
-                        border: "1px dashed #C5DAE9",
-                        backgroundColor: "#F8F8F8",
-                        borderRadius: "3px",
-                    }}
-                    >
-                    <div
-                        className="mb-1"
-                        style={headingStyle}
-                        >
-                        Examples
-                    </div>
-
-                    <div 
-                        style={textStyle}
-                        >
-                        {exampleNotebooks.map((pair, index) =>
                             <div
-                                key={index}
+                                className="mb-1"
+                                style={headingStyle}
                                 >
-                                {this.makeNotebookLink(pair[0], pair[1], false)}
+                                Start
                             </div>
-                        )}
-                    </div>
-                    <div style={bigTextStyle} className="mt-1">
-                        <a onClick={() => this.commander.invokeNamedCommand("toggle-examples-browser")}>
-                            Browse examples
-                        </a>
-                    </div>
-                </div>
+                            <div style={textStyle}>
+                                <div
+                                    >
+                                    <a onClick={() => this.commander.invokeNamedCommand("new-notebook")}>
+                                        New JavaScript notebook
+                                    </a>
+                                </div>
+                                {/* <div>
+                                    <a onClick={() => this.commander.invokeNamedCommand("new-typescript-notebook")}>
+                                        New TypeScript notebook
+                                    </a>
+                                </div> */}
+                                <div>
+                                    <a onClick={() => this.commander.invokeNamedCommand("open-notebook")}>
+                                        Open notebook...
+                                    </a>
+                                </div>
+                                <div>
+                                    <a onClick={() => this.commander.invokeNamedCommand("open-example-notebook")}>
+                                        Open example notebook...
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div 
+                            className="flex flex-col p-1 pl-2 m-1 mb-3"
+                            style={{
+                                border: "1px dashed #C5DAE9",
+                                backgroundColor: "#F8F8F8",
+                                borderRadius: "3px",
+                            }}
+                            >
+                            <div
+                                className="mb-1"
+                                style={headingStyle}
+                                >
+                                Examples
+                            </div>
 
-                <div 
-                    className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
-                    style={{
-                        border: "1px dashed #C5DAE9",
-                        backgroundColor: "#F8F8F8",
-                        borderRadius: "3px",
-                    }}
-                    >
-                    <div
-                        className="mb-1"
-                        style={headingStyle}
-                        >
-                        Help
+                            <div 
+                                style={textStyle}
+                                >
+                                {exampleNotebooks.map((pair, index) =>
+                                    <div
+                                        key={index}
+                                        >
+                                        {this.makeNotebookLink(pair[0], pair[1], false)}
+                                    </div>
+                                )}
+                            </div>
+                            <div style={bigTextStyle} className="mt-1">
+                                <a onClick={() => this.commander.invokeNamedCommand("toggle-examples-browser")}>
+                                    Browse examples
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div 
-                        style={textStyle}
-                        >
-                        <div>
-                            See the getting started <a target="_blank" href="https://wiki.data-forge-notebook.com/getting-started">guide</a> or <a target="_blank" href="https://video.data-forge-notebook.com/getting-started">video</a>.
+                    <div className="flex flex-col w-1/2">
+                        <div 
+                            className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
+                            style={{
+                                border: "1px dashed #C5DAE9",
+                                backgroundColor: "#F8F8F8",
+                                borderRadius: "3px",
+                            }}
+                            >
+                            <div
+                                className="mb-1"
+                                style={headingStyle}
+                                >
+                                Help
+                            </div>
+
+                            <div 
+                                style={textStyle}
+                                >
+                                <div>
+                                    See the getting started <a target="_blank" href="https://wiki.data-forge-notebook.com/getting-started">guide</a> or <a target="_blank" href="https://video.data-forge-notebook.com/getting-started">video</a>.
+                                </div>
+
+                                <div>
+                                    Open the {this.makeNotebookLink("Intro notebook", path.join(examplesPath, "intro.notebook"), false)}.
+                                </div>
+
+                                <div>
+                                    <a target="_blank" href="https://wiki.data-forge-notebook.com">Browse the wiki</a>.
+                                </div>
+
+                                <div>
+                                    <a target="_blank" href="https://javascript.info/">Learn JavaScript</a>.
+                                </div>
+
+                                <div>
+                                    <a target="_blank" href="https://www.nodebeginner.org/">Learn Node.js</a>.
+                                </div>
+                            </div>
+
+                            <div style={bigTextStyle} className="mt-1">
+                                Explore the <em>Help</em> menu.
+                            </div>
                         </div>
 
-                        <div>
-                            Open the {this.makeNotebookLink("Intro notebook", path.join(examplesPath, "intro.notebook"), false)}.
-                        </div>
-
-                        <div>
-                            <a target="_blank" href="https://wiki.data-forge-notebook.com">Browse the wiki</a>.
-                        </div>
-
-                        <div>
-                            <a target="_blank" href="https://javascript.info/">Learn JavaScript</a>.
-                        </div>
-
-                        <div>
-                            <a target="_blank" href="https://www.nodebeginner.org/">Learn Node.js</a>.
-                        </div>
-                    </div>
-
-                    <div style={bigTextStyle} className="mt-1">
-                        Explore the <em>Help</em> menu.
-                    </div>
-                </div>
-
-                {/* <div 
-                    className="flex flex-col p-1 pl-2 m-1 mb-3"
-                    style={{
-                        border: "1px dashed #C5DAE9",
-                        backgroundColor: "#F8F8F8",
-                        borderRadius: "3px",
-                    }}
-                    >
-                    <div
-                        className="mb-1"
-                        style={headingStyle}
-                        >
-                        Share
-                    </div>
-                    <div style={textStyle}>
-                        Tell your friends and colleagues about <a target="_blank" href={this.makeLandingPageLink()}>Data-Forge Notebook</a>:
-                        <ul>
-                            <li><a target="_blank" href="https://twitter.com/intent/tweet?text=Data-Forge%20Notebook%20is%20freaking%20awesome!%20https://www.data-forge-notebook.com%20@ashleydavis75%20%23data-forge-notebook">Share on Twitter</a></li>
-                            <li><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A//www.data-forge-notebook.com">Share on Facebook</a></li>
-                        </ul>
-                    </div>
-                </div> */}
-
-                <div
-                    className="flex flex-col flex-grow ml-2 mr-2 mb-3 p-1 pl-2" 
-                    style={{
-                        border: "1px dashed #C5DAE9",
-                        backgroundColor: "#F8F8F8",
-                        borderRadius: "3px",
-                    }}
-                    >
-                    <div
-                        className="mb-1"
-                        style={headingStyle}
-                        >
-                        Give feedback
-                    </div>
-                    <div style={textStyle}>
-                        <div>
-                            <a target="_blank" href="http://issues.data-forge-notebook.com/new">Report a problem</a>
-                        </div>
-                        <div className="mt-1">
-                            Drop an email to <a target="_blank" href="mailto:support@data-forge-notebook.com">support@data-forge-notebook.com</a>
-                        </div>
-                        <div className="mt-1">
-                            Talk to the developer on Slack: send an email to ask for an invite.
+                        <div
+                            className="flex flex-col flex-grow ml-2 mr-2 mb-3 p-1 pl-2" 
+                            style={{
+                                border: "1px dashed #C5DAE9",
+                                backgroundColor: "#F8F8F8",
+                                borderRadius: "3px",
+                            }}
+                            >
+                            <div
+                                className="mb-1"
+                                style={headingStyle}
+                                >
+                                Give feedback
+                            </div>
+                            <div style={textStyle}>
+                                <div>
+                                    <a target="_blank" href="http://issues.data-forge-notebook.com/new">Report a problem</a>
+                                </div>
+                                <div className="mt-1">
+                                    Drop an email to <a target="_blank" href="mailto:support@data-forge-notebook.com">support@data-forge-notebook.com</a>
+                                </div>
+                                <div className="mt-1">
+                                    Talk to the developer on Slack: send an email to ask for an invite.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
