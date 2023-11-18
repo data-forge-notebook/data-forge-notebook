@@ -1,3 +1,4 @@
 {
-    "displayType": [ "html" ]
+    "displayType": [ "html" ],
+    "defaultHeight": 400
 }

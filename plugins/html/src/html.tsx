@@ -15,7 +15,8 @@ export class Html extends React.Component<ITextProps, {}> {
         return (
             <iframe 
                 style={{
-                    height: "100%",
+                    width: "100%",
+                    height: "100vh",
                     pointerEvents: "none",
                 }}
                 src={src}
