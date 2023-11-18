@@ -18,7 +18,11 @@ registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.
     getExampleNotebooks() {
         return [];
-    }
+    },
+
+    idFromString(filePath: string) {
+        return mockId;
+    },
 });
 
 registerSingleton(IConfirmationDialogId, {
@@ -32,8 +36,13 @@ const mockId: any = {
         return undefined; 
     },
 };
-const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
-const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
+
+// Example notebook:
+// const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
+// const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
+
+// Welcome screen.
+const notebookEditorViewModel = new NotebookEditorViewModel();
 
 function App() {
     return (
