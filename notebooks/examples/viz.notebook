@@ -14,32 +14,6 @@
         {
             "id": "ea3ea260-2e9c-11e9-9f0a-97b474081a71",
             "cellType": "markdown",
-            "code": "## Automatic display\r\n\r\nThe last expression in a cell will be automatically displayed using the default viz plugin for its type.",
-            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "code",
-            "cellScope": "local",
-            "code": "5 + 3",
-            "lastEvaluationDate": "2023-11-06T19:11:24.092+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "Whatever you want to log!\n"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 244
-        },
-        {
-            "id": "ea3ea260-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
             "code": "## Plain ole' console logging\r\n\r\nUse `console.log` to output whatever you want.",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
