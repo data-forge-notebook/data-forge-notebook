@@ -77,30 +77,38 @@ export class Table extends React.Component<ITableProps, {}> {
         return (
             <pre
                 style={{ 
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    paddingTop: "12px",
-                    paddingBottom: "12px",
+                    width: "100%",
+                    height: "100vh",
+                    margin: "0px",
+                    padding: "0px",
+                    overflow: "auto",
                 }}  
                 >
-                <table>
-                    <thead>
-                        <tr>
-                            {table.columns.map((column: string, i: number) => 
-                                <th key={i}>{column}</th>
-                            )}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {table.rows.map((row: any[], i: number) => 
-                            <tr key={i}>
-                                {table.columns.map((column: string, i: number) =>
-                                    <td key={i}>{row[i]}</td>
+                <div
+                    style={{ 
+                        marginTop: "6px",
+                        marginBottom: "36px",
+                    }}  
+                    >
+                    <table>
+                        <thead>
+                            <tr>
+                                {table.columns.map((column: string, i: number) => 
+                                    <th key={i}>{column}</th>
                                 )}
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {table.rows.map((row: any[], i: number) => 
+                                <tr key={i}>
+                                    {table.columns.map((column: string, i: number) =>
+                                        <td key={i}>{row[i]}</td>
+                                    )}
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </pre>
         );
     }
