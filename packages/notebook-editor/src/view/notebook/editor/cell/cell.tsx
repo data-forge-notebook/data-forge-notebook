@@ -14,6 +14,11 @@ import { throttleAsync } from 'utils';
 import { forceUpdate } from 'browser-utils';
 import { isElementPartiallyInViewport } from 'browser-utils';
 import { CellType } from 'model';
+import { makeButton } from '../../../make-button';
+import { InjectProperty, InjectableClass } from '@codecapers/fusion';
+import { ICommander, ICommanderId } from '../../../../services/commander';
+import { Position } from '@blueprintjs/core';
+import { IPlatform, IPlatformId } from '../../../../services/platform';
 const classnames = require("classnames");
 
 export interface ICellProps {
@@ -42,7 +47,14 @@ export interface ICellProps {
 export interface ICellState {
 }
 
+@InjectableClass()
 export class CellUI extends React.Component<ICellProps, ICellState> {
+
+    @InjectProperty(ICommanderId)
+    commander!: ICommander;
+
+    @InjectProperty(IPlatformId)
+    platform!: IPlatform;
 
     //
     // The HTML element that contains the cell.
@@ -249,50 +261,129 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     }
 
     render () {
+        const canExecute = this.props.model.getCellType() === CellType.Code;
+        const notebookExecuting = this.props.notebookModel.isExecuting();
+        const isSelected = this.props.model.isSelected();
+
         return (
             <div 
                 ref={this.cellContainerElement}
                 onFocus={this.onCellFocused}
                 data-test={this.props.model.getHeight()}
                 >
-                {this.renderCellBody()}
-            </div>
-        );
-    }
-
-    //
-    // Renders the body of the cell.
-    //
-    private renderCellBody(): JSX.Element {
-        const isSelected = this.props.model.isSelected();
-        return (
-            <div
-                className="centered-container cell-container pos-relative"
-                >
-                <div>
-                    <CellHandle
-                        cell={this}
-                        cellContainerElement={this.innerCellContainerElement}
-                        isSelected={isSelected}
-                        dragHandleProps={this.props.dragHandleProps} 
-                        />
-
-                    <div
-                        ref={this.innerCellContainerElement}
-                        className={classnames(
-                            "cell-border",
-                            "inline-block",
-                            "align-top",
-                            {
-                                focused: isSelected,
-                                empty: this.props.model.getText() === "",
-                            }
-                        )}
-                        style={{
-                            width: "calc(100% - 16px)",
-                        }}
+                <div 
+                    className="centered-container cell-container pos-relative"
                     >
-                        {this.renderCellType()}
+                    <div
+                        className="pointer-events-none"
+                        style={{ 
+                            position: "absolute", 
+                            left: 0, 
+                            right: 0, 
+                            top: 0, 
+                            bottom: 0, 
+                            zIndex: 10,
+                        }}
+                        >
+                        <div className="cell-hover-content pointer-events-auto">
+                            <div
+                                className="flex flex-col items-start" 
+                                style={{ 
+                                    position: "absolute", 
+                                    top: 3, 
+                                    bottom: 0, 
+                                    left: "calc(100% + 5px)",
+                                    minHeight: "55px",
+                                }}
+                                >
+                                <div>
+                                    {makeButton(this.commander, "move-cell-up", { pos: Position.LEFT }, this.platform, { cell: this.props.model })}
+                                </div>
+
+                                <div>
+                                    {makeButton(this.commander, "move-cell-down", { pos: Position.LEFT }, this.platform, { cell: this.props.model })}
+                                </div>
+
+                                <div className="mt-4">
+                                    {makeButton(this.commander, "delete-cell", { pos: Position.LEFT, intent: "danger" }, this.platform, { cell: this.props.model })}
+                                </div>
+                            </div>
+
+                            <div>
+                                <div 
+                                    className="flex flex-col items-end"
+                                    style={{ 
+                                        position: "absolute", 
+                                        top: 3, 
+                                        bottom: 0,
+                                        right: "calc(100% + 5px)",
+                                        minHeight: "55px",
+                                    }}
+                                    >
+                                    <div>
+                                        {canExecute 
+                                            && makeButton(this.commander, "eval-to-cell", {}, this.platform, { cell: this.props.model }, notebookExecuting ? "executing" : "notExecuting")
+                                        }
+                                    </div>
+
+                                    <div>
+                                        {canExecute 
+                                            && makeButton(this.commander, "eval-single-cell", {}, this.platform, { cell: this.props.model }, notebookExecuting ? "executing" : "notExecuting")
+                                        }
+                                    </div>
+
+                                    <div className="flex-grow" />
+
+                                    <div className="mb-1 flex flex-row">
+                                        <div>
+                                            {makeButton(this.commander, "insert-markdown-cell-below", { 
+                                                    pos: Position.BOTTOM, 
+                                                }, 
+                                                this.platform,
+                                                { cell: this.props.model }
+                                            )}
+                                        </div>
+
+                                        <div>
+                                            {makeButton(this.commander, "insert-code-cell-below", { 
+                                                    pos: Position.BOTTOM, 
+                                                }, 
+                                                this.platform, 
+                                                { cell: this.props.model }
+                                            )}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <CellHandle
+                            cell={this}
+                            cellContainerElement={this.innerCellContainerElement}
+                            isSelected={isSelected}
+                            dragHandleProps={this.props.dragHandleProps}
+                            />
+
+                        <div 
+                            ref={this.innerCellContainerElement}
+                            className={classnames(
+                                "cell-border",
+                                "inline-block", 
+                                "align-top",
+                                {
+                                    focused: isSelected,
+                                    empty: this.props.model.getText() === "",
+                                }
+                            )}
+                            style={{
+                                width: "calc(100% - 16px)",
+                            }}
+                            >
+                            {this.renderCellType()}
+                        </div>
                     </div>
                 </div>
             </div>

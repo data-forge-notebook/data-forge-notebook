@@ -23,6 +23,8 @@ import "./services/impl/notification";
 import "./services/impl/evaluator-client";
 
 import "./actions/eval-notebook-action";
+import "./actions/eval-to-cell-action";
+import "./actions/eval-single-cell-action";
 import "./actions/new-notebook-action";
 import "./actions/open-notebook-action";
 import "./actions/save-notebook-action";

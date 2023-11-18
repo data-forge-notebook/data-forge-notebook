@@ -18,6 +18,7 @@ import { IUndoRedo, IUndoRedoId } from "../services/undoredo";
 import { IHotkeysOverlayViewModel } from "../components/hotkeys-overlay";
 import { IRecentFiles, IRecentFiles_ID } from "../services/recent-files";
 import { IZoom, IZoomId } from "../services/zoom";
+import { ICellViewModel } from "./cell";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -123,6 +124,16 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     //
     evaluateNotebook(): Promise<void>;
     
+    //
+    // Evaluate up to the particular cell.
+    //
+    evaluateToCell(cell?: ICellViewModel): Promise<void>;
+
+    //
+    // Evaluate the single cell.
+    //
+    evaluateSingleCell(cell: ICellViewModel): Promise<void>;
+
     //
     // Set the cell currently in the clipboard.
     //
@@ -637,6 +648,66 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         await notebook.flushChanges();
 
         this.evaluator.evalNotebook(notebook.getInstanceId(), notebook.serializeForEval(), notebook.getStorageId().getContainingPath());
+
+        await this.onEvaluationStarted();
+    }
+
+    //
+    // Evaluate up to the particular cell.
+    //
+    async evaluateToCell(cell: ICellViewModel): Promise<void> {
+        
+        if (!await this.checkCanEvaluateNotebook()) {
+            return;
+        }
+
+        const notebook = this.getOpenNotebook();
+
+        if (this.evaluator.isWorking()) {
+            //
+            // Trying to start an evaluation while one is already in progress will stop it.
+            //
+            this.evaluator.stopEvaluation(notebook.getInstanceId());
+            await this.onEvaluationFinished();
+            return;
+        }
+
+        await notebook.flushChanges();
+
+        this.evaluator.evalToCell(notebook.getInstanceId(), notebook.serializeForEval(), cell.getId(), notebook.getStorageId().getContainingPath());
+
+        await this.onEvaluationStarted();
+    }
+
+    //
+    // Evaluate the single cell.
+    //
+    async evaluateSingleCell(cell: ICellViewModel): Promise<void> {
+        
+        if (!await this.checkCanEvaluateNotebook()) {
+            return;
+        }
+
+        const notebook = this.getOpenNotebook();
+
+        if (this.evaluator.isWorking()) {
+            //
+            // Trying to start an evaluation while one is already in progress will stop it.
+            //
+            this.evaluator.stopEvaluation(notebook.getInstanceId());
+            await this.onEvaluationFinished();
+            return;
+        }
+
+        
+        await notebook.flushChanges();
+
+        if (cell.getCellType() !== CellType.Code) {
+            this.notification.warn("Requested cell is not a code cell.");
+            return;
+        }
+
+        this.evaluator.evalSingleCell(notebook.getInstanceId(), notebook.serializeForEval(), cell.getId(), notebook.getStorageId().getContainingPath());
 
         await this.onEvaluationStarted();
     }

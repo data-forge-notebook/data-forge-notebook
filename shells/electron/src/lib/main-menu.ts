@@ -9,6 +9,8 @@ const opn = require('open');
 
 import "notebook-editor/build/actions/new-notebook-action";
 import "notebook-editor/build/actions/eval-notebook-action";
+import "notebook-editor/build/actions/eval-to-cell-action";
+import "notebook-editor/build/actions/eval-single-cell-action";
 import "notebook-editor/build/actions/open-notebook-action";
 import "notebook-editor/build/actions/redo-action";
 import "notebook-editor/build/actions/undo-action";
@@ -322,6 +324,8 @@ export class MainMenu implements IMainMenu {
                 label: "&Run",
                 submenu: [
                     this.createMenu("eval-notebook"),
+                    this.createMenu("eval-to-cell"),
+                    this.createMenu("eval-single-cell"),
 
                     this.createSeparator(),
 
