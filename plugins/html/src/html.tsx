@@ -17,7 +17,6 @@ export class Html extends React.Component<ITextProps, {}> {
                 style={{
                     width: "100%",
                     height: "100vh",
-                    pointerEvents: "none",
                 }}
                 src={src}
                 sandbox="allow-scripts"
