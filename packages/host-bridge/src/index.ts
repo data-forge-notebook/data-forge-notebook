@@ -1,16 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
 //
-// Auxillary data to pass to the plugin.
-//
-export interface IPluginAux {
-    //
-    // Current working directory for DFN (if applicable).
-    //
-    cwd?: string;
-}
-
-//
 // Requests/configures the plugin.
 //
 export interface IPluginRequest {
@@ -29,11 +19,6 @@ export interface IPluginRequest {
     // Data to be rendered by the plugin.
     //
     data: any;
-
-    //
-    // Auxilliary configuration.
-    //
-    aux?: IPluginAux;
 }
 
 //
@@ -44,7 +29,7 @@ export interface IHostConnectOptions {
     //
     // Callback for the host to configure the visualization plugin.
     //
-    configure: (config: IPluginRequest) => Promise<void>;
+    configure: (config: IConfigEventData) => Promise<void>;
 }
 
 //
@@ -91,20 +76,37 @@ interface IHostEvent<T> {
     //
     data?: T;
 }
+
+//
+// Options to pass to the pluging.
+//
+export interface IPluginOptions {
+    //
+    // Working directory for the current notebook.
+    //
+    cwd?: string;
+}
+
+
 //
 // Defines the configuration event.
 //
-interface IConfigEventData {
+export interface IConfigEventData {
 
     //
     // Configuration for the plugin.
     //
-    config: IPluginRequest;
+    pluginRequest: IPluginRequest;
 
     //
     // ID for the plugin.
     //
     pluginId: string;
+
+    //
+    // Options for the plugin.
+    //
+    pluginOptions: IPluginOptions;
 }
 
 //
@@ -217,7 +219,7 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
             // Host is requesting configuration of the plugin.
             await handleErrors(
                 "configure", 
-                async () => options.configure(eventData.config),
+                async () => options.configure(eventData),
                 () => { // Success
                     postMessage("configured");
                     onResize();
@@ -238,7 +240,6 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
 // Options to the connect function.
 //
 export interface IPluginConnectOptions {
-
     //
     // Event raised when the plugin size has changed.
     // TODO: May not need to expose this to the plugin. It happens automatically already and doesn't need to happen more than once.
@@ -256,7 +257,7 @@ export interface IPluginConnection {
 //
 // Connects the communication bridge to a visualization plugin running in an iframe.
 //
-export function connnectPlugin(iframe: HTMLIFrameElement, pluginRequest: IPluginRequest, options?: IPluginConnectOptions): IPluginConnection {
+export function connnectPlugin(iframe: HTMLIFrameElement, pluginRequest: IPluginRequest, pluginOptions: IPluginOptions, options?: IPluginConnectOptions): IPluginConnection {
     if (!iframe.contentWindow) {
         throw new Error(`Iframe content not loaded!`);
     }
@@ -310,8 +311,9 @@ export function connnectPlugin(iframe: HTMLIFrameElement, pluginRequest: IPlugin
     // Configures the plugin that is running within the iframe.
     //
     postMessage<IConfigEventData>("config", { 
-        config: pluginRequest,
-        pluginId: pluginId,
+        pluginRequest: pluginRequest,
+        pluginId,
+        pluginOptions,
     });
 
     return {

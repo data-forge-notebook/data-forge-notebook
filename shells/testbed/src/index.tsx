@@ -40,6 +40,8 @@ function App() {
                             array: [1, 2, 3],
                         },
                     }}
+                    pluginOptions={{
+                    }}
                     />
             </div>
         </div>

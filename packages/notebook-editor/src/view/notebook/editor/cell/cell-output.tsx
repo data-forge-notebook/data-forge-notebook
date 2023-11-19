@@ -15,6 +15,7 @@ import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../../services
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { updateState } from 'browser-utils';
 import { IPluginRequest } from 'host-bridge';
+import { INotebookViewModel } from '../../../../view-model/notebook';
 
 //
 // The border of the output.
@@ -39,7 +40,16 @@ const OutputBorder = styled.div`
 `;
 
 export interface ICellOutputProps {
+
+    //
+    // View model for the cell.
+    //
     model: ICellOutputViewModel;
+
+    //
+    // View model for the notebook.   
+    //
+    notebookModel: INotebookViewModel;
 
     //
     // Callback to update cell height.
@@ -140,6 +150,9 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                         <PluggableVisualization
                             pluginRequest={this.state.pluginRequest}
                             pluginConfig={this.state.pluginConfig}
+                            pluginOptions={{
+                                cwd: this.props.notebookModel.getStorageId().getContainingPath(),
+                            }}
                             onResize={this.setHeightFromContent}
                             />
                     </OutputBorder>
@@ -213,6 +226,9 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 <PluggableVisualization
                                     pluginRequest={this.state.pluginRequest}
                                     pluginConfig={this.state.pluginConfig}
+                                    pluginOptions={{
+                                        cwd: this.props.notebookModel.getStorageId().getContainingPath(),
+                                    }}        
                                     height={isOutputFullHeight ? "100%" : `${this.state.height-DRAG_HANDLE_HEIGHT}px`}
                                     />
                             </div>

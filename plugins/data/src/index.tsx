@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { StructuredData } from "./structured-data";
-import { connectHost, IPluginRequest } from "host-bridge";
+import { connectHost, IConfigEventData } from "host-bridge";
 
 interface IAppState {
     //
     // Plugin configuration.
     //
-    config?: IPluginRequest;
+    config?: IConfigEventData;
 }
 
 class App extends React.Component<{}, IAppState> {
@@ -33,8 +33,8 @@ class App extends React.Component<{}, IAppState> {
     render() {
         return (
             <StructuredData
-                displayType={this.state.config?.displayType}
-                data={this.state.config?.data}
+                displayType={this.state.config?.pluginRequest.displayType}
+                data={this.state.config?.pluginRequest.data}
                 />
         );
     }

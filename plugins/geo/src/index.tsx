@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Geo } from "./geo";
-import { IPluginRequest, connectHost } from "host-bridge";
+import { IConfigEventData, connectHost } from "host-bridge";
 
 interface IAppState {
     //
     // Plugin configuration.
     //
-    config?: IPluginRequest;
+    config?: IConfigEventData;
 }
 
 class App extends React.Component<{}, IAppState> {
@@ -33,8 +33,8 @@ class App extends React.Component<{}, IAppState> {
     render() {
         return (
             <Geo 
-                data={this.state.config?.data} 
-                aux={this.state.config?.aux}
+                data={this.state.config?.pluginRequest.data} 
+                cwd={this.state.config?.pluginOptions.cwd}
                 />
         );
     }

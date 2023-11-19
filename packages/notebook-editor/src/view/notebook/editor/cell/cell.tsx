@@ -243,6 +243,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                 <CodeCellUI 
                     language={this.props.language}
                     model={this.props.model as ICodeCellViewModel} 
+                    notebookModel={this.props.notebookModel}
                     onHeightChanged={this._onHeightChanged}
                     />
             );

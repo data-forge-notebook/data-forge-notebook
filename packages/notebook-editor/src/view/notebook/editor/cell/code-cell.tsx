@@ -10,6 +10,7 @@ import { debounceAsync, handleAsyncErrors } from 'utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
 import { CellScope } from 'model';
 import { forceUpdate } from 'browser-utils';
+import { INotebookViewModel } from '../../../../view-model/notebook';
 
 export interface ICodeCellProps {
 
@@ -22,6 +23,11 @@ export interface ICodeCellProps {
     // The view-model for the code cell.
     //
     model: ICodeCellViewModel;
+
+    //
+    // The view-model for the notebook.
+    //
+    notebookModel: INotebookViewModel;
 
     //
     // Callback to update cell height.
@@ -152,6 +158,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                                 {outputs.map(output => 
                                     <CellOutputUI 
                                         model={output} 
+                                        notebookModel={this.props.notebookModel}   
                                         key={output.getInstanceId()} 
                                         onHeightChanged={() => this.props.onHeightChanged()}
                                         />

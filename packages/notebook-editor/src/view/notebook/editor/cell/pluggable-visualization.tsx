@@ -2,7 +2,7 @@
 // Renders a user pluggable visualization for a cell output.
 //
 
-import { connnectPlugin, IPluginRequest } from 'host-bridge';
+import { connnectPlugin, IPluginOptions, IPluginRequest } from 'host-bridge';
 import * as React from 'react';
 import { IPluginConfig } from '../../../../services/plugin-repository';
 
@@ -11,6 +11,11 @@ export interface IPluggableVisualizationProps {
     // Determines the plugin that is requested for visualization.
     //
     pluginRequest: IPluginRequest;
+
+    //
+    // Options to pass to the plugin.
+    //
+    pluginOptions: IPluginOptions;
 
     //
     // Determines the plugin that is requested for visualization.
@@ -60,6 +65,7 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
         connnectPlugin(
             this.iframeRef.current,
             this.props.pluginRequest, 
+            this.props.pluginOptions,
             {
                 onResize: async (height: number) => {
                     if (this.props.onResize) {

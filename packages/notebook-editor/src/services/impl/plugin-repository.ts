@@ -148,10 +148,6 @@ export class PluginRepo implements IPluginRepo {
         console.log(`Requesting plugin content:`);
         console.log(pluginRequest);
 
-        pluginRequest.aux = {
-            cwd: this.paths.getWorkingDirectory(),
-        };
-
         let matchedPlugin = this.matchPlugin(pluginRequest);
         if (!matchedPlugin) {
             console.log(`Didn't match any plugin, returning default plugin:`);

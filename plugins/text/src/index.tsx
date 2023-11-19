@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Text } from "./text";
-import { IPluginRequest, connectHost } from "host-bridge";
+import { IConfigEventData, connectHost } from "host-bridge";
 
 interface IAppState {
     //
     // Plugin configuration.
     //
-    config?: IPluginRequest;
+    config?: IConfigEventData;
 }
 
 class App extends React.Component<{}, IAppState> {
@@ -32,7 +32,7 @@ class App extends React.Component<{}, IAppState> {
 
     render() {
         return (
-            <Text text={this.state.config?.data} />
+            <Text text={this.state.config?.pluginRequest.data} />
         );
     }
 }
