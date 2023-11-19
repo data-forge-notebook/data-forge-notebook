@@ -40,6 +40,9 @@ export class StructuredData extends React.Component<IStructuredDataProps, {}> {
                     marginBottom: "0px",
                     paddingTop: "2px",
                     paddingBottom: "2px",
+                    width: "100%",
+                    height: "100vh",
+                    overflow: "auto"
                 }}  
                 >
                 <JSONTree 

@@ -162,16 +162,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
 
         const height = Math.max(this.state.height, MIN_OUTPUT_HEIGHT);
 
-        const outputScrollerStyle: any = {
-            height: "100%",
-            overflow: "auto",
-        };
-
-        const isOutputFullHeight = this.state.pluginConfig?.isFullHeight || false;
-        if (isOutputFullHeight) {
-            outputScrollerStyle.overflow = "hidden";
-        }
-
         //
         // After the plugin is initially size up, render a different version that allows the user to resize it.
         //
@@ -218,20 +208,18 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 this.props.onHeightChanged();
                             }}
                             >
-                            <div style={outputScrollerStyle} >
-                                {/*
-                                    Note: No need to handle plugin resize event here, because it's only required when the plugin
-                                    is initially rendered, which is handled above.
-                                */}
-                                <PluggableVisualization
-                                    pluginRequest={this.state.pluginRequest}
-                                    pluginConfig={this.state.pluginConfig}
-                                    pluginOptions={{
-                                        cwd: this.props.notebookModel.getStorageId().getContainingPath(),
-                                    }}        
-                                    height={isOutputFullHeight ? "100%" : `${this.state.height-DRAG_HANDLE_HEIGHT}px`}
-                                    />
-                            </div>
+                            {/*
+                                Note: No need to handle plugin resize event here, because it's only required when the plugin
+                                is initially rendered, which is handled above.
+                            */}
+                            <PluggableVisualization
+                                pluginRequest={this.state.pluginRequest}
+                                pluginConfig={this.state.pluginConfig}
+                                pluginOptions={{
+                                    cwd: this.props.notebookModel.getStorageId().getContainingPath(),
+                                }}        
+                                height={`${this.state.height-DRAG_HANDLE_HEIGHT}px`}
+                                />
                         </Resizable>
 
                         <div className="output-hover-content" >
