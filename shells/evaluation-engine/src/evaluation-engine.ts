@@ -20,23 +20,23 @@ export async function installNotebook(process: NodeJS.Process, projectPath: stri
     const log = {
         info: (msg: string): void => {
             onEvent("debug-log", { level: "info", msg });
-            console.log(msg);
+            // console.log(msg);
         },
         warn: (msg: string): void => {
             onEvent("debug-log", { level: "warn", msg });
-            console.warn(msg);
+            // console.warn(msg);
         },
         error: (msg: string): void => {
             onEvent("debug-log", { level: "error", msg });
-            console.error(msg);
+            // console.error(msg);
         },
         verbose: (msg: string): void => {
             onEvent("debug-log", { level: "verbose", msg });
-            console.log(msg);
+            // console.log(msg);
         },
         debug: (msg: string): void => {
             onEvent("debug-log", { level: "debug", msg });
-            console.log(msg);
+            // console.log(msg);
         },
     };
 
@@ -59,23 +59,23 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
     const log = {
         info: (msg: string): void => {
             onEvent("debug-log", { level: "info", msg });
-            console.log(msg);
+            // console.log(msg);
         },
         warn: (msg: string): void => {
             onEvent("debug-log", { level: "warn", msg });
-            console.warn(msg);
+            // console.warn(msg);
         },
         error: (msg: string): void => {
             onEvent("debug-log", { level: "error", msg });
-            console.error(msg);
+            // console.error(msg);
         },
         verbose: (msg: string): void => {
             onEvent("debug-log", { level: "verbose", msg });
-            console.log(msg);
+            // console.log(msg);
         },
         debug: (msg: string): void => {
             onEvent("debug-log", { level: "debug", msg });
-            console.log(msg);
+            // console.log(msg);
         },
     };
 
