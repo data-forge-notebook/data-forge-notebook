@@ -90,7 +90,7 @@ export class Geo extends React.Component<IGeoProps, {}> {
                     }
                     else if (marker.iconUrl.startsWith("./")) {
                         // Assume relative path to marker icon.
-                        iconDef.iconUrl = `file://${this.props.aux?.cwd}/${marker.iconUrl}`;
+                        iconDef.iconUrl = `file://${this.props.aux?.cwd}/${marker.iconUrl.substring(2)}`;
                     }
                     else {
                         // Assume absolute path to marker icon.
