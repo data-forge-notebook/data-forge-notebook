@@ -7,112 +7,36 @@
             "cellType": "code",
             "cellScope": "global",
             "code": "display({\r\n    location: [0, 0],\r\n    zoom: 5,\r\n    markers: [[null, null]],\r\n}, \"geo\");",
-            "lastEvaluationDate": "2023-11-13T08:43:31.069+10:00",
+            "lastEvaluationDate": "2023-11-19T16:18:24.655+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "text",
-                        "data": "!! An error occurred while evaluating notebook \"notebook-9c7afe33-f9ae-43df-b2e6-7cec19979c72\" details follow.\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Filename ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "notebook-9c7afe33-f9ae-43df-b2e6-7cec19979c72\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error source ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "Code evaluation\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Cell id ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "e4165aa1-b9b9-11ea-a905-e3caaae6960d\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error message ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "display.geo is not a function\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error location ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "<no-location>\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error stacktrace ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "TypeError: display.geo is not a function\n    at notebook-9c7afe33-f9ae-43df-b2e6-7cec19979c72:5:13\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:571:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:202:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:563:26)\n    at wrapperFn (notebook-9c7afe33-f9ae-43df-b2e6-7cec19979c72:4:3)\n    at notebook-9c7afe33-f9ae-43df-b2e6-7cec19979c72:25:10\n    at CodeEvaluator.evalGeneratedCode (C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:611:13)\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:715:26\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Translated error message and stack trace ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "{\n    \"display\": \"display.geo is not a function\\r\\n at Code cell, line 1\",\n    \"cellId\": \"e4165aa1-b9b9-11ea-a905-e3caaae6960d\",\n    \"stack\": \" at Code cell, line 1\"\n}\n"
+                        "displayType": "geo",
+                        "data": {
+                            "location": [
+                                0,
+                                0
+                            ],
+                            "zoom": 5,
+                            "markers": [
+                                [
+                                    null,
+                                    null
+                                ]
+                            ]
+                        }
                     }
                 }
             ],
-            "errors": [
-                {
-                    "msg": "display.geo is not a function\r\n at Code cell, line 1"
-                }
-            ],
-            "height": 1320
+            "errors": [],
+            "height": 309
         },
         {
             "id": "573ae0f0-b9bf-11ea-82d6-6f17affc695b",
             "cellType": "code",
             "cellScope": "global",
             "code": "display({\r\n    location: [0, 0],\r\n    zoom: 5,\r\n    markers: [[undefined, undefined]],\r\n}, \"geo\");",
-            "lastEvaluationDate": "2020-06-29T14:16:53.244+10:00",
+            "lastEvaluationDate": "2023-11-19T16:18:24.652+10:00",
             "output": [
                 {
                     "value": {

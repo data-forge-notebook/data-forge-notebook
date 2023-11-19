@@ -6,21 +6,19 @@
             "id": "9308bc42-8430-11e8-98d7-1b57ff7e4edd",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const express = require('express');\r\ndisplay(express);",
-            "lastEvaluationDate": "2018-09-05T18:44:58.978+10:00",
-            "output": [],
+            "code": "const express = require('express');\r\ndisplay(JSON.stringify(express), \"text\")",
+            "lastEvaluationDate": "2023-11-19T16:30:35.429+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "function createApplication() {\n  var app = function(req, res, next) {\n    app.handle(req, res, next);\n  };\n\n  mixin(app, EventEmitter.prototype, false);\n  mixin(app, proto, false);\n\n  // expose the prototype that will get set on requests\n  app.request = Object.create(req, {\n    app: { configurable: true, enumerable: true, writable: true, value: app }\n  })\n\n  // expose the prototype that will get set on responses\n  app.response = Object.create(res, {\n    app: { configurable: true, enumerable: true, writable: true, value: app }\n  })\n\n  app.init();\n  return app;\n}"
+                    },
+                    "height": 317
+                }
+            ],
             "errors": [],
-            "height": 90
-        },
-        {
-            "id": "9308bc43-8430-11e8-98d7-1b57ff7e4edd",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "",
-            "lastEvaluationDate": "2018-09-05T18:44:58.989+10:00",
-            "output": [],
-            "errors": [],
-            "height": 82
+            "height": 416
         }
     ]
 }
