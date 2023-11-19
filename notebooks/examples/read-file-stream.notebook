@@ -1,26 +1,23 @@
 {
-    "version": 2,
-    "sheet": {
-        "id": "3d344ac0-f629-11e9-9262-d96d156d0976",
-        "language": "javascript",
-        "cells": [
-            {
-                "id": "3d344ac1-f629-11e9-9262-d96d156d0976",
-                "cellType": "code",
-                "cellScope": "global",
-                "code": "const fs = require(\"fs\");\r\n\r\nconst readStream = fs.createReadStream('./example.csv');\r\nreadStream.pipe(process.stdout);",
-                "lastEvaluationDate": "2020-06-22T17:17:03.555+10:00",
-                "output": [
-                    {
-                        "value": {
-                            "displayType": "string",
-                            "data": "Name,     Sex, Age, Height (in), Weight (lbs)\r\nAlex,       M,   41,       74,      170\r\nBert,       M,   42,       68,      166\r\nCarl,       M,   32,       70,      155\r\nDave,       M,   39,       72,      167\r\nElly,       F,   30,       66,      124\r\nFran,       F,   33,       66,      115\r\nGwen,       F,   26,       64,      121\r\nHank,       M,   30,       71,      158\r\nIvan,       M,   53,       72,      175\r\nJake,       M,   32,       69,      143\r\nKate,       F,   47,       69,      139\r\nLuke,       M,   34,       72,      163\r\nMyra,       F,   23,       62,       98\r\nNeil,       M,   36,       75,      160\r\nOmar,       M,   38,       70,      145\r\nPage,       F,   31,       67,      135\r\nQuin,       M,   29,       71,      176\r\nRuth,       F,   28,       65,      131\r\n"
-                        }
+    "version": 3,
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "3d344ac1-f629-11e9-9262-d96d156d0976",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const fs = require(\"fs\");\r\n\r\nconst readStream = fs.createReadStream('./example.csv', 'utf8');\r\nreadStream.pipe(process.stdout);",
+            "lastEvaluationDate": "2023-11-19T17:02:30.332+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "Name,     Sex, Age, Height (in), Weight (lbs)\nAlex,       M,   41,       74,      170\nBert,       M,   42,       68,      166\nCarl,       M,   32,       70,      155\nDave,       M,   39,       72,      167\nElly,       F,   30,       66,      124\nFran,       F,   33,       66,      115\nGwen,       F,   26,       64,      121\nHank,       M,   30,       71,      158\nIvan,       M,   53,       72,      175\nJake,       M,   32,       69,      143\nKate,       F,   47,       69,      139\nLuke,       M,   34,       72,      163\nMyra,       F,   23,       62,       98\nNeil,       M,   36,       75,      160\nOmar,       M,   38,       70,      145\nPage,       F,   31,       67,      135\nQuin,       M,   29,       71,      176\nRuth,       F,   28,       65,      131\n"
                     }
-                ],
-                "errors": [],
-                "height": 187
-            }
-        ]
-    }
+                }
+            ],
+            "errors": [],
+            "height": 337
+        }
+    ]
 }

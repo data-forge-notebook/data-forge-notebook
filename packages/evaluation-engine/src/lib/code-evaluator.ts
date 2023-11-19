@@ -308,7 +308,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Captures standard output while evaluating a notebook.
     //
-    private stdoutWriteOverride = (value: string): boolean => {
+    private stdoutWriteOverride = (...args: any[]): boolean => {
 
         // this.log.info(`Stdout ${args[0]} in async context ${executionAsyncId()} for cell ${this.getCurCellId()}.`);
 
@@ -316,11 +316,11 @@ export class CodeEvaluator implements ICodeEvaluator {
             if (this.onDisplay) {
                 this.onDisplay(this.getCurCellId(), {
                     displayType: "text",
-                    data: value,
+                    data: args[0]
                 });
             }
 
-            return this.oldStdoutWrite.apply(this.process.stdout, value);
+            return this.oldStdoutWrite.apply(this.process.stdout, args);
         }
         else {
             return true;
