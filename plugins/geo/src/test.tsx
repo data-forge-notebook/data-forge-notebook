@@ -17,16 +17,57 @@ class App extends React.Component<{}, IAppState> {
 
         this.state = {
             config: {
-                data: {
-                    location: [51.505, -0.10],
-                    zoom: 13,
-                    markers: [
-                        [51.505, -0.1],
-                        [51.5, -0.09],
-                        [51.51, -0.08]
+                // data: {
+                //     location: [51.505, -0.10],
+                //     zoom: 13,
+                //     markers: [
+                //         [51.505, -0.1],
+                //         [51.5, -0.09],
+                //         [51.51, -0.08]
+                //     ],
+                // },
+
+                "data": {
+                    "location": [
+                        51.505,
+                        -0.1
                     ],
+                    "zoom": 13,
+                    "markers": [
+                        {
+                            "location": [
+                                51.505,
+                                -0.1
+                            ],
+                            "iconUrl": "./marker.png",
+                            "iconSize": [
+                                30,
+                                49
+                            ],
+                            "tooltip": "Such a great marker!"
+                        },
+                        {
+                            "location": [
+                                51.5,
+                                -0.09
+                            ],
+                            "iconUrl": "./marker.png",
+                            "tooltip": "Such a great marker!"
+                        },
+                        {
+                            "location": [
+                                51.51,
+                                -0.08
+                            ],
+                            "iconUrl": "./marker.png",
+                            "tooltip": "Such a great marker!"
+                        }
+                    ]
                 },
-                aux: {},
+
+                aux: {
+                    "cwd": "c:\\projects\\data-forge-notebook\\editor-core\\notebooks\\examples",
+                },
             },
         };
     }
