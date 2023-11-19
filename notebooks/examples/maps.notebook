@@ -61,8 +61,8 @@
             "id": "e77c6110-8397-11ea-a633-d3cbf0040317",
             "cellType": "code",
             "cellScope": "global",
-            "code": "const iconUrl = \"marker.png\"; // Relative to notebook path.\r\nconst iconSize = [30, 49]; // Optional pixel dimensions of the marker icon.\r\nconst tooltip = \"Such a great marker!\"; // Tooltip for the marker.\r\n\r\ndisplay({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        {\r\n            location: [51.505, -0.1],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n        {\r\n            location: [51.5, -0.09],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n        {\r\n            location: [51.51, -0.08],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n    ],\r\n}, \"geo\");",
-            "lastEvaluationDate": "2020-06-22T17:15:38.616+10:00",
+            "code": "const iconUrl = \"./marker.png\"; // Relative to notebook path.\r\nconst iconSize = [30, 49]; // Optional pixel dimensions of the marker icon.\r\nconst tooltip = \"Such a great marker!\"; // Tooltip for the marker.\r\n\r\ndisplay({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        {\r\n            location: [51.505, -0.1],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n        {\r\n            location: [51.5, -0.09],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n        {\r\n            location: [51.51, -0.08],\r\n            iconUrl,\r\n            iconSize,\r\n            tooltip,\r\n        },\r\n    ],\r\n}, \"geo\");",
+            "lastEvaluationDate": "2023-11-19T10:33:27.338+10:00",
             "output": [
                 {
                     "value": {
@@ -79,7 +79,7 @@
                                         51.505,
                                         -0.1
                                     ],
-                                    "iconUrl": "marker.png",
+                                    "iconUrl": "./marker.png",
                                     "iconSize": [
                                         30,
                                         49
@@ -91,7 +91,11 @@
                                         51.5,
                                         -0.09
                                     ],
-                                    "iconUrl": "marker.png",
+                                    "iconUrl": "./marker.png",
+                                    "iconSize": [
+                                        30,
+                                        49
+                                    ],
                                     "tooltip": "Such a great marker!"
                                 },
                                 {
@@ -99,7 +103,11 @@
                                         51.51,
                                         -0.08
                                     ],
-                                    "iconUrl": "marker.png",
+                                    "iconUrl": "./marker.png",
+                                    "iconSize": [
+                                        30,
+                                        49
+                                    ],
                                     "tooltip": "Such a great marker!"
                                 }
                             ]
@@ -124,7 +132,7 @@
             "cellType": "code",
             "cellScope": "global",
             "code": "display({\r\n    location: [ 37.830124319877235, -122.47979164123535 ],\r\n    zoom: 13,\r\n    geojson: {\r\n        \"type\": \"FeatureCollection\",\r\n        \"features\": [\r\n            {\r\n                \"type\": \"Feature\",\r\n                \"properties\": {},\r\n                \"geometry\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -122.47867584228514,\r\n                        37.81893781173967\r\n                    ]\r\n                }\r\n            },\r\n            {\r\n                \"type\": \"Feature\",\r\n                \"properties\": {},\r\n                \"geometry\": {\r\n                    \"type\": \"Polygon\",\r\n                    \"coordinates\": [\r\n                        [\r\n                            [\r\n                                -122.49700069427489,\r\n                                37.821887146654376\r\n                            ],\r\n                            [\r\n                                -122.4991464614868,\r\n                                37.82171764783966\r\n                            ],\r\n                            [\r\n                                -122.49850273132326,\r\n                                37.81798857543524\r\n                            ],\r\n                            [\r\n                                -122.50923156738281,\r\n                                37.82090404811055\r\n                            ],\r\n                            [\r\n                                -122.51232147216798,\r\n                                37.823344820392535\r\n                            ],\r\n                            [\r\n                                -122.50150680541992,\r\n                                37.8271414168374\r\n                            ],\r\n                            [\r\n                                -122.48743057250977,\r\n                                37.83093781796035\r\n                            ],\r\n                            [\r\n                                -122.48313903808594,\r\n                                37.82822612280363\r\n                            ],\r\n                        ]\r\n                    ]\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}, \"geo\");",
-            "lastEvaluationDate": "2020-06-22T17:15:38.900+10:00",
+            "lastEvaluationDate": "2023-11-19T10:33:27.347+10:00",
             "output": [
                 {
                     "value": {
