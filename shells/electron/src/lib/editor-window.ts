@@ -246,6 +246,7 @@ export class EditorWindow implements IEditorWindow {
                 contextIsolation: false,
                 webviewTag: true,
                 additionalArguments: args,
+                webSecurity: false, // Disabled this to allow plugins to load local files (e.g. marker images in the maps plugin).
             },
         });
 
