@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Simple example of plotting maps using Data-Forge Notebook.",
     "cells": [
         {
             "id": "61db5db0-839a-11ea-b847-239c4f95efcb",

@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Shows a selection of ways to preview your data in Data-Forge Notebook.",
     "cells": [
         {
             "id": "d0647090-2e9c-11e9-9f0a-97b474081a71",

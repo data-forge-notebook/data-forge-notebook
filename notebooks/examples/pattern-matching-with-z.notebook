@@ -2,6 +2,7 @@
     "version": 2,
     "id": "f9795270-2012-11eb-bad8-a383365ef30a",
     "language": "javascript",
+    "description": "Shows how to match patterns with the Z library.",
     "cells": [
         {
             "id": "1adbec20-2013-11eb-bad8-a383365ef30a",

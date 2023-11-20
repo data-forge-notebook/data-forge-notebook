@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Scrapes data from a web page.",
     "cells": [
         {
             "id": "7bddd060-94a1-11e8-bc7a-393e3296a4a5",

@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Shows how to render HTML.",
     "cells": [
         {
             "id": "3b79dd01-948a-11e8-8960-155134b446b4",

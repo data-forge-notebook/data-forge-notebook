@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Example of loading, transforming and saving a JSON file.",
     "cells": [
         {
             "id": "715b3300-a773-11e8-be47-d189ccafed88",

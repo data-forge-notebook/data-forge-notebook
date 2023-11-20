@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Pipes a file to standard output using Node.js streams.",
     "cells": [
         {
             "id": "3d344ac1-f629-11e9-9262-d96d156d0976",

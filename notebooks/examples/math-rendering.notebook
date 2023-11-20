@@ -1,6 +1,7 @@
 {
     "version": 2,
     "language": "javascript",
+    "description": "Renders a math formula in Data-Forge Notebook.",
     "cells": [
         {
             "id": "4f8d9a90-fa09-11e8-803f-13a71c3e4e49",

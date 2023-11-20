@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Conducts ongoing performance testing of a HTTP end-point or REST API.",
     "cells": [
         {
             "id": "e2820790-e351-11ea-b82c-7bc38953f9a2",

@@ -2,6 +2,7 @@
     "version": 3,
     "nodejs": "v16.14.0",
     "language": "javascript",
+    "description": "Calculates a bunch of random numbers.",
     "cells": [
         {
             "id": "8f526d80-8763-11ee-b8c4-e52f9150cb72",

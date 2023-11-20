@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Shows how to call a REST API from Data-Forge Notebook.",
     "cells": [
         {
             "id": "f0078d21-accd-11e8-acc9-1f4073078ebd",

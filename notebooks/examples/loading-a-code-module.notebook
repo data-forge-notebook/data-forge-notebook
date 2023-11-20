@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Shows how to load a separate JavaScript code module into your notebook.",    
     "cells": [
         {
             "id": "26035251-da79-11e8-9dbd-99c140282e28",

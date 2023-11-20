@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Shows how to use global variables in Data-Forge Notebook.",
     "cells": [
         {
             "id": "01299661-acde-11e8-921e-bde3efc344bc",

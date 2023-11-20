@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Example of using the file system in Data-Forge Notebook",
     "cells": [
         {
             "id": "16125731-95da-11e8-93c0-9b886ae8e3da",

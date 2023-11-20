@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Examples of rendering charts using Data-Forge Notebook.",
     "cells": [
         {
             "id": "a27e68d0-6fc3-11e9-8a9b-9ba94dd2c7a5",

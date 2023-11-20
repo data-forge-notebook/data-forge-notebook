@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Example of parsing JavaScript to an abstract syntax tree (AST) using Babel.",
     "cells": [
         {
             "id": "9c882d50-7efc-11ea-a340-f3285a3cd6bb",

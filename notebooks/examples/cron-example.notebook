@@ -1,6 +1,7 @@
 {
     "version": 3,
     "language": "javascript",
+    "description": "Creates a scheduled task using the Cron library.",
     "cells": [
         {
             "id": "4b2d7130-f31a-11ea-bfbc-fb3fa6416ecf",
