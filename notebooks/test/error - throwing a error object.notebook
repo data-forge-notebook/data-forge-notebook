@@ -1,22 +1,19 @@
 {
     "version": 1,
-    "sheet": {
-        "id": "2a0bc261-84de-11e8-bd48-252399c91c27",
-        "language": "javascript",
-        "cells": [
-            {
-                "id": "2a0bc263-84de-11e8-bd48-252399c91c27",
-                "cellType": "code",
-                "cellScope": "global",
-                "code": "throw new Error(\"foobar\");",
-                "lastEvaluationDate": "2020-03-18T14:20:48.917+10:00",
-                "output": [],
-                "errors": [
-                    {
-                        "msg": "foobar\r\nat Code cell, line 1"
-                    }
-                ]
-            }
-        ]
-    }
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "2a0bc263-84de-11e8-bd48-252399c91c27",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "throw new Error(\"foobar\");",
+            "lastEvaluationDate": "2020-03-18T14:20:48.917+10:00",
+            "output": [],
+            "errors": [
+                {
+                    "msg": "foobar\r\nat Code cell, line 1"
+                }
+            ]
+        }
+    ]
 }

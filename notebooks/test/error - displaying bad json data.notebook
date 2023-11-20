@@ -1,27 +1,24 @@
 {
     "version": 1,
-    "sheet": {
-        "id": "00b33aa0-fb67-11e9-a309-5fcd36eeac13",
-        "language": "javascript",
-        "cells": [
-            {
-                "id": "00b33aa1-fb67-11e9-a309-5fcd36eeac13",
-                "cellType": "code",
-                "cellScope": "global",
-                "code": "const data = \"fooey\";\r\ndisplay.json(data);",
-                "lastEvaluationDate": "2020-03-18T13:42:24.909+10:00",
-                "output": [
-                    {
-                        "values": [
-                            {
-                                "data": "fooey",
-                                "displayType": "json"
-                            }
-                        ]
-                    }
-                ],
-                "errors": []
-            }
-        ]
-    }
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "00b33aa1-fb67-11e9-a309-5fcd36eeac13",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const data = \"fooey\";\r\ndisplay.json(data);",
+            "lastEvaluationDate": "2020-03-18T13:42:24.909+10:00",
+            "output": [
+                {
+                    "values": [
+                        {
+                            "data": "fooey",
+                            "displayType": "json"
+                        }
+                    ]
+                }
+            ],
+            "errors": []
+        }
+    ]
 }

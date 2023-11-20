@@ -1,22 +1,19 @@
 {
     "version": 1,
-    "sheet": {
-        "id": "535b81e0-fb67-11e9-b3c2-c1f12ec08bef",
-        "language": "javascript",
-        "cells": [
-            {
-                "id": "535b81e1-fb67-11e9-b3c2-c1f12ec08bef",
-                "cellType": "code",
-                "cellScope": "global",
-                "code": "const axios = require(\"axios\");\r\n\r\nconst response = await axios.get(\"http://www.google.com\");\r\ndisplay(response);",
-                "lastEvaluationDate": "2020-03-18T13:43:01.234+10:00",
-                "output": [],
-                "errors": [
-                    {
-                        "msg": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'socket' -> object with constructor 'Socket'\n    --- property '_httpMessage' closes the circle\r\nat Code cell, line 4"
-                    }
-                ]
-            }
-        ]
-    }
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "535b81e1-fb67-11e9-b3c2-c1f12ec08bef",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const axios = require(\"axios\");\r\n\r\nconst response = await axios.get(\"http://www.google.com\");\r\ndisplay(response);",
+            "lastEvaluationDate": "2020-03-18T13:43:01.234+10:00",
+            "output": [],
+            "errors": [
+                {
+                    "msg": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'socket' -> object with constructor 'Socket'\n    --- property '_httpMessage' closes the circle\r\nat Code cell, line 4"
+                }
+            ]
+        }
+    ]
 }

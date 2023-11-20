@@ -1,38 +1,35 @@
 {
     "version": 2,
     "nodejs": "12.19.0",
-    "sheet": {
-        "id": "4a380db0-2b8e-11eb-a08f-cd513c58f979",
-        "language": "javascript",
-        "cells": [
-            {
-                "id": "4a380db1-2b8e-11eb-a08f-cd513c58f979",
-                "cellType": "code",
-                "cellScope": "global",
-                "code": "const a = 1;",
-                "lastEvaluationDate": "2020-11-21T10:14:11.362+10:00",
-                "output": [],
-                "errors": [
-                    {
-                        "msg": "unknown: Unexpected token, expected \",\" "
-                    }
-                ],
-                "height": 119
-            },
-            {
-                "id": "4d9605c0-2b8e-11eb-a08f-cd513c58f979",
-                "cellType": "code",
-                "cellScope": "global",
-                "code": "const b = ((1);",
-                "lastEvaluationDate": "2020-11-21T10:14:11.362+10:00",
-                "output": [],
-                "errors": [
-                    {
-                        "msg": "unknown: Unexpected token, expected \",\" \r\nat Code cell, line 1"
-                    }
-                ],
-                "height": 82
-            }
-        ]
-    }
+    "language": "javascript",
+    "cells": [
+        {
+            "id": "4a380db1-2b8e-11eb-a08f-cd513c58f979",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const a = 1;",
+            "lastEvaluationDate": "2020-11-21T10:14:11.362+10:00",
+            "output": [],
+            "errors": [
+                {
+                    "msg": "unknown: Unexpected token, expected \",\" "
+                }
+            ],
+            "height": 119
+        },
+        {
+            "id": "4d9605c0-2b8e-11eb-a08f-cd513c58f979",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "const b = ((1);",
+            "lastEvaluationDate": "2020-11-21T10:14:11.362+10:00",
+            "output": [],
+            "errors": [
+                {
+                    "msg": "unknown: Unexpected token, expected \",\" \r\nat Code cell, line 1"
+                }
+            ],
+            "height": 82
+        }
+    ]
 }

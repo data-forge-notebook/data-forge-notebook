@@ -1,31 +1,28 @@
 {
     "version": 1,
-    "sheet": {
-        "id": "f3c08f50-24e3-11e9-a63a-c97fe03898f5",
-        "language": "typescript",
-        "cells": [
-            {
-                "id": "f3c08f51-24e3-11e9-a63a-c97fe03898f5",
-                "cellType": "code",
-                "cellScope": "global",
-                "code": "function print_something(what: number): void {\r\n    console.log(what);\r\n}\r\n\r\nprint_something(\"Hello TypeScript!\");",
-                "lastEvaluationDate": "2020-03-18T14:21:24.093+10:00",
-                "output": [
-                    {
-                        "values": [
-                            {
-                                "data": "Hello TypeScript!\n",
-                                "displayType": "string"
-                            }
-                        ]
-                    }
-                ],
-                "errors": [
-                    {
-                        "msg": "Argument of type '\"Hello TypeScript!\"' is not assignable to parameter of type 'number'.\r\nat Code cell, line 5"
-                    }
-                ]
-            }
-        ]
-    }
+    "language": "typescript",
+    "cells": [
+        {
+            "id": "f3c08f51-24e3-11e9-a63a-c97fe03898f5",
+            "cellType": "code",
+            "cellScope": "global",
+            "code": "function print_something(what: number): void {\r\n    console.log(what);\r\n}\r\n\r\nprint_something(\"Hello TypeScript!\");",
+            "lastEvaluationDate": "2020-03-18T14:21:24.093+10:00",
+            "output": [
+                {
+                    "values": [
+                        {
+                            "data": "Hello TypeScript!\n",
+                            "displayType": "string"
+                        }
+                    ]
+                }
+            ],
+            "errors": [
+                {
+                    "msg": "Argument of type '\"Hello TypeScript!\"' is not assignable to parameter of type 'number'.\r\nat Code cell, line 5"
+                }
+            ]
+        }
+    ]
 }
