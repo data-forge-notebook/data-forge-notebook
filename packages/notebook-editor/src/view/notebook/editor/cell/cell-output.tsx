@@ -3,7 +3,6 @@
 //
 
 import * as React from 'react';
-import styled from 'styled-components';
 import { NumberSize, Resizable } from "re-resizable";
 import { Icon } from '@blueprintjs/core';
 import { Direction } from 're-resizable/lib/resizer';
@@ -16,28 +15,6 @@ import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { updateState } from 'browser-utils';
 import { IPluginRequest } from 'host-bridge';
 import { INotebookViewModel } from '../../../../view-model/notebook';
-
-//
-// The border of the output.
-//
-const OutputBorder = styled.div`
-    font-family: 'Source Code Pro', monospace !important;
-    font-size: 0.85em;
-    border: 1px dashed #F8F8F8;
-    border-top: 1px dashed rgba(0, 0, 0, 0);
-    overflow: hidden;
-    transition: border 0.2s ease-in-out;
-    padding: 6px;
-    padding-bottom: 0px;
-    background-color: #FBFBFB;
-    user-select: text;
-    height: 100%;
-
-    :hover {
-        border: 1px dashed rgba(0, 0, 0, 0.1);
-        transition: border 0.2s ease-in-out;
-    }
-`;
 
 export interface ICellOutputProps {
 
@@ -142,7 +119,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                     <ErrorBoundary
                         what={`cell output - type: ${what}`}
                         >
-                        <OutputBorder>
+                        <div className="output-border">
                             <PluggableVisualization
                                 pluginRequest={this.pluginRequest}
                                 pluginConfig={this.pluginConfig}
@@ -151,7 +128,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 }}
                                 onResize={this.setHeightFromContent}
                                 />
-                        </OutputBorder>
+                        </div>
                     </ErrorBoundary>
                 );
             }
@@ -168,7 +145,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                 what={`cell output - type: ${what}`}
                 >
                 <div className="output-hover-region pos-relative">
-                    <OutputBorder className="pos-relative">
+                    <div className="output-border pos-relative">
                         <Resizable
                             style={{
                                 overflow: "hidden",
@@ -238,7 +215,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     />
                             </div>
                         </div>
-                    </OutputBorder>
+                    </div>
 
                 </div>
             </ErrorBoundary>

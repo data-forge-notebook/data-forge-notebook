@@ -133,6 +133,48 @@ body {
     display: block;
 }
 
+.error-border {
+    border: 1px dashed rgba(255, 0, 0, 0.6);
+    border-top: none;
+    color: red;
+    padding: 8px;
+    user-select: text;
+}
+
+.output-border {
+    font-family: 'Source Code Pro', monospace !important;
+    font-size: 0.85em;
+    border: 1px dashed #F8F8F8;
+    border-top: 1px dashed rgba(0, 0, 0, 0);
+    overflow: hidden;
+    transition: border 0.2s ease-in-out;
+    padding: 6px;
+    padding-bottom: 0px;
+    background-color: #FBFBFB;
+    user-select: text;
+    height: 100%;
+
+    :hover {
+        border: 1px dashed rgba(0, 0, 0, 0.1);
+        transition: border 0.2s ease-in-out;
+    }
+}
+
+.outputs-border {
+    border-top: 1px dashed #F8F8F8;
+    transition: border 0.2s ease-in-out;
+
+    :hover {
+        border-top: 1px dashed transparent;
+        transition: border 0.2s ease-in-out;
+    }
+}
+
+.errors-border {
+    border-top: 1px dashed red;
+    transition: border 0.2s ease-in-out;
+}
+
 /*
 Hover classes:
 

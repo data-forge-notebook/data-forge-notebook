@@ -4,7 +4,6 @@ const humanizeDuration = require('humanize-duration');
 import moment from 'moment';
 import { ICodeCellViewModel } from '../../../../view-model/code-cell';
 import { CellOutputUI } from './cell-output';
-import styled from 'styled-components';
 import { Switch, Position, Tooltip } from '@blueprintjs/core';
 import { debounceAsync, handleAsyncErrors } from 'utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
@@ -37,21 +36,6 @@ export interface ICodeCellProps {
 
 export interface ICodeCellState {
 }
-
-const OutputsBorder = styled.div`
-    border-top: 1px dashed #F8F8F8;
-    transition: border 0.2s ease-in-out;
-
-    :hover {
-        border-top: 1px dashed transparent;
-        transition: border 0.2s ease-in-out;
-    }
-`;
-
-const ErrorsBorder = styled.div`
-    border-top: 1px dashed red;
-    transition: border 0.2s ease-in-out;
-`;
 
 export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> {
   
@@ -143,18 +127,18 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                         }}
                         >             
                         {errors.length > 0
-                            && <ErrorsBorder>
+                            && <div className="errors-border">
                                 {errors.map((error, index) => 
                                     <CellErrorUI 
                                         msg={error.getMsg()} 
                                         key={error.getInstanceId()} 
                                         />
                                 )}
-                            </ErrorsBorder>
+                            </div>
                         }
 
                         {outputs.length > 0
-                            && <OutputsBorder>
+                            && <div className="outputs-border">
                                 {outputs.map(output => 
                                     <CellOutputUI 
                                         model={output} 
@@ -163,7 +147,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                                         onHeightChanged={() => this.props.onHeightChanged()}
                                         />
                                 )}
-                            </OutputsBorder>
+                            </div>
                         }
                     </div>
                 </div>
