@@ -6,7 +6,6 @@ const fs = require('fs-extra');
 const axios = require('axios');
 const { spawn, execSync } = require('child_process');
 const { hoist } = require('hoist-modules');
-const path = require('path');
 
 const BUILD_PARENT_DIR = process.env.BUILD_PARENT_DIR;
 if (!BUILD_PARENT_DIR) {

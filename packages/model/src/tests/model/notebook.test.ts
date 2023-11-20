@@ -7,7 +7,7 @@ describe("model / notebook", () => {
 
         const theLanguage = "javascript";
         const theNodeJsVersion = "v10.0.0";
-        const notebook = new Notebook(theNodeJsVersion, theLanguage, []);
+        const notebook = new Notebook(theNodeJsVersion, theLanguage, [], undefined);
         expect(notebook.getInstanceId().length).toBeGreaterThan(0);
         expect(notebook.getLanguage()).toEqual(theLanguage);
         expect(notebook.getCells()).toEqual([]);
@@ -17,7 +17,7 @@ describe("model / notebook", () => {
     test("can serialize", () => {
         const theLanguage = "javascript";
         const theNodeJsVersion = "v10.0.0";
-        const notebook = new Notebook(theNodeJsVersion, theLanguage, []);
+        const notebook = new Notebook(theNodeJsVersion, theLanguage, [], undefined);
         expect(notebook.serialize()).toEqual({
             version: 3,
             language: theLanguage,
@@ -105,7 +105,7 @@ describe("model / notebook", () => {
 
     test("can add first cell", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell: any = {};
         notebook.addCell(0, mockCell);
@@ -115,7 +115,7 @@ describe("model / notebook", () => {
 
     test("can add second cell", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -127,7 +127,7 @@ describe("model / notebook", () => {
 
     test("can add second cell at start", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -139,7 +139,7 @@ describe("model / notebook", () => {
 
     test("can add cell in the middle", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -153,14 +153,14 @@ describe("model / notebook", () => {
 
     test("throws when adding a cell beyond the range", () => {
 
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
         expect(() => notebook.addCell(1, {} as any))
             .toThrow();
     });
 
     test("can delete cell", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell1: any = {
             getId: () => "A1",
@@ -181,14 +181,14 @@ describe("model / notebook", () => {
 
     test("throws when deleting a cell that doesn't exist", () => {
 
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
         expect(() => notebook.deleteCell("non-exist-cell"))
             .toThrow();
     });
 
     test("can move cell to end", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -203,7 +203,7 @@ describe("model / notebook", () => {
 
     test("can move cell to start", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -218,7 +218,7 @@ describe("model / notebook", () => {
 
     test("can move cell to middle", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell1: any = {};
         const mockCell2: any = {};
@@ -233,7 +233,7 @@ describe("model / notebook", () => {
 
     test("can find cell by id", () => {
         
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         const mockCell1: any = {
             getId: () => "A1",
@@ -254,13 +254,13 @@ describe("model / notebook", () => {
 
     test("returns undefined when finding a cell that doesn't exist", () => {
 
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
         expect(notebook.findCell("non-existing-cell")).toBeUndefined();
     });
 
     test("can set nodejs version", () => {
 
-        const notebook = new Notebook("", "", []);
+        const notebook = new Notebook("", "", [], undefined);
 
         expect(notebook.getNodejsVersion()).toBe("");
 

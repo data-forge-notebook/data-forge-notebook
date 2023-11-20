@@ -2,11 +2,11 @@ import { InjectProperty, InjectableSingleton } from "@codecapers/fusion";
 import * as path from "path";
 import { IFile, IFileId } from "./file";
 import { IIdGenerator, IIdGeneratorId } from "utils";
-import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
+import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { IDialogs, IDialogsId } from "./dialogs";
 import { ISerializedNotebook1 } from "model";
-import globby from 'globby';
 import { IPaths, IPaths_ID } from "notebook-editor/build/services/paths";
+import { exampleNotebooks } from "../data/example-notebooks";
 
 //
 // Identifies a notebook in storage.
@@ -191,9 +191,17 @@ export class NotebookRepository implements INotebookRepository {
     //
     // Gets the list of example notebooks.
     //
-    async getExampleNotebooks(): Promise<string[]> {
+    // Technically this doesn't need to be an async function, but let's keep it that
+    // way in case we want to load example notebooks from a database in the future.
+    //
+    async getExampleNotebooks(): Promise<IExampleNotebook[]> {
         const examplesPath = this.paths.getExamplesPath();
-        const exampleNotebooks = await globby("*.notebook", { cwd: examplesPath });
-        return exampleNotebooks.map(fileName => path.join(examplesPath, fileName));
+        return exampleNotebooks.map(example => {
+            return {
+                name: example.file,
+                description: example.description,
+                storageId: new NotebookStorageId(example.file, examplesPath),
+            };
+        });
     }
 }

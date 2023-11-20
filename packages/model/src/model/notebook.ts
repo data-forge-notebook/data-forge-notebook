@@ -22,6 +22,11 @@ export interface INotebook {
     getLanguage(): string;
 
     //
+    // Gets the description of the notebook, if any.
+    //
+    getDescription(): string | undefined;
+
+    //
     // Get all cells in the notebook.
     //
     getCells(): ICell[];
@@ -86,14 +91,20 @@ export class Notebook implements INotebook {
     private language: string;
 
     //
+    // Description of the notebook, if any.
+    //
+    private description?: string;
+
+    //
     // List of cells in the notebook.
     //
     private cells: ICell[];
 
-    constructor(nodejsVersion: string | undefined, language: string, cells: ICell[]) {
+    constructor(nodejsVersion: string | undefined, language: string, cells: ICell[], description: string | undefined) {
         this.nodejsVersion = nodejsVersion;
         this.language = language;
         this.cells = cells;
+        this.description = description;
     }
     
     //
@@ -109,6 +120,13 @@ export class Notebook implements INotebook {
     //
     getLanguage(): string {
         return this.language;
+    }
+
+    //
+    // Gets the description of the notebook, if any.
+    //
+    getDescription(): string | undefined {
+        return this.description;
     }
 
     //
@@ -194,6 +212,7 @@ export class Notebook implements INotebook {
             nodejs: this.nodejsVersion,
             language: this.language,
             cells: this.cells.map(cell => cell.serialize()),
+            description: this.description,
         };
     }
 
@@ -225,6 +244,6 @@ export class Notebook implements INotebook {
             cells = input.cells && input.cells.map(cell => Cell.deserialize(cell)) || [];
         }
 
-        return new Notebook(input.nodejs, language, cells);
+        return new Notebook(input.nodejs, language, cells, input.description);
     }
 }

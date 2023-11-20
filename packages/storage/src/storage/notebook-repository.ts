@@ -1,6 +1,26 @@
 import { ISerializedNotebook1 } from "model";
 
 //
+// Reference to an example notebook.
+//
+export interface IExampleNotebook {
+    //
+    // Name of the notebook.
+    //
+    name: string;
+
+    // 
+    // Description of the notebook.
+    //
+    description?: string;
+
+    //
+    // Storage ID for loading the notebook.
+    //
+    storageId: INotebookStorageId
+}
+
+//
 // ID for the notebook repository service.
 //
 export const INotebookRepositoryId = "INotebookRepository";
@@ -64,5 +84,5 @@ export interface INotebookRepository {
     //
     // Gets the list of example notebooks.
     //
-    getExampleNotebooks(): Promise<string[]>;
+    getExampleNotebooks(): Promise<IExampleNotebook[]>;
 }

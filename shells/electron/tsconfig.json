@@ -72,6 +72,7 @@
       "plugins",
       "packages",
       "build-setup.js",
+      "prep-examples.js",
       "jest.config.js",
       "webpack.config.js",
       "coverage"

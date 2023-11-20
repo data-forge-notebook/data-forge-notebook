@@ -142,6 +142,11 @@ export interface ISerializedNotebook1 {
     language: string;
 
     //
+    // Description of the notebook, if any.
+    //
+    description?: string;
+
+    //
     // Serialized cells.
     //
     cells: ISerializedCell1[];

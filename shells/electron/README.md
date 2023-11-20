@@ -169,3 +169,14 @@ When running the evaluation engine you must set the port to match:
 set PORT=7000
 ```
 
+## Adding example notebook data
+
+Add a new example notebook. Make sure it has a description set.
+
+Then run this script to regenerate the example notebooks metadata:
+
+```bash
+pnpm run prep-examples
+```
+
+Then check and commit the update to `./src/data/example-notebooks.ts`.

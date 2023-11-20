@@ -10,7 +10,7 @@ import { ICommander, ICommanderId } from "../../services/commander";
 import { humanizeAccelerator, ICommand } from "../../services/command";
 import { IPlatform, IPlatformId } from "../../services/platform";
 import * as path from "path";
-import { INotebookRepository, INotebookRepositoryId } from "storage";
+import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { IRecentFiles, IRecentFiles_ID } from "../../services/recent-files";
 import { WelcomeScreen } from "./welcome-screen";
 import { asyncHandler } from "utils";
@@ -51,7 +51,7 @@ export interface INotebookEditorState {
     //
     // List of example noteboks.
     //
-    exampleNotebooks?: string[];
+    exampleNotebooks?: IExampleNotebook[];
 }
 
 @InjectableClass()
@@ -128,7 +128,6 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
         await this.closeRecentFilesPicker();
         const notebookStorageId = this.notebookRepository.idFromString(filePath);
         await this.props.model.openSpecificNotebook(notebookStorageId);
-
     }
 
     //
@@ -167,9 +166,8 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     //
     // Opens an example notebook.
     //
-    private openExampleNotebook = async (filePath: string): Promise<void> => {
+    private openExampleNotebook = async (storageId: INotebookStorageId): Promise<void> => {
         await this.closeExampleBrowser();
-        const storageId = this.notebookRepository.idFromString(filePath);
         await this.props.model.openSpecificNotebook(storageId);
     }
 
@@ -233,21 +231,21 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                         onChange={this.openExampleNotebook}
                         items={this.state.exampleNotebooks}
                         showAllItems={true}
-                        renderItem={(filePath: string) => 
+                        renderItem={(exampleNotebook: IExampleNotebook) => 
                             <div className="flex flex-row">
                                 <div className="flex flex-col flex-grow">
-                                    <div>{path.basename(filePath)}</div>
+                                    <div>{exampleNotebook.name}</div>
                                     <div
                                         style={{
                                             fontSize: "0.8em",
                                         }}
                                         >
-                                        {path.dirname(filePath)}
+                                        {exampleNotebook.description}
                                     </div>
                                 </div>
                             </div>    
                         }
-                        itemValue={(filePath: string) => filePath}
+                        itemValue={(exampleNotebook: IExampleNotebook) => exampleNotebook.storageId}
                         pickExactItem={true}
                         />
                 }
