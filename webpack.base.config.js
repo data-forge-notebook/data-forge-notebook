@@ -33,10 +33,12 @@ module.exports = function (env) {
             path: outputDir,
         },
     
-        mode: "development",
+        // mode: "development",
+        mode: "production",
     
         // Enable sourcemaps for debugging webpack's output.
-        devtool: "inline-source-map",
+        // devtool: "inline-source-map",
+        devtool: false,
 
         target: targets[env] || targets.default,
     
