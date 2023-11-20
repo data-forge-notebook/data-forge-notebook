@@ -61,12 +61,12 @@
     "webpack-dev-server": "^4.7.4",
     "minimist": "^1.2.6",
     "fs-extra": "^6.0.1",
-    "monaco-editor": "^0.32.1"
+    "monaco-editor": "^0.32.1",
+    "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/icons": "^3.4.0"
   },
   "dependencies": {    
     "normalize.css": "^8.0.0",
-    "path-browserify": "^1.0.1",
-    "@blueprintjs/core": "^3.10.0",
-    "@blueprintjs/icons": "^3.4.0"
+    "path-browserify": "^1.0.1"
   }
 }
