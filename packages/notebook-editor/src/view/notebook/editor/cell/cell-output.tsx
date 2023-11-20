@@ -29,7 +29,7 @@ const OutputBorder = styled.div`
     transition: border 0.2s ease-in-out;
     padding: 6px;
     padding-bottom: 0px;
-    background-color: #FDFDFD;
+    background-color: #FBFBFB;
     user-select: text;
     height: 100%;
 
