@@ -62,16 +62,6 @@ export interface ICellOutputState {
     // Height of the output.
     //
     height?: number;
-
-    //
-    // Determines the plugin that is requested for visualization.
-    //
-    pluginRequest: IPluginRequest;
-
-    //
-    // The content and configuration for the plugin that renders this output.
-    //
-    pluginConfig?: IPluginConfig;
 }
 
 const MIN_OUTPUT_HEIGHT = 30;
@@ -84,25 +74,22 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
     @InjectProperty(IPluginRepo_ID)
     pluginRepo!: IPluginRepo;
 
+    //
+    // Determines the plugin that is requested for visualization.
+    //
+    pluginRequest?: IPluginRequest;
+
+    //
+    // The content and configuration for the plugin that renders this output.
+    //
+    pluginConfig?: IPluginConfig;
+
     constructor(props: ICellOutputProps) {
         super(props);
 
         this.state = {
-            height: this.props.model.getHeight(), // Get the saved height.
-            pluginRequest: {
-                displayType: this.props.model.getValue().getDisplayType(),
-                plugin: this.props.model.getValue().getPlugin(),
-                data: this.props.model.getValue().getData(),
-            },
+            height: this.props.model.getHeight(), // Get the previoulsy saved height.
         };
-    }
-
-    async componentDidMount() {
-
-        const pluginConfig = await this.pluginRepo.getPlugin(this.state.pluginRequest);
-        await updateState(this, {
-            pluginConfig: pluginConfig,
-        });
     }
 
     //
@@ -115,55 +102,65 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         }
 
         //
-        // There is no saved height for this output, use the default plugin height or the content height.
+        // There is no saved height for this output, use the content height.
         //
-
-        if (this.state.pluginConfig?.defaultHeight !== undefined) {
-            // Use default height for the plugin.
-            await updateState(this, {
-                height: this.state.pluginConfig.defaultHeight,
-            });
-        }
-        else {
-            // Default the height based on the UI.
-            await updateState(this, {
-                height: Math.min(MAX_INITIAL_HEIGHT, contentHeight + DRAG_HANDLE_HEIGHT), // Adding some pixels here to account for the height of the drag handle.
-            });
-        }
+        await updateState(this, {
+            height: Math.min(MAX_INITIAL_HEIGHT, contentHeight + DRAG_HANDLE_HEIGHT), // Adding some pixels here to account for the height of the drag handle.
+        });
 
         this.props.onHeightChanged();
     }
 
     render() {
+
         const outputValue = this.props.model.getValue();
         const what = outputValue.getDisplayType() || "unset";
 
-        if (this.state.height === undefined) {
-            //
-            // Do an initial render to determine the initial height.
-            //
-            return (
-                <ErrorBoundary
-                    what={`cell output - type: ${what}`}
-                    >
-                    <OutputBorder>
-                        <PluggableVisualization
-                            pluginRequest={this.state.pluginRequest}
-                            pluginConfig={this.state.pluginConfig}
-                            pluginOptions={{
-                                cwd: this.props.notebookModel.getStorageId().getContainingPath(),
-                            }}
-                            onResize={this.setHeightFromContent}
-                            />
-                    </OutputBorder>
-                </ErrorBoundary>
-            );
+        if (this.pluginRequest === undefined) {
+            this.pluginRequest = {
+                displayType: outputValue.getDisplayType(),
+                plugin: outputValue.getPlugin(),
+                data: outputValue.getData(),
+            };
+    
+            this.pluginConfig = this.pluginRepo.getPlugin(this.pluginRequest);
+        }
+        
+        let height = this.state.height;
+        if (height === undefined) {
+            if (this.pluginConfig!.defaultHeight !== undefined) {
+                height = this.pluginConfig!.defaultHeight; // Use the default height for the plugin.
+                this.setState({ // Update height in state.
+                    height,
+                });
+            }
+            else {    
+                //
+                // Do an initial render to determine the initial height.
+                //
+                return (
+                    <ErrorBoundary
+                        what={`cell output - type: ${what}`}
+                        >
+                        <OutputBorder>
+                            <PluggableVisualization
+                                pluginRequest={this.pluginRequest}
+                                pluginConfig={this.pluginConfig}
+                                pluginOptions={{
+                                    cwd: this.props.notebookModel.getStorageId().getContainingPath(),
+                                }}
+                                onResize={this.setHeightFromContent}
+                                />
+                        </OutputBorder>
+                    </ErrorBoundary>
+                );
+            }
         }
 
-        const height = Math.max(this.state.height, MIN_OUTPUT_HEIGHT);
+        height = Math.max(height, MIN_OUTPUT_HEIGHT);
 
         //
-        // After the plugin is initially size up, render a different version that allows the user to resize it.
+        // After the plugin is initially sized up, render a different version that allows the user to resize it.
         //
 
         return (
@@ -213,12 +210,12 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 is initially rendered, which is handled above.
                             */}
                             <PluggableVisualization
-                                pluginRequest={this.state.pluginRequest}
-                                pluginConfig={this.state.pluginConfig}
+                                pluginRequest={this.pluginRequest}
+                                pluginConfig={this.pluginConfig}
                                 pluginOptions={{
                                     cwd: this.props.notebookModel.getStorageId().getContainingPath(),
                                 }}        
-                                height={`${this.state.height-DRAG_HANDLE_HEIGHT}px`}
+                                height={`${height-DRAG_HANDLE_HEIGHT}px`}
                                 />
                         </Resizable>
 

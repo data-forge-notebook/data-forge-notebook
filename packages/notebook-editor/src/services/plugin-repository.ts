@@ -41,6 +41,6 @@ export interface IPluginRepo {
     //
     // Inspect the data and retreive the content for a plugin.
     //
-    getPlugin(pluginRequest: IPluginRequest): Promise<IPluginConfig>;
+    getPlugin(pluginRequest: IPluginRequest): IPluginConfig;
 
 }

@@ -143,7 +143,7 @@ export class PluginRepo implements IPluginRepo {
     //
     // Inspect the data and retreive a plugin.
     //
-    async getPlugin(pluginRequest: IPluginRequest): Promise<IPluginConfig> {
+    getPlugin(pluginRequest: IPluginRequest): IPluginConfig {
 
         console.log(`Requesting plugin content:`);
         console.log(pluginRequest);
