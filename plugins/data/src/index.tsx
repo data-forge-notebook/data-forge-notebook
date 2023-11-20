@@ -32,10 +32,12 @@ class App extends React.Component<{}, IAppState> {
 
     render() {
         return (
-            <StructuredData
-                displayType={this.state.config?.pluginRequest.displayType}
-                data={this.state.config?.pluginRequest.data}
-                />
+            this.state.config
+                && <StructuredData
+                    displayType={this.state.config.pluginRequest.displayType}
+                    data={this.state.config.pluginRequest.data}
+                    />            
+                || <div></div>
         );
     }
 }
