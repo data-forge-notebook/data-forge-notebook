@@ -47,15 +47,31 @@
                 transform: rotate(360deg);
             }
         }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .fadeIn {
+            animation: fadeIn 1s ease-in-out;
+        }
     </style>
 
     <div style="height: 100vh;">
-            <div style="height: 100vh; display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                <div style="height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <div class="spinner"></div>
-                    <div style="padding-top: 32px;">
-                        Warming the up the electrons
-                    </div>
+        <div style="height: 100vh; display: flex; flex-direction: row; align-items: center; justify-content: center;">
+            <div
+                class="fadeIn" 
+                style="height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;"
+                >
+                <div class="spinner"></div>
+                <div style="padding-top: 32px;">
+                    Warming the up the electrons
                 </div>
             </div>
         </div>
