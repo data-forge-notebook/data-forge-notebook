@@ -388,6 +388,21 @@ export class EditorWindow implements IEditorWindow {
     }
 
     //
+    // Modifies the interpllation factor t.
+    // Accelerates the change in t as t approaches 1.
+    //
+    private easeOutCubic(t: number): number {
+        return 1 - Math.pow(1 - t, 3);
+    }
+    
+    //
+    //  Interpolate between starting and ending values.
+    //
+    private interpolate(start: number, end: number, t: number): number {
+        return (1 - this.easeOutCubic(t)) * start + this.easeOutCubic(t) * end;
+    }
+
+    //
     // Fades out the window over a specific duration.
     //
     private async fadeOutWindow(win: BrowserWindow, duration: number): Promise<void> {
@@ -397,7 +412,7 @@ export class EditorWindow implements IEditorWindow {
             const interval = setInterval(() => {
                 const timeNow = performance.now();
                 const elapsed = timeNow - startTime;
-                const opacity = 1.0 - (elapsed / duration);
+                const opacity = this.interpolate(1.0, 0.0, elapsed / duration);
                 win.setOpacity(opacity);
                 if (opacity <= 0.0) {
                     clearInterval(interval);
