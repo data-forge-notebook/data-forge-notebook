@@ -254,8 +254,6 @@ export class EditorWindow implements IEditorWindow {
             icon: iconPath,
         });
 
-        this.loadingWindow.setAlwaysOnTop(true, "floating");
-
         if (LOADING_HTML.startsWith("http://")) {
             this.loadingWindow.loadURL(LOADING_HTML);
         }
