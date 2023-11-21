@@ -106,6 +106,10 @@ module.exports = function (env) {
                         to: outputDir,
                     },
                     {
+                        from: `./src/loading.html`,
+                        to: outputDir,
+                    },
+                    {
                         from: `${__dirname}/node_modules/normalize.css/normalize.css`,
                         to: outputDir,
                     },

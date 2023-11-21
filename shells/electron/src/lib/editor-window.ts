@@ -14,6 +14,11 @@ if (!EDITOR_HTML) {
     EDITOR_HTML = "dist/index.html";
 }
 
+let LOADING_HTML = process.env.LOADING_HTML as string;
+if (!LOADING_HTML) {
+    LOADING_HTML = "dist/loading.html";
+}
+
 //
 // Creates the title for the applications.
 //
@@ -120,9 +125,14 @@ export class EditorWindow implements IEditorWindow {
     windowManager!: IWindowManager;
 
     //
+    // Loading screen to hide the slow loading of the main window.
+    //
+    private loadingWindow: BrowserWindow | undefined = undefined;
+
+    //
     // The Electron window.
     //
-    private browserWindow: BrowserWindow | null = null;
+    private browserWindow: BrowserWindow | undefined = undefined;
 
     //
     // Coordinates for the most recently created window.
@@ -232,6 +242,30 @@ export class EditorWindow implements IEditorWindow {
         const iconPath = path.join(getInstallPath(), "assets/icon.png");
         this.log.info(`^^^^ Loading icon from ${iconPath}`);
 
+        this.loadingWindow = new BrowserWindow({
+            title: formatTitle(),
+            x: newWindowCoords.x,
+            y: newWindowCoords.y,
+            width: newWindowCoords.width,
+            height: newWindowCoords.height,
+            show: true,
+            icon: iconPath,
+        });
+
+        if (LOADING_HTML.startsWith("http://")) {
+            this.loadingWindow.loadURL(LOADING_HTML);
+        }
+        else {
+            this.loadingWindow.loadFile(LOADING_HTML);
+        }
+        
+        //
+        // Emitted when the loading window is closed.
+        //
+        this.loadingWindow.on("closed", async () => {
+            this.loadingWindow = undefined;
+        });        
+
         this.browserWindow = new BrowserWindow({
             title: formatTitle(),
             x: newWindowCoords.x,
@@ -311,7 +345,7 @@ export class EditorWindow implements IEditorWindow {
         //
         this.browserWindow.on("closed", async () => {
             this.log.info(`++ Editor window ${this.getId()} was closed.`);
-            this.browserWindow = null;
+            this.browserWindow = undefined;
 
             this.windowManager.removeEditorWindow(this.getId());
 
@@ -364,6 +398,11 @@ export class EditorWindow implements IEditorWindow {
                 this.browserWindow!.show();
 
                 this.browserWindow!.webContents.send("shown"); //todo: is this used in the old version?
+
+                if (this.loadingWindow) {
+                    this.loadingWindow.close()                
+                    this.loadingWindow = undefined;
+                }
             }
         }
         else {
