@@ -243,6 +243,8 @@ export class EditorWindow implements IEditorWindow {
         this.log.info(`^^^^ Loading icon from ${iconPath}`);
 
         this.loadingWindow = new BrowserWindow({
+            frame: false,
+            resizable: false,
             title: formatTitle(),
             x: newWindowCoords.x,
             y: newWindowCoords.y,
@@ -251,6 +253,8 @@ export class EditorWindow implements IEditorWindow {
             show: true,
             icon: iconPath,
         });
+
+        this.loadingWindow.setAlwaysOnTop(true, "floating");
 
         if (LOADING_HTML.startsWith("http://")) {
             this.loadingWindow.loadURL(LOADING_HTML);
@@ -382,6 +386,26 @@ export class EditorWindow implements IEditorWindow {
     }
 
     //
+    // Fades out the window over a specific duration.
+    //
+    private async fadeOutWindow(win: BrowserWindow, duration: number): Promise<void> {
+        return new Promise(resolve => {
+            const startTime = performance.now();
+            const intervalTime = 10; // Interval in milliseconds
+            const interval = setInterval(() => {
+                const timeNow = performance.now();
+                const elapsed = timeNow - startTime;
+                const opacity = 1.0 - (elapsed / duration);
+                win.setOpacity(opacity);
+                if (opacity <= 0.0) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, intervalTime);
+        });
+    }
+
+    //
     // Show the window, when ready.
     //
     private async showIfReady(): Promise<void> {
@@ -400,8 +424,10 @@ export class EditorWindow implements IEditorWindow {
                 this.browserWindow!.webContents.send("shown"); //todo: is this used in the old version?
 
                 if (this.loadingWindow) {
-                    this.loadingWindow.close()                
+                    await this.fadeOutWindow(this.loadingWindow, 1000);
+                    this.loadingWindow!.close()                
                     this.loadingWindow = undefined;
+                    this.browserWindow!.focus();
                 }
             }
         }
@@ -580,8 +606,6 @@ export class EditorWindow implements IEditorWindow {
             console.error(`Sending event ${eventName} to unallocated browser window for notebook editor ${this.getId()}.`);
         }
     }
-
-
 
     //
     // Event raised when the window is ready.
