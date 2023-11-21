@@ -242,7 +242,27 @@ export class EditorWindow implements IEditorWindow {
         const iconPath = path.join(getInstallPath(), "assets/icon.png");
         this.log.info(`^^^^ Loading icon from ${iconPath}`);
 
+        this.browserWindow = new BrowserWindow({
+            title: formatTitle(),
+            x: newWindowCoords.x,
+            y: newWindowCoords.y,
+            width: newWindowCoords.width,
+            height: newWindowCoords.height,
+            show: false,
+            icon: iconPath,
+            webPreferences: {
+                nodeIntegration: true,
+                nodeIntegrationInWorker: true, // Enabled this to prevent errors in Monaco Editor workers.
+                contextIsolation: false,
+                webviewTag: true,
+                additionalArguments: args,
+                webSecurity: false, // Disabled this to allow plugins to load local files (e.g. marker images in the maps plugin).
+            },
+        });
+
         this.loadingWindow = new BrowserWindow({
+            parent: this.browserWindow,
+            modal: true,
             frame: false,
             resizable: false,
             title: formatTitle(),
@@ -268,34 +288,18 @@ export class EditorWindow implements IEditorWindow {
             this.loadingWindow = undefined;
         });        
 
-        this.browserWindow = new BrowserWindow({
-            title: formatTitle(),
-            x: newWindowCoords.x,
-            y: newWindowCoords.y,
-            width: newWindowCoords.width,
-            height: newWindowCoords.height,
-            show: false,
-            icon: iconPath,
-            webPreferences: {
-                nodeIntegration: true,
-                nodeIntegrationInWorker: true, // Enabled this to prevent errors in Monaco Editor workers.
-                contextIsolation: false,
-                webviewTag: true,
-                additionalArguments: args,
-                webSecurity: false, // Disabled this to allow plugins to load local files (e.g. marker images in the maps plugin).
-            },
+        this.loadingWindow.once('ready-to-show', () => {
+            if (EDITOR_HTML.startsWith("http://")) {
+                console.log(`Loading URL ${EDITOR_HTML}`);
+                this.browserWindow!.loadURL(EDITOR_HTML);
+            }
+            else {
+                console.log(`Loading file ${EDITOR_HTML}`);
+                this.browserWindow!.loadFile(EDITOR_HTML);
+            }
+
+            remote.enable(this.browserWindow!.webContents);
         });
-
-        if (EDITOR_HTML.startsWith("http://")) {
-            console.log(`Loading URL ${EDITOR_HTML}`);
-            this.browserWindow.loadURL(EDITOR_HTML);
-        }
-        else {
-            console.log(`Loading file ${EDITOR_HTML}`);
-            this.browserWindow.loadFile(EDITOR_HTML);
-        }
-
-        remote.enable(this.browserWindow.webContents);
 
         //
         // Dev tools disabled by default:
