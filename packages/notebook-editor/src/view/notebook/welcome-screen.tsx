@@ -70,14 +70,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
     }
 
     async componentDidMount() {
-        setTimeout(() => {
-            requestAnimationFrame(() => {
-                // Hack to wait until window is rendered before we let the main process
-                // know it's ready to be showed.
-                this.log.info("$$ Editor window is ready!");
-                this.props.model.notifyEditorReady();
-            });
-        }, 100);
+        this.props.model.notifyEditorReady();
 
         await updateState(this, { 
             showGettingStarted: !this.settings.get("hideGettingStarted"),

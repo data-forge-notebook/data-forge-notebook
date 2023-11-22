@@ -558,7 +558,12 @@ export class EditorWindow implements IEditorWindow {
                 this.openFilePath = undefined;  
             }
             else {
-                this.showIfReady();
+                setTimeout(() => {
+                    //
+                    // Add a small timeout trying to reduce the flash in the transition to the welcome screen.
+                    //
+                    this.showIfReady();
+                }, 1500);        
             }
 
         },
@@ -583,7 +588,12 @@ export class EditorWindow implements IEditorWindow {
         onNotebookRendered: () => {
             this.log.info(`++ Notebook rendered in editor ${this.getId()}`);
 
-            this.showIfReady();
+            setTimeout(() => {
+                //
+                // Add a small timeout trying to reduce the flash in the transition to showing the notebook.
+                //
+                this.showIfReady();
+            }, 1500);
         },
 
         //

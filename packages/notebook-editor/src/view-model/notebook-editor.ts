@@ -379,7 +379,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         
         await this.onEvaluationStarted();
 
-        await this.onNotebookRendered.raise(); // Give the rendering a moment to catch up before we notify the main process.
+        await this.onNotebookRendered.raise();
     }
 
     //
