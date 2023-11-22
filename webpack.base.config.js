@@ -40,6 +40,10 @@ module.exports = function (env) {
         // devtool: "inline-source-map",
         devtool: false,
 
+        performance: {
+            hints: false,
+        },
+
         target: targets[env] || targets.default,
     
         devServer: {
