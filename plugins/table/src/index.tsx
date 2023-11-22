@@ -32,7 +32,9 @@ class App extends React.Component<{}, IAppState> {
 
     render() {
         return (
-            <Table table={this.state.config?.pluginRequest.data} />
+            this.state.config?.pluginRequest.data 
+                && <Table table={this.state.config?.pluginRequest.data} />
+                || <div></div>
         );
     }
 }
