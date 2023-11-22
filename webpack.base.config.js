@@ -51,6 +51,7 @@ module.exports = function (env) {
                 directory: outputDir,
             },
             hot: false,
+            liveReload: false,
             allowedHosts: "all",
         },
     

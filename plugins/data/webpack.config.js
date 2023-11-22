@@ -42,6 +42,7 @@ module.exports = {
             directory: outputDir,
         },
         hot: false,
+        liveReload: false,
         allowedHosts: "all",
     },
 
