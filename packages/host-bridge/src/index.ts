@@ -110,6 +110,17 @@ export interface IConfigEventData {
 }
 
 //
+// Defines the resize event.
+//
+interface IResizeEventData {
+
+    //
+    // New height of the plugin.
+    //
+    height: number;
+}
+
+//
 // Call a function and handle async errors.
 //
 async function handleErrors(
@@ -140,6 +151,10 @@ async function handleErrors(
 // Represents the connection to the host.
 //
 export interface IHostConnection {
+    //
+    // Notify the host that the plugin has resized.
+    //
+    onResize(): void;
 }
 
 //
@@ -171,6 +186,13 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
         host.postMessage(event, { targetOrigin: origin });
     }
 
+    //
+    // Notify the host that the plugin has resized.
+    //
+    function onResize(): void {
+        postMessage<IResizeEventData>("on-resize", { height: document.body.scrollHeight });
+    };
+
     window.addEventListener("message", async event => {
         if (!event.source) {
             throw new Error(`Event source is not defined!`);
@@ -200,6 +222,7 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
                 async () => options.configure(eventData),
                 () => { // Success
                     postMessage("configured");
+                    onResize();
                 },
                 () => { // Fail
                     postMessage("configure-failed");
@@ -209,6 +232,7 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
     });   
 
     return {
+        onResize,
     };
 }
 
@@ -216,6 +240,12 @@ export function connectHost(options: IHostConnectOptions): IHostConnection {
 // Options to the connect function.
 //
 export interface IPluginConnectOptions {
+    //
+    // Event raised when the plugin size has changed.
+    // TODO: May not need to expose this to the plugin. It happens automatically already and doesn't need to happen more than once.
+    //       In fact I could just get rid of the resize message entirely and pass the height back through the "configured" message.
+    //
+    onResize?: (height: number) => Promise<void>;
 }
 
 //
@@ -248,7 +278,7 @@ export function connnectPlugin(iframe: HTMLIFrameElement, pluginRequest: IPlugin
     }
 
     //
-    // Listen to messages incoming from the plugin.
+    // Listen to messages incoming from the iframe.
     //
     window.addEventListener("message", async event => {
 
@@ -263,18 +293,18 @@ export function connnectPlugin(iframe: HTMLIFrameElement, pluginRequest: IPlugin
             return; 
         }
 
-        //
-        // I've left this code as an edxample of handing events from the plugin.
-        //
-        // if (pluginEvent.name === "on-something") {
-        //     const somethingPluginEvent = pluginEvent as IPluginEvent<ISomethingEventData>;
-        //     const eventData = somethingPluginEvent.data;
-        //     if (eventData === undefined) {
-        //         throw new Error(`Event data not supplied.`);
-        //     }
+        if (pluginEvent.name === "on-resize") {
+            const resizePluginEvent = pluginEvent as IPluginEvent<IResizeEventData>;
+            const eventData = resizePluginEvent.data;
+            if (eventData === undefined) {
+                throw new Error(`Event data not supplied.`);
+            }
 
-        //     // do something
-        // }
+            const onResize = options?.onResize;
+            if (onResize) {
+                handleErrors("onResize", () =>  onResize(eventData.height));
+            }
+        }
     });
 
     //
