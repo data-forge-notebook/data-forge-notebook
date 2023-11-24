@@ -20,7 +20,7 @@ if (!LOADING_HTML) {
 }
 
 //
-// Creates the title for the applications.
+// Creates the title for the application.
 //
 export function formatTitle(): string {
     let title = `Data-Forge Notebook ${version}`;
