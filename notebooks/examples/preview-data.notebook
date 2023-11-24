@@ -143,6 +143,5 @@
             "errors": [],
             "height": 283
         }
-    ],
-    "description": "Shows a selection of ways to preview your data in Data-Forge Notebook."
+    ]
 }
