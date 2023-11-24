@@ -211,8 +211,8 @@ export class Notebook implements INotebook {
             version: notebookVersion,
             nodejs: this.nodejsVersion,
             language: this.language,
-            cells: this.cells.map(cell => cell.serialize()),
             description: this.description,
+            cells: this.cells.map(cell => cell.serialize()),
         };
     }
 
