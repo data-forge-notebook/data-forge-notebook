@@ -35,6 +35,10 @@ module.exports = {
     // devtool: "inline-source-map",
     devtool: false,
 
+    performance: {
+        hints: false,
+    },
+
     target: "web",
 
     devServer: {
