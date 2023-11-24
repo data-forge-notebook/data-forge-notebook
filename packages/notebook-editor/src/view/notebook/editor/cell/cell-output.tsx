@@ -113,23 +113,22 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
             }
             else {    
                 //
-                // Do an initial render to determine the initial height.
+                // Do an initial (hidden) render to determine the initial height.
                 //
                 return (
-                    <ErrorBoundary
-                        what={`cell output - type: ${what}`}
+                    <div 
+                        className="output-border"
+                        style={{ visibility: "hidden" }}
                         >
-                        <div className="output-border">
-                            <PluggableVisualization
-                                pluginRequest={this.pluginRequest}
-                                pluginConfig={this.pluginConfig}
-                                pluginOptions={{
-                                    cwd: this.props.notebookModel.getStorageId().getContainingPath(),
-                                }}
-                                onResize={this.setHeightFromContent}
-                                />
-                        </div>
-                    </ErrorBoundary>
+                        <PluggableVisualization
+                            pluginRequest={this.pluginRequest}
+                            pluginConfig={this.pluginConfig}
+                            pluginOptions={{
+                                cwd: this.props.notebookModel.getStorageId().getContainingPath(),
+                            }}
+                            onResize={this.setHeightFromContent}
+                            />
+                    </div>
                 );
             }
         }
