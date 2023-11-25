@@ -308,16 +308,19 @@ export class EditorWindow implements IEditorWindow {
         //
         
         // Handle link clicks in OS browser.
-        this.browserWindow.webContents.on('new-window', (event, url) => {
-            event.preventDefault();
+        this.browserWindow.webContents.setWindowOpenHandler(({ url }) => {
             shell.openExternal(url);
+            return { action: "deny" };
         });
 
         this.browserWindow.on("unresponsive", () => {
             this.log.error(`++ Editor window ${this.getId()} has become unresponsive.`);
         });
 
-        this.browserWindow.webContents.on("did-fail-load", (event: Event, errorCode: number, errorDescription: string, validatedURL: string, isMainFrame: boolean) => {
+        //
+        // Add an ugly cast to "any" here because the type definitions for this event seem to be wrong.
+        //
+        (this.browserWindow.webContents as any).on("did-fail-load", (event: Event, errorCode: number, errorDescription: string, validatedURL: string, isMainFrame: boolean): void => {
             this.log.error(`++ Editor window ${this.getId()} failed to load.`);
             this.log.error("Error code: " + errorCode);
             this.log.error("Error description: " + errorDescription);
