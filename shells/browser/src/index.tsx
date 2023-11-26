@@ -64,7 +64,7 @@ function registerHotkey(command: ICommand): void {
     }
 
     const accelerator = humanizeAccelerator(command.getAccelerator(), platform);
-    console.log(`${command.getId()} = ${accelerator}`);
+    // console.log(`${command.getId()} = ${accelerator}`);
 
     hotkeys(accelerator, (event: any, handler: any) => {
         event.preventDefault() ;
