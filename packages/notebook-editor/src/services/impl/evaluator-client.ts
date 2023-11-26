@@ -1,10 +1,13 @@
 import { InjectableSingleton } from "@codecapers/fusion";
 import axios from "axios";
 import { ISerializedNotebook1 } from "model";
-import { IEventSource, EventSource } from "utils";
+import { IEventSource, EventSource, BasicEventHandler } from "utils";
 import { EvaluationEventHandler, IEvaluatorClient, IEvaluatorId } from "../evaluator-client";
 
 const baseUrl = process.env.EVALUATION_ENGINE_URL as string || "http://127.0.0.1:9000";
+
+const INSTALLING_NOTEBOOK_JOB_NAME = "Installing notebook";
+const EVALUATING_NOTEBOOK_JOB_NAME = "Evaluating notebook";
 
 console.log(`Connecting to evaluation engine via ${baseUrl}`);
 
@@ -88,9 +91,9 @@ export class EvaluatorClient implements IEvaluatorClient {
     private intervalTimer?: NodeJS.Timer;
 
     //
-    // The name of the current job the evaluator is performing.
+    // The name of the jobs the evaluator is performing.
     //
-    private jobName?: string;
+    private jobNames = new Set<string>();
 
     //
     // Starts the message pump.
@@ -135,18 +138,33 @@ export class EvaluatorClient implements IEvaluatorClient {
 
             for (const event of data.messages) {
                 if (event.name === "evaluation-event") {
-                    if (event.args.event === "notebook-install-completed" 
-                        || event.args.event === "notebook-eval-completed") {
-                        console.log(`Install/evaluation completed!`);
+                    if (event.args.event === "notebook-install-completed") {
+                        console.log(`Install completed!`);
 
-                        this.notebookId = undefined;
-                        this.jobName = undefined;
+                        this.removeJob(INSTALLING_NOTEBOOK_JOB_NAME);
 
                         //
                         // Wait a moment then stop the message pump.
                         //
                         setTimeout(() => {
-                            if (this.notebookId === undefined) {
+                            if (this.jobNames.size === 0) {
+                                //
+                                // If no new evaluation has started, stop the message pump.
+                                //
+                                this.stopMessagePump();
+                            }
+                        }, 5000);
+                    }
+                    else if (event.args.event === "notebook-eval-completed") {
+                        console.log(`Evaluation completed!`);
+
+                        this.removeJob(EVALUATING_NOTEBOOK_JOB_NAME);
+
+                        //
+                        // Wait a moment then stop the message pump.
+                        //
+                        setTimeout(() => {
+                            if (this.jobNames.size === 0) {
                                 //
                                 // If no new evaluation has started, stop the message pump.
                                 //
@@ -165,14 +183,19 @@ export class EvaluatorClient implements IEvaluatorClient {
     // Returns true if the evaluator is currently doing someting.
     //
     isWorking(): boolean {
-        return this.notebookId !== undefined;
+        return this.jobNames.size > 0;
     }
 
     //
     // Returns the name of the current job the evaluator is performing.
     //
     getCurrentJobName(): string {
-        return this.jobName || "Idle";
+        if (this.jobNames.size === 0) {
+            return "Idle";
+        }
+        else {            
+            return Array.from(this.jobNames.values()).join(", ");
+        }
     }
 
     //
@@ -182,7 +205,7 @@ export class EvaluatorClient implements IEvaluatorClient {
         console.log(`Install notebook`); 
 
         this.notebookId = notebookId;
-        this.jobName = `Installing notebook`;
+        this.addJob(INSTALLING_NOTEBOOK_JOB_NAME);
         this.startMessagePump();
 
         const installNotebookPayload: IInstallNotebookPayload = {
@@ -207,8 +230,7 @@ export class EvaluatorClient implements IEvaluatorClient {
             notebookId: notebookId,
         };
 
-        this.notebookId = undefined;
-        this.jobName = undefined;
+        this.clearJobs();
         this.stopMessagePump();
 
         axios.post(`${baseUrl}/stop-evaluation`, stopNotebookPayload)
@@ -250,7 +272,7 @@ export class EvaluatorClient implements IEvaluatorClient {
     //
     private startEvaluation(notebookId: string, notebook: ISerializedNotebook1, cellId?: string, singleCell?: boolean, containingPath?: string) {
         this.notebookId = notebookId;
-        this.jobName = `Evaluating notebook`;
+        this.addJob(EVALUATING_NOTEBOOK_JOB_NAME);
         this.startMessagePump();
 
         const evaluateNotebookPayload: IEvaluateNotebookPayload = {
@@ -269,8 +291,40 @@ export class EvaluatorClient implements IEvaluatorClient {
     }
 
     //
+    // Adds a job to the tracking system.
+    //
+    private async addJob(jobName: string): Promise<void> {
+        this.jobNames.add(jobName);
+
+        await this.onJobsChanged.raise();        
+    }
+
+    //
+    // Removes a job from the tracking system.
+    //
+    private async removeJob(jobName: string): Promise<void> {
+        this.jobNames.delete(jobName);
+
+        await this.onJobsChanged.raise();        
+    }
+
+    //
+    // Removes all jobs from the tracking system.
+    //
+    private async clearJobs(): Promise<void> {
+        this.jobNames.clear();
+
+        await this.onJobsChanged.raise();        
+    }
+
+    //
+    // Event raised when the jobs being handled by the evaluation engine have change.
+    //
+    onJobsChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+
+    //
     // Event raised on a message from the evaluation engine.
     //
-    onEvaluationEvent: IEventSource<EvaluationEventHandler> = new EventSource<EvaluationEventHandler>();
-    
+    onEvaluationEvent: IEventSource<EvaluationEventHandler> = new EventSource<EvaluationEventHandler>();    
 }

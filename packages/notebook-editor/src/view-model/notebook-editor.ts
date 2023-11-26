@@ -634,7 +634,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         const notebook = this.getOpenNotebook();
 
-        if (this.evaluator.isWorking()) {
+        if (notebook.isExecuting()) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
@@ -661,7 +661,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         const notebook = this.getOpenNotebook();
 
-        if (this.evaluator.isWorking()) {
+        if (notebook.isExecuting()) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
@@ -688,7 +688,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         const notebook = this.getOpenNotebook();
 
-        if (this.evaluator.isWorking()) {
+        if (notebook.isExecuting()) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
@@ -841,10 +841,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Notification that evaluation has completed.
     //
     private async onEvaluationFinished(): Promise<void> {
-
         await this.getOpenNotebook().notifyCodeEvalComplete();
-
-        await this.onEvaluationCompleted.raise();
     }
 
     //
@@ -894,11 +891,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Event raised when the set notebook has been rendered.
     //
     onNotebookRendered: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
-
-    //
-    // Event raised when code evaluation has completed.
-    //
-    onEvaluationCompleted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // Toggle the hotkeys overlay.
