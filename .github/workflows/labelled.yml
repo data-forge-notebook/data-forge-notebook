@@ -37,19 +37,19 @@ jobs:
           - os: windows-latest 
             build_script: build-electron-win
             files: |
-                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-${{ needs.get_version.outputs.version }}-*.exe
-                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-${{ needs.get_version.outputs.version }}-*.zip
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-${{ needs.get_version.outputs.version }}.exe
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-win-${{ needs.get_version.outputs.version }}.zip
             platform: win
           - os: macos-latest 
             build_script: build-electron-mac
             files: | 
-                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-${{ needs.get_version.outputs.version }}-*.dmg
-                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-${{ needs.get_version.outputs.version }}-*.tar.gz
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-${{ needs.get_version.outputs.version }}.dmg
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-mac-${{ needs.get_version.outputs.version }}.tar.gz
             platform: mac
           - os: ubuntu-latest 
             build_script: build-electron-linux
             files: | 
-                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-linux-${{ needs.get_version.outputs.version }}-*.tar.gz
+                ./shells/electron/temp/dfn-build/build/installer/Data-Forge Notebook v2-linux-${{ needs.get_version.outputs.version }}.tar.gz
             platform: linux
 
     runs-on: ${{ matrix.os }}    
@@ -107,8 +107,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Labelled ${{ needs.get_version.outputs.version }}
-          tag_name: ${{ needs.get_version.outputs.version }}
+          name: Data-Forge notebook v${{ needs.get_version.outputs.version }}
           body: Labelled build
           draft: true
           prerelease: false
