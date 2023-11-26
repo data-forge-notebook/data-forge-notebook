@@ -373,11 +373,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         this.notebook = notebook;
         this.notebook.onModified.attach(this.notifyModified);
 
-        await this.notifyOpenNotebookChanged(isReload);
-
         this.evaluator.installNotebook(notebook.getInstanceId(), notebook.serializeForEval(), notebook.getStorageId().getContainingPath());
-        
-        await this.onEvaluationStarted();
+
+        await this.notifyOpenNotebookChanged(isReload);
 
         await this.onNotebookRendered.raise();
     }
@@ -722,7 +720,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         },
 
         "notebook-install-completed": async (args: any): Promise<void> => {
-            await this.onEvaluationFinished();
+            // Nothing yet.
         },
 
         "notebook-eval-started": async (args: any): Promise<void> => {

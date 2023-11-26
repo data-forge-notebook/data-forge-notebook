@@ -137,7 +137,7 @@ export class EvaluatorClient implements IEvaluatorClient {
                 if (event.name === "evaluation-event") {
                     if (event.args.event === "notebook-install-completed" 
                         || event.args.event === "notebook-eval-completed") {
-                        console.log(`Evaluation completed!`);
+                        console.log(`Install/evaluation completed!`);
 
                         this.notebookId = undefined;
                         this.jobName = undefined;

@@ -95,6 +95,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     render(): JSX.Element {
         const isNotebookOpen = this.props.model.isNotebookOpen();
         const notebook = this.props.model.isNotebookOpen() && this.props.model.getOpenNotebook() || undefined;
+        const isExecuting = notebook && notebook.isExecuting() || false;
         let language = notebook && notebook.getLanguage();
         if (language === "javascript") {
             language = "JavaScript";
@@ -126,7 +127,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                 { 
                                     notebook
                                 }, 
-                                this.evaluator.isWorking() ? "executing" : "notExecuting"
+                                isExecuting ? "executing" : "notExecuting"
                             )}
                         </ButtonGroup>
                     }
