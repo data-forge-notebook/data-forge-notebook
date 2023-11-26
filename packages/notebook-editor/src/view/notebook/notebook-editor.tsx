@@ -245,7 +245,7 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                                 </div>
                             </div>    
                         }
-                        itemValue={(exampleNotebook: IExampleNotebook) => exampleNotebook.storageId}
+                        itemValue={(exampleNotebook: IExampleNotebook) => `${exampleNotebook.name} ${exampleNotebook.description}`}
                         pickExactItem={true}
                         />
                 }

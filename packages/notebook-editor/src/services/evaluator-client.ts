@@ -1,4 +1,4 @@
-import { IEventSource } from "utils";
+import { BasicEventHandler, IEventSource } from "utils";
 import { ISerializedNotebook1 } from "model";
 
 export type EvaluationEventHandler = (args: any) => Promise<void>;
@@ -45,6 +45,11 @@ export interface IEvaluatorClient {
     // Evaluates the entire notebook.
     //
     evalNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void;
+
+    //
+    // Event raised when the jobs being handled by the evaluation engine have change.
+    //
+    onJobsChanged: IEventSource<BasicEventHandler>;
 
     //
     // Event raised on a message from the evaluation engin.

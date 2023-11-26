@@ -26,6 +26,11 @@ export interface IPluggableVisualizationProps {
     // Sets the height of the iframe.
     //
     height?: string;
+
+    //
+    // Event raised when the plugin size has changed.
+    //
+    onResize?: (height: number) => Promise<void>;
 }
 
 export interface IPluggableVisualizationState {
@@ -61,7 +66,13 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
             this.iframeRef.current,
             this.props.pluginRequest, 
             this.props.pluginOptions,
-            {}
+            {
+                onResize: async (height: number) => {
+                    if (this.props.onResize) {
+                        await this.props.onResize(height);
+                    }
+                },
+            }
         );
     }
 

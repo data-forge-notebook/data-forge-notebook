@@ -26,17 +26,16 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const value = 5;\r\ndisplay(value);",
-            "lastEvaluationDate": "2020-10-13T16:20:10.064+10:00",
+            "lastEvaluationDate": "2023-11-25T09:08:42.408+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "string",
-                        "data": "5"
+                        "data": 5
                     }
                 }
             ],
             "errors": [],
-            "height": 252
+            "height": 148
         },
         {
             "id": "bbe3caa0-9cd0-11ea-89b4-d59a11d5b26f",
@@ -52,11 +51,10 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const data = [1, 2, 3, 4];\r\ndisplay(data);",
-            "lastEvaluationDate": "2020-10-13T16:20:10.080+10:00",
+            "lastEvaluationDate": "2023-11-25T09:08:42.420+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "array",
                         "data": [
                             1,
                             2,
@@ -67,7 +65,7 @@
                 }
             ],
             "errors": [],
-            "height": 252
+            "height": 263
         },
         {
             "id": "e33a5ea0-2e9c-11e9-9f0a-97b474081a71",
@@ -83,11 +81,10 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data);",
-            "lastEvaluationDate": "2020-10-13T16:20:10.111+10:00",
+            "lastEvaluationDate": "2023-11-25T09:08:42.422+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "object",
                         "data": {
                             "A": 1,
                             "B": "hello"
@@ -96,7 +93,7 @@
                 }
             ],
             "errors": [],
-            "height": 173
+            "height": 263
         },
         {
             "id": "02b6d330-2e9d-11e9-9f0a-97b474081a71",
@@ -112,36 +109,30 @@
             "cellType": "code",
             "cellScope": "local",
             "code": "const data = [\r\n    { \"A\": 1, \"B\": \"Hello\" },\r\n    { \"A\": 2, \"B\": \"Computer!\" },\r\n    { \"A\": 5, \"B\": \"View all the data!\" }\r\n];\r\ndisplay(data, \"table\");",
-            "lastEvaluationDate": "2020-10-13T16:20:10.125+10:00",
+            "lastEvaluationDate": "2023-11-25T09:08:42.425+10:00",
             "output": [
                 {
                     "value": {
                         "displayType": "table",
-                        "data": {
-                            "rows": [
-                                {
-                                    "A": 1,
-                                    "B": "Hello"
-                                },
-                                {
-                                    "A": 2,
-                                    "B": "Computer!"
-                                },
-                                {
-                                    "A": 5,
-                                    "B": "View all the data!"
-                                }
-                            ],
-                            "columnNames": [
-                                "A",
-                                "B"
-                            ]
-                        }
+                        "data": [
+                            {
+                                "A": 1,
+                                "B": "Hello"
+                            },
+                            {
+                                "A": 2,
+                                "B": "Computer!"
+                            },
+                            {
+                                "A": 5,
+                                "B": "View all the data!"
+                            }
+                        ]
                     }
                 }
             ],
             "errors": [],
-            "height": 190
+            "height": 335
         },
         {
             "id": "8864e670-f3cd-11e9-97b7-a975ba8f6456",

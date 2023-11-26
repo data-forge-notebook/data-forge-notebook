@@ -12,6 +12,7 @@ import { handleAsyncErrors } from 'utils';
 import { PluggableVisualization } from './pluggable-visualization';
 import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
+import { updateState } from 'browser-utils';
 import { IPluginRequest } from 'host-bridge';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 
@@ -41,6 +42,7 @@ export interface ICellOutputState {
 }
 
 const MIN_OUTPUT_HEIGHT = 30;
+const MAX_INITIAL_HEIGHT = 200;
 const DRAG_HANDLE_HEIGHT = 10;
 
 @InjectableClass()
@@ -63,8 +65,27 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         super(props);
 
         this.state = {
-            height: this.props.model.getHeight(), // Get the previously saved height.
+            height: this.props.model.getHeight(), // Get the previoulsy saved height.
         };
+    }
+
+    //
+    // Sets the initial output height from the content, if the height is not already set.
+    //
+    private setHeightFromContent = async (contentHeight: number): Promise<void> => {
+        if (this.state.height !== undefined) {
+            // Height already set, nothing to be done.
+            return;
+        }
+
+        //
+        // There is no saved height for this output, use the content height.
+        //
+        await updateState(this, {
+            height: Math.min(MAX_INITIAL_HEIGHT, contentHeight + DRAG_HANDLE_HEIGHT), // Adding some pixels here to account for the height of the drag handle.
+        });
+
+        this.props.onHeightChanged();
     }
 
     render() {
@@ -86,13 +107,37 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         if (height === undefined) {
             if (this.pluginConfig!.defaultHeight !== undefined) {
                 height = this.pluginConfig!.defaultHeight; // Use the default height for the plugin.
+                this.setState({ // Update height in state.
+                    height,
+                });
             }
-            else {
-                height = 250; // Just default the height to something reasonable.
+            else {    
+                //
+                // Do an initial (hidden) render to determine the initial height.
+                //
+                return (
+                    <div 
+                        className="output-border"
+                        style={{ visibility: "hidden" }}
+                        >
+                        <PluggableVisualization
+                            pluginRequest={this.pluginRequest}
+                            pluginConfig={this.pluginConfig}
+                            pluginOptions={{
+                                cwd: this.props.notebookModel.getStorageId().getContainingPath(),
+                            }}
+                            onResize={this.setHeightFromContent}
+                            />
+                    </div>
+                );
             }
         }
 
         height = Math.max(height, MIN_OUTPUT_HEIGHT);
+
+        //
+        // After the plugin is initially sized up, render a different version that allows the user to resize it.
+        //
 
         return (
             <ErrorBoundary
@@ -136,6 +181,10 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 this.props.onHeightChanged();
                             }}
                             >
+                            {/*
+                                Note: No need to handle plugin resize event here, because it's only required when the plugin
+                                is initially rendered, which is handled above.
+                            */}
                             <PluggableVisualization
                                 pluginRequest={this.pluginRequest}
                                 pluginConfig={this.pluginConfig}

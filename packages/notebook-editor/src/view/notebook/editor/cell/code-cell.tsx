@@ -4,10 +4,7 @@ const humanizeDuration = require('humanize-duration');
 import moment from 'moment';
 import { ICodeCellViewModel } from '../../../../view-model/code-cell';
 import { CellOutputUI } from './cell-output';
-import { Switch, Position, Tooltip } from '@blueprintjs/core';
-import { debounceAsync, handleAsyncErrors } from 'utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
-import { CellScope } from 'model';
 import { forceUpdate } from 'browser-utils';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 
@@ -152,7 +149,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                     </div>
                 </div>
 
-                <div 
+                {/* <div 
                     className="cell-msg"
                     style={{ 
                         position: "absolute", 
@@ -169,7 +166,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                             >
                             {lastEvaluationMsg}
                         </div>
-                        {/* <Tooltip
+                        <Tooltip
                             content={`Switches on "local" mode, when enabled the cell is wrapped in a function and made independent of other code cells (like the JavaScript "module pattern"). \n\nVariables defined in the cell are private to the cell.`}
                             position={Position.LEFT}
                             usePortal={false}
@@ -190,9 +187,10 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                                 }
                                 >
                             </Switch>
-                        </Tooltip> */}
+                        </Tooltip>
                     </div>
                 </div>
+                */}
 
             </div>
         );

@@ -43,7 +43,8 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     componentDidMount() {
         this.props.model.onOpenNotebookWillChange.attach(this.onOpenNotebookWillChange);
         this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
-        this.props.model.onModified.attach(this.onNotebookModified);
+        this.props.model.onModified.attach(this.onNeedUpdate);
+        this.evaluator.onJobsChanged.attach(this.onNeedUpdate);
         
         this.hookNotebookEvents();
     }
@@ -51,7 +52,8 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     componentWillUnmount(): void {
         this.props.model.onOpenNotebookWillChange.detach(this.onOpenNotebookWillChange);
         this.props.model.onOpenNotebookChanged.detach(this.onOpenNotebookChanged);
-        this.props.model.onModified.detach(this.onNotebookModified);
+        this.props.model.onModified.detach(this.onNeedUpdate);
+        this.evaluator.onJobsChanged.detach(this.onNeedUpdate);
 
         this.unhookNotebookEvents();
     }
@@ -59,16 +61,16 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     hookNotebookEvents(): void {
         if (this.props.model.isNotebookOpen()) {
             const notebook = this.props.model.getOpenNotebook();
-            notebook.onEvalStarted.attach(this.onCodeEvalStarted);
-            notebook.onEvalCompleted.attach(this.onCodeEvalCompleted);
+            notebook.onEvalStarted.attach(this.onNeedUpdate); //fio: ???
+            notebook.onEvalCompleted.attach(this.onNeedUpdate); //fio: ???
         }
     }
 
     unhookNotebookEvents(): void {
         if (this.props.model.isNotebookOpen()) {
             const notebook = this.props.model.getOpenNotebook();
-            notebook.onEvalStarted.detach(this.onCodeEvalStarted);
-            notebook.onEvalCompleted.detach(this.onCodeEvalCompleted);
+            notebook.onEvalStarted.detach(this.onNeedUpdate); //fio: ???
+            notebook.onEvalCompleted.detach(this.onNeedUpdate); //fio: ???
         }
     }
 
@@ -80,21 +82,14 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
         this.hookNotebookEvents();
     }
 
-    private onCodeEvalStarted = async () => {
-        await forceUpdate(this);
-    }
-
-    private onCodeEvalCompleted = async () => {
-        await forceUpdate(this);
-    }
-
-    private onNotebookModified = async () => {
+    private onNeedUpdate = async () => {
         await forceUpdate(this);
     }
 
     render(): JSX.Element {
         const isNotebookOpen = this.props.model.isNotebookOpen();
         const notebook = this.props.model.isNotebookOpen() && this.props.model.getOpenNotebook() || undefined;
+        const isExecuting = notebook && notebook.isExecuting() || false;
         let language = notebook && notebook.getLanguage();
         if (language === "javascript") {
             language = "JavaScript";
@@ -126,7 +121,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                 { 
                                     notebook
                                 }, 
-                                this.evaluator.isWorking() ? "executing" : "notExecuting"
+                                isExecuting ? "executing" : "notExecuting"
                             )}
                         </ButtonGroup>
                     }

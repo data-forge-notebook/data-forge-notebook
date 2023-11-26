@@ -10,7 +10,7 @@ First, follow instructions in the root directory for setup.
 pnpm start
 ```
 
-## Start it with live reload
+## Start it dev mode
 
 ```bash
 pnpm run start:dev
@@ -153,8 +153,6 @@ Or this way:
 ```bash
 pnpm run electron:dev
 ```
-
-
 ## Setting the URL for the evaluation engine
 
 Normally the electron build automatically spawns the evaluation engine. But you can also run it separately and instruct the electron build to connect to it using this environment variable:

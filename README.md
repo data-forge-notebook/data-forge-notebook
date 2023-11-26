@@ -4,15 +4,15 @@ Data-Forge Notebook is a cross-platform notebook application for JavaScript.
 
 The is the mono repo for Data-Forge Notebook.
 
-**WARNING**: Nightly builds are now being automatically released whenever work has been done on that day. Please be aware that the official v2 release is not ready yet. The nightly builds are **slow and buggy**. Please only use them if you are helping me test DFN.
+**WARNING**: Nightly builds are now being automatically released whenever work has been done on that day. Please be aware that the official v2 release is not ready yet. The nightly builds are **getting better**. Please only use them if you are helping me test DFN.
 
 [Data-Forge Notebook v1 available here](https://www.data-forge-notebook.com/)
 
 [Read the wiki](https://github.com/data-forge-notebook/data-forge-notebook/wiki)
 
-[See the issues page to contribute to the discussion](https://github.com/data-forge-notebook/data-forge-notebook/issues)
+[See the issues page and contribute](https://github.com/data-forge-notebook/data-forge-notebook/issues)
 
-[Follow the developer on Twitter for more frequent news and updates](https://twitter.com/codecapers)
+[Follow the developer on Twitter for more news and updates](https://twitter.com/codecapers)
 
 ## Project structure
 
@@ -27,8 +27,10 @@ A birds eye view of this project:
     │   ├───notebook-editor -------- Implements the notebook editor.
     │   └───plugins ---------------- Contains compiled plugins.
     ├───plugins ---------------- Visualization plugins.
+    │   ├───apex ------------------- Uses Apex to plot charts.
     │   ├───data ------------------- Visualizes structured data.
-    │   ├───plot ------------------- Plots charts.
+    │   ├───geo -------------------- Uses Leaflet to plot maps.
+    │   ├───html ------------------- Renders HTML markup.
     │   ├───table ------------------ Renders data in a table.
     │   └───text ------------------- Displays text data.
     ├───scripts ---------------- Scripts for building and serving plugins.
@@ -83,6 +85,7 @@ Before you should do anything you should compile all TypeScript code to JavaScri
 ```bash
 pnpm run compile
 ```
+
 Compiled JavaScript code is output to the `build` subdirectory for each project.
 
 You can also compile all packages in watch mode which can be useful if you are changing code and want them to recompile automatically:
@@ -106,8 +109,6 @@ This runs the whole notebook editor in the browser.
 pnpm start
 ```
 
-It runs in "dev" mode with live reload enabled.
-
 The plugins (which are complete web pages in their own right) and also served in "dev" mode from the `./plugins` directory. You can edit the code for the plugins, but you might have to manually refresh the browser to see updated plugins.
 
 ## Build a static web page
@@ -130,7 +131,7 @@ This runs the whole notebook editor in Electron (with a static build):
 pnpm run electron:static
 ```
 
-To run in Electron with live reload:
+To run in Electron in dev mode:
 
 ```bash
 pnpm run electron:dev

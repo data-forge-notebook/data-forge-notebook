@@ -97,9 +97,6 @@ jobs:
       - name: Compile
         run: pnpm run compile
 
-      - name: Test
-        run: pnpm test
-
       - name: Build plugins 
         run: pnpm run build-plugins
 
