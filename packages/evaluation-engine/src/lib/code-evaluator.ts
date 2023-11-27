@@ -7,7 +7,6 @@ import * as vm from 'vm';
 import { formatErrorMessage, ErrorSource } from "./format-error-message";
 import { ISourceMap, mergeSourceMaps, SourceMap } from "source-map-lib";
 import { IFileLocation } from "./language-code-generator";
-import { ProjectGenerator } from "./project-generator";
 import { CellType } from "model";
 import { IAsyncTracker, AsyncTracker } from "./async-tracker";
 import { AsyncResource, executionAsyncId } from "async_hooks";
@@ -695,11 +694,6 @@ export class CodeEvaluator implements ICodeEvaluator {
     // Installs the notebook.
     //
     async installNotebook(): Promise<void> {
-        const language = this.notebook.getLanguage();
-        const projectGenerator = new ProjectGenerator(this.projectPath, language, this.npm, this.log);
-
-        await projectGenerator.ensureProject(false);
-
         await this.ensureRequiredModules(this.notebook, this.cells, this.projectPath);
     }
 

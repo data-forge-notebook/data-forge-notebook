@@ -1,15 +1,7 @@
 import { ILog } from "utils";
 import * as path from 'path';
 import * as fs from 'fs-extra';
-import { cmd } from './lib/cmd';
-import axios from 'axios';
 import * as _ from "lodash";
-import * as os from "os";
-
-const platform = os.platform();
-const isWindows = platform === "win32";
-const isMacOS = platform === "darwin";
-const isLinux = platform === "linux";
 
 export const requireStmtRegex = () => /require\(('|")([^('|")]+?)('|")\)/gm;
 export const importStmtRegex = () => /import .*?('|")([^('|")]+?)('|")/gm;
@@ -22,45 +14,10 @@ export function isModuleImportStatement(line: string): boolean {
 }
 
 //
-// Determine if a npm module exists.
-// Derived from this https://github.com/parro-it/npm-exists
-//
-async function npmExists(moduleName: string): Promise<boolean> {
-	const hostname = `https://registry.npmjs.org/`; //TODO: This could be moved to configuration.
-    const pkgUrl = `${hostname}/${moduleName}`;
-    try {
-        const response = await axios.get(pkgUrl, {method: 'HEAD'});
-        return response && response.status === 200;
-    }
-    catch (err) {
-        return false;
-    }
-}
-
-//
 // Interface for code module installation.
 //
 export interface INpm   {
 
-    //
-    // Get the path to the Node.js exe.
-    //
-    getNodeJsExePath(): string;    
-
-    //
-    // Run a general npm install in the specified path.
-    //
-    generalNpmInstall(projectPath: string, noBinLinks: boolean): Promise<void>;
-    
-    //
-    // Log the NPM version no.
-    //
-    logVersion(): Promise<void>;
-
-    //
-    // Returns true if the requested module exists in npm.
-    //
-    moduleExists(moduleName: string): Promise<boolean>;
 
     //
     // Install a named module.
@@ -83,11 +40,6 @@ export interface INpm   {
     filterExistingModules(moduleNames: string[]): Promise<string[]>;
 
     //
-    // Install a named package.
-    //
-    uninstallPackage(packageName: string, projectPath: string, removeExtras: boolean): Promise<void>;
-
-    //
     // Ensure that any npm peer dependencies required by the project are also installed.
     //
     ensurePeerDependenciesInstalled(packageName: string, projectPath: string, saveDev: boolean, noBinLinks: boolean): Promise<void>;
@@ -106,16 +58,6 @@ export interface INpm   {
     // Ensure modules required by the code are installed.
     //
     ensureRequiredModules(code: string, projectPath: string, onlyExistingModules: boolean): Promise<void>;
-
-    //
-    // List packages
-    //
-    listPackages(projectPath: string): Promise<any[]>;
-
-    //
-    // Search available packages.
-    //
-    searchPackages(searchText: string): Promise<any[]>;
 }
 
 //
@@ -141,136 +83,6 @@ export class Npm implements INpm {
         this.log = log;
     }
 
-    //
-    // Get the path to the npm command or script.
-    //
-    private getNpmScriptPath(): string {
-        return path.resolve(path.join(
-            this.nodeJsPath, 
-            (isLinux || isMacOS)
-                ? "../lib/node_modules/npm/bin/npm-cli.js" 
-                : "node_modules/npm/bin/npm-cli.js"
-        ));
-    }
-
-    //
-    // Get the path to the Node.js exe.
-    //
-    getNodeJsExePath(): string {
-        return path.join(this.nodeJsPath, "node");
-    }
-
-    //
-    // Invoke an Npm command (cross-platform).
-    //
-    private async invokeNpm(workingDirectory: string | undefined, args: string[], captureOutput? :boolean, checkErrorCode?: (code: number) => boolean): Promise<string | undefined> {
-
-        const nodeExePath = this.getNodeJsExePath();
-        const nodePath = path.dirname(nodeExePath);
-
-        this.log.info("Running npm.");
-        this.log.info("Using Nodejs from path " + nodePath);
-
-        let cmdPath = nodePath;
-
-        if (process.env.PATH) {
-            cmdPath += path.delimiter + process.env.PATH;
-        }
-
-        const env = Object.assign({}, process.env, {
-            PATH: cmdPath, // Override path.
-        });
-
-        //
-        // Delete NODE_ENV, because leaving it set to "production"
-        // disables dev dependencies and breaks TypeScript notebooks (because TypeScript doesn't get installed).
-        //
-        delete env.NODE_ENV;
-
-        const npmScriptPath = this.getNpmScriptPath();
-        let fullArgs = [
-            npmScriptPath,
-            ...args,
-            //
-            // Enables extra logging from npm.
-            //
-            //"--loglevel", "verbose",
-            "--scripts-prepend-node-path", "true", 
-            "--cache", this.npmCachePath,
-            "--prefer-offline",
-            "--no-audit",
-            "--ignore-scripts", // Don't run postinstall scripts.
-        ];
-
-        const output = await cmd(
-            {
-                cmd: nodeExePath,
-                args: fullArgs,
-                cwd: workingDirectory, 
-                env: env,
-                captureOutput: captureOutput,
-                captureErrors: true,
-                checkErrorCode: checkErrorCode,
-            },
-            this.log
-        );
-
-        this.log.info("Command:");
-        this.log.info([nodeExePath].concat(fullArgs).join(" "));
-
-        return output;
-    }
-
-    //
-    // Run a general npm install in the specified path.
-    //
-    async generalNpmInstall(projectPath: string, noBinLinks: boolean): Promise<void> {
-        const args = ["install"];
-        if (noBinLinks) {
-            args.push("--bin-links");
-            args.push("false");
-        }
-        await this.invokeNpm(projectPath, args);
-    }
-    
-    //
-    // Log the NPM version no.
-    //
-    async logVersion(): Promise<void> {
-        this.log.info("Nodejs version is: ");
-        const nodeExePath = this.getNodeJsExePath();
-        const nodePath = path.dirname(nodeExePath);
-
-        let cmdPath = nodePath; 
-
-        if (process.env.PATH) {
-            cmdPath += path.delimiter + process.env.PATH;
-        }
-
-        const env = Object.assign({}, process.env, {
-            PATH: cmdPath, // Override path.
-        });
-
-        await cmd(
-            {
-                cmd: nodeExePath,
-                args: ["--version"],
-                env: env,
-                captureErrors: true,
-            },
-            this.log
-        );
-
-        this.log.info("Npm version is: ");
-        await this.invokeNpm("./", ["--version"]);
-    }
-
-    //
-    // Returns true if the requested module exists in npm.
-    //
-    async moduleExists(moduleName: string): Promise<boolean> {
-        return await npmExists(moduleName);
-    }
 
     //
     // Install a named module.
@@ -280,15 +92,7 @@ export class Npm implements INpm {
             return;
         }
 
-        const args = ["install", saveDev ? "--save-dev" : "--save"].concat(moduleNames);
-        if (noBinLinks) {
-            args.push("--bin-links");
-            args.push("false");
-        }
-
-        const installs: Promise<void | string | undefined>[] = [];
-        
-        await this.invokeNpm(projectPath, args);
+        //TODO: Install required modules.
 
         if (installExtras) {
             await this.installPeerDeps(moduleNames, projectPath, saveDev, noBinLinks);
@@ -361,72 +165,26 @@ export class Npm implements INpm {
             return [];
         }
 
-        const modulesExist = await Promise.all(moduleNames.map(moduleName => this.moduleExists(moduleName)));
-        return moduleNames.filter((moduleName, index) => modulesExist[index]);
-    }
+        //TODO: Filter out modules that don't exist.
+        // const modulesExist = await Promise.all(moduleNames.map(moduleName => this.moduleExists(moduleName)));
+        // return moduleNames.filter((moduleName, index) => modulesExist[index]);
 
-    //
-    // Install a named package.
-    //
-    async uninstallPackage(packageName: string, projectPath: string, removeExtras: boolean): Promise<void> {
-
-        const args = [
-            "uninstall",
-            packageName
-        ];
-
-        await this.invokeNpm(projectPath, args);
-
-        if (removeExtras) {
-            //
-            // No need to uninstall peer dependencies.
-            // They might be used by someting else!
-            //
-
-            const typeDefPackageName = `@types/${packageName}`;
-            await this.uninstallPackage(typeDefPackageName, projectPath, false);
-        }
-    }
-
-    //
-    // Get the package file for the specified npm package.
-    //
-    async getPackageData(packageName: string): Promise<any> {
-        const encodedPackageName = encodeURIComponent(packageName);
-        const registry = "https://registry.npmjs.com";
-        const url = `${registry}/${encodedPackageName}`;
-        const response = await axios.get(url);
-        return response.data;
-    }
-
-    //
-    // Get available version for the particular package.
-    //
-    async getAvailableVersions(packageName: string): Promise<string[]> {
-        const packageData = await this.getPackageData(packageName);
-        return Object.keys(packageData.versions);
-    }
-
-    //
-    // Get package data for the latest version.
-    //
-    async getLatestVersionPackageData(packageName: string): Promise<any> {
-        const packageData = await this.getPackageData(packageName);
-        const versions = Object.keys(packageData.versions);
-        const latestVersion = versions[versions.length-1];
-        return packageData.versions[latestVersion];
+        return moduleNames;
     }
 
     //
     // Get peer dependencies for the particular package.
     //
     async getPeerDependencies(packageName: string): Promise<string[]> {
-        const peerDeps = (await this.getLatestVersionPackageData(packageName)).peerDependencies;
-        if (!peerDeps) {
-            return [];
-        }
+        // TODO. Need to read local package.json.
+        // const peerDeps = (await this.getLatestVersionPackageData(packageName)).peerDependencies;
+        // if (!peerDeps) {
+        //     return [];
+        // }
         
-        return Object.keys(peerDeps);
+        // return Object.keys(peerDeps);
+
+        return [];
     }
 
     //
@@ -516,62 +274,6 @@ export class Npm implements INpm {
 
         await this.installModules(moduleNames, projectPath, false, false, true);
     }    
-
-    //
-    // List packages
-    //
-    async listPackages(projectPath: string): Promise<any[]> {
-        const packageMap: any = {};
-        const lsOutput = await this.invokeNpm(projectPath, ["ls", "--json", "--depth", "0", "--long"], true);
-        if (lsOutput) {
-            const packageInfo = JSON.parse(lsOutput);
-            if (packageInfo.dependencies) {
-                for (const key of Object.keys(packageInfo.dependencies)) {
-                    packageMap[key] = {
-                        name: key,
-                        current: packageInfo.dependencies[key].version,
-                        isDevDependency: false,
-                    };
-                }
-            }
-
-            if (packageInfo.devDependencies) {
-                for (const key of Object.keys(packageInfo.devDependencies)) {
-                    packageMap[key] = {
-                        name: key,
-                        current: packageInfo.devDependencies[key].version,
-                        isDevDependency: true,
-                    };
-                }
-            }
-        }
-        
-        // npm outdated can return 1 to indicate there are outdated packages.
-        const outdatedOutput = await this.invokeNpm(projectPath, ["outdated", "--json", "--depth", "0", "--long"], true, code => code === 0 || code === 1);
-        if (outdatedOutput) {
-            const outdatedInfo = JSON.parse(outdatedOutput);
-            for (const key of Object.keys(outdatedInfo)) {
-                packageMap[key] = {
-                    name: key,
-                    isDevDependency: outdatedInfo[key].type === "devDependency",
-                    ...outdatedInfo[key],
-                };
-            }
-        }
-
-        return Object.keys(packageMap).map(key => packageMap[key]);
-    }
-
-    //
-    // Search available packages.
-    //
-    async searchPackages(searchText: string): Promise<any[]> {
-        const searchOutput = await this.invokeNpm("./", ["search", "--json", "--long", searchText], true);
-        if (!searchOutput) {
-            return [];
-        }
-        return JSON.parse(searchOutput);
-    }
 }
 
 //
