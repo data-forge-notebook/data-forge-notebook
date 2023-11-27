@@ -63,9 +63,9 @@ body {
 }
 
 .cell-handle {
-    border-left: 1px rgba(0, 0, 0, 0.2) solid;
-    border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
-    border-top: 1px rgba(0, 0, 0, 0.2) solid;
+    border-left: 1px transparent solid;
+    border-bottom: 1px transparent solid;
+    border-top: 1px transparent solid;
 }
 
 .cell-container:hover .cell-handle {
