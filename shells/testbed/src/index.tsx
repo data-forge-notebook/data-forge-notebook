@@ -4,7 +4,7 @@ import { Button } from "@blueprintjs/core";
 import { MonacoEditor } from "notebook-editor/build/components/monaco-editor";
 import { PluggableVisualization } from "notebook-editor/build/view/notebook/editor/cell/pluggable-visualization";
 import { CodeCellViewModel } from "notebook-editor/build/view-model/code-cell";
-import { Cell, CellScope, CellType } from "model";
+import { Cell, CellType } from "model";
 
 import "notebook-editor/build/services/impl/date-provider";
 
@@ -20,7 +20,6 @@ function App() {
                             new Cell(
                                 "1234",
                                 CellType.Code,
-                                CellScope.Global,
                                 "const x = 1;",
                                 undefined,
                                 undefined,

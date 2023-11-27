@@ -1,6 +1,5 @@
 import moment from "moment";
-import { Cell, CellScope, CellType } from "../../model/cell";
-import { ISerializedCellOutput1 } from "../../model/serialization/serialized1";
+import { Cell, CellType } from "../../model/cell";
 
 describe("model / cell", () => {
 
@@ -8,39 +7,37 @@ describe("model / cell", () => {
 
         const theId = "1234";
         const theCellType = CellType.Code;
-        const theCellScope = CellScope.Global;
         const theText = "const x = 3;";
-        const cell = new Cell(theId, theCellType, theCellScope, theText, undefined, undefined, [], []);
+        const cell = new Cell(theId, theCellType, theText, undefined, undefined, [], []);
         expect(cell.getId()).toEqual(theId);
         expect(cell.getCellType()).toEqual(theCellType);
-        expect(cell.getCellScope()).toEqual(theCellScope);
         expect(cell.getText()).toEqual(theText);
     });
 
     test("can construct with last eval date", () => {
 
         const theLastEvaluationDate = moment().toISOString(true);
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", theLastEvaluationDate, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", theLastEvaluationDate, undefined, [], []);
         expect(moment(cell.getLastEvaluationDate()).toISOString(true)).toEqual(theLastEvaluationDate);
     });
 
     test("can construct with height", () => {
 
         const theHeight = 18;
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, theHeight, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, theHeight, [], []);
         expect(cell.getHeight()).toEqual(theHeight);
     });
 
     test("setting the text to the same makes no change", () => {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "hello", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "hello", undefined, undefined, [], []);
 
         expect(cell.setText("hello")).toBe(false);
     });
 
     test("setting the text to the different changes the text", () => {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "hello", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "hello", undefined, undefined, [], []);
 
         const newText = "world";
         expect(cell.setText(newText)).toBe(true);
@@ -49,7 +46,7 @@ describe("model / cell", () => {
 
     test("setting the text trims whitespace from the end", () => {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
 
         const baseText = "Hello world";
         expect(cell.setText(`${baseText} `)).toBe(true);
@@ -58,7 +55,7 @@ describe("model / cell", () => {
 
     test("can add outputs", () => {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         const mockOutput1: any = {};
         const mockOutput2: any = {};
@@ -68,7 +65,7 @@ describe("model / cell", () => {
     });
 
     test("can clear outputs", () => {
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         const mockOutput: any = {};
         cell.addOutput(mockOutput);
@@ -78,7 +75,7 @@ describe("model / cell", () => {
 
     test("can overwrite stale outputs", () => {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         const mockOutput1: any = {
             markStale: () => {},
@@ -103,7 +100,7 @@ describe("model / cell", () => {
 
     test("can clear stale outputs", () => {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         const mockOutput1: any = {
             markStale: () => {},
@@ -129,7 +126,7 @@ describe("model / cell", () => {
 
     test("can add errors", () => {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         const mockError1: any = {};
         const mockError2: any = {};
@@ -139,7 +136,7 @@ describe("model / cell", () => {
     });
 
     test("can clear errors", () => {
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         const mockError: any = {};
         cell.addError(mockError);
@@ -149,7 +146,7 @@ describe("model / cell", () => {
 
     test("can overwrite stale errors", ()=> {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         const mockError1: any = {
             markStale: () => {},
@@ -174,7 +171,7 @@ describe("model / cell", () => {
 
     test("can clear stale errors", () => {
 
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         const mockError1: any = {
             markStale: () => {},
@@ -200,15 +197,13 @@ describe("model / cell", () => {
 
     test("can serialize code cell", () => {
         const theId = "1234";
-        const theCellScope = CellScope.Global;
         const theText = "const x = 3;";
         const theLastEvaluationDate = moment().toISOString(true);
         const theHeight = 18;
-        const cell = new Cell(theId, CellType.Code, theCellScope, theText, theLastEvaluationDate, theHeight, [], []);
+        const cell = new Cell(theId, CellType.Code, theText, theLastEvaluationDate, theHeight, [], []);
         expect(cell.serialize()).toEqual({
             id: theId,
             cellType: CellType.Code,
-            cellScope: theCellScope,
             code: theText,
             lastEvaluationDate: theLastEvaluationDate,
             output: [],
@@ -226,7 +221,7 @@ describe("model / cell", () => {
         const mockError: any = {
             serialize: () => serializedError,
         };
-        const cell = new Cell("1234", CellType.Code, CellScope.Global, "", undefined, undefined, [ mockOutput ], [ mockError ]);
+        const cell = new Cell("1234", CellType.Code, "", undefined, undefined, [ mockOutput ], [ mockError ]);
         const serialized = cell.serialize();
         expect(serialized.output).toEqual([ serializedOutput ]);
         expect(serialized.errors).toEqual([ serializedError ]);
@@ -235,7 +230,7 @@ describe("model / cell", () => {
     test("can serialize markdown cell", () => {
         const theId = "1234";
         const theText = "# Hello markdown;";
-        const cell = new Cell(theId, CellType.Markdown, undefined, theText, undefined, undefined, [], []);
+        const cell = new Cell(theId, CellType.Markdown, theText, undefined, undefined, [], []);
         expect(cell.serialize()).toEqual({
             id: theId,
             cellType: CellType.Markdown,
@@ -266,13 +261,11 @@ describe("model / cell", () => {
         const cell = Cell.deserialize({
             id: theId,
             cellType: CellType.Code,
-            cellScope: CellScope.Global,
             code: theText,
         });
         expect(cell.getId()).toEqual(theId);
         expect(cell.getText()).toEqual(theText);
         expect(cell.getCellType()).toEqual(CellType.Code);
-        expect(cell.getCellScope()).toEqual(CellScope.Global);
         expect(cell.getOutput()).toEqual([]);
         expect(cell.getErrors()).toEqual([]);
     });
@@ -336,18 +329,8 @@ describe("model / cell", () => {
         expect(cell.getErrors()[0]).toBeDefined();
     });
 
-    test("can set cell scope", () => {
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
-        
-        const theScope = CellScope.Local;
-        expect(cell.getCellScope()).not.toBe(theScope);
-
-        cell.setCellScope(theScope);
-        expect(cell.getCellScope()).toBe(theScope);
-    });
-
     test("can set last eval date", () => {
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         expect(cell.getLastEvaluationDate()).toBeUndefined();
 
@@ -357,7 +340,7 @@ describe("model / cell", () => {
     });
 
     test("can set height", () => {
-        const cell = new Cell("", CellType.Code, CellScope.Global, "", undefined, undefined, [], []);
+        const cell = new Cell("", CellType.Code, "", undefined, undefined, [], []);
         
         expect(cell.getHeight()).toBeUndefined();
 

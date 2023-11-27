@@ -1,4 +1,4 @@
-import { CellType, CellScope } from "../cell";
+import { CellType } from "../cell";
 
 //
 // Interfaces for a serialized notebook version 1.
@@ -69,11 +69,6 @@ export interface ISerializedCell1 {
     // The type of the cell.
     //
     cellType?: CellType;
-
-    //
-    // The scope of the cell.
-    //
-    cellScope?: CellScope;
 
     //
     // Code for the cell.

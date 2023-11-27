@@ -1,6 +1,6 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { BasicEventHandler, IEventSource, EventSource, ILogId, ILog } from "utils";
-import { CellError, CellOutput, CellOutputValue, CellScope, CellType, ISerializedCell1 } from "model";
+import { CellError, CellOutput, CellType, ISerializedCell1 } from "model";
 import { notebookVersion } from "model";
 import { ISerializedNotebook1 } from "model";
 import { IIdGenerator, IIdGeneratorId } from "utils/src/lib/id-generator";
@@ -423,7 +423,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
                 {
                     "id": this.idGenerator.genId(),
                     "cellType": CellType.Code,
-                    "cellScope": CellScope.Global,
                     "code": "",
                     "output": [],
                     "errors": []

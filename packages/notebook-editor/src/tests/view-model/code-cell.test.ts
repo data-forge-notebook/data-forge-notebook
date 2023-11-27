@@ -1,6 +1,5 @@
 import { disableInjector } from "@codecapers/fusion";
 import { EventSource, BasicEventHandler } from "utils";
-import { CellScope } from "model";
 import { ICellErrorViewModel } from "../../view-model/cell-error";
 import { ICellOutputViewModel } from "../../view-model/cell-output";
 import { CodeCellViewModel, ICodeCellViewModel } from "../../view-model/code-cell";
@@ -25,8 +24,6 @@ describe("view-model / code-cell", () => {
     //
     function createCell() {
         const mockModel: any = {
-            getCellScope: () => CellScope.Local,
-            setCellScope: jest.fn(),
             addOutput: jest.fn(),
             clearOutputs: jest.fn(),
             resetOutputs: jest.fn(),
@@ -98,43 +95,14 @@ describe("view-model / code-cell", () => {
         const now = new Date();
         const mockModel: any = {
             getLastEvaluationDate: () => now,
-            getCellScope: () => CellScope.Local,
         };
         const output: ICellOutputViewModel[] = [];
         const errors: ICellErrorViewModel[] = [];
         const cell = createCellViewModel(mockModel, output, errors);
 
         expect(cell.getLastEvaluationDate()).toBe(now);
-        expect(cell.getCellScope()).toBe(CellScope.Local);
         expect(cell.getOutput()).toBe(output);
         expect(cell.getErrors()).toBe(errors);
-    });
-
-    test("can set cell scope", async () => {
-
-        const { cell, mockModel } = createCell();
-
-        await cell.setCellScope(CellScope.Global);
-
-        expect(mockModel.setCellScope).toBeCalledWith(CellScope.Global);
-    });
-
-    test("setting cell scope raises onModified", async () => {
-
-        const { cell } = createCell();
-
-        await expectEventRaised(cell, "onModified", async () => {
-            await cell.setCellScope(CellScope.Global);
-        });
-    });
-
-    test("setting cell scope to the same has no effect", async () => {
-
-        const { cell } = createCell();
-
-        await expectEventNotRaised(cell, "onModified", async () => {
-            await cell.setCellScope(CellScope.Local);
-        });
     });
 
     test("can add an output", async () => {

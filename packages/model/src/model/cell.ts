@@ -8,11 +8,6 @@ export enum CellType {
     Markdown = "markdown",
 }
 
-export enum CellScope {
-    Global = "global", // Default
-    Local = "local",
-}
-
 //
 // Represents a cell within a notebook notebook.
 //
@@ -28,16 +23,6 @@ export interface ICell {
     //
     getCellType(): CellType;
 
-    //
-    // Get the scope of the cell.
-    //
-    getCellScope(): CellScope | undefined;
-
-    //
-    // Set the scope of the cell.
-    //
-    setCellScope(scope: CellScope): void;
-    
     //
     // Get the text for the cell.
     //
@@ -143,11 +128,6 @@ export class Cell implements ICell {
     private cellType: CellType;
 
     //
-    // The scope of the cell.
-    //
-    private cellScope: CellScope | undefined;
-    
-    //
     // The text for the cell.
     //
     private text: string;
@@ -184,10 +164,9 @@ export class Cell implements ICell {
     //
     height: number | undefined;
 
-    constructor(id: string, cellType: CellType, cellScope: CellScope | undefined, text: string, lastEvaluationDate: string | undefined, height: number | undefined, output: ICellOutput[], errors: ICellError[]) {
+    constructor(id: string, cellType: CellType, text: string, lastEvaluationDate: string | undefined, height: number | undefined, output: ICellOutput[], errors: ICellError[]) {
         this.id = id;
         this.cellType = cellType;
-        this.cellScope = cellScope;
         this.text = text;
         this.lastEvaluationDate = lastEvaluationDate && moment(lastEvaluationDate, moment.ISO_8601).toDate() || undefined;
         this.height = height;
@@ -209,20 +188,6 @@ export class Cell implements ICell {
         return this.cellType;
     }
 
-    //
-    // Get the scope of the cell.
-    //
-    getCellScope(): CellScope | undefined {
-        return this.cellScope;
-    }
-
-    //
-    // Set the scope of the cell.
-    //
-    setCellScope(scope: CellScope): void {
-        this.cellScope = scope;
-    }    
-    
     //
     // Get the text for the cell.
     //
@@ -375,7 +340,6 @@ export class Cell implements ICell {
         return {
             id: this.id,
             cellType: this.cellType,
-            cellScope: this.cellType === CellType.Code && this.cellScope || undefined,
             code: this.text,
             lastEvaluationDate: this.lastEvaluationDate && moment(this.lastEvaluationDate).toISOString(true) || undefined,
             output: this.output.map(output => output.serialize()),
@@ -391,7 +355,6 @@ export class Cell implements ICell {
         return {
             id: this.id,
             cellType: this.cellType,
-            cellScope: this.cellType === CellType.Code && this.cellScope || undefined,
             code: this.text,
         };
     }
@@ -426,7 +389,6 @@ export class Cell implements ICell {
         return new Cell(
             input.id,
             input.cellType || CellType.Code,
-            input.cellScope || CellScope.Global,
             input.code || "",
             input.lastEvaluationDate,
             input.height,

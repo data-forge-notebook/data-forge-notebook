@@ -1,7 +1,7 @@
 import { INotebook } from "model";
-import { ICell, CellType, CellScope } from "model";
+import { ICell, CellType } from "model";
 import { ILog } from "utils";
-import { mergeSourceMaps, SourceMapGenerator } from "source-map-lib";
+import { SourceMapGenerator } from "source-map-lib";
 import { ILanguageCodeGenerator, IGeneratedCode } from "./language-code-generator";
 import { babelCompile } from "./babel-compile";
 import { isModuleImportStatement } from "./npm";
@@ -118,12 +118,6 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
             
             cellCode = codeLines.join("\r\n");
 
-            if (cell.getCellScope() === CellScope.Local) {
-                cellCode = LOCAL_PRE_CODE +
-                    cellCode + "\r\n" +
-                    LOCAL_POST_CODE;
-            }
-
             cellCode += "\r\n";
 
             code += cellCode;
@@ -132,12 +126,10 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
             generatedCodeOffset += codeCellLines;
 
             if (!forExport) {
-                if (cell.getCellScope() !== CellScope.Local) { // Only capture non-local cells.
-                    // Generate code to capture local variables.
-                    const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.getId()}", () => ({}));\r\n`;
-                    code += captureLocalsCode;
-                    generatedCodeOffset += this.computeNumLines(captureLocalsCode);
-                }
+                // Generate code to capture local variables.
+                const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.getId()}", () => ({}));\r\n`;
+                code += captureLocalsCode;
+                generatedCodeOffset += this.computeNumLines(captureLocalsCode);
             }
 
             sourceMapGenerator.addMappings(`cell-${cellId}`, cell.getText(), { line: cellStartLine, column: 0 });
@@ -300,8 +292,4 @@ const GLOBAL_PRE_CODE =
 
 const GLOBAL_POST_CODE = " await wrapperFn(); })";
     
-const LOCAL_PRE_CODE = "await (async function () {\r\n";
-
-const LOCAL_POST_CODE = "})();";
-
 

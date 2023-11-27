@@ -1,5 +1,3 @@
-import { CellScope, CellType } from "model";
-import { ISerializedNotebook1 } from "model";
 
 export const testNotebook: any = {
     "version": 3,
@@ -9,7 +7,6 @@ export const testNotebook: any = {
         {
             "id": "e297e6d1-3249-11ec-ae8f-ef3292b6499b",
             "cellType": "code",
-            "cellScope": "global",
             "code": "display([\r\n    [ \"timestamp\", \"open\", \"high\", \"low\", \"close\" ],\r\n    [1, 2, 3, 4, 5],\r\n    [1, 2, 3, 4, 5],\r\n    [1, 2, 3, 4, 5],\r\n], \"table\");\r\n\r\ndisplay([\r\n    { x: \"1\", y: \"a\" },\r\n    { x: \"2\", y: \"b\" },\r\n], \"table\");\r\n\r\ndisplay({\r\n    x: \"1\",\r\n    y: \"a\",\r\n}, \"table\");",
             "lastEvaluationDate": "2023-11-19T16:36:02.255+10:00",
             "output": [

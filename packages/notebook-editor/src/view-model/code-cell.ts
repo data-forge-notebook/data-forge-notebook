@@ -1,5 +1,5 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { CellScope, ICell } from "model";
+import { ICell } from "model";
 import { IDateProvider, IDateProviderId } from "../services/date-provider";
 import { ICellViewModel, CellViewModel } from "./cell";
 import { ICellErrorViewModel } from "./cell-error";
@@ -25,16 +25,6 @@ export interface ICodeCellViewModel extends ICellViewModel {
     //
     inError(): boolean;
 
-    //
-    // Get the scope of the cell.
-    //
-    getCellScope(): CellScope | undefined;
-
-    //
-    // Set the scope of the cell.
-    //
-    setCellScope(scope: CellScope): Promise<void>;
-    
     //
     // Get the output for the cell.
     //
@@ -150,23 +140,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     inError(): boolean {
         return this.errors && this.errors.length > 0;
-    }
-    
-    //
-    // Get the scope of the cell.
-    //
-    getCellScope(): CellScope | undefined {
-        return this.cell.getCellScope();
-    }
-
-    //
-    // Set the scope of the cell.
-    //
-    async setCellScope(scope: CellScope): Promise<void> {
-        if (this.cell.getCellScope() !== scope) {
-            this.cell.setCellScope(scope);
-            await this.notifyModified();
-        }
     }
     
     //
