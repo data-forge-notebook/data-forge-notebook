@@ -603,46 +603,6 @@ importers:
         specifier: ^4.5.2
         version: 4.6.4
 
-  plugins/plot:
-    dependencies:
-      '@plotex/chart-def':
-        specifier: ^1.0.21
-        version: 1.0.21
-      '@plotex/lib-apex':
-        specifier: ^1.0.21
-        version: 1.0.21
-      host-bridge:
-        specifier: workspace:*
-        version: link:../../packages/host-bridge
-      react:
-        specifier: ^17.0.2
-        version: 17.0.2
-      react-dom:
-        specifier: ^17.0.2
-        version: 17.0.2(react@17.0.2)
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.17.2
-        version: 7.17.5
-      '@types/react':
-        specifier: ^17.0.37
-        version: 17.0.40
-      '@types/react-dom':
-        specifier: ^17.0.11
-        version: 17.0.13
-      fs-extra:
-        specifier: ^10.1.0
-        version: 10.1.0
-      inliner:
-        specifier: ^1.13.1
-        version: 1.13.1
-      live-server:
-        specifier: ^1.2.1
-        version: 1.2.2
-      typescript:
-        specifier: ^4.5.2
-        version: 4.6.4
-
   plugins/table:
     dependencies:
       host-bridge:
@@ -3333,26 +3293,6 @@ packages:
   /@open-draft/until@1.0.3:
     resolution: {integrity: sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==}
     dev: true
-
-  /@plotex/chart-def@1.0.21:
-    resolution: {integrity: sha512-oXkGpSo5GQetpLLU+sVSNl7vFAQLnELs2PGwHo5fgeOg2g13qe4a4ppQjjVsRiVtG9CNdSKsCM9yQBMhOBu4Bg==}
-    dependencies:
-      '@plotex/serialization': 1.0.11
-    dev: false
-
-  /@plotex/lib-apex@1.0.21:
-    resolution: {integrity: sha512-5dACHCdeViFrYTklxPlgDgNJGHenYp+IiJgS286qpnUkK/3Gj6uEvHhT9KT96sBgV4DtjUYykZ/an6U5OspThQ==}
-    dependencies:
-      '@plotex/chart-def': 1.0.21
-      '@plotex/serialization': 1.0.11
-      apexcharts: 3.44.0
-      dayjs: 1.11.2
-      numeral: 2.0.6
-    dev: false
-
-  /@plotex/serialization@1.0.11:
-    resolution: {integrity: sha512-ugvfkh6kSJQ2SnVAm733klHs5g50gMgSfxFDLQgqnV8RdUSdMMuzH/2iqcKJdcV9kvE/J/jTNAs+YECc57yb3Q==}
-    dev: false
 
   /@pmmmwh/react-refresh-webpack-plugin@0.5.7(react-refresh@0.11.0)(webpack-dev-server@4.9.0)(webpack@5.72.1):
     resolution: {integrity: sha512-bcKCAzF0DV2IIROp9ZHkRJa6O4jy7NlnHdWL3GmcUxYWNjLXkK5kfELELwEfSP5hXPfVL/qOGMAROuMQb9GG8Q==}
@@ -8189,10 +8129,6 @@ packages:
     resolution: {integrity: sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==}
     engines: {node: '>=0.11'}
     dev: true
-
-  /dayjs@1.11.2:
-    resolution: {integrity: sha512-F4LXf1OeU9hrSYRPTTj/6FbO4HTjPKXvEIC1P2kcnFurViINCVk3ZV0xAS3XVx9MkMsXbbqlK6hjseaYbgKEHw==}
-    dev: false
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -13832,10 +13768,6 @@ packages:
   /num2fraction@1.2.2:
     resolution: {integrity: sha1-b2gragJ6Tp3fpFZM0lidHU5mnt4=}
     dev: true
-
-  /numeral@2.0.6:
-    resolution: {integrity: sha512-qaKRmtYPZ5qdw4jWJD6bxEf1FJEqllJrwxCLIm0sQU/A7v2/czigzOb+C2uSiFsa9lBUzeH7M1oK+Q+OLxL3kA==}
-    dev: false
 
   /nwsapi@2.2.0:
     resolution: {integrity: sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ==}

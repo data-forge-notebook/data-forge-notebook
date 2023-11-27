@@ -1,7 +1,0 @@
-node_modules/
-dist/
-tsconfig.tsbuildinfo
-todo.txt
-build/
-.cache/
-.parcel-cache
