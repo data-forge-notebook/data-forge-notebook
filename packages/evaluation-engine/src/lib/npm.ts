@@ -79,52 +79,53 @@ export class Npm implements INpm {
     }
 
     //
+    // Installs a single module and all dependencies.
+    //
+    async installModule(module: IModuleSpec, projectPath: string, installExtras: boolean): Promise<void> {
+
+        console.log("Installing module: " + module.name);
+
+        const installed = downloadPackage(module.name, module.version, projectPath);
+        if (!installed) {
+            // Already installed.
+            return;
+        }
+
+        const packagePath = path.join(projectPath, "node_modules", module.name, "package.json");
+        const packageExists = await fs.pathExists(packagePath);
+        if (!packageExists) {
+            // Already installed, skip dependencies an everything else.
+            return;
+        }
+        
+        const packageFile = await fs.readJson(packagePath);
+        const dependencies = Object.entries(packageFile.dependencies || {}).map(([name, version]) => ({ name, version: version as string }));
+        await this.installModules(dependencies, projectPath, false);            
+
+        if (installExtras) {            
+            await Promise.all([
+                this.ensurePeerDependenciesInstalled(packageFile, projectPath),
+                this.installTypeDefs(module, projectPath),
+            ]);
+        }
+    }
+
+    //
     // Install a named module.
     //
     async installModules(modules: IModuleSpec[], projectPath: string, installExtras: boolean): Promise<void> {
         if (modules.length <= 0) {
             return;
         }
-
-        console.log("Installing modules: " + modules.join(', '));
-
-        await Promise.all(modules.map(module => downloadPackage(module.name, module.version, projectPath)));
-
-        //
-        // Install dependencies.
-        //
-        await Promise.all(modules.map(async module => {
-            const packagePath = path.join(projectPath, "node_modules", module.name, "package.json");
-            const packageExists = await fs.pathExists(packagePath);
-            if (!packageExists) {
-                return null;
-            }
-            
-            const packageFile = await fs.readJson(packagePath);
-            if (!packageFile) {
-                return;
-            }
-            const deps: { [index: string]: string } = packageFile.dependencies;
-            if (!deps) {
-                return;
-            }
-
-            const dependencies = Object.entries(deps).map(([name, version]) => ({ name, version }));
-            await this.installModules(dependencies, projectPath, false);            
-
-            if (installExtras) {            
-                await this.ensurePeerDependenciesInstalled(packageFile, projectPath);
-            }
-        }));
-
-        if (installExtras) {            
-            await this.installTypeDefs(modules, projectPath);
-        }
+        
+        await Promise.all(modules.map(module => this.installModule(module, projectPath, installExtras)));
     }
 
-    private async installTypeDefs(modules: IModuleSpec[], projectPath: string) {
-        const typeDefModules = modules.map(module => ({ name: `@types/${module.name}`, version: "latest" }));
-        await this.ensureModules(typeDefModules, projectPath, false, false);
+    //
+    // Install the typedefs for a module.
+    //
+    private async installTypeDefs(module: IModuleSpec, projectPath: string) {
+        await this.ensureModules([ { name: `@types/${module.name}`, version: "latest" } ], projectPath, false, false);
     }
 
     //

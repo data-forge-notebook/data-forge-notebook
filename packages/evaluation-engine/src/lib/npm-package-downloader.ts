@@ -17,25 +17,27 @@ const NPM_REGISTRY_URL = 'https://registry.npmjs.org';
 //
 // Downloads a package to the requested path.
 //
-export async function downloadPackage(packageName: string, packageVersion: string, projectPath: string): Promise<void> {
-    const resolvedVersion = await resolveVersion(packageName, packageVersion);
-    if (resolvedVersion === null) {
-        return;
-    }
-    
-    const stream = await getPackage(packageName, resolvedVersion);
-    if (stream === null) {
-        return;
-    }
-    
+export async function downloadPackage(packageName: string, packageVersion: string, projectPath: string): Promise<boolean> {
     const modulePath = path.join(projectPath, "node_modules", packageName);
     if (await fs.pathExists(modulePath)) {
         // Already downloaded.
         console.log(`Package ${packageName} already downloaded.`);
-        return;
+        return false;
     }
+
+    const resolvedVersion = await resolveVersion(packageName, packageVersion);
+    if (resolvedVersion === null) {
+        return false;
+    }
+    
+    const stream = await getPackage(packageName, resolvedVersion);
+    if (stream === null) {
+        return false;
+    }
+    
     await fs.ensureDir(modulePath);
     await saveFiles(stream, modulePath);
+    return true;
 }
 
 const agent = new https.Agent({
