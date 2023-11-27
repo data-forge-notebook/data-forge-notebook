@@ -248,7 +248,7 @@ export class EditorWindow implements IEditorWindow {
             y: newWindowCoords.y,
             width: newWindowCoords.width,
             height: newWindowCoords.height,
-            show: false,
+            show: true, //false,
             icon: iconPath,
             webPreferences: {
                 nodeIntegration: true,
@@ -261,8 +261,8 @@ export class EditorWindow implements IEditorWindow {
         });
 
         this.loadingWindow = new BrowserWindow({
-            parent: this.browserWindow,
-            modal: true,
+            // parent: this.browserWindow,
+            // modal: true,
             frame: false,
             resizable: false,
             title: formatTitle(),

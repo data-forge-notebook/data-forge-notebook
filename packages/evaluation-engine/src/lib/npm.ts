@@ -2,9 +2,15 @@ import { ILog } from "utils";
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as _ from "lodash";
+import { downloadPackage } from "./npm-package-downloader";
 
 export const requireStmtRegex = () => /require\(('|")([^('|")]+?)('|")\)/gm;
 export const importStmtRegex = () => /import .*?('|")([^('|")]+?)('|")/gm;
+
+export interface IModuleSpec {
+    name: string;
+    version: string;
+}
 
 //
 // Determine if a line of code contains a module import statement.
@@ -18,31 +24,20 @@ export function isModuleImportStatement(line: string): boolean {
 //
 export interface INpm   {
 
-
     //
     // Install a named module.
     //
-    installModules(moduleName: string[], projectPath: string, saveDev: boolean, noBinLinks: boolean, installExtras: boolean): Promise<void>;
+    installModules(modules: IModuleSpec[], projectPath: string, installExtras: boolean): Promise<void>;
 
     //
     // Ensure that a module is installed, only do the install if it's deemed not to exist already.
     //
-    ensureModules(moduleName: string[], projectPath: string, force: boolean, saveDev: boolean, noBinLinks: boolean, installExtras: boolean): Promise<void>;
-
-    //
-    // Filter out modules that are already installed.
-    //
-    filterOutInstalledModules(moduleNames: string[], projectPath: string): Promise<string[]>;
-
-    //
-    // Filter out modules that don't exist on npm.
-    //
-    filterExistingModules(moduleNames: string[]): Promise<string[]>;
+    ensureModules(modules: IModuleSpec[], projectPath: string, force: boolean, installExtras: boolean): Promise<void>;
 
     //
     // Ensure that any npm peer dependencies required by the project are also installed.
     //
-    ensurePeerDependenciesInstalled(packageName: string, projectPath: string, saveDev: boolean, noBinLinks: boolean): Promise<void>;
+    ensurePeerDependenciesInstalled(packageName: string, projectPath: string): Promise<void>;
 
     //
     // Find modules loaded through require statements in the code.
@@ -83,65 +78,60 @@ export class Npm implements INpm {
         this.log = log;
     }
 
-
     //
     // Install a named module.
     //
-    async installModules(moduleNames: string[], projectPath: string, saveDev: boolean, noBinLinks: boolean, installExtras: boolean): Promise<void> {
-        if (moduleNames.length <= 0) {
+    async installModules(modules: IModuleSpec[], projectPath: string, installExtras: boolean): Promise<void> {
+        if (modules.length <= 0) {
             return;
         }
 
-        //TODO: Install required modules.
+        console.log("Installing modules: " + modules.join(', '));
 
-        if (installExtras) {
-            await this.installPeerDeps(moduleNames, projectPath, saveDev, noBinLinks);
-            await this.installTypeDefs(moduleNames, projectPath);
+        await Promise.all(modules.map(module => downloadPackage(module.name, module.version, projectPath)));
+
+        //
+        // Install dependencies.
+        //
+        await Promise.all(modules.map(async module => {
+            const packagePath = path.join(projectPath, "node_modules", module.name, "package.json");
+            const packageExists = await fs.pathExists(packagePath);
+            if (!packageExists) {
+                return null;
+            }
+            
+            const packageFile = await fs.readJson(packagePath);
+            if (!packageFile) {
+                return;
+            }
+            const deps: { [index: string]: string } = packageFile.dependencies;
+            if (!deps) {
+                return;
+            }
+
+            const dependencies = Object.entries(deps).map(([name, version]) => ({ name, version }));
+            await this.installModules(dependencies, projectPath, false);            
+
+            if (installExtras) {            
+                await this.ensurePeerDependenciesInstalled(packageFile, projectPath);
+            }
+        }));
+
+        if (installExtras) {            
+            await this.installTypeDefs(modules, projectPath);
         }
     }
 
-    private async installTypeDefs(moduleNames: string[], projectPath: string) {
-        const typeDefModules = moduleNames.map(moduleName => `@types/${moduleName}`);
-        const filteredTypeDefModules = await this.filterExistingModules(typeDefModules);
-        if (filteredTypeDefModules.length > 0) {
-            await this.ensureModules(filteredTypeDefModules, projectPath, false, true, false, false);
-        }
-    }
-
-    private async installPeerDeps(moduleNames: string[], projectPath: string, saveDev: boolean, noBinLinks: boolean) {
-        for (const moduleName of moduleNames) {
-            await this.ensurePeerDependenciesInstalled(moduleName, projectPath, saveDev, noBinLinks);
-        }
-    }
-
-    //
-    // Filter out modules that are already installed.
-    //
-    async filterOutInstalledModules(moduleNames: string[], projectPath: string): Promise<string[]> {
-        if (moduleNames.length <= 0) {
-            return [];
-        }
-
-        const nodeModulesPath = path.join(projectPath, "node_modules");
-        const modulesInstalled = await Promise.all(
-            moduleNames.map(
-                async moduleName => {
-                    const modulePath = path.join(nodeModulesPath, moduleName);
-                    const moduleExists = await fs.pathExists(modulePath);
-                    return moduleExists;
-                }
-            )
-        );
-        
-        const filteredModuleList = moduleNames.filter((moduleName, index) => !modulesInstalled[index]);
-        return filteredModuleList;
+    private async installTypeDefs(modules: IModuleSpec[], projectPath: string) {
+        const typeDefModules = modules.map(module => ({ name: `@types/${module.name}`, version: "latest" }));
+        await this.ensureModules(typeDefModules, projectPath, false, false);
     }
 
     //
     // Ensure that a module is installed, only do the install if it's deemed not to exist already.
     //
-    async ensureModules(moduleNames: string[], projectPath: string, force: boolean, saveDev: boolean, noBinLinks: boolean, installExtras: boolean): Promise<void> {
-        if (moduleNames.length <= 0) {
+    async ensureModules(modules: IModuleSpec[], projectPath: string, force: boolean, installExtras: boolean): Promise<void> {
+        if (modules.length <= 0) {
             return;
         }
 
@@ -150,55 +140,21 @@ export class Npm implements INpm {
         const nodeModulesPath = path.join(projectPath, "node_modules");
         await fs.ensureDir(nodeModulesPath);
 
-        const filteredModules = force ? moduleNames : await this.filterOutInstalledModules(moduleNames, projectPath);
-        if (filteredModules.length <= 0) {
-            return;
-        }
-        await this.installModules(filteredModules, projectPath, saveDev, noBinLinks, installExtras);
-    }
-
-    //
-    // Filter out modules that don't exist on npm.
-    //
-    async filterExistingModules(moduleNames: string[]): Promise<string[]> {
-        if (moduleNames.length <= 0) {
-            return [];
-        }
-
-        //TODO: Filter out modules that don't exist.
-        // const modulesExist = await Promise.all(moduleNames.map(moduleName => this.moduleExists(moduleName)));
-        // return moduleNames.filter((moduleName, index) => modulesExist[index]);
-
-        return moduleNames;
-    }
-
-    //
-    // Get peer dependencies for the particular package.
-    //
-    async getPeerDependencies(packageName: string): Promise<string[]> {
-        // TODO. Need to read local package.json.
-        // const peerDeps = (await this.getLatestVersionPackageData(packageName)).peerDependencies;
-        // if (!peerDeps) {
-        //     return [];
-        // }
-        
-        // return Object.keys(peerDeps);
-
-        return [];
+        await this.installModules(modules, projectPath, installExtras);
     }
 
     //
     // Ensure that any npm peer dependencies required by the project are also installed.
     //
-    async ensurePeerDependenciesInstalled(packageName: string, projectPath: string, saveDev: boolean, noBinLinks: boolean): Promise<void> {
+    async ensurePeerDependenciesInstalled(packageFile: any, projectPath: string): Promise<void> {
 
-        this.log.info("Installing peer dependencies for " + packageName);
+        this.log.info("Installing peer dependencies for " + packageFile.name);
 
-        const peerDependencies = await this.getPeerDependencies(packageName);
-        if (peerDependencies.length <= 0) {
+        const peerDependencies = packageFile.peerDependencies
+        if (peerDependencies === undefined || peerDependencies.length <= 0) {
             return;
         }
-        await this.ensureModules(peerDependencies, projectPath, false, saveDev, noBinLinks, true);
+        await this.ensureModules(peerDependencies, projectPath, false, true);
     }
 
     //
@@ -245,14 +201,6 @@ export class Npm implements INpm {
         // Filter out builtin modules.
         npmRequiredModules = npmRequiredModules.filter(moduleName => builtinModules.indexOf(moduleName) < 0);
 
-        // Filter out already installed modules.
-        npmRequiredModules = await this.filterOutInstalledModules(npmRequiredModules, projectPath);
-
-        if (onlyExistingModules) {
-            // Filter out modules that don't exists on npm if requested.
-            npmRequiredModules = await this.filterExistingModules(npmRequiredModules);
-        }
-
         return npmRequiredModules;
     }
 
@@ -261,18 +209,15 @@ export class Npm implements INpm {
     //
     async ensureRequiredModules(code: string, projectPath: string, onlyExistingModules: boolean): Promise<void> {
         const moduleNames = await this.scanCodeForRequiredModules(code, projectPath, onlyExistingModules);
-        if (moduleNames.length <= 0) {
+
+            if (moduleNames.length <= 0) {
             // Don't allow this because it can be displayed in a notebook.
             // this.log.info("No modules need to be installed.");
             return; // No modules used.
         }
 
         await fs.ensureDir(projectPath);
-
-        this.log.info("Requesting installation of modules: " + moduleNames.join(', '));
-        this.log.info("Project path: " + projectPath);
-
-        await this.installModules(moduleNames, projectPath, false, false, true);
+        await this.installModules(moduleNames.map(moduleName => ({ name: moduleName, version: "latest" })), projectPath, true);
     }    
 }
 

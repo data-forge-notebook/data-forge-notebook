@@ -43,7 +43,7 @@ export async function installNotebook(process: NodeJS.Process, projectPath: stri
     onEvent("evaluation-event", { event: "notebook-install-started" });
 
     const npm = new Npm(nodeJsPath, NPM_CACHE_PATH, log);
-    const codeEvaluator = new CodeEvaluator(process, notebook, [], `notebook-${notebook.getInstanceId()}`, projectPath, npm, log);
+    const codeEvaluator = new CodeEvaluator(process, notebook, notebook.getCells(), `notebook-${notebook.getInstanceId()}`, projectPath, npm, log);
     await codeEvaluator.installNotebook();
 
     onEvent("evaluation-event", { event: "notebook-install-completed" });
