@@ -112,7 +112,6 @@ body {
 .error-border {
     border: 1px dashed rgba(255, 0, 0, 0.6);
     color: red;
-    padding: 8px;
     padding-Left: 24px;
     user-select: text;
 }
@@ -126,7 +125,6 @@ body {
     background-color: #EEEEEE;
     user-select: text;
     height: 100%;
-    padding: 8px;
     padding-Left: 24px;
 }
 
