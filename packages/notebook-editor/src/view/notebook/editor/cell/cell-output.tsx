@@ -77,7 +77,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         // There is no saved height for this output, use the content height.
         //
         await updateState(this, {
-            height: Math.min(MAX_INITIAL_HEIGHT, contentHeight + DRAG_HANDLE_HEIGHT), // Adding some pixels here to account for the height of the drag handle.
+            height: Math.min(MAX_INITIAL_HEIGHT, contentHeight),
         });
     }
 
@@ -181,7 +181,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 pluginOptions={{
                                     cwd: this.props.notebookModel.getStorageId().getContainingPath(),
                                 }}        
-                                height={`${height-DRAG_HANDLE_HEIGHT}px`}
+                                height={`${height}px`}
                                 />
                         </Resizable>
 
@@ -192,7 +192,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     pointerEvents: "none",
                                     height: `${DRAG_HANDLE_HEIGHT}px`,
                                     position: "absolute",
-                                    bottom: "3px",
+                                    bottom: "12px",
                                 }}
                                 >
                                 <Icon 
