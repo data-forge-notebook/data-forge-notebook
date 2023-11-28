@@ -286,78 +286,80 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                             zIndex: 10,
                         }}
                         >
-                        <div className="cell-hover-content pointer-events-auto">
-                            <div
-                                className="flex flex-col items-start" 
-                                style={{ 
-                                    position: "absolute", 
-                                    top: 3, 
-                                    bottom: 0, 
-                                    left: "calc(100% + 5px)",
-                                    minHeight: "55px",
-                                }}
-                                >
-                                <div>
-                                    {makeButton(this.commander, "move-cell-up", { pos: Position.LEFT }, this.platform, { cell: this.props.model })}
-                                </div>
-
-                                <div>
-                                    {makeButton(this.commander, "move-cell-down", { pos: Position.LEFT }, this.platform, { cell: this.props.model })}
-                                </div>
-
-                                <div className="mt-4">
-                                    {makeButton(this.commander, "delete-cell", { pos: Position.LEFT, intent: "danger" }, this.platform, { cell: this.props.model })}
-                                </div>
-                            </div>
-
-                            <div>
-                                <div 
-                                    className="flex flex-col items-end"
+                        {isSelected &&
+                            <div className="pointer-events-auto">
+                                <div
+                                    className="flex flex-col items-start" 
                                     style={{ 
                                         position: "absolute", 
                                         top: 3, 
-                                        bottom: 0,
-                                        right: "calc(100% + 5px)",
+                                        bottom: 0, 
+                                        left: "calc(100% + 5px)",
                                         minHeight: "55px",
                                     }}
                                     >
                                     <div>
-                                        {canExecute 
-                                            && makeButton(this.commander, "eval-to-cell", {}, this.platform, { cell: this.props.model }, notebookExecuting ? "executing" : "notExecuting")
-                                        }
+                                        {makeButton(this.commander, "move-cell-up", { pos: Position.LEFT }, this.platform, { cell: this.props.model })}
                                     </div>
 
                                     <div>
-                                        {canExecute 
-                                            && makeButton(this.commander, "eval-single-cell", {}, this.platform, { cell: this.props.model }, notebookExecuting ? "executing" : "notExecuting")
-                                        }
+                                        {makeButton(this.commander, "move-cell-down", { pos: Position.LEFT }, this.platform, { cell: this.props.model })}
                                     </div>
 
-                                    <div className="flex-grow" />
+                                    <div className="mt-4">
+                                        {makeButton(this.commander, "delete-cell", { pos: Position.LEFT, intent: "danger" }, this.platform, { cell: this.props.model })}
+                                    </div>
+                                </div>
 
-                                    <div className="mb-1 flex flex-row">
+                                <div>
+                                    <div 
+                                        className="flex flex-col items-end"
+                                        style={{ 
+                                            position: "absolute", 
+                                            top: 3, 
+                                            bottom: 0,
+                                            right: "calc(100% + 5px)",
+                                            minHeight: "55px",
+                                        }}
+                                        >
                                         <div>
-                                            {makeButton(this.commander, "insert-markdown-cell-below", { 
-                                                    pos: Position.BOTTOM, 
-                                                }, 
-                                                this.platform,
-                                                { cell: this.props.model }
-                                            )}
+                                            {canExecute 
+                                                && makeButton(this.commander, "eval-to-cell", {}, this.platform, { cell: this.props.model }, notebookExecuting ? "executing" : "notExecuting")
+                                            }
                                         </div>
 
                                         <div>
-                                            {makeButton(this.commander, "insert-code-cell-below", { 
-                                                    pos: Position.BOTTOM, 
-                                                }, 
-                                                this.platform, 
-                                                { cell: this.props.model }
-                                            )}
+                                            {canExecute 
+                                                && makeButton(this.commander, "eval-single-cell", {}, this.platform, { cell: this.props.model }, notebookExecuting ? "executing" : "notExecuting")
+                                            }
                                         </div>
-                                    </div>
 
+                                        <div className="flex-grow" />
+
+                                        <div className="mb-1 flex flex-row">
+                                            <div>
+                                                {makeButton(this.commander, "insert-markdown-cell-below", { 
+                                                        pos: Position.BOTTOM, 
+                                                    }, 
+                                                    this.platform,
+                                                    { cell: this.props.model }
+                                                )}
+                                            </div>
+
+                                            <div>
+                                                {makeButton(this.commander, "insert-code-cell-below", { 
+                                                        pos: Position.BOTTOM, 
+                                                    }, 
+                                                    this.platform, 
+                                                    { cell: this.props.model }
+                                                )}
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
 
                     <div>

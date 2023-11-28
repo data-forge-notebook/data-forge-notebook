@@ -164,25 +164,6 @@ body {
     padding: 8px;
 }
 
-/*
-Hover classes:
-
-    cell-hover-region   - The region that can be hovered to show hidden content.
-    cell-hover-content  - Content displayed on hover.
-*/
-
-.cell-hover-content {
-    display: none;
-}
-
-.cell-hover-region:hover .cell-hover-content {
-    display: block;
-}
-
-.dragging .cell-hover-content {
-    display: none !important;
-}
-
 .output-hover-content {
     display: none;
 }

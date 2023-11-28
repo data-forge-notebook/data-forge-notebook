@@ -3,6 +3,7 @@ import { INotebookViewModel } from "../../view-model/notebook";
 import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { CellUI } from './editor/cell/cell';
 import { forceUpdate } from 'browser-utils';
+import classNames from 'classnames';
 
 export interface INotebookProps {
     model: INotebookViewModel;
@@ -73,10 +74,7 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
 
     render () {
         const cells = this.props.model.getCells();
-        let hoverRegionClass = "cell-hover-region pos-relative";
-        if (this.state.isDragging) {
-            hoverRegionClass += " dragging";
-        }
+        let hoverRegionClass = "pos-relative";
 
         return (
             <div>
@@ -104,7 +102,12 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
                                             >
                                             {(provided, snapshot) => (
                                                 <div
-                                                    className={hoverRegionClass}
+                                                    className={classNames(
+                                                        "pos-relative",
+                                                        {
+                                                            dragging: this.state.isDragging
+                                                        },
+                                                    )}
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
 
