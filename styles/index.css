@@ -68,6 +68,12 @@ body {
     border-top: 1px transparent solid;
 }
 
+.cell-handle.code {
+    border-left: 1px dashed #ccc;
+    border-bottom: 1px dashed #ccc;
+    border-top: 1px dashed #ccc;
+}
+
 .cell-container:hover .cell-handle {
     border-left: 1px rgba(0, 0, 255, 0.3) dashed;
     border-bottom: 1px rgba(0, 0, 255, 0.3) dashed;
@@ -91,6 +97,12 @@ body {
     border-right: 1px dashed transparent;
     border-bottom: 1px dashed transparent;
     transition: border 0.2s ease-in-out;
+}
+
+.cell-border.code {
+    border-right: 1px dashed #ccc;
+    border-top: 1px dashed #ccc;
+    border-bottom: 1px dashed #ccc;
 }
 
 .cell-container:hover .cell-border {
@@ -135,7 +147,6 @@ body {
 
 .error-border {
     border: 1px dashed rgba(255, 0, 0, 0.6);
-    border-top: none;
     color: red;
     padding: 8px;
     user-select: text;
@@ -144,35 +155,13 @@ body {
 .output-border {
     font-family: 'Source Code Pro', monospace !important;
     font-size: 0.85em;
-    border: 1px dashed #F8F8F8;
-    border-top: 1px dashed rgba(0, 0, 0, 0);
+    border-top: 1px dashed #ccc;
     overflow: hidden;
     transition: border 0.2s ease-in-out;
-    padding: 6px;
-    padding-bottom: 0px;
-    background-color: #FBFBFB;
+    background-color: #EEEEEE;
     user-select: text;
     height: 100%;
-
-    :hover {
-        border: 1px dashed rgba(0, 0, 0, 0.1);
-        transition: border 0.2s ease-in-out;
-    }
-}
-
-.outputs-border {
-    border-top: 1px dashed #F8F8F8;
-    transition: border 0.2s ease-in-out;
-
-    :hover {
-        border-top: 1px dashed transparent;
-        transition: border 0.2s ease-in-out;
-    }
-}
-
-.errors-border {
-    border-top: 1px dashed red;
-    transition: border 0.2s ease-in-out;
+    padding: 8px;
 }
 
 /*

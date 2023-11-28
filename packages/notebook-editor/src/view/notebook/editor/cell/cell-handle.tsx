@@ -7,6 +7,7 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { updateState } from 'browser-utils';
 import { CellUI } from './cell';
 import { sleep } from 'utils';
+import { ICellViewModel } from '../../../../view-model/cell';
 const classnames = require("classnames");
 
 export interface ICellHandleProps {
@@ -15,6 +16,11 @@ export interface ICellHandleProps {
     // The parent cell.
     //
     cell: CellUI;
+
+    //
+    // The model for the cell.
+    //
+    model: ICellViewModel;
     
     //
     // The HTML element that contains the cell.
@@ -79,6 +85,7 @@ export class CellHandle extends React.Component<ICellHandleProps, ICellHandleSta
                         "selected-cell-handle", 
                         "inline-block",
                         "align-top",
+                        this.props.model.getCellType(),
                         { 
                             focused: this.props.isSelected
                         }
@@ -94,12 +101,12 @@ export class CellHandle extends React.Component<ICellHandleProps, ICellHandleSta
                         "cell-handle", 
                         "inline-block",
                         "align-top",
+                        this.props.model.getCellType(),
                         { 
                             focused: this.props.isSelected
                         }
                     )} 
                     style={{
-                        width: "6px",
                         height: `${this.state.height}px`,
                     }}
                     {...this.props.dragHandleProps} 

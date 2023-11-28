@@ -118,11 +118,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                             onHeightChanged={() => this.props.onHeightChanged()}
                             />
                     </div>
-                    <div 
-                        style={{
-                            padding: "4px",
-                        }}
-                        >             
+                   <div>             
                         {errors.length > 0
                             && <div className="errors-border">
                                 {errors.map((error, index) => 

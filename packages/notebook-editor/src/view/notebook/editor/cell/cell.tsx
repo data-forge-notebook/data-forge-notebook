@@ -363,6 +363,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                     <div>
                         <CellHandle
                             cell={this}
+                            model={this.props.model}
                             cellContainerElement={this.innerCellContainerElement}
                             isSelected={isSelected}
                             dragHandleProps={this.props.dragHandleProps}
@@ -374,6 +375,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                 "cell-border",
                                 "inline-block", 
                                 "align-top",
+                                this.props.model.getCellType(),
                                 {
                                     focused: isSelected,
                                     empty: this.props.model.getText() === "",
