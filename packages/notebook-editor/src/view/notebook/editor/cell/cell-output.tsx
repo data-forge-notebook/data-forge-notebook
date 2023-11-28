@@ -36,7 +36,7 @@ export interface ICellOutputState {
     height?: number;
 }
 
-const MIN_OUTPUT_HEIGHT = 30;
+const MIN_OUTPUT_HEIGHT = 10;
 const MAX_INITIAL_HEIGHT = 200;
 const DRAG_HANDLE_HEIGHT = 10;
 
@@ -141,7 +141,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                         <Resizable
                             style={{
                                 overflow: "hidden",
-                                paddingBottom: "6px",
                             }}
                             enable={{
                                 bottom: true,

@@ -100,9 +100,8 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                     <div
                         style={{
                             fontFamily: "'Source Code Pro', monospace",
-                            paddingTop: "16px",
-                            paddingRight: "8px",
-                            paddingBottom: "16px", 
+                            paddingTop: "11px",
+                            paddingBottom: "0px", 
                         }}
                         >
                         <MonacoEditor
