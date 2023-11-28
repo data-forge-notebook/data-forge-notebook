@@ -62,62 +62,32 @@ body {
     border-left: 4px rgba(0, 0, 255, 0.8) solid !important;
 }
 
-.cell-handle {
-    border-left: 1px rgba(0, 0, 0, 0.2) solid;
-    border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
-    border-top: 1px rgba(0, 0, 0, 0.2) solid;
-}
-
-.cell-container:hover .cell-handle {
-    border-left: 1px rgba(0, 0, 255, 0.3) dashed;
-    border-bottom: 1px rgba(0, 0, 255, 0.3) dashed;
-    border-top: 1px rgba(0, 0, 255, 0.3) dashed;
-}
-
-.cell-handle.focused {
-    border-left: 1px rgba(0, 0, 255, 0.6) dashed;
-    border-bottom: 1px rgba(0, 0, 255, 0.6) dashed;
-    border-top: 1px rgba(0, 0, 255, 0.6) dashed;
-}
-
 .cell-container:hover .cell-handle.focused {
-    border-left: 1px rgba(0, 0, 255, 0.8) dashed;
-    border-bottom: 1px rgba(0, 0, 255, 0.8) dashed;
-    border-top: 1px rgba(0, 0, 255, 0.8) dashed;
+    border: 1px rgba(0, 0, 255, 0.8) dashed;
 }
 
 .cell-border {    
-    border-top: 1px dashed transparent;
-    border-right: 1px dashed transparent;
-    border-bottom: 1px dashed transparent;
+    border: 1px dashed transparent;
     transition: border 0.2s ease-in-out;
 }
 
 .cell-container:hover .cell-border {
-    border-top: 1px dashed rgba(0, 0, 255, 0.3);
-    border-right: 1px dashed rgba(0, 0, 255, 0.3);
-    border-bottom: 1px dashed rgba(0, 0, 255, 0.3);
+    border: 1px dashed rgba(0, 0, 255, 0.3);
     transition: border 0.2s ease-in-out;
 }
 
 .cell-border.focused {
-    border-top: 1px dashed rgba(0, 0, 255, 0.6) !important;
-    border-right: 1px dashed rgba(0, 0, 255, 0.6) !important;
-    border-bottom: 1px dashed rgba(0, 0, 255, 0.6) !important;
+    border: 1px dashed rgba(0, 0, 255, 0.6) !important;
     animation: cell-border-pulse 0.75s ease-out !important;
 }            
 
 .cell-container:hover .cell-border.focused {
-    border-top: 1px dashed rgba(0, 0, 255, 0.8) !important;
-    border-right: 1px dashed rgba(0, 0, 255, 0.8) !important;
-    border-bottom: 1px dashed rgba(0, 0, 255, 0.8) !important;
+    border: 1px dashed rgba(0, 0, 255, 0.8) !important;
     transition: border 0.2s ease-in-out;
 }   
 
 .cell-border.empty {
-    border-top: 1px dashed rgba(0, 0, 0, 0.2) !important;
-    border-right: 1px dashed rgba(0, 0, 0, 0.2) !important;
-    border-bottom: 1px dashed rgba(0, 0, 0, 0.2) !important;
+    border: 1px dashed rgba(0, 0, 0, 0.2) !important;
     transition: border 0.2s ease-in-out;
 }          
 

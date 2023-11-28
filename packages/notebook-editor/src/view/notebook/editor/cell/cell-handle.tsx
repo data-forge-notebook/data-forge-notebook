@@ -96,21 +96,6 @@ export class CellHandle extends React.Component<ICellHandleProps, ICellHandleSta
                     }}
                     {...this.props.dragHandleProps} 
                     />
-                <div 
-                    className={classnames(
-                        "cell-handle", 
-                        "inline-block",
-                        "align-top",
-                        this.props.model.getCellType(),
-                        { 
-                            focused: this.props.isSelected
-                        }
-                    )} 
-                    style={{
-                        height: `${this.state.height}px`,
-                    }}
-                    {...this.props.dragHandleProps} 
-                    />
             </>
         );
     }
