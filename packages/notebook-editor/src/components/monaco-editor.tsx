@@ -490,14 +490,17 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             return;
         }
 
-        if (this.props.model.isSelected()) {
-            this.editor.updateOptions({ lineNumbers: "on" });
-            this.hiddenEditor!.updateOptions({ lineNumbers: "on" });
-        }
-        else {
-            this.editor.updateOptions({ lineNumbers: "off" });
-            this.hiddenEditor!.updateOptions({ lineNumbers: "off" });
-        }
+        //
+        // Code for toggling line numbers:
+        //
+        // if (this.props.model.isSelected()) {
+        //     this.editor.updateOptions({ lineNumbers: "on" });
+        //     this.hiddenEditor!.updateOptions({ lineNumbers: "on" });
+        // }
+        // else {
+        //     this.editor.updateOptions({ lineNumbers: "off" });
+        //     this.hiddenEditor!.updateOptions({ lineNumbers: "off" });
+        // }
     }
 
     //
