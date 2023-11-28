@@ -187,7 +187,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     pointerEvents: "none",
                                     height: `${DRAG_HANDLE_HEIGHT}px`,
                                     position: "absolute",
-                                    bottom: "10px",
+                                    bottom: "-8px",
                                 }}
                                 >
                                 <Icon 
