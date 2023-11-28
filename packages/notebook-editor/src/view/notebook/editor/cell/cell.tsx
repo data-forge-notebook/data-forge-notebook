@@ -65,11 +65,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     // Inner cell container, not dependent on the height of the cell handle.
     // 
     innerCellContainerElement: React.RefObject<HTMLDivElement>;
-
-    //
-    // Event raised when the height of the cell has changed.
-    //
-    onHeightChanged = new EventSource<BasicEventHandler>();
     
     //
     // Throttled version of onErrorAdded event handler.
@@ -154,25 +149,12 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
         }
     }
 
-    //
-    // Event raised when the height of the code editor has changed.
-    //
-    private _onHeightChanged = async (): Promise<void> => {
-        this.recordCellHeight();
-
-        //
-        // Causes the cell handle to resize itself to the height of the code editor.
-        //
-        await this.onHeightChanged.raise();
-    }
 
     //
     // Errors where added to the cell.
     //
     private onErrorAdded = async (): Promise<void> => {
         await forceUpdate(this);
-
-        await this._onHeightChanged();
     }
 
     //
@@ -180,8 +162,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     private onOutputChanged = async (): Promise<void> => {
         await forceUpdate(this);
-
-        await this._onHeightChanged();
     }
 
     //
@@ -189,8 +169,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     private onEvalCompleted = async (): Promise<void> => {
         await forceUpdate(this);
-
-        await this._onHeightChanged();
     }
 
     //
@@ -244,7 +222,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                     language={this.props.language}
                     model={this.props.model as ICodeCellViewModel} 
                     notebookModel={this.props.notebookModel}
-                    onHeightChanged={this._onHeightChanged}
                     />
             );
         }
@@ -252,7 +229,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
             return (
                 <MarkdownCellUI 
                     model={this.props.model as IMarkdownCellViewModel} 
-                    onHeightChanged={this._onHeightChanged}
                     />
             );
         }
@@ -295,7 +271,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                         top: 3, 
                                         bottom: 0, 
                                         left: "calc(100% + 5px)",
-                                        minHeight: "55px",
                                     }}
                                     >
                                     <div>
@@ -319,7 +294,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                             top: 3, 
                                             bottom: 0,
                                             right: "calc(100% + 5px)",
-                                            minHeight: "55px",
                                         }}
                                         >
                                         <div>

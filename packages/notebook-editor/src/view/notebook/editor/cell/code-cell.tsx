@@ -24,11 +24,6 @@ export interface ICodeCellProps {
     // The view-model for the notebook.
     //
     notebookModel: INotebookViewModel;
-
-    //
-    // Callback to update cell height.
-    //
-    onHeightChanged: () => void;
 }
 
 export interface ICodeCellState {
@@ -111,11 +106,9 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                         }}
                         >
                         <MonacoEditor
-                            minHeight={40}
                             language={this.props.language}
                             model={this.props.model} 
                             working={cellExecuting}
-                            onHeightChanged={() => this.props.onHeightChanged()}
                             />
                     </div>
                    <div>             
@@ -137,7 +130,6 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                                         model={output} 
                                         notebookModel={this.props.notebookModel}   
                                         key={output.getInstanceId()} 
-                                        onHeightChanged={() => this.props.onHeightChanged()}
                                         />
                                 )}
                             </div>

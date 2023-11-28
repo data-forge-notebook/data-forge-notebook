@@ -94,11 +94,6 @@ export interface IMonacoEditorProps {
     model: IMonacoEditorViewModel;
 
     //
-    // Sets the minimum height of the text editor.
-    //
-    minHeight?: number;
-
-    //
     // Set to true to show the progress spinner.
     //
     working?: boolean;
@@ -107,11 +102,6 @@ export interface IMonacoEditorProps {
     // Callback when the escape key is pressed.
     //
     onEscapeKey?: () => void;
-
-    //
-    // Event raised when the height has changed.
-    //
-    onHeightChanged?: (newHeight: number) => void;
 }
 
 export interface IMonacoEditorState {
@@ -689,10 +679,9 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         //
         // Compute desired editor height from the hidden editor.
         //
-        const minHeight = this.props.minHeight || 16;
         const gutter = 10;
         const contentHeight = this.hiddenEditor!.getScrollHeight() + gutter;
-        const computedHeight = Math.max(minHeight, contentHeight);
+        const computedHeight = contentHeight;
         if (this.prevComputedHeight == computedHeight) {
             //
             // Don't do layout if we don't need it.
@@ -707,10 +696,6 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         this.editor!.layout();
 
         this.prevComputedHeight = computedHeight;
-
-        if (this.props.onHeightChanged) {
-            this.props.onHeightChanged(computedHeight);
-        }
     }
     
     private onWindowResize = (): void => {

@@ -27,11 +27,6 @@ export interface ICellOutputProps {
     // View model for the notebook.   
     //
     notebookModel: INotebookViewModel;
-
-    //
-    // Callback to update cell height.
-    //
-    onHeightChanged: () => void;
 }
 
 export interface ICellOutputState {
@@ -84,8 +79,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         await updateState(this, {
             height: Math.min(MAX_INITIAL_HEIGHT, contentHeight + DRAG_HANDLE_HEIGHT), // Adding some pixels here to account for the height of the drag handle.
         });
-
-        this.props.onHeightChanged();
     }
 
     render() {
@@ -164,7 +157,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                             minHeight={MIN_OUTPUT_HEIGHT}
                             onResize={() => {
                                 this.props.model.notifyResized();
-                                this.props.onHeightChanged();
                             }}
                             onResizeStop={(event: MouseEvent | TouchEvent,
                                 direction: Direction,
@@ -178,7 +170,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     height,
                                 });
                                 handleAsyncErrors(() => this.props.model.setHeight(height)); // Save height to notebook.
-                                this.props.onHeightChanged();
                             }}
                             >
                             {/*
