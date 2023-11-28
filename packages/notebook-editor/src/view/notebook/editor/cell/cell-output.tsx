@@ -154,15 +154,10 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 height,
                             }}
                             minHeight={MIN_OUTPUT_HEIGHT}
-                            onResize={() => {
-                                this.props.model.notifyResized();
-                            }}
                             onResizeStop={(event: MouseEvent | TouchEvent,
                                 direction: Direction,
                                 refToElement: HTMLElement,
                                 delta: NumberSize) => {
-
-                                this.props.model.notifyResized();
 
                                 const height = Math.max(refToElement.clientHeight, MIN_OUTPUT_HEIGHT);
                                 this.setState({
@@ -192,7 +187,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                     pointerEvents: "none",
                                     height: `${DRAG_HANDLE_HEIGHT}px`,
                                     position: "absolute",
-                                    bottom: "12px",
+                                    bottom: "10px",
                                 }}
                                 >
                                 <Icon 

@@ -21,16 +21,6 @@ export interface ICellOutputValueViewModel {
     // Get the data for the value.
     //
     getData(): any;
-
-    //
-    // Notify the output that it has been resized.
-    //
-    notifyResized(): void;
-
-    //
-    // Event raised when the output was resized.
-    //
-    onResized: IEventSource<BasicEventHandler>;
 }
 
 export class CellOutputValueViewModel implements ICellOutputValueViewModel {
@@ -64,16 +54,4 @@ export class CellOutputValueViewModel implements ICellOutputValueViewModel {
     getData(): any {
         return this.value.getData();
     }
-
-    //
-    // Notify the output that it has been resized.
-    //
-    async notifyResized(): Promise<void> {
-        await this.onResized.raise();
-    }
-     
-    //
-    // Event raised when the output was resized.
-    //
-    onResized: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }

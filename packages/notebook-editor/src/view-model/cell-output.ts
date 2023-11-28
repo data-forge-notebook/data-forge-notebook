@@ -53,11 +53,6 @@ export interface ICellOutputViewModel {
     // Event raised when the model has been modified.
     //
     onModified: IEventSource<BasicEventHandler>;
-
-    //
-    // Notify the output that it has been resized.
-    //
-    notifyResized(): Promise<void>;
 }
 
 export class CellOutputViewModel implements ICellOutputViewModel {
@@ -143,11 +138,4 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     // Event raised when the model has been modified.
     //
     onModified: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
-
-    //
-    // Notify the output that it has been resized.
-    //
-    async notifyResized(): Promise<void> {
-        await this.value.notifyResized();
-    }
 }
