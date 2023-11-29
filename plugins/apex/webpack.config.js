@@ -12,11 +12,26 @@ if (!target) {
     throw new Error(`TARGET environment variable is not set.`);
 }
 
+const mode = process.env.MODE;
+if (!mode) {
+    throw new Error(`MODE environment variable is not set.`);
+}
+
+if (mode !== "development" && mode !== "production") {
+    throw new Error(`MODE environment variable is set to an invalid value: ${mode}, expected "development" or "production".`);
+}
+
 console.log(`Target: ${target}`);
+console.log(`Mode: ${mode}`);
 
 const defaultEnv = {
 };
 const processEnv = Object.assign(defaultEnv, process.env);
+
+const devtools = {
+    development: "inline-source-map",
+    production: false,    
+};
 
 module.exports = {
     entry: {
@@ -28,12 +43,8 @@ module.exports = {
         path: outputDir,
     },
 
-    // mode: "development",
-    mode: "production",
-
-    // Enable sourcemaps for debugging webpack's output.
-    // devtool: "inline-source-map",
-    devtool: false,
+    mode: mode,
+    devtool: devtools[mode],
 
     performance: {
         hints: false,
