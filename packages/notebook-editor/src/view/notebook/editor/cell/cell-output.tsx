@@ -36,9 +36,8 @@ export interface ICellOutputState {
     height?: number;
 }
 
-const MIN_OUTPUT_HEIGHT = 10;
+const MIN_OUTPUT_HEIGHT = 30;
 const MAX_INITIAL_HEIGHT = 200;
-const DRAG_HANDLE_HEIGHT = 10;
 
 @InjectableClass()
 export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputState> {
@@ -139,9 +138,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                 <div className="output-hover-region pos-relative">
                     <div className="output-border pos-relative">
                         <Resizable
-                            style={{
-                                overflow: "hidden",
-                            }}
                             enable={{
                                 bottom: true,
                             }}
@@ -152,6 +148,46 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                             size={{
                                 width: "100%",
                                 height,
+                            }}
+                            handleClasses={{
+                                bottom: "output-resize-handle",
+                            }}
+                            handleComponent={{
+                                bottom: (    
+                                    <div
+                                        style={{
+                                            background: "transparent",
+                                            width: "100%",
+                                            height: "100%",
+                                        }}
+                                        >
+                                        <div 
+                                            className="mx-auto"
+                                            style={{
+                                                width: "25px",
+                                                height: "12px",
+                                                background: '#fff',
+                                                borderRadius: '2px',
+                                                border: '1px solid #ccc',
+                                                padding: 0,                                                
+                                            }}
+                                            >
+                                            <div
+                                                className="mx-auto"
+                                                style={{
+                                                    width: "16px",
+                                                    position: "relative",
+                                                    top: "-3px",
+                                                }}
+                                                >   
+                                                <Icon 
+                                                    icon="drag-handle-horizontal" 
+                                                    iconSize={16}
+                                                    />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ),
                             }}
                             minHeight={MIN_OUTPUT_HEIGHT}
                             onResizeStop={(event: MouseEvent | TouchEvent,
@@ -179,28 +215,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 height={`${height}px`}
                                 />
                         </Resizable>
-
-                        <div className="output-hover-content" >
-                            <div
-                                className="flex flex-col items-center w-full" 
-                                style={{ 
-                                    pointerEvents: "none",
-                                    height: `${DRAG_HANDLE_HEIGHT}px`,
-                                    position: "absolute",
-                                    bottom: "-8px",
-                                }}
-                                >
-                                <Icon 
-                                    icon="drag-handle-horizontal" 
-                                    style={{
-                                        zIndex: 500,
-                                    }}
-                                    iconSize={16}
-                                    />
-                            </div>
-                        </div>
                     </div>
-
                 </div>
             </ErrorBoundary>
         );

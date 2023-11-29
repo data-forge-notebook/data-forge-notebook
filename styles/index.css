@@ -127,16 +127,8 @@ body {
     padding-Left: 24px;
 }
 
-.output-hover-content {
-    display: none;
-}
-
-.output-hover-region:hover .output-hover-content {
-    display: block;
-}
-
-.dragging .output-hover-content {
-    display: none !important;
+.output-resize-handle {
+    z-index: 1500;
 }
 
 .pos-relative {
