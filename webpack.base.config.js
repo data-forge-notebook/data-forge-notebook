@@ -4,6 +4,17 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require("path");
 
+const mode = process.env.MODE;
+if (!mode) {
+    throw new Error(`MODE environment variable is not set.`);
+}
+
+if (mode !== "development" && mode !== "production") {
+    throw new Error(`MODE environment variable is set to an invalid value: ${mode}, expected "development" or "production".`);
+}
+
+console.log(`Mode: ${mode}`);
+
 module.exports = function (env) {
 
     const outputDir = path.resolve(process.cwd(), "dist");
@@ -18,6 +29,11 @@ module.exports = function (env) {
     };
     const processEnv = Object.assign(defaultEnv, process.env);
 
+    const devtools = {
+        development: "inline-source-map",
+        production: false,    
+    };
+    
     return {
         entry: {
             'index': `./src/index.tsx`,
@@ -33,13 +49,9 @@ module.exports = function (env) {
             path: outputDir,
         },
     
-        // mode: "development",
-        mode: "production",
+        mode: mode,
+        devtool: devtools[mode],
     
-        // Enable sourcemaps for debugging webpack's output.
-        // devtool: "inline-source-map",
-        devtool: false,
-
         performance: {
             hints: false,
         },
