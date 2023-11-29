@@ -270,7 +270,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                         position: "absolute", 
                                         top: 3, 
                                         bottom: 0, 
-                                        left: "calc(100% + 5px)",
+                                        left: "calc(100% - 10px)",
                                     }}
                                     >
                                     <div>
@@ -293,7 +293,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                             position: "absolute", 
                                             top: 3, 
                                             bottom: 0,
-                                            right: "calc(100% + 5px)",
+                                            right: "calc(100% + 15px)",
                                         }}
                                         >
                                         <div>
@@ -336,7 +336,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                         }
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <CellHandle
                             cell={this}
                             model={this.props.model}

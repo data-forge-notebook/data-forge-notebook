@@ -63,8 +63,11 @@ export class CellHandle extends React.Component<ICellHandleProps, ICellHandleSta
                         }
                     )}
                     style={{
+                        position: "absolute",
+                        left: "-7px",
                         width: "8px",
-                        height: "100%",
+                        top: 0,
+                        bottom: 0,
                     }}
                     {...this.props.dragHandleProps} 
                     />

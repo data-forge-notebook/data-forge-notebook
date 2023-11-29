@@ -110,10 +110,11 @@ body {
 }
 
 .error-border {
-    border: 1px dashed rgba(255, 0, 0, 0.6);
+    border-top: 1px dashed #ccc;
     color: red;
-    padding-Left: 24px;
     user-select: text;
+    overflow: auto;
+    padding-left: 24px;
 }
 
 .output-border {
@@ -121,10 +122,9 @@ body {
     font-size: 0.85em;
     border-top: 1px dashed #ccc;
     transition: border 0.2s ease-in-out;
-    background-color: #EEEEEE;
+    background-color: #FBFBFB;
     user-select: text;
     height: 100%;
-    padding-Left: 24px;
 }
 
 .output-resize-handle {
