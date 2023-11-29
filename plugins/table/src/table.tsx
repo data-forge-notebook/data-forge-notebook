@@ -81,6 +81,8 @@ export class Table extends React.Component<ITableProps, {}> {
                     height: "100vh",
                     margin: "0px",
                     padding: "0px",
+                    paddingTop: "8px",
+                    paddingLeft: "24px",
                     overflow: "auto",
                 }}  
                 >
