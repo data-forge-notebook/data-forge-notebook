@@ -23,11 +23,6 @@ export interface IPluggableVisualizationProps {
     pluginConfig?: IPluginConfig;
 
     //
-    // Sets the height of the iframe.
-    //
-    height?: string;
-
-    //
     // Event raised when the plugin size has changed.
     //
     onResize?: (height: number) => Promise<void>;
@@ -85,7 +80,8 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
                         className="mx-auto"
                         style={{
                             width: "100%",
-                            height: this.props.height,
+                            height: "100%",
+                            overflow: "auto",
                         }}
                         onLoad={this.onLoad}
                         ref={this.iframeRef}
@@ -105,7 +101,8 @@ export class PluggableVisualization extends React.Component<IPluggableVisualizat
                         className="mx-auto"
                         style={{
                             width: "100%",
-                            height: this.props.height,
+                            height: "100%",
+                            overflow: "auto",
                         }}
                         onLoad={this.onLoad}
                         ref={this.iframeRef}

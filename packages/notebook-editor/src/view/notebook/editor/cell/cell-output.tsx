@@ -212,7 +212,6 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 pluginOptions={{
                                     cwd: this.props.notebookModel.getStorageId().getContainingPath(),
                                 }}        
-                                height={`${height}px`}
                                 />
                         </Resizable>
                     </div>
