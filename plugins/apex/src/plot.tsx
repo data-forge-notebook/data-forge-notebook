@@ -164,8 +164,9 @@ export class Plot extends React.Component<IPlotProps, {}> {
         return (
             <div
                 style={{
-                    height: "100%",
-                    paddingRight: "5px",
+                    height: "calc(100% - 16px)",
+                    padding: "8px",
+                    paddingLeft: "5px",
                 }}
                 >
                 <div ref={this.containerElement} />
