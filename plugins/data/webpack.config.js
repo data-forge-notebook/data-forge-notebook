@@ -63,7 +63,7 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json"],
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
 
         fallback: {
             // Allows the path Node.js module to be used in Weback bundled code.
@@ -89,7 +89,7 @@ module.exports = {
             },
 
             { 
-                test: /\.tsx?$/, 
+                test: /\.(js|jsx|ts|tsx)$/,
                 loader: "ts-loader", 
                 options: { transpileOnly: true },
             },

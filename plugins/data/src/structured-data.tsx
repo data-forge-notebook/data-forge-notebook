@@ -3,14 +3,7 @@
 //
 
 import * as React from 'react';
-import { JSONTree } from 'react-json-tree';
-
-//
-// More themes here: https://github.com/reduxjs/redux-devtools/tree/75322b15ee7ba03fddf10ac3399881e302848874/src/react/themes
-//
-import theme from "./themes/pop";
-
-theme.base00 = '#FBFBFB'; // Set the background to match.
+import Visualiser from './lib/visualiser/Visualiser';
 
 export interface IStructuredDataProps {
     //
@@ -46,10 +39,9 @@ export class StructuredData extends React.Component<IStructuredDataProps, {}> {
                     overflow: "auto"
                 }}  
                 >
-                <JSONTree 
-                    data={data} 
-                    theme={theme}
-                    invertTheme={false}
+                <Visualiser
+                    data={data}
+                    useHljs={true}
                     />
             </div>
         );

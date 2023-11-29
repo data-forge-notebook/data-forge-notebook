@@ -19,10 +19,9 @@
   "author": "ashley@codecapers.com.au",
   "license": "MIT",
   "dependencies": {
+    "host-bridge": "workspace:*",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-json-tree": "^0.16.1",
-    "host-bridge": "workspace:*"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.2",
