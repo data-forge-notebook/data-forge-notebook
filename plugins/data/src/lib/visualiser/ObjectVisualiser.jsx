@@ -6,7 +6,7 @@ export default class ObjectVisualiser extends Component {
     constructor(props) {
         super(props);
         this.collapse = this.collapse.bind(this);
-        this.state = {open: false};
+        this.state = {open: props.open};
     }
 
     collapse() {

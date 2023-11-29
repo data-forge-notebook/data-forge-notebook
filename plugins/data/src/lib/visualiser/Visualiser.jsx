@@ -53,6 +53,7 @@ export default class Visualiser extends Component {
                     click={click}
                     name={name}
                     path={path}
+                    open={true}
                 />
             </div>
         );
