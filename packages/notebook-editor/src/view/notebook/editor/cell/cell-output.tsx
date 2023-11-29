@@ -190,7 +190,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 ),
                             }}
                             minHeight={MIN_OUTPUT_HEIGHT}
-                            onResizeStop={(event: MouseEvent | TouchEvent,
+                            onResize={(event: MouseEvent | TouchEvent,
                                 direction: Direction,
                                 refToElement: HTMLElement,
                                 delta: NumberSize) => {
