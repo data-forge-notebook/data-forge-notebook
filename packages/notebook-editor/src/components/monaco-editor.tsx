@@ -13,6 +13,21 @@ import { IPlatform, IPlatformId } from '../services/platform';
 
 let monacoInitialised = false;
 
+//
+// Hidden div that contains the hidden editor.
+//
+let hiddenDiv: HTMLElement | null = null;
+
+//
+// Hidden model.
+//
+let hiddenModel: monaco.editor.IModel | undefined;
+
+//
+// Hidden editor used for calculating the expected size of the real editor.
+//
+let hiddenEditor: monaco.editor.IStandaloneCodeEditor | undefined;
+
 function initializeMonaco() {
     if (monacoInitialised) {
         return;
@@ -59,6 +74,52 @@ function initializeMonaco() {
         noEmit: true,
         typeRoots: ["node_modules/@types"],
     });
+
+    //
+    // Create a whole hidden editor just to figure what size the editor should be.
+    // This is pretty expensive but it avoids unecessary size changes and scrolling on the real editor.
+    // Hope to find a better way to do this in the future.
+    //
+
+    hiddenModel = monaco.editor.createModel("", "javascript");
+    
+    // https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
+    const hiddenOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
+        model: hiddenModel,
+        codeLens: false,
+        formatOnPaste: true,
+        formatOnType: true,
+        renderLineHighlight: "none",
+        wordWrap: "off",
+        selectionHighlight: false,
+        contextmenu: false,
+        readOnly: false,
+        hideCursorInOverviewRuler: true,
+        automaticLayout: false,
+        scrollbar: {
+            handleMouseWheel: false,
+            vertical: "hidden",
+            verticalScrollbarSize: 0,
+        },
+        minimap: {
+            enabled: false,
+        },
+        scrollBeyondLastLine: false,
+        lineNumbers: "off",
+        links: false,
+        glyphMargin: false,
+        showUnused: false, // Have to turn this because it grays our variables that are used in other cells.
+    };        
+
+    hiddenDiv = document.getElementById("hidden-monaco-editor");
+
+    //
+    // Force hidden editor render at 0 height.
+    //
+    hiddenDiv!.style.height = "0px";
+
+    hiddenEditor = monaco.editor.create(hiddenDiv!, hiddenOptions);
+
 }
 
 declare const self: any;
@@ -128,34 +189,13 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     containerElement: React.RefObject<HTMLDivElement>;
 
     //
-    // Container for the hidden Monaco editor used to compute the desired size of the visible Monaco editor.
-    //
-    hiddenContainerElement: React.RefObject<HTMLDivElement>;
-
-    //
     // Models created for the editor.
     //
     editorModel: monaco.editor.IModel | null = null;
-
     
     // Docs
     // https://microsoft.github.io/monaco-editor/api/modules/monaco.editor.html
     editor: monaco.editor.IStandaloneCodeEditor | null = null;
-
-    //
-    // Hidden div that contains the hidden editor.
-    //
-    hiddenDiv?: HTMLDivElement;
-
-    //
-    // Hidden model.
-    //
-    hiddenModel: monaco.editor.IModel | null = null;
-
-    //
-    // Hidden editor used for calculating the expected size of the real editor.
-    //
-    hiddenEditor: monaco.editor.IStandaloneCodeEditor | null = null;
 
     //
     // Set to true when code is being updated into the model.
@@ -188,7 +228,6 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         super(props);
 
         this.containerElement = React.createRef<HTMLDivElement>();
-        this.hiddenContainerElement = React.createRef<HTMLDivElement>();
 
         this.state = {};
 
@@ -230,7 +269,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             formatOnPaste: true,
             formatOnType: true,
             renderLineHighlight: "none",
-            wordWrap: "on",
+            wordWrap: "off",
             selectionHighlight: false,
             contextmenu: false,
             readOnly: false,
@@ -252,50 +291,6 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         };
 
         this.editor = monaco.editor.create(this.containerElement.current!, options);
-
-        //
-        // Create a whole hidden editor just to figure what size the editor should be.
-        // This is pretty expensive but it avoids unecessary size changes and scrolling on the real editor.
-        // Hope to find a better way to do this in the future.
-        //
-
-        this.hiddenModel = monaco.editor.createModel(
-            this.props.model.getText(),
-            this.props.language
-        );
-        
-        // https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
-        const hiddenOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
-            model: this.hiddenModel,
-            codeLens: false,
-            formatOnPaste: true,
-            formatOnType: true,
-            renderLineHighlight: "none",
-            wordWrap: "on",
-            selectionHighlight: false,
-            contextmenu: false,
-            readOnly: false,
-            hideCursorInOverviewRuler: true,
-            automaticLayout: false,
-            scrollbar: {
-                handleMouseWheel: false,
-                vertical: "hidden",
-                verticalScrollbarSize: 0,
-            },
-            minimap: {
-                enabled: false,
-            },
-            scrollBeyondLastLine: false,
-            lineNumbers: "off",
-            links: false,
-            glyphMargin: false,
-            showUnused: false, // Have to turn this because it grays our variables that are used in other cells.
-        };        
-
-		//TODO: Be nice if this worked! Then I could share the hidden editor among multiple cells.
-        // this.hiddenDiv = document.createElement("div"); 
-        this.hiddenDiv = this.hiddenContainerElement.current!;
-        this.hiddenEditor = monaco.editor.create(this.hiddenDiv, hiddenOptions);
 
         const updateEditorHeight = throttleAsync(
             this,
@@ -393,17 +388,6 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             this.editor = null;
         }
 
-        if (this.hiddenModel) {
-            this.hiddenModel.dispose();
-            this.hiddenModel = null;
-        }
-
-        if (this.hiddenEditor) {
-            this.hiddenEditor.dispose();
-            this.hiddenEditor = null;
-        }
-
-        this.hiddenDiv = undefined;
         this.caretElement = null;
 
         window.removeEventListener("resize", this.onWindowResize);
@@ -672,18 +656,19 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         //
 
         //
-        // Force hidden editor render at 0 height.
-        // Makes Monaco editor update its scroll height.
+        // Make Monaco editor update its scroll height.
         //
-        this.hiddenDiv!.style.height = "0px";
-        this.hiddenEditor!.setValue(this.editor.getValue());
-        this.hiddenEditor!.layout();
+        hiddenEditor!.setValue(this.editor.getValue());
+        hiddenEditor!.layout();
+
+        console.log("Hidden editor scroll height: " + hiddenEditor!.getScrollHeight()); //fio:
 
         //
         // Compute desired editor height from the hidden editor.
         //
         const gutter = 10;
-        const contentHeight = this.hiddenEditor!.getScrollHeight() + gutter;
+        const contentHeight = hiddenEditor!.getScrollHeight() + gutter;
+
         const computedHeight = contentHeight;
         if (this.prevComputedHeight == computedHeight) {
             //
@@ -726,12 +711,6 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             <div className="pos-relative">
                 <div 
                     ref={this.containerElement} 
-                    />
-                <div 
-                    ref={this.hiddenContainerElement} 
-                    style={{
-                        overflow: "hidden",
-                    }}
                     />
                 { this.props.working
                     && <div 
