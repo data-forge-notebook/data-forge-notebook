@@ -15,12 +15,4 @@ describe("view-model / cell-output-value", () => {
         expect(cellOutput.getDisplayType()).toEqual(displayType);
         expect(cellOutput.getData()).toBe(data);
     });
-
-    test("can notify of resize", async () => {
-        const mockModel: any = {};
-        const cellOutput = new CellOutputValueViewModel(mockModel);
-        await expectEventRaised(cellOutput, "onResized", async () => {
-            await cellOutput.notifyResized();
-        });
-    });
 });

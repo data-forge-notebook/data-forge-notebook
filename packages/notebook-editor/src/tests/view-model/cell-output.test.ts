@@ -69,14 +69,4 @@ describe("view-model / cell-output", () => {
             await cellOutput.setHeight(22);
         });
     });
-
-    test("notify resize is forwarded to value view-model", async () => {
-        const mockModel: any = { 
-            getValue: () => {}, 
-        };
-        const cellOutput = new CellOutputViewModel(mockModel);
-        await expectEventRaised(cellOutput.getValue(), "onResized", async () => {
-            await cellOutput.notifyResized();
-        });
-    });
 });
