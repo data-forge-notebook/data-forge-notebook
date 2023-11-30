@@ -29,14 +29,9 @@ export class StructuredData extends React.Component<IStructuredDataProps, {}> {
         return (
             <div
                 style={{ 
-                    marginTop: "0px",
-                    marginBottom: "0px",
                     paddingLeft: "24px",
-                    paddingTop: "2px",
-                    paddingBottom: "2px",
-                    width: "100%",
-                    height: "100vh",
-                    overflow: "auto"
+                    paddingTop: "6px",
+                    paddingBottom: "6px",
                 }}  
                 >
                 <Visualiser
