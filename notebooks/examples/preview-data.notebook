@@ -6,25 +6,15 @@
         {
             "id": "d0647090-2e9c-11e9-9f0a-97b474081a71",
             "cellType": "markdown",
-            "code": "# Preview data in Data-Forge Notebok\r\n\r\nHere are some ways to preview data in Data-Forge Notebook.",
+            "code": "# Preview data in Data-Forge Notebok\r\n\r\nHere are some ways to see your data in Data-Forge Notebook.\r\n\r\n## Any JavaScript value\r\n\r\nThe `display` function is Data-Forge Notebook's visualization workhorse. Use it to visualize any value in JavaScript.",
             "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
             "output": [],
             "errors": [],
             "height": 115
         },
         {
-            "id": "dd75ede0-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
-            "code": "## Any JavaScript value\r\n\r\nThe `display` function is Data-Forge Notebook's visualization workhorse.\r\n\r\nVisualize any value in JavaScript.",
-            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-            "output": [],
-            "errors": [],
-            "height": 131
-        },
-        {
             "id": "b3c95bf0-9cd0-11ea-89b4-d59a11d5b26f",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const value = 5;\r\ndisplay(value);",
             "lastEvaluationDate": "2023-11-25T09:08:42.408+10:00",
             "output": [
@@ -49,7 +39,6 @@
         {
             "id": "1b752e00-a804-11e8-b3eb-53e94e633165",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = [1, 2, 3, 4];\r\ndisplay(data);",
             "lastEvaluationDate": "2023-11-25T09:08:42.420+10:00",
             "output": [
@@ -79,7 +68,6 @@
         {
             "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data);",
             "lastEvaluationDate": "2023-11-25T09:08:42.422+10:00",
             "output": [
@@ -107,7 +95,6 @@
         {
             "id": "c6a99850-2e9c-11e9-9f0a-97b474081a71",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = [\r\n    { \"A\": 1, \"B\": \"Hello\" },\r\n    { \"A\": 2, \"B\": \"Computer!\" },\r\n    { \"A\": 5, \"B\": \"View all the data!\" }\r\n];\r\ndisplay(data, \"table\");",
             "lastEvaluationDate": "2023-11-25T09:08:42.425+10:00",
             "output": [
@@ -137,7 +124,7 @@
         {
             "id": "8864e670-f3cd-11e9-97b7-a975ba8f6456",
             "cellType": "markdown",
-            "code": "## What's the next step?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+            "code": "## What's the next step?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
             "errors": [],

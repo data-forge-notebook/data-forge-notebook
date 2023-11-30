@@ -768,7 +768,7 @@
         {
             "id": "53a712d0-8845-11e9-94c3-054beaa0f30f",
             "cellType": "markdown",
-            "code": "## More charts!\r\n\r\nWant to see more charts?\r\n\r\n[Click here to see the charts example](http://open-example=./charts.notebook).",
+            "code": "## More charts!\r\n\r\nWant to see more charts?\r\n\r\n[See the charts example](http://open-example=./charts.notebook).",
             "lastEvaluationDate": "2019-06-06T20:25:48.286+10:00",
             "output": [],
             "errors": [],
@@ -784,9 +784,17 @@
             "height": 131
         },
         {
+            "id": "608f3880-8fdc-11ee-98fc-f7fea87f8128",
+            "cellType": "markdown",
+            "code": "## What's the next step?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+            "output": [],
+            "errors": [],
+            "height": 19
+        },
+        {
             "id": "8864e670-f3cd-11e9-97b7-a975ba8f6456",
             "cellType": "markdown",
-            "code": "## More coming soon!\r\n\r\nMore visualization are coming in future editions of Data-Forge Notebook, for example:\r\n\r\n- Images\r\n- Node.js buffers\r\n- Vectors, matrices and maths formulas\r\n- Colors\r\n\r\n[Email](mailto:support@data-forge-notebook.com) and let me know what else could be added!",
+            "code": "## More visualizations coming soon\r\n\r\nMore visualization are coming in future editions of Data-Forge Notebook, for example:\r\n\r\n- Images\r\n- Node.js buffers\r\n- Vectors, matrices and maths formulas\r\n- Colors\r\n\r\n[Email](mailto:support@data-forge-notebook.com) and let me know what else could be added!",
             "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
             "output": [],
             "errors": [],

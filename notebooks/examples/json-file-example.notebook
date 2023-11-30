@@ -24,9 +24,8 @@
         {
             "id": "715b3301-a773-11e8-be47-d189ccafed88",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const { readJson, writeJson } = require('datakit');\r\n\r\nconst inputData = await readJson(\"./example.json\");\r\n\r\ndisplay(inputData.slice(0, 3), \"table\");",
-            "lastEvaluationDate": "2023-11-07T20:02:32.519+10:00",
+            "lastEvaluationDate": "2023-12-01T09:55:40.247+10:00",
             "output": [
                 {
                     "value": {
@@ -72,9 +71,8 @@
         {
             "id": "8a9ad280-a773-11e8-be47-d189ccafed88",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const transformedData = inputData.map(row => ({\r\n    ...row,\r\n    \"Height (cm)\": row[\"Height (in)\"] * 2.54,      // Inches to centimeters.\r\n    \"Weight (kgs)\": row[\"Weight (lbs)\"] * 0.453592 // Pounds to kilograms.\r\n}));\r\ndisplay(transformedData.slice(0, 5), \"table\");",
-            "lastEvaluationDate": "2023-11-07T20:02:33.006+10:00",
+            "lastEvaluationDate": "2023-12-01T09:55:40.264+10:00",
             "output": [
                 {
                     "value": {
@@ -144,107 +142,26 @@
         {
             "id": "7dd392b0-a775-11e8-a675-a582b1f571c7",
             "cellType": "code",
-            "cellScope": "global",
             "code": "await writeJson(\"transformed.json\", transformedData);\r\n\r\nconsole.log(\"Transformed JSON file has been written to \" + process.cwd());",
-            "lastEvaluationDate": "2023-11-07T20:02:33.016+10:00",
+            "lastEvaluationDate": "2023-12-01T09:55:40.265+10:00",
             "output": [
                 {
                     "value": {
                         "displayType": "text",
-                        "data": "!! An error occurred while evaluating notebook \"notebook-9d54337b-e117-4f43-9827-2b66d1c58248\" details follow.\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Filename ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "notebook-9d54337b-e117-4f43-9827-2b66d1c58248\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error source ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "Code evaluation\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Cell id ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "7dd392b0-a775-11e8-a675-a582b1f571c7\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error message ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "writeCsv is not defined\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error location ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "<no-location>\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error stacktrace ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "ReferenceError: writeCsv is not defined\n    at notebook-9d54337b-e117-4f43-9827-2b66d1c58248:31:9\n    at C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:586:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:203:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:578:26)\n    at notebook-9d54337b-e117-4f43-9827-2b66d1c58248:30:7\n    at C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:586:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:203:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\editor-core\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:578:26)\n    at notebook-9d54337b-e117-4f43-9827-2b66d1c58248:17:5\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Translated error message and stack trace ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "{\n    \"display\": \"writeCsv is not defined\\r\\n at Code cell, line 1\",\n    \"cellId\": \"7dd392b0-a775-11e8-a675-a582b1f571c7\",\n    \"stack\": \" at Code cell, line 1\"\n}\n"
+                        "data": "Transformed JSON file has been written to C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\examples\n"
                     }
                 }
             ],
-            "errors": [
-                {
-                    "msg": "writeCsv is not defined\r\n at Code cell, line 1"
-                }
-            ],
+            "errors": [],
             "height": 1342
+        },
+        {
+            "id": "faaaa040-8fdb-11ee-98fc-f7fea87f8128",
+            "cellType": "markdown",
+            "code": "## What's the next step?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+            "output": [],
+            "errors": [],
+            "height": 19
         }
     ]
 }

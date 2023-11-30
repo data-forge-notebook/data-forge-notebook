@@ -24,7 +24,6 @@
         {
             "id": "715b3301-a773-11e8-be47-d189ccafed88",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const { readCsv, writeCsv } = require('datakit');\r\n\r\nconst inputData = await readCsv(\"./example.csv\");\r\n\r\ndisplay(inputData.slice(0, 3), \"table\");",
             "lastEvaluationDate": "2023-11-07T20:00:04.480+10:00",
             "output": [
@@ -72,7 +71,6 @@
         {
             "id": "8a9ad280-a773-11e8-be47-d189ccafed88",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const transformedData = inputData.map(row => ({\r\n    ...row,\r\n    \"Height (cm)\": row[\"Height (in)\"] * 2.54,      // Inches to centimeters.\r\n    \"Weight (kgs)\": row[\"Weight (lbs)\"] * 0.453592 // Pounds to kilograms.\r\n}));\r\ndisplay(transformedData.slice(0, 5), \"table\");",
             "lastEvaluationDate": "2023-11-07T20:00:04.517+10:00",
             "output": [
@@ -144,7 +142,6 @@
         {
             "id": "7dd392b0-a775-11e8-a675-a582b1f571c7",
             "cellType": "code",
-            "cellScope": "global",
             "code": "await writeCsv(\"transformed.csv\", transformedData);\r\n\r\nconsole.log(\"Transformed CSV file has been written to \" + process.cwd());",
             "lastEvaluationDate": "2023-11-07T20:00:04.525+10:00",
             "output": [
@@ -157,6 +154,14 @@
             ],
             "errors": [],
             "height": 271
+        },
+        {
+            "id": "deed5690-8fdb-11ee-98fc-f7fea87f8128",
+            "cellType": "markdown",
+            "code": "## What's the next step?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+            "output": [],
+            "errors": [],
+            "height": 19
         }
     ]
 }

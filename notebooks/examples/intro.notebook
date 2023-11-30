@@ -1,12 +1,12 @@
 {
-    "version": 2,
+    "version": 3,
     "language": "javascript",
     "description": "Introductory notebook for Data-Forge Notebook, showing some of the basics.",
     "cells": [
         {
             "id": "e9fe6a21-76df-11e9-b6bb-81a2f4ed2364",
             "cellType": "markdown",
-            "code": "# Welcome to the intro notebook!\r\n\r\n## This is a [markdown](https://commonmark.org/help/) cell.\r\n\r\nUse markdown to document your code\r\n\r\nClick to edit me!",
+            "code": "# Welcome to the intro notebook!\r\n\r\nData-Forge Notebook is for exploratory coding in JavaScript. You can easily write documentation, run your code and quickly create visualizations.\r\n\r\n## This is a [markdown](https://commonmark.org/help/) cell.\r\n\r\nUse markdown to document your code.\r\n\r\nClick here to edit me!",
             "lastEvaluationDate": "2019-05-15T17:10:35.154+10:00",
             "output": [],
             "errors": [],
@@ -15,13 +15,12 @@
         {
             "id": "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
             "cellType": "code",
-            "cellScope": "global",
-            "code": "// This is a code cell, your code goes here.\r\n// You can run any JavaScript code here that would normally run under Node.js\r\n// Click the run button or Ctrl/Cmd+Alt+R to evaluate this code.\r\n\r\nconst msg = \"Hello JavaScript!\";\r\nconsole.log(msg);",
-            "lastEvaluationDate": "2020-06-22T17:24:36.684+10:00",
+            "code": "//\r\n// This is a code cell, your code goes here.\r\n//\r\n// You can run any JavaScript code here that would normally run under Node.js\r\n//\r\n// Click the run button or Ctrl/Cmd+Alt+R to evaluate this code.\r\n//\r\n\r\nconst msg = \"Hello JavaScript!\"; // <-- Try changing this code and then evaluate again.\r\nconsole.log(msg);",
+            "lastEvaluationDate": "2023-12-01T09:48:19.285+10:00",
             "output": [
                 {
                     "value": {
-                        "displayType": "string",
+                        "displayType": "text",
                         "data": "Hello JavaScript!\n"
                     }
                 }
@@ -32,7 +31,7 @@
         {
             "id": "918df810-8837-11e9-aff6-77f042ccdcdd",
             "cellType": "markdown",
-            "code": "## Ready for more?\r\n\r\n[See how to preview data in Data-Forge Notebook](http://open-notebook=./preview-data.notebook)",
+            "code": "## Ready for more?\r\n\r\nYou can run code, use npm modules and create visualizations.\r\n\r\n[See how to preview data in Data-Forge Notebook](http://open-notebook=./preview-data.notebook)",
             "lastEvaluationDate": "2019-06-06T18:47:09.307+10:00",
             "output": [],
             "errors": [],

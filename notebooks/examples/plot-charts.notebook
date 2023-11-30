@@ -15,7 +15,6 @@
         {
             "id": "715b3301-a773-11e8-be47-d189ccafed88",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const data = [\r\n    [\"Net Profit\", \"Revenue\", \"Free Cash Flow\"],\r\n    [44, 76, 35],\r\n    [55, 85, 41],\r\n    [57, 101, 36],\r\n    [56, 98, 26],\r\n    [61, 87, 45],\r\n    [58, 105, 48],\r\n    [63, 91, 52],\r\n    [60, 114, 53],\r\n    [66, 94, 41],\r\n];\r\ndisplay(data, \"apex\");",
             "lastEvaluationDate": "2023-11-06T18:59:20.522+10:00",
             "output": [
@@ -83,7 +82,7 @@
         {
             "id": "4642ce70-9cd2-11ea-89b4-d59a11d5b26f",
             "cellType": "markdown",
-            "code": "## What's next?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [See more charts](http://open-notebook=./charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
+            "code": "## What's next?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [See more charts](http://open-notebook=./charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
             "lastEvaluationDate": "2020-05-23T18:50:10.555+10:00",
             "output": [],
             "errors": [],
