@@ -21,7 +21,7 @@ export class Text extends React.Component<ITextProps, {}> {
                 style={{ 
                     paddingLeft: "24px",
                     paddingTop: "6px",
-                    paddingBottom: "6px",
+                    paddingBottom: "32px",
                 }}  
                 >
                 {text}

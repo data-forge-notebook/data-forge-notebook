@@ -80,7 +80,7 @@ export class Table extends React.Component<ITableProps, {}> {
                     style={{ 
                         paddingLeft: "24px",
                         paddingTop: "6px",
-                        paddingBottom: "6px",
+                        paddingBottom: "32px",
                     }}  
                     >
                     <table>
