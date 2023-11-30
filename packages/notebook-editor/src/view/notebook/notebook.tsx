@@ -74,7 +74,6 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
 
     render () {
         const cells = this.props.model.getCells();
-        let hoverRegionClass = "pos-relative";
 
         return (
             <div>
