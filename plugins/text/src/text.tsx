@@ -19,11 +19,9 @@ export class Text extends React.Component<ITextProps, {}> {
         return (
             <pre
                 style={{ 
-                    marginTop: "0px",
-                    marginBottom: "0px",
                     paddingLeft: "24px",
-                    paddingTop: "12px",
-                    paddingBottom: "12px",
+                    paddingTop: "6px",
+                    paddingBottom: "32px",
                 }}  
                 >
                 {text}

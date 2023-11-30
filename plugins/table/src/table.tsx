@@ -75,21 +75,12 @@ export class Table extends React.Component<ITableProps, {}> {
         }
 
         return (
-            <pre
-                style={{ 
-                    width: "100%",
-                    height: "100vh",
-                    margin: "0px",
-                    padding: "0px",
-                    paddingTop: "8px",
-                    paddingLeft: "24px",
-                    overflow: "auto",
-                }}  
-                >
+            <pre>
                 <div
                     style={{ 
-                        marginTop: "6px",
-                        marginBottom: "36px",
+                        paddingLeft: "24px",
+                        paddingTop: "6px",
+                        paddingBottom: "32px",
                     }}  
                     >
                     <table>
