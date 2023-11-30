@@ -24,9 +24,8 @@
         {
             "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = \"Whatever you want to log!\";\r\nconsole.log(data);",
-            "lastEvaluationDate": "2023-10-28T17:39:02.984+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.703+10:00",
             "output": [
                 {
                     "value": {
@@ -50,9 +49,8 @@
         {
             "id": "1b752e00-a804-11e8-b3eb-53e94e633165",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = [1, 2, 3, 4];\r\ndisplay(data);",
-            "lastEvaluationDate": "2023-11-06T19:11:24.731+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.694+10:00",
             "output": [
                 {
                     "value": {
@@ -80,9 +78,8 @@
         {
             "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data);",
-            "lastEvaluationDate": "2023-11-06T19:11:24.736+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.696+10:00",
             "output": [
                 {
                     "value": {
@@ -108,9 +105,8 @@
         {
             "id": "c6a99850-2e9c-11e9-9f0a-97b474081a71",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data, \"table\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.743+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.697+10:00",
             "output": [
                 {
                     "value": {
@@ -137,9 +133,8 @@
         {
             "id": "6570d750-f3cd-11e9-97b7-a975ba8f6456",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = [{ A: 1, B: \"Hello\" }, { A: 2, B: \"Computer!\" }];\r\ndisplay(data, \"table\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.750+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.699+10:00",
             "output": [
                 {
                     "value": {
@@ -172,9 +167,8 @@
         {
             "id": "74ae4f00-fb65-11e9-b87a-47633ef72d4e",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const data = '[ { \"A\": 1, \"B\": \"Hello\" }, { \"A\": 2, \"B\": \"Computer!\" } ]';\r\ndisplay(data, \"json\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.758+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.700+10:00",
             "output": [
                 {
                     "value": {
@@ -198,12 +192,12 @@
         {
             "id": "c01509e0-f4ab-11e9-bc75-6b676fbda00a",
             "cellType": "code",
-            "cellScope": "local",
-            "code": "const text = \"Hello!\\nThis is some preformatted text with newlines baked in :)\";\r\ndisplay(text);",
-            "lastEvaluationDate": "2023-11-06T19:11:24.765+10:00",
+            "code": "const text = \"Hello!\\nThis is some preformatted text with newlines baked in :)\";\r\ndisplay(text, \"text\");",
+            "lastEvaluationDate": "2023-11-30T20:20:18.702+10:00",
             "output": [
                 {
                     "value": {
+                        "displayType": "text",
                         "data": "Hello!\nThis is some preformatted text with newlines baked in :)"
                     }
                 }
@@ -223,9 +217,8 @@
         {
             "id": "31ae9260-a804-11e8-b3eb-53e94e633165",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data.slice(0, 5), \"table\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.772+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.787+10:00",
             "output": [
                 {
                     "value": {
@@ -285,9 +278,8 @@
         {
             "id": "d0e47910-1335-11ea-ba9f-279dfd8c67c3",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const datakit = require('datakit');\r\nconst data = await datakit.readJson(\"./example.json\");\r\ndisplay(data.slice(0, 3), \"table\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.780+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.848+10:00",
             "output": [
                 {
                     "value": {
@@ -333,9 +325,8 @@
         {
             "id": "f879ae00-f3cd-11e9-97b7-a975ba8f6456",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = [50, 20, 10, 40, 15, 25];\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.787+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.851+10:00",
             "output": [
                 {
                     "value": {
@@ -366,9 +357,8 @@
         {
             "id": "24ef35e0-f3ce-11e9-97b7-a975ba8f6456",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.810+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.857+10:00",
             "output": [
                 {
                     "value": {
@@ -409,9 +399,8 @@
         {
             "id": "48cae350-1332-11ea-b4ba-813ffa5b9c8b",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const data = {\r\n    D1: [30, 10, 50, 15],\r\n    D2: [300, 20, 10, 150],\r\n};\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.827+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.860+10:00",
             "output": [
                 {
                     "value": {
@@ -448,9 +437,8 @@
         {
             "id": "3736bd70-a804-11e8-b3eb-53e94e633165",
             "cellType": "code",
-            "cellScope": "local",
             "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.840+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.862+10:00",
             "output": [
                 {
                     "value": {
@@ -592,9 +580,8 @@
         {
             "id": "913a48b0-1332-11ea-b4ba-813ffa5b9c8b",
             "cellType": "code",
-            "cellScope": "global",
             "code": "const datakit = require('datakit');\r\nconst data = await datakit.readJson(\"./example.json\");\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.847+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.865+10:00",
             "output": [
                 {
                     "value": {
@@ -745,9 +732,8 @@
         {
             "id": "f1491e80-675a-11ea-94da-357be68abebe",
             "cellType": "code",
-            "cellScope": "global",
             "code": "display({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        [51.505, -0.10],\r\n        [51.5, -0.09],\r\n        [51.51, -0.08]\r\n    ],\r\n}, \"geo\");",
-            "lastEvaluationDate": "2023-11-06T19:11:24.858+10:00",
+            "lastEvaluationDate": "2023-11-30T20:20:18.867+10:00",
             "output": [
                 {
                     "value": {
