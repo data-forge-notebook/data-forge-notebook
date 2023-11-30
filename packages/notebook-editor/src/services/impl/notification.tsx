@@ -68,16 +68,16 @@ export class Notification implements INotification {
 
                     {params.actions.map(action => {
                         return (
-                            <div className="bp3-button-group bp3-minimal">
+                            <div className="bp5-button-group bp5-minimal">
                                 <a
                                     role="button" 
-                                    className="bp3-button"
+                                    className="bp5-button"
                                     onClick={async () => {
                                         this.toaster.dismiss(toastId);
                                         await action.callback();
                                     }}
                                     >
-                                    <span className="bp3-button-text">
+                                    <span className="bp5-button-text">
                                         {action.text}
                                     </span>
                                 </a>

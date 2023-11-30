@@ -290,9 +290,6 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                         />
                                     || <div
                                         className="flex flex-col items-center justify-center"
-                                        style ={{
-                                            marginTop: "4px",
-                                        }}
                                         >
                                         <Icon icon="link" />
                                     </div>

@@ -156,15 +156,15 @@ iframe {
 Fix for popup menus with tooltips.
 */
 
-.bp3-menu .bp3-popover-target {
+.bp5-menu .bp5-popover-target {
     display: block;
 }
 
-.bp3-overlay {
+.bp5-overlay {
     z-index: 4000;
 }
 
-.bp3-overlay.bp3-toast-container {
+.bp5-overlay.bp5-toast-container {
     z-index: 5000;
     position: fixed; /* Fixed positioning for toast notifications. */
 }
