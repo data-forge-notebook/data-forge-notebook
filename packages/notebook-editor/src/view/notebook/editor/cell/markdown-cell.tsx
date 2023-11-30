@@ -139,6 +139,7 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
                     </div>
                     : <div
                         style={{
+                            paddingTop: "12px",
                             paddingLeft: "16px",
                         }}
                         >
