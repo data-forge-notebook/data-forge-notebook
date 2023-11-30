@@ -1,4 +1,3 @@
-import { TEMPERATURE } from "@blueprintjs/icons/lib/esm/generated/iconNames";
 import { ActionContext } from "../../services/action";
 
 describe("action", () => {

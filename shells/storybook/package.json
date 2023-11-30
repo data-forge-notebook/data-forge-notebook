@@ -31,8 +31,8 @@
         "typescript": "^4.6.2"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.10.0",
-        "@blueprintjs/icons": "^3.4.0",
+        "@blueprintjs/core": "^5.7.1",
+        "@blueprintjs/icons": "^5.4.1",
         "@codecapers/fusion": "1.0.15",
         "classnames": "^2.3.1",
         "humanize-duration": "^3.27.1",

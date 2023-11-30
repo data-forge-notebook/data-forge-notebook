@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { InjectableSingleton } from "@codecapers/fusion";
-import { Toaster, IToaster } from '@blueprintjs/core';
-import { IconName } from '@blueprintjs/icons';
+import { OverlayToaster, Toaster } from '@blueprintjs/core';
 import { IAction, INotification, INotificationId, INotificationParams, Level } from '../notification';
 import { serializeError } from 'serialize-error';
 
@@ -15,7 +14,7 @@ function levelToIntent(level: Level | string) {
     }
 }
 
-function getIcon(level: Level | string): IconName {
+function getIcon(level: Level | string) {
     switch (level) {
         case Level.Info: return "info-sign";
         case Level.Error: return "error";
@@ -45,10 +44,10 @@ function prepMessage(msg: React.ReactNode | string): React.ReactNode {
 @InjectableSingleton(INotificationId)
 export class Notification implements INotification {
     
-    toaster: IToaster;
+    toaster: Toaster;
 
     constructor() {
-        this.toaster = Toaster.create();
+        this.toaster = OverlayToaster.create();
     }
 
     //

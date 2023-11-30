@@ -62,8 +62,8 @@
     "minimist": "^1.2.6",
     "fs-extra": "^6.0.1",
     "monaco-editor": "^0.32.1",
-    "@blueprintjs/core": "^3.10.0",
-    "@blueprintjs/icons": "^3.4.0"
+    "@blueprintjs/core": "^5.7.1",
+    "@blueprintjs/icons": "^5.4.1"
   },
   "dependencies": {    
     "normalize.css": "^8.0.0",
