@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { getSpacing, selectComponent } from './Visualiser';
+import { selectComponent, getSpacing } from './Visualiser';
 
-export default class ObjectVisualiser extends Component {
+export default class ArrayVisualiser extends Component<any, any> {
 
     constructor(props) {
         super(props);
         this.collapse = this.collapse.bind(this);
-        this.state = {open: props.open};
+        this.state = {open: false};
     }
 
     collapse() {
@@ -14,31 +14,31 @@ export default class ObjectVisualiser extends Component {
     }
 
     render() {
-        const { data, name, indent, useHljs, path } = this.props;
+        const { data, indent, useHljs, name, path } = this.props;
         let click = this.props.click;
         if (click === undefined) {
             click = () => {};
         }
-        const keys = Object.getOwnPropertyNames(data);
-        let items = [];
-        for (let i = 0; this.state.open && i < keys.length; i++) {
-            var item = data[keys[i]];
+        let items: any[] = [];
+        for (let i = 0; this.state.open && i < data.length; i++) {
+            var item = data[i];
             var VisualiserComponent = selectComponent(item);
             items.push(
                 <VisualiserComponent
                     key={String(i)}
                     data={item}
-                    name={keys[i]}
+                    name={String(i)}
                     indent={indent == 0 ? indent + 2 : indent + 1}
                     useHljs={useHljs}
                     click={click}
-                    path={path + '.' + keys[i]}
+                    path={path + '[' + i + ']'}
                 />
             );
         }
+
         let arrow;
         let spaces = getSpacing(indent);
-        if (keys.length > 0) {
+        if (data.length > 0) {
             arrow = this.state.open ? '\u25bc' : '\u25b6';
             if (spaces.length >= 2) {
                 // Space for arrow
@@ -59,17 +59,18 @@ export default class ObjectVisualiser extends Component {
         }
 
         return (
-            <div className="object-visualiser">
+            <div className="array-visualiser">
                 <span className="visualiser-row">
                     <span className="visualiser-spacing">{spaces}</span>
                     <span className="visualiser-arrow" onClick={this.collapse}>{arrow}</span>
                     {key}
-                    <span className={useHljs ? "hljs-keyword" : ""}>Object</span>
-                    <span>{'{}'}</span>
+                    <span className={useHljs ? "hljs-keyword" : ""}>Array</span>
+                    <span>{'[' + data.length + ']'}</span>
                 </span>
                 {items}
             </div>
         );
+
     }
 
 }

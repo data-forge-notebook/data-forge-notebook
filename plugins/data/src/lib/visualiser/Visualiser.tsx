@@ -39,7 +39,7 @@ export function getSpacing (indent) {
     return result;
 }
 
-export default class Visualiser extends Component {
+export default class Visualiser extends Component<any> {
 
     render() {
         const { data, useHljs, click, path, name } = this.props;

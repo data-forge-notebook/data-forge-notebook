@@ -22,7 +22,7 @@ function buildCssClass(type, useHljs) {
     return cssClass;
 }
 
-export default class DefaultVisualiser extends Component {
+export default class DefaultVisualiser extends Component<any> {
 
     render() {
         const { data, indent, name, useHljs, path } = this.props;
