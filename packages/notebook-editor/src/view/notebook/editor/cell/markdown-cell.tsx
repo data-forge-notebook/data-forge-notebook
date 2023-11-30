@@ -126,9 +126,9 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
                 {inEditMode
                     ? <div
                         style={{
-                            paddingTop: "16px",
+                            paddingTop: "24px",
                             paddingRight: "8px",
-                            paddingBottom: "16px", 
+                            paddingBottom: "24px",
                         }}
                         >
                         <MonacoEditor
@@ -140,30 +140,26 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
                     : <div
                         style={{
                             paddingLeft: "16px",
-                            paddingTop: "2px",
-                            paddingBottom: "6px",
                         }}
                         >
-                        <div>
-                            <ReactMarkdown
-                                children={this.props.model.getText()} 
-                                components={{
-                                    a: (props: any) => {
-                                        return (
-                                            <a 
-                                                onClick={async e => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-                                                    await this.onLinkClick(props.href);
-                                                }}
-                                                >
-                                                {props.children}
-                                            </a>
-                                        );
-                                    },
-                                }}
-                                />
-                        </div>
+                        <ReactMarkdown
+                            children={this.props.model.getText()} 
+                            components={{
+                                a: (props: any) => {
+                                    return (
+                                        <a 
+                                            onClick={async e => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                await this.onLinkClick(props.href);
+                                            }}
+                                            >
+                                            {props.children}
+                                        </a>
+                                    );
+                                },
+                            }}
+                            />
                     </div>
                 }
             </div>
