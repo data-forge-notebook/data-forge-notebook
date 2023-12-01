@@ -437,18 +437,18 @@ export class EditorWindow implements IEditorWindow {
             }
             else {
                 this.log.info(`++ Actually showing window ${this.getId()}.`);
-            }
 
-            // Show the main window if not running headless.
-            this.browserWindow!.show();
+                // Show the main window if not running headless.
+                this.browserWindow!.show();
 
-            this.browserWindow!.webContents.send("shown"); //todo: is this used in the old version?
+                this.browserWindow!.webContents.send("shown"); //todo: is this used in the old version?
 
-            if (this.loadingWindow) {
-                await this.fadeOutWindow(this.loadingWindow, 1000);
-                this.loadingWindow!.close()                
-                this.loadingWindow = undefined;
-                this.browserWindow!.focus();
+                if (this.loadingWindow) {
+                    await this.fadeOutWindow(this.loadingWindow, 1000);
+                    this.loadingWindow!.close()                
+                    this.loadingWindow = undefined;
+                    this.browserWindow!.focus();
+                }
             }
         }
         else {
