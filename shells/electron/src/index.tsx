@@ -5,6 +5,7 @@ import { ipcRenderer } from "electron";
 import { handleAsyncErrors, ILogId } from "utils";
 import { instantiateSingleton, registerSingleton } from "@codecapers/fusion";
 import { ElectronWindowLog } from "./services/electron-renderer-log";
+import mixpanel from "mixpanel-browser";
 
 import "./services/file";
 import "./services/confirmation-dialog";
@@ -18,6 +19,9 @@ import "./services/zoom";
 import "./services/clipboard";
 import { NotebookStorageId } from "./services/notebook-repository";
 import { RendererSettings } from "./services/electron-renderer-settings";
+
+mixpanel.init("ab53b6b694ea458274e3b8ab66481c78");
+mixpanel.track_pageview();
 
 export let editorWindowId = "";
 
