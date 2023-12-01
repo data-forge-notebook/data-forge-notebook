@@ -1,5 +1,5 @@
-import { INotebook } from "model";
-import { ICell, CellType } from "model";
+import { ISerializedCell1, ISerializedNotebook1 } from "model";
+import { CellType } from "model";
 import { ILog } from "utils";
 import { SourceMapGenerator } from "source-map-lib";
 import { ILanguageCodeGenerator, IGeneratedCode } from "./language-code-generator";
@@ -14,7 +14,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
     //
     // The notebook to be compiled.
     //
-    private notebook: INotebook;
+    private notebook: ISerializedNotebook1;
 
     //
     // The path that contains the notebook.
@@ -23,7 +23,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
     private log: ILog;
 
-    constructor(notebook: INotebook, projectPath: string, log: ILog) {
+    constructor(notebook: ISerializedNotebook1, projectPath: string, log: ILog) {
         this.notebook = notebook;
         this.projectPath = projectPath;
         this.log = log;
@@ -47,7 +47,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
     // Internal function for generating code.
     //
     private async internalGenCode(
-        cells: ICell[],
+        cells: ISerializedCell1[],
         forExport: boolean
     ): Promise<IGeneratedCode> {
 
@@ -58,14 +58,14 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
         const sourceMapGenerator = new SourceMapGenerator();
 
-        cells = cells.filter(cell => cell.getCellType() === CellType.Code); // Only interested in code cells.
+        cells = cells.filter(cell => cell.cellType === CellType.Code); // Only interested in code cells.
 
         //
         // Hoist module import statements to global level.
         // But only do this for global cells.
         //
         for (const cell of cells) {
-            const cellCode = cell.getText();
+            const cellCode = cell.code || "";
             const moduleImportLines = cellCode.split("\n")
                 .filter(isModuleImportStatement)
                 .map(line => line.trimRight());
@@ -93,15 +93,15 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
         //
         for (const cell of cells) {
             if (!forExport) {
-                const preCellCode = `__cell(${cellIndex}, "${cell.getId()}", async () => {\r\n`;
+                const preCellCode = `__cell(${cellIndex}, "${cell.id}", async () => {\r\n`;
                 code += preCellCode;
                 generatedCodeOffset += this.computeNumLines(preCellCode);
             }
 
-            const cellId = cell.getId();
+            const cellId = cell.id;
             const cellStartLine = generatedCodeOffset;
                 
-            let cellCode = cell.getText();
+            let cellCode = cell.code || "";
             let codeLines = cellCode.split("\n")
                 .map(line => line.trimRight());
 
@@ -127,12 +127,12 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
             if (!forExport) {
                 // Generate code to capture local variables.
-                const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.getId()}", () => ({}));\r\n`;
+                const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.id}", () => ({}));\r\n`;
                 code += captureLocalsCode;
                 generatedCodeOffset += this.computeNumLines(captureLocalsCode);
             }
 
-            sourceMapGenerator.addMappings(`cell-${cellId}`, cell.getText(), { line: cellStartLine, column: 0 });
+            sourceMapGenerator.addMappings(`cell-${cellId}`, cell.code || "", { line: cellStartLine, column: 0 });
             cellIndex += 1;
         }
 
@@ -183,7 +183,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
     //
     // Generate code for evaluation.
     //
-    async genCode(cells: ICell[]): Promise<IGeneratedCode> {
+    async genCode(cells: ISerializedCell1[]): Promise<IGeneratedCode> {
 
         const log = this.log;
         // log.info("============= Source code by cell =============");
@@ -247,7 +247,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
     //
     async exportCode(): Promise<string> {
        
-        return (await this.internalGenCode(this.notebook.getCells(), true)).code!;
+        return (await this.internalGenCode(this.notebook.cells, true)).code!;
     }
 }
 

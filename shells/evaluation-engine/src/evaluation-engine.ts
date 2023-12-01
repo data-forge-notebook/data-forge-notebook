@@ -1,5 +1,4 @@
-import { INotebook, ISerializedCellOutputValue1 } from "model";
-import { ICell } from "model";
+import { ISerializedCell1, ISerializedCellOutputValue1, ISerializedNotebook1 } from "model";
 import { CodeEvaluator } from "evaluation-engine";
 import * as _ from "lodash";
 import { Npm } from "evaluation-engine";
@@ -9,7 +8,7 @@ import { NPM_CACHE_PATH } from "./config";
 //
 // Installs a notebook.
 //
-export async function installNotebook(process: NodeJS.Process, projectPath: string, notebook: INotebook, onEvent: (name: string, args: any) => void): Promise<void> {
+export async function installNotebook(process: NodeJS.Process, projectPath: string, notebook: ISerializedNotebook1, onEvent: (name: string, args: any) => void): Promise<void> {
 
     console.log(`Evaluating notebook in path ${projectPath}.`);
     console.log(`Working directory: ${process.cwd()}`);
@@ -43,7 +42,7 @@ export async function installNotebook(process: NodeJS.Process, projectPath: stri
     onEvent("evaluation-event", { event: "notebook-install-started" });
 
     const npm = new Npm(nodeJsPath, NPM_CACHE_PATH, log);
-    const codeEvaluator = new CodeEvaluator(process, notebook, notebook.getCells(), `notebook-${notebook.getInstanceId()}`, projectPath, npm, log);
+    const codeEvaluator = new CodeEvaluator(process, notebook, notebook.cells, `notebook`, projectPath, npm, log);
     await codeEvaluator.installNotebook();
 
     onEvent("evaluation-event", { event: "notebook-install-completed" });
@@ -52,9 +51,9 @@ export async function installNotebook(process: NodeJS.Process, projectPath: stri
 //
 // Evaluate a series of cells in a notebook.
 //
-export function evaluateNotebook(process: NodeJS.Process, projectPath: string, notebook: INotebook, cells: ICell[], onEvent: (name: string, args: any) => void, done: (err?: any) => void): void {
+export function evaluateNotebook(process: NodeJS.Process, projectPath: string, notebook: ISerializedNotebook1, cells: ISerializedCell1[], onEvent: (name: string, args: any) => void, done: (err?: any) => void): void {
 
-    console.log(`Evaluating ${cells.length} cells in notebook ${notebook.getInstanceId()} in folder ${projectPath}.`);
+    console.log(`Evaluating ${cells.length} cells in notebook in folder ${projectPath}.`);
     
     const log = {
         info: (msg: string): void => {
@@ -113,7 +112,7 @@ export function evaluateNotebook(process: NodeJS.Process, projectPath: string, n
     onEvent("evaluation-event", { event: "notebook-eval-started" });
 
     const npm = new Npm(nodeJsPath, NPM_CACHE_PATH, log);
-    const codeEvaluator = new CodeEvaluator(process, notebook, cells, `notebook-${notebook.getInstanceId()}`, projectPath, npm, log);
+    const codeEvaluator = new CodeEvaluator(process, notebook, cells, `notebook`, projectPath, npm, log);
     codeEvaluator.onCellEvalStarted = cellId => {
         onEvent("evaluation-event", { event: "cell-eval-started", cellId });
     };

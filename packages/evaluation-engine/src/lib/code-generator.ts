@@ -1,5 +1,4 @@
-import { INotebook } from "model";
-import { ICell } from "model";
+import { ISerializedCell1, ISerializedNotebook1 } from "model";
 import { ILog } from "utils";
 import { ILanguageCodeGenerator, IGeneratedCode } from "./language-code-generator";
 import { JavaScriptCodeGenerator } from "./javascript-code-generator";
@@ -13,7 +12,7 @@ export interface ICodeGenerator {
     //
     // Generate code for evaluation.
     //
-    genCode(cells: ICell[]): Promise<IGeneratedCode>;
+    genCode(cells: ISerializedCell1[]): Promise<IGeneratedCode>;
 
     //
     // Generate code for export.
@@ -28,15 +27,15 @@ export interface ICodeGenerator {
 export class CodeGenerator implements ICodeGenerator {
     
     languageCodeGenerator: ILanguageCodeGenerator;
-    notebook: INotebook;
+    notebook: ISerializedNotebook1;
 
     log: ILog;
 
-    constructor(notebook: INotebook, projectPath: string, log: ILog) {
+    constructor(notebook: ISerializedNotebook1, projectPath: string, log: ILog) {
         this.notebook = notebook;
         this.log = log;
 
-        const language = notebook.getLanguage();
+        const language = notebook.language;
         if (language === "javascript") {
             this.languageCodeGenerator = new JavaScriptCodeGenerator(notebook, projectPath, log);
         }
@@ -56,7 +55,7 @@ export class CodeGenerator implements ICodeGenerator {
     //
     // Generate code for evaluation.
     //
-    async genCode(cells: ICell[]): Promise<IGeneratedCode> {
+    async genCode(cells: ISerializedCell1[]): Promise<IGeneratedCode> {
 
         const generatedCode = await this.languageCodeGenerator.genCode(cells);
 

@@ -1,7 +1,6 @@
-import { ICell } from "model";
-import { ISourceMap } from "source-map-lib";
+import { ISerializedCell1 } from "model";
 
-export type CodeCellEventHandler = (cell: ICell) => Promise<void>;
+export type CodeCellEventHandler = (cell: ISerializedCell1) => Promise<void>;
 
 //
 // Location in the file.
@@ -80,7 +79,7 @@ export interface ILanguageCodeGenerator {
     //
     // Generate code for evaluation.
     //
-    genCode(cells: ICell[]): Promise<IGeneratedCode>;
+    genCode(cells: ISerializedCell1[]): Promise<IGeneratedCode>;
 
     //
     // Generate code for export.

@@ -1,7 +1,6 @@
 import "jest";
 import { enableInjector, disableInjector } from "@codecapers/fusion";
 import { JavaScriptCodeGenerator } from "../../lib/javascript-code-generator";
-import { Notebook } from "model";
 
 function trim(input: string): string {
     const lines = input.split("\n")
@@ -37,7 +36,7 @@ describe("javascript code generation", () => {
             "cells": []
         };
 
-        const codeGenerator = new JavaScriptCodeGenerator(Notebook.deserialize(emptyNotebook), "test-path", mockLog);
+        const codeGenerator = new JavaScriptCodeGenerator(emptyNotebook, "test-path", mockLog);
         const code = await codeGenerator.genCode([]);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
@@ -53,7 +52,7 @@ describe("javascript code generation", () => {
     });
 
     it("can compile notebook with a single code cell", async () => {
-        const serializedNotebook: any = {
+        const notebook: any = {
             "version": 1,
             "language": "javascript",
             "cells": [
@@ -78,9 +77,8 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const notebook = Notebook.deserialize(serializedNotebook);
         const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
-        const code = await codeGenerator.genCode(notebook.getCells());
+        const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
@@ -101,7 +99,7 @@ describe("javascript code generation", () => {
     });
 
     it("can compile notebook with multiple code cells", async () => {
-        const serializedNotebook: any = {
+        const notebook: any = {
             "version": 1,
             "language": "javascript",
             "cells": [
@@ -120,9 +118,8 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const notebook = Notebook.deserialize(serializedNotebook);
         const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
-        const code = await codeGenerator.genCode(notebook.getCells());
+        const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
@@ -149,7 +146,7 @@ describe("javascript code generation", () => {
     });
 
     it("markdown cells are stripped", async () => {
-        const serializedNotebook: any = {
+        const notebook: any = {
             "version": 1,
             "language": "javascript",
             "cells": [
@@ -161,9 +158,8 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const notebook = Notebook.deserialize(serializedNotebook);
         const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
-        const code = await codeGenerator.genCode(notebook.getCells());
+        const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
@@ -178,7 +174,7 @@ describe("javascript code generation", () => {
     });
 
     it("require statement", async () => {
-        const serializedNotebook: any = {
+        const notebook: any = {
             "version": 1,
             "language": "javascript",
             "cells": [
@@ -191,9 +187,8 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const notebook = Notebook.deserialize(serializedNotebook);
         const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
-        const code = await codeGenerator.genCode(notebook.getCells());
+        const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
@@ -216,7 +211,7 @@ describe("javascript code generation", () => {
     });
 
     it("import statement", async () => {
-        const serializedNotebook: any = {
+        const notebook: any = {
             "version": 1,
             "language": "javascript",
             "cells": [
@@ -229,9 +224,8 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const notebook = Notebook.deserialize(serializedNotebook);
         const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
-        const code = await codeGenerator.genCode(notebook.getCells());
+        const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
@@ -254,7 +248,7 @@ describe("javascript code generation", () => {
     });
 
     it("can export notebook", async () => {
-        const serializedNotebook: any = {
+        const notebook: any = {
             "version": 1,
             "language": "javascript",
             "cells": [
@@ -272,7 +266,6 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const notebook = Notebook.deserialize(serializedNotebook);
         const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
         const exported = trim(await codeGenerator.exportCode());
         const expected = trim(`

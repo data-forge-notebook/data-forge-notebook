@@ -2,7 +2,7 @@
 // A worker process for evaluating code.
 //
 
-import { ISerializedNotebook1, Notebook } from "model";
+import { ISerializedCell1, ISerializedNotebook1 } from "model";
 import { evaluateNotebook, installNotebook } from "./evaluation-engine";
 import * as fs from "fs-extra";
 import { sleep } from "utils";
@@ -94,6 +94,19 @@ async function main(): Promise<void> {
 }
 
 //
+// Find a cell by id.
+//
+function findCell(notebook: ISerializedNotebook1, cellId: string): ISerializedCell1 | undefined {
+    for (const cell of notebook.cells) {
+        if (cell.id === cellId) {
+            return cell;
+        }
+    }
+
+    return undefined;
+}    
+
+//
 // Hnadles a message from primary process.
 //
 async function onMessage(msg: IWorkerMsg): Promise<void> {
@@ -103,11 +116,10 @@ async function onMessage(msg: IWorkerMsg): Promise<void> {
         // Installs the notebook.
         //
         const evaluateNotebookMsg = msg as IInstallNotebookMsg;
+        const notebook = evaluateNotebookMsg.notebook;
         const notebookId = evaluateNotebookMsg.notebookId;
         const projectPath = evaluateNotebookMsg.containingPath || path.join(NOTEBOOK_TMP_PATH, notebookId);
         await fs.ensureDir(projectPath); 
-
-        const notebook = Notebook.deserialize(evaluateNotebookMsg.notebook);
 
         await installNotebook(process, projectPath, notebook, (name: string, args: any): void => {
             process.send!({
@@ -136,12 +148,12 @@ async function onMessage(msg: IWorkerMsg): Promise<void> {
         const projectPath = evaluateNotebookMsg.containingPath || path.join(NOTEBOOK_TMP_PATH, notebookId);
         await fs.ensureDir(projectPath); 
 
-        const notebook = Notebook.deserialize(evaluateNotebookMsg.notebook);
+        const notebook = evaluateNotebookMsg.notebook;
 
-        let cells;
+        let cells: ISerializedCell1[];
         if (evaluateNotebookMsg.cellId) {
             if (evaluateNotebookMsg.singleCell) {
-                const cell = notebook.findCell(evaluateNotebookMsg.cellId);
+                const cell = findCell(notebook, evaluateNotebookMsg.cellId);
                 if (cell) {
                     cells = [ cell ];
                 }
@@ -152,9 +164,9 @@ async function onMessage(msg: IWorkerMsg): Promise<void> {
             else {
                 let foundCell = false;
                 cells = [];
-                for (const cell of notebook.getCells()) {
+                for (const cell of notebook.cells) {
                     cells.push(cell);
-                    if (cell.getId() === evaluateNotebookMsg.cellId) {
+                    if (cell.id === evaluateNotebookMsg.cellId) {
                         foundCell = true;
                         break;
                     }
@@ -166,7 +178,7 @@ async function onMessage(msg: IWorkerMsg): Promise<void> {
             }
         }
         else {
-            cells = notebook.getCells();
+            cells = notebook.cells;
         }
     
         evaluateNotebook(process, projectPath, notebook, cells,

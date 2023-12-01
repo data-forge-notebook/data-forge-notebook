@@ -1,5 +1,4 @@
-import { INotebook, ISerializedCellOutputValue1 } from "model";
-import { ICell } from "model";
+import { ISerializedNotebook1, ISerializedCellOutputValue1, ISerializedCell1 } from "model";
 import { BasicEventHandler } from "utils";
 import { CodeGenerator } from "./code-generator";
 import { ILog } from "utils";
@@ -170,12 +169,12 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // The notebook to be evaluated.
     //
-    private notebook: INotebook;
+    private notebook: ISerializedNotebook1;
     
     //
     // Cells in the notebook to be evaluated.
     //
-    private cells: ICell[];
+    private cells: ISerializedCell1[];
 
     //
     // Ids of the cells.
@@ -227,13 +226,13 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     private process: NodeJS.Process;
 
-    constructor(process: NodeJS.Process, notebook: INotebook, allCells: ICell[], fileName: string, projectPath: string, npm: INpm, log: ILog) {
+    constructor(process: NodeJS.Process, notebook: ISerializedNotebook1, allCells: ISerializedCell1[], fileName: string, projectPath: string, npm: INpm, log: ILog) {
         this.process = process;
         this.npm = npm;
         this.log = log;
         this.notebook = notebook;
-        this.cells = allCells.filter(cell => cell.getCellType() === CellType.Code);
-        this.cellIds = this.cells.map(cell => cell.getId());
+        this.cells = allCells.filter(cell => cell.cellType === CellType.Code);
+        this.cellIds = this.cells.map(cell => cell.id);
 
         const numCells = this.cells.length;
         this.cellsCompleted = new Array(numCells);
@@ -379,17 +378,17 @@ export class CodeEvaluator implements ICodeEvaluator {
     //
     // Ensure modules required by the notebook.
     //
-    private async ensureRequiredModules(notebook: INotebook, cells: ICell[], projectPath: string): Promise<void> {
+    private async ensureRequiredModules(notebook: ISerializedNotebook1, cells: ISerializedCell1[], projectPath: string): Promise<void> {
         //
         // Automatically install modules referenced in the code.
         //
         for (const cell of cells) {
-            if (cell.getCellType() === CellType.Code) {
+            if (cell.cellType === CellType.Code) {
                 try {
-                    await this.npm.ensureRequiredModules(cell.getText(), projectPath, false);
+                    await this.npm.ensureRequiredModules(cell.code || "", projectPath, false);
                 }
                 catch (err: any) {
-                    this.reportError(ErrorSource.ModuleInstall, cell.getId(), err.message, err.stack);
+                    this.reportError(ErrorSource.ModuleInstall, cell.id, err.message, err.stack);
                 }
             }
         }
