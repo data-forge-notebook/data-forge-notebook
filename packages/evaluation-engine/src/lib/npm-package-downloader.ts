@@ -21,7 +21,7 @@ export async function downloadPackage(packageName: string, packageVersion: strin
     const modulePath = path.join(projectPath, "node_modules", packageName);
     if (await fs.pathExists(modulePath)) {
         // Already downloaded.
-        console.log(`Package ${packageName} already downloaded.`);
+        // console.log(`Package ${packageName} already downloaded.`);
         return false;
     }
 
@@ -54,7 +54,7 @@ async function fetchPackageInfo(packageName: string): Promise<any> {
     const name = encodePackageName(packageName);
     const infoURL = `${NPM_REGISTRY_URL}/${name}`;
 
-    console.log('Fetching package info for %s from %s', packageName, infoURL);
+    // console.log('Fetching package info for %s from %s', packageName, infoURL);
 
     const { hostname, pathname } = url.parse(infoURL);
     const options = {
@@ -148,7 +148,7 @@ async function getPackage(packageName: string, version: string): Promise<Readabl
         : packageName;
     const tarballURL = `${NPM_REGISTRY_URL}/${packageName}/-/${tarballName}-${version}.tgz`;
 
-    console.log('Fetching package for %s from %s', packageName, tarballURL);
+    // console.log('Fetching package for %s from %s', packageName, tarballURL);
 
     const { hostname, pathname } = url.parse(tarballURL);
     const options = {
@@ -202,7 +202,7 @@ async function saveFiles(stream: Readable, modulePath: string): Promise<void> {
                     type: header.type
                 };
 
-                console.log(entry);
+                // console.log(entry);
 
                 // Ignore non-files and files that don't match the name.
                 if (entry.type !== 'file') {

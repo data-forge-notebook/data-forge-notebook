@@ -83,7 +83,7 @@ export class Npm implements INpm {
     //
     async installModule(module: IModuleSpec, projectPath: string, installExtras: boolean): Promise<void> {
 
-        console.log("Installing module: " + module.name);
+        // console.log("Installing module: " + module.name);
 
         const installed = downloadPackage(module.name, module.version, projectPath);
         if (!installed) {
@@ -149,7 +149,7 @@ export class Npm implements INpm {
     //
     async ensurePeerDependenciesInstalled(packageFile: any, projectPath: string): Promise<void> {
 
-        this.log.info("Installing peer dependencies for " + packageFile.name);
+        // this.log.info("Installing peer dependencies for " + packageFile.name);
 
         const peerDependencies = packageFile.peerDependencies
         if (peerDependencies === undefined || peerDependencies.length <= 0) {
