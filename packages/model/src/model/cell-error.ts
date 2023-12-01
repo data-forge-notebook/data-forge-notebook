@@ -1,3 +1,5 @@
+//TODO: deprecated.
+
 import { ISerializedCellError1 } from "./serialization/serialized1";
 import { v4 as uuid } from "uuid";
 

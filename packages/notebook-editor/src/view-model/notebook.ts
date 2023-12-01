@@ -34,7 +34,7 @@ export function cellViewModelFactory(cell: ICell): ICellViewModel {
                 const outputViewModel = new CellOutputViewModel(valueViewModel, output.getHeight());
                 return outputViewModel;
             }),
-            cell.getErrors().map(error => new CellErrorViewModel(error))
+            cell.getErrors().map(error => new CellErrorViewModel(error.getMsg()))
         );
     }
     else if (cellType === CellType.Markdown) {

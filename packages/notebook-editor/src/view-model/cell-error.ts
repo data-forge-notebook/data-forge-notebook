@@ -1,15 +1,11 @@
-import { ICellError } from "model";
+import { ICellError, ISerializedCellError1 } from "model";
+import { v4 as uuid } from "uuid";
 
 //
 // View-model for an error from a cell.
 //
 
 export interface ICellErrorViewModel {
-
-    //
-    // Get the model under the view model.
-    //
-    getModel(): ICellError;
 
     //
     // Get the (non-serialized) instance ID.
@@ -35,40 +31,56 @@ export interface ICellErrorViewModel {
 export class CellErrorViewModel implements ICellErrorViewModel {
 
     //
-    // The model underlying the view-model.
+    // Instance ID of the model.
+    // Not serialized.
     //
-    private readonly cellError: ICellError;
+    private instanceId: string;
+
+    //
+    // The error message.
+    //
+    private msg: string;
 
     //
     // The output is fresh when true, out of date when false.
     //
     private fresh: boolean = true;
-    
-    constructor (cellError: ICellError) {
-        this.cellError = cellError;
-    }
 
-    //
-    // Get the model under the view model.
-    //
-    getModel(): ICellError {
-        return this.cellError;
+    constructor (msg: string) {
+        this.instanceId = uuid();
+        this.msg = msg;
     }
 
     //
     // Get the (non-serialized) instance ID.
     //
     getInstanceId(): string {
-        return this.cellError.getInstanceId();
+        return this.instanceId;
     }
 
     //
     // Get the message from the error.
     //
     getMsg(): string {
-        return this.cellError.getMsg();
+        return this.msg;
     }
     
+    //
+    // Serialize to a data structure suitable for serialization.
+    //
+    serialize(): ISerializedCellError1 {
+        return {
+            msg: this.msg
+        };
+    }    
+
+    //
+    // Deserialize the model from a previously serialized data structure.
+    //
+    static deserialize(input: ISerializedCellError1): ICellErrorViewModel {
+        return new CellErrorViewModel(input.msg);
+    }       
+
     //
     // Returns true if this is fresh output.
     //

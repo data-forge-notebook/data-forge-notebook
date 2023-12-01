@@ -1,8 +1,8 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { ICell, ICellOutput } from "model";
+import { ICell, ICellError, ICellOutput } from "model";
 import { IDateProvider, IDateProviderId } from "../services/date-provider";
 import { ICellViewModel, CellViewModel } from "./cell";
-import { ICellErrorViewModel } from "./cell-error";
+import { CellErrorViewModel, ICellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel, ICellOutputViewModel } from "./cell-output";
 import { CellOutputValueViewModel } from "./cell-output-value";
 
@@ -59,7 +59,7 @@ export interface ICodeCellViewModel extends ICellViewModel {
     //
     // Add an error to the cell.
     //
-    addError(error: ICellErrorViewModel): Promise<void>;
+    addError(error: ICellError): Promise<void>;
 
     //
     // Clear all the errors from the cell.
@@ -286,15 +286,17 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Add an error to the cell.
     //
-    async addError(error: ICellErrorViewModel): Promise<void> {
-        this.cell.addError(error.getModel());
+    async addError(error: ICellError): Promise<void> {
+        this.cell.addError(error);
+
+        const errorViewModel = new CellErrorViewModel(error.getMsg()); //todo:
 
         if (this.errors.length > this.nextErrorIndex) {
             // Replace existing output.
-            this.errors[this.nextErrorIndex] = error;
+            this.errors[this.nextErrorIndex] = errorViewModel;
         }
         else {
-            this.errors = this.errors.concat([error]);
+            this.errors = this.errors.concat([errorViewModel]);
         }
 
         ++this.nextErrorIndex;

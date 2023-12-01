@@ -11,8 +11,6 @@ import { IConfirmationDialog, IConfirmationDialogId } from "../services/confirma
 import { INotification, INotificationId } from "../services/notification";
 import { IEvaluatorClient, IEvaluatorId } from "../services/evaluator-client";
 import { ICodeCellViewModel } from "./code-cell";
-import { CellOutputViewModel } from "./cell-output";
-import { CellErrorViewModel } from "./cell-error";
 import { ICommander, ICommanderId } from "../services/commander";
 import { IUndoRedo, IUndoRedoId } from "../services/undoredo";
 import { IHotkeysOverlayViewModel } from "../components/hotkeys-overlay";
@@ -798,7 +796,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     private reportError(cellId: string | undefined, error: string) {
         const cell = cellId && this.getOpenNotebook().findCell(cellId) as ICodeCellViewModel;
         if (cell) {
-            cell.addError(new CellErrorViewModel(new CellError(error)));
+            cell.addError(new CellError(error));
         }
         else {
             //
@@ -806,7 +804,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             //
             for (const cell of this.getOpenNotebook().getCells()) {
                 if (cell.getCellType() === CellType.Code) {
-                    (cell as ICodeCellViewModel).addError(new CellErrorViewModel(new CellError(error)));
+                    (cell as ICodeCellViewModel).addError(new CellError(error));
                     return;
                 }
             }
