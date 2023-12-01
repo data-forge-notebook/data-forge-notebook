@@ -74,7 +74,8 @@ export class CellOutputViewModel implements ICellOutputViewModel {
 
     constructor (cellOutput: ICellOutput) {
         this.cellOutput = cellOutput;
-        this.value = new CellOutputValueViewModel(cellOutput.getValue());
+        const value = cellOutput.getValue();
+        this.value = new CellOutputValueViewModel(value.getDisplayType(), value.getPlugin(), value.getData());
     }
 
     //
