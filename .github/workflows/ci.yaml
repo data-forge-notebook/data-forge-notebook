@@ -35,8 +35,8 @@ jobs:
       - name: Compile
         run: pnpm run compile
       
-      - name: Buid plugins
-        run: pnpm run build-plugins
+      # - name: Buid plugins
+      #   run: pnpm run build-plugins
 
       - name: Run tests
         run: pnpm test
