@@ -229,6 +229,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
             return (
                 <MarkdownCellUI 
                     model={this.props.model as IMarkdownCellViewModel} 
+                    notebookModel={this.props.notebookModel}
                     />
             );
         }

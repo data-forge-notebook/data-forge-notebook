@@ -68,6 +68,10 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
         return humanizeDuration(durationMS, humanizeOptions) + " ago";
     }
     
+    private onEscapeKey = async () => {
+        await this.props.notebookModel.deselect();
+    }
+
     render () {
         const cellExecuting = this.props.model.isExecuting();
         const inError = !cellExecuting && this.props.model.inError();
@@ -108,6 +112,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                             language={this.props.language}
                             model={this.props.model} 
                             working={cellExecuting}
+                            onEscapeKey={this.onEscapeKey}
                             />
                     </div>
                    <div>             

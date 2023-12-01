@@ -8,12 +8,18 @@ import ReactMarkdown from 'react-markdown';
 import { InjectProperty, InjectableClass } from '@codecapers/fusion';
 import { ICommander, ICommanderId } from '../../../../services/commander';
 import { IOpen, IOpen_ID } from '../../../../services/open';
+import { INotebookViewModel } from '../../../../view-model/notebook';
 
 export interface IMarkdownCellProps {
     //
     // The view-model for the markdown cell.
     //
     model: IMarkdownCellViewModel;
+
+    //
+    // View model for the notebook.
+    //
+    notebookModel: INotebookViewModel;
 }
 
 export interface IMarkdownCellState {
@@ -78,6 +84,7 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
 
     private onEscapeKey = async () => {
         await this.enterPreviewMode();
+        await this.props.notebookModel.deselect();
     }
 
     //
