@@ -1,18 +1,13 @@
 import { ICellOutputValueViewModel, CellOutputValueViewModel } from "./cell-output-value";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
-import { ICellOutput } from "model";
 import { ISerializedCellOutput1 } from "model";
+import { v4 as uuid } from "uuid";
 
 //
 // View-model for output from a cell.
 //
 
 export interface ICellOutputViewModel {
-
-    //
-    // Get the model under the view model.
-    //
-    getModel(): ICellOutput;
 
     //
     // Get the (non-serialized) instance ID.
@@ -58,38 +53,36 @@ export interface ICellOutputViewModel {
 export class CellOutputViewModel implements ICellOutputViewModel {
 
     //
-    // The model underlying the view-model.
+    // Instance ID of the model.
     //
-    private readonly cellOutput: ICellOutput;
+    private instanceId: string;
+
+    //
+    // Actual value of the output.
+    //
+    private value: ICellOutputValueViewModel;
+
+    //
+    // Height of the output, if set.
+    //
+    private height?: number;
 
     //
     // The output is fresh when true, out of date when false.
     //
     private fresh: boolean = true;
 
-    //
-    // The model for the output's value.
-    //
-    private value: ICellOutputValueViewModel;
-
-    constructor (cellOutput: ICellOutput) {
-        this.cellOutput = cellOutput;
-        const value = cellOutput.getValue();
-        this.value = new CellOutputValueViewModel(value.getDisplayType(), value.getPlugin(), value.getData());
-    }
-
-    //
-    // Get the model under the view model.
-    //
-    getModel(): ICellOutput {
-        return this.cellOutput;
+    constructor(value: ICellOutputValueViewModel, height?: number) {
+        this.instanceId = uuid();
+        this.value = value;
+        this.height = height;
     }
 
     //
     // Get the (non-serialized) instance ID.
     //
     getInstanceId(): string {
-        return this.cellOutput.getInstanceId();
+        return this.instanceId;
     }
     
     //
@@ -102,9 +95,19 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     //
     // Serialize to a data structure suitable for serialization.
     //
-    serialize(): ISerializedCellOutput1 {
-        return this.cellOutput.serialize();
+    serialize (): ISerializedCellOutput1 {
+        return {
+            value: this.value.serialize(),
+            height: this.height,
+        };
     }    
+
+    //
+    // Deserialize the model from a previously serialized data structure.
+    //
+    static deserialize(input: ISerializedCellOutput1): ICellOutputViewModel {
+        return new CellOutputViewModel(CellOutputValueViewModel.deserialize(input.value), input.height);
+    }
 
     //
     // Returns true if this is fresh output.
@@ -124,14 +127,14 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     // Get the height of the output, if set.
     //
     getHeight(): number | undefined {
-        return this.cellOutput.getHeight();
+        return this.height;
     }
 
     //
     // Set the height of the output.
     //
     async setHeight(height: number): Promise<void> {
-        this.cellOutput.setHeight(height);        
+        this.height = height;
         await this.onModified.raise();
     }
 

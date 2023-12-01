@@ -11,6 +11,7 @@ import { CellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel } from "./cell-output";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
+import { CellOutputValueViewModel } from "./cell-output-value";
 export type TextChangedEventHandler = (cell: ICellViewModel) => Promise<void>;
 
 //
@@ -27,7 +28,12 @@ export function cellViewModelFactory(cell: ICell): ICellViewModel {
     if (cellType === CellType.Code) {
         return new CodeCellViewModel(
             cell,
-            cell.getOutput().map(output => new CellOutputViewModel(output)),
+            cell.getOutput().map(output => {
+                const outputValue = output.getValue();
+                const valueViewModel = new CellOutputValueViewModel(outputValue.getDisplayType(), outputValue.getPlugin(), outputValue.getData());
+                const outputViewModel = new CellOutputViewModel(valueViewModel, output.getHeight());
+                return outputViewModel;
+            }),
             cell.getErrors().map(error => new CellErrorViewModel(error))
         );
     }

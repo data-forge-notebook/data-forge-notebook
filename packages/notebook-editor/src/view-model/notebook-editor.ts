@@ -758,7 +758,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             for (const cellOutput of args.outputs) {
                 const cell = this.getOpenNotebook().findCell(cellOutput.cellId) as ICodeCellViewModel;
                 if (cell) {
-                    cell.addOutput(new CellOutputViewModel(CellOutput.deserialize({ value:  cellOutput.output })));
+                    cell.addOutput(CellOutput.deserialize({ value:  cellOutput.output }));
                 }
                 else {
                     this.log.error("receive-display: Failed to find cell " + cellOutput.cellId);

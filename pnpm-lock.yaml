@@ -328,6 +328,9 @@ importers:
       utils:
         specifier: workspace:*
         version: link:../utils
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.0
     devDependencies:
       '@blueprintjs/core':
         specifier: ^5.7.1
@@ -353,6 +356,9 @@ importers:
       '@types/react-dom':
         specifier: ^17.0.13
         version: 17.0.13
+      '@types/uuid':
+        specifier: ^8.3.4
+        version: 8.3.4
       '@types/webpack-env':
         specifier: ^1.17.0
         version: 1.17.0

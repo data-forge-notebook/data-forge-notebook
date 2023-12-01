@@ -1,3 +1,5 @@
+//TODO: deprecated.
+
 import { ISerializedCellOutput1 } from "./serialization/serialized1";
 import { ICellOutputValue, CellOutputValue } from "./cell-output-value";
 import { v4 as uuid } from "uuid";

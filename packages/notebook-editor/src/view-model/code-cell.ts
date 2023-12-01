@@ -1,9 +1,10 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { ICell } from "model";
+import { ICell, ICellOutput } from "model";
 import { IDateProvider, IDateProviderId } from "../services/date-provider";
 import { ICellViewModel, CellViewModel } from "./cell";
 import { ICellErrorViewModel } from "./cell-error";
-import { ICellOutputViewModel } from "./cell-output";
+import { CellOutputViewModel, ICellOutputViewModel } from "./cell-output";
+import { CellOutputValueViewModel } from "./cell-output-value";
 
 //
 // View-model for a code cell.
@@ -33,7 +34,7 @@ export interface ICodeCellViewModel extends ICellViewModel {
     //
     // Add output to the cell.
     //
-    addOutput(output: ICellOutputViewModel): Promise<void>;
+    addOutput(output: ICellOutput): Promise<void>;
 
     //
     // Clear all the outputs from the cell.
@@ -208,9 +209,13 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Add output to the cell.
     //
-    async addOutput(output: ICellOutputViewModel): Promise<void> {
-        this.cell.addOutput(output.getModel());
-        this.hookOutputHandlers(output);
+    async addOutput(output: ICellOutput): Promise<void> {
+        this.cell.addOutput(output);
+
+        const outputValue = output.getValue();
+        const valueViewModel = new CellOutputValueViewModel(outputValue.getDisplayType(), outputValue.getPlugin(), outputValue.getData());
+        const outputViewModel = new CellOutputViewModel(valueViewModel, output.getHeight());
+        this.hookOutputHandlers(outputViewModel);
 
         if (this.output.length > this.nextOutputIndex) {
 
@@ -220,7 +225,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             // Replace existing output.
             this.unhookOutputHandlers(origOutput);
             
-            this.output[this.nextOutputIndex] = output;
+            this.output[this.nextOutputIndex] = outputViewModel;
             if (origOutputHeight !== undefined) {
                 if (origOutput.getValue().getDisplayType() === output.getValue().getDisplayType()) {
                     // Preserve the height the user selected for this output, but only if the display type is the same.
@@ -229,7 +234,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             }
         }
         else {
-            this.output = this.output.concat([output]);
+            this.output = this.output.concat([outputViewModel]);
         }
 
         ++this.nextOutputIndex;
