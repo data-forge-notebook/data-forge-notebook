@@ -60,7 +60,7 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
     private getCellStyle(isDragging: boolean, draggableStyle: any) {
         const style: any = { // Styles we need to apply on draggables.            
             ...draggableStyle,
-            paddingTop: "3px",
+            paddingTop: "5px",
             paddingBottom: "3px",
         };
 
