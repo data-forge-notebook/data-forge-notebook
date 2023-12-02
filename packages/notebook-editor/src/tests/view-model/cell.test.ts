@@ -7,66 +7,31 @@ import { expectEventRaised, trackEventsRaised } from "../lib/utils";
 
 describe("view-model / cell", () => {
 
-	//
-    // Creates a cell view model for testing.
-    //
-    function createCellViewModel(mockModel: any) {
-        const cell = new CellViewModel(mockModel);
-        return cell;
-    }
-
     test("can construct", () => {
 
-        const id = "1234";
-        const text = "some code!";
-        const serialized = {};
-        const mockModel: any = {
-            getId: () => id,
-            getCellType: () => CellType.Code,
-            getText: () => text,
-            getHeight: () => 12,
-            serialize: () => serialized,
-        };
-        const cell = createCellViewModel(mockModel);
-        expect(cell.getId()).toEqual(id);
-        expect(cell.getModel()).toBeDefined();
+        const theId = "1234";
+        const theCellType = CellType.Code;
+        const theText = "const x = 3;";
+        const theHeight = 13;
+        const cell = new CellViewModel(theId, theCellType, theText, theHeight);
+        expect(cell.getId()).toEqual(theId);
         expect(cell.getCellType()).toEqual(CellType.Code);
-        expect(cell.getText()).toEqual(text);
-        expect(cell.getHeight()).toEqual(12);
-        expect(cell.serialize()).toBe(serialized);
+        expect(cell.getText()).toEqual(theText);
+        expect(cell.getHeight()).toEqual(theHeight);
     });
 
     test("notifyModifed raises onModified event", async () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         await expectEventRaised(cell, "onModified", async () => {
             await cell.notifyModified();
         });
     });
 
-    test("setting text is passed through to the model", async () => {
+      test("setting text raises onTextChanged event", async () => {
 
-        let textThatWasSet: string | undefined;
-        const mockModel: any = {
-            setText: (text: string) => {
-                textThatWasSet = text;
-            },
-        };
-        const cell = createCellViewModel(mockModel);
-        
-        const textToSet = "some text!";
-        await cell.setText(textToSet);
-        expect(textThatWasSet).toEqual(textToSet);
-    });
-
-    test("setting text raises onTextChanged event", async () => {
-
-        const mockModel: any = {
-            setText: () => true,
-        };
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         await expectEventRaised(cell, "onTextChanged", async () => {
             await cell.setText("some text!");
@@ -76,34 +41,17 @@ describe("view-model / cell", () => {
 
     test("setting text raises onModified event", async () => {
 
-        const mockModel: any = {
-            setText: () => true,
-        };
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         await expectEventRaised(cell, "onModified", async () => {
             await cell.setText("some text!");
         });
     });
 
-    test("setting the height is passed through to the model", async () => {
-
-        let heightThatWasSet: number | undefined;
-        const mockModel: any = {
-            setHeight: (height: number) => {
-                heightThatWasSet = height;
-            },
-        };
-        const cell = createCellViewModel(mockModel);
-        
-        await cell.setHeight(33);
-        expect(heightThatWasSet).toEqual(33);
-    });
-
     test("can scroll into view", async () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
+
         await expectEventRaised(cell, "onScrollIntoView", async () => {
             await cell.scrollIntoView("some reason");
         });
@@ -111,8 +59,8 @@ describe("view-model / cell", () => {
 
     test("can set focus", async () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
+
         await expectEventRaised(cell, "onSetFocus", async () => {
             await cell.focus();
         });
@@ -120,15 +68,14 @@ describe("view-model / cell", () => {
 
     test("getting caret postition when provider is not set returns null", () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
+
         expect(cell.getCaretPosition()).toBeNull();
     });
 
     test("getting caret postition forwards to the provider", () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
         const caretPosition = { lineNumber: 1, column: 2 };
         cell.caretPositionProvider = () => caretPosition;
         expect(cell.getCaretPosition()).toBe(caretPosition);
@@ -136,8 +83,7 @@ describe("view-model / cell", () => {
 
     test("can set caret position", async () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
         const caretPosition = { lineNumber: 1, column: 2 };
         await expectEventRaised(
             cell, 
@@ -154,8 +100,7 @@ describe("view-model / cell", () => {
 
     test("can set caret offset", () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
         expect(cell.getCaretOffset()).toBeUndefined();
         const caretOffset = 52;
         cell.setCaretOffset(caretOffset);
@@ -164,8 +109,7 @@ describe("view-model / cell", () => {
 
     test("can select cell", async () => {
         
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged", "onSetFocus"]);
         
         expect(cell.isSelected()).toBe(false);
@@ -180,8 +124,7 @@ describe("view-model / cell", () => {
 
     test("more than one cell selection has no effect", async () => {
         
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
         await cell.select();
 
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged", "onSetFocus"]);
@@ -195,8 +138,7 @@ describe("view-model / cell", () => {
 
     test("can deselect cell", async () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
         await cell.select();
 
         expect(cell.isSelected()).toBe(true);
@@ -212,8 +154,7 @@ describe("view-model / cell", () => {
 
     test("deselecting an unselected cell has no effect", async () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         expect(cell.isSelected()).toBe(false);
 
@@ -228,9 +169,7 @@ describe("view-model / cell", () => {
 
     test("can select text", async () => {
 
-        let rangeThatWasSelected: ITextRange | undefined;
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         const range = { startLineNumber: 1, endLineNumber: 2, startColumn: 3,  endColumn: 4 };
         await expectEventRaised(
@@ -247,9 +186,7 @@ describe("view-model / cell", () => {
 
     test("can deselect text", async () => {
 
-        let onDeselectTextRaised = false;
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
         await expectEventRaised(cell, "onDeselectText", async () => {
             await cell.deselectText();
         });
@@ -257,10 +194,7 @@ describe("view-model / cell", () => {
 
     test("can replace text", async () => {
 
-        let rangeThatWasReplaced: ITextRange | undefined;
-        let replacementText: string | undefined;
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         const range = { startLineNumber: 1, endLineNumber: 2, startColumn: 3,  endColumn: 4 };
         const text = "the replacement text";
@@ -279,8 +213,7 @@ describe("view-model / cell", () => {
 
     test("can set selected text", () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         const text = "some text";
         cell.setSelectedText(text);
@@ -289,8 +222,7 @@ describe("view-model / cell", () => {
 
     test("can set selected text range", () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         const range = { startLineNumber: 1, endLineNumber: 2, startColumn: 3,  endColumn: 4 };
         cell.setSelectedTextRange(range);
@@ -299,8 +231,7 @@ describe("view-model / cell", () => {
 
     test("can flush changes", async () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
         await expectEventRaised(cell, "onFlushChanges", async () => {
             await cell.flushChanges();
         });
@@ -308,8 +239,7 @@ describe("view-model / cell", () => {
 
     test("can find next match", async () => {
 
-        const mockModel: any = {};
-        const cell = createCellViewModel(mockModel);
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
 
         const startingPosition = { lineNumber: 1, column: 2 };
         const searchDirection = SearchDirection.Backward;

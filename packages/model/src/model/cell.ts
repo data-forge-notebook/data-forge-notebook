@@ -1,3 +1,5 @@
+//TODO: deprecated.
+
 import { ICellOutput, CellOutput } from "./cell-output";
 import { ICellError, CellError } from "./cell-error";
 import { ISerializedCell1, ISerializedCellOutput1 } from "./serialization/serialized1";

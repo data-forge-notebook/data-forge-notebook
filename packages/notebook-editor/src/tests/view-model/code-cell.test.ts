@@ -1,4 +1,5 @@
 import { disableInjector } from "@codecapers/fusion";
+import { CellType } from "model";
 import { EventSource, BasicEventHandler } from "utils";
 import { ICellErrorViewModel } from "../../view-model/cell-error";
 import { ICellOutputViewModel } from "../../view-model/cell-output";
@@ -14,27 +15,16 @@ describe("view-model / code-cell", () => {
 	//
     // Creates a cell view model for testing.
     //
-    function createCellViewModel(mockModel: any, output: ICellOutputViewModel[] = [], errors: ICellErrorViewModel[] = []) {
-        const cell = new CodeCellViewModel(mockModel, output, errors);
-        return cell;
+    function createCellViewModel(output: ICellOutputViewModel[] = [], errors: ICellErrorViewModel[] = []) {
+        return new CodeCellViewModel("", CellType.Code, "", undefined, undefined, output, errors);
     }
 
     //
     // Creates a cell for testing.
     //
     function createCell() {
-        const mockModel: any = {
-            addOutput: jest.fn(),
-            clearOutputs: jest.fn(),
-            resetOutputs: jest.fn(),
-            clearStaleOutputs: jest.fn(),
-            addError: jest.fn(),
-            clearErrors: jest.fn(),
-            resetErrors: jest.fn(),
-            clearStaleErrors: jest.fn(),
-        };
-        const cell = createCellViewModel(mockModel);
-        return { cell, mockModel };
+        const cell = createCellViewModel();
+        return { cell };
     }
 
     //
@@ -70,35 +60,32 @@ describe("view-model / code-cell", () => {
     // Creates a cell with one mock output.
     //
     async function createCellWithOutput() {
-        const { cell, mockModel } = createCell();
+        const { cell } = createCell();
 
         const { mockCellOutputViewModel, mockCellOutputModel } = createMockCellOutput();
         await cell.addOutput(mockCellOutputViewModel);
 
-        return { cell, mockModel, mockCellOutputViewModel, mockCellOutputModel };
+        return { cell, mockCellOutputViewModel, mockCellOutputModel };
     }
 
     //
     // Creates a cell with one mock error.
     //
     async function createCellWithError() {
-        const { cell, mockModel } = createCell();
+        const { cell } = createCell();
 
         const { mockCellErrorViewModel, mockCellErrorModel } = createMockCellError();
         await cell.addError(mockCellErrorViewModel);
 
-        return { cell, mockModel, mockCellErrorViewModel, mockCellErrorModel };
+        return { cell, mockCellErrorViewModel, mockCellErrorModel };
     }
 
     test("can construct", () => {
 
         const now = new Date();
-        const mockModel: any = {
-            getLastEvaluationDate: () => now,
-        };
         const output: ICellOutputViewModel[] = [];
         const errors: ICellErrorViewModel[] = [];
-        const cell = createCellViewModel(mockModel, output, errors);
+        const cell = createCellViewModel(output, errors);
 
         expect(cell.getLastEvaluationDate()).toBe(now);
         expect(cell.getOutput()).toBe(output);
@@ -113,16 +100,6 @@ describe("view-model / code-cell", () => {
         await cell.addOutput(mockCellOutputViewModel);
 
         expect(cell.getOutput()).toEqual([ mockCellOutputViewModel ]);
-    });
-
-    test("adding an output adds it to the model", async () => {
-
-        const { cell, mockModel } = createCell();
-
-        const { mockCellOutputViewModel, mockCellOutputModel } = createMockCellOutput();
-        await cell.addOutput(mockCellOutputViewModel);
-
-        expect(mockModel.addOutput).toHaveBeenCalledWith(mockCellOutputModel);
     });
 
     test("adding an output raises onOutputChanged", async () => {
@@ -144,15 +121,6 @@ describe("view-model / code-cell", () => {
         expect(cell.getOutput()).toEqual([]);
     });
     
-    test("clearing outputs is forwarded to the model", async () => {
-
-        const { cell, mockModel } = await createCellWithOutput();
-
-        await cell.clearOutputs();
-
-        expect(mockModel.clearOutputs).toHaveBeenCalled();
-    });
-
     test("clearing outputs raises onOutputChanged", async () => {
 
         const { cell } = await createCellWithOutput();
@@ -184,7 +152,7 @@ describe("view-model / code-cell", () => {
 
     test("can overwrite stale outputs", async () => {
 
-        const { cell, mockModel } = createCell();
+        const { cell } = createCell();
 
         const { mockCellOutputViewModel: mockOutput1 } = createMockCellOutput();
         await cell.addOutput(mockOutput1);
@@ -195,7 +163,6 @@ describe("view-model / code-cell", () => {
         // Mark existing outputs as stale.
         cell.resetOutputs();
 
-        expect(mockModel.resetOutputs).toHaveBeenCalled();
         expect(mockOutput1.markStale).toHaveBeenCalled();
         expect(mockOutput2.markStale).toHaveBeenCalled();
 
@@ -262,7 +229,7 @@ describe("view-model / code-cell", () => {
 
     test("can clear stale outputs", async () => {
 
-        const { cell, mockModel } = createCell();
+        const { cell } = createCell();
 
         const { mockCellOutputViewModel: mockOutput1 } = createMockCellOutput({ isFresh: () => false });
         await cell.addOutput(mockOutput1);
@@ -278,8 +245,6 @@ describe("view-model / code-cell", () => {
         await cell.addOutput(mockFreshOutput);
 
         cell.clearStaleOutputs();
-
-        expect(mockModel.clearStaleOutputs).toHaveBeenCalled();
 
         expect(cell.getOutput()).toEqual([ mockFreshOutput ]);
     });
@@ -308,16 +273,6 @@ describe("view-model / code-cell", () => {
         expect(cell.inError()).toBe(true);
     });
 
-    test("adding an error adds it to the model", async () => {
-
-        const { cell, mockModel } = createCell();
-
-        const { mockCellErrorViewModel, mockCellErrorModel } = createMockCellError();
-        await cell.addError(mockCellErrorViewModel);
-
-        expect(mockModel.addError).toHaveBeenCalledWith(mockCellErrorModel);
-    });
-
     test("adding an error raises onErrorsChanged", async () => {
 
         const { cell } = createCell();
@@ -337,15 +292,6 @@ describe("view-model / code-cell", () => {
         expect(cell.getErrors()).toEqual([]);
     });
     
-    test("clearing errors is forwarded to the model", async () => {
-
-        const { cell, mockModel } = await createCellWithError();
-
-        await cell.clearErrors();
-
-        expect(mockModel.clearErrors).toHaveBeenCalled();
-    });
-
     test("clearing errors raises onErrorsChanged", async () => {
 
         const { cell } = await createCellWithError();
@@ -357,7 +303,7 @@ describe("view-model / code-cell", () => {
 
     test("can overwrite stale errors", async () => {
 
-        const { cell, mockModel } = createCell();
+        const { cell } = createCell();
 
         const { mockCellErrorViewModel: mockError1 } = createMockCellError();
         await cell.addError(mockError1);
@@ -368,7 +314,6 @@ describe("view-model / code-cell", () => {
         // Mark existing erorrs as stale.
         cell.resetErrors();
 
-        expect(mockModel.resetErrors).toHaveBeenCalled();
         expect(mockError1.markStale).toHaveBeenCalled();
         expect(mockError2.markStale).toHaveBeenCalled();
 
@@ -381,7 +326,7 @@ describe("view-model / code-cell", () => {
 
     test("can clear stale errors", async () => {
 
-        const { cell, mockModel } = createCell();
+        const { cell } = createCell();
 
         const { mockCellErrorViewModel: mockError1 } = createMockCellError({ isFresh: () => false });
         await cell.addError(mockError1);
@@ -397,8 +342,6 @@ describe("view-model / code-cell", () => {
         await cell.addError(mockFreshError);
 
         cell.clearStaleErrors();
-
-        expect(mockModel.clearStaleErrors).toHaveBeenCalled();
 
         expect(cell.getErrors()).toEqual([ mockFreshError ]);
     });

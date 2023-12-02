@@ -1,10 +1,7 @@
 import { IMonacoEditorViewModel, ITextRange, FocusedEventHandler, SetCaretPositionEventHandler, SelectTextEventHandler, ReplaceTextEventHandler, SearchDirection, FindNextMatchEventHandler, EditorSelectionChangedEventHandler, IFindDetails, EditorSelectionChangingEventHandler, TextChangedEventHandler } from "./monaco-editor";
 import { IEditorCaretPosition } from "./editor-caret-position";
-import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
-import { ICell, CellType } from "model";
-import { ISerializedCell1 } from "model";
-import { debounceAsync } from "utils";
+import { CellType, ISerializedCell1 } from "model";
 
 export type ScrollIntoViewEventHandler = (scrollReason: string) => Promise<void>;
 export type CellModifiedEventHandler = (cell: ICellViewModel) => Promise<void>;
@@ -18,11 +15,6 @@ export interface ICellViewModel extends IMonacoEditorViewModel {
     // Get the unique id for the cell.
     //
     getId(): string;
-
-    //
-    // Get the model underlying this view-model.
-    //
-    getModel(): ICell;
 
     //
     // Get the type of the cell.
@@ -63,6 +55,11 @@ export interface ICellViewModel extends IMonacoEditorViewModel {
     // Serialize to a data structure suitable for serialization.
     //
     serialize(): ISerializedCell1;
+
+    //
+    // Serialize the CELL for evaluation. This excludes elements of the data that aren't needed for evaluation.
+    //
+    serializeForEval(): ISerializedCell1;
 
     //
     // Event raised when model has been modified.
@@ -109,10 +106,25 @@ export interface ICellViewModel extends IMonacoEditorViewModel {
 export class CellViewModel implements ICellViewModel {
 
     //
-    // The model underlying the view-model.
+    // Unique id for the cell.
     //
-    protected readonly cell: ICell;
-        
+    private id: string;
+
+    //
+    // The type of the cell.
+    //
+    private cellType: CellType;
+
+    //
+    // The text for the cell.
+    //
+    private text: string;
+
+    //
+    // The height of the cell (if recorded).
+    //
+    height: number | undefined;    
+       
     //
     // Set to true if this cell is currently selected.
     //
@@ -133,36 +145,46 @@ export class CellViewModel implements ICellViewModel {
     //
     private caretOffset?: number;
 
-    constructor(cell: ICell) {
-        this.cell = cell;
+    constructor(id: string, cellType: CellType, text: string, height: number | undefined) {
+        this.id = id;
+        this.cellType = cellType;
+        this.text = text;
+        this.height = height;
     }
 
     //
     // Get the unique id for the cell.
     //
     getId(): string {
-        return this.cell.getId();
+        return this.id;
     }
-
-    //
-    // Get the model underlying this view-model.
-    //
-    getModel(): ICell {
-        return this.cell;
-    }    
 
     //
     // Get the type of the cell.
     //
-    getCellType (): CellType {
-        return this.cell.getCellType();
+    getCellType(): CellType {
+        return this.cellType;
     }
 
     //
     // Get the text for the cell.
     //
     getText(): string {
-        return this.cell.getText();
+        return this.text;
+    }
+
+    //
+    // Set the txt for the cell.
+    // Returns true if the text was changed.
+    //
+    private _setText(text: string): boolean {
+        const trimmed = text.trimRight();
+        if (this.text === trimmed) {
+            return false; // No change.
+        }
+
+        this.text = trimmed;
+        return true;
     }
 
     //
@@ -171,7 +193,7 @@ export class CellViewModel implements ICellViewModel {
     //
     async setText(text: string): Promise<boolean> {
 
-        if (this.cell.setText(text)) {
+        if (this._setText(text)) {
             await this.notifyModified();
             await this.onTextChanged.raise(this);
             return true;
@@ -189,21 +211,37 @@ export class CellViewModel implements ICellViewModel {
     // Gets the height of the cell (if recorded).
     //
     getHeight(): number | undefined {
-        return this.cell.getHeight();
+        return this.height;
     }
 
     //
     // Sets the height of the cell (once known).
     //
     setHeight(height: number): void {
-        this.cell.setHeight(height);
+        this.height = height;
     }
 
     //
     // Serialize to a data structure suitable for serialization.
     //
     serialize(): ISerializedCell1 {
-        return this.cell.serialize();
+        return {
+            id: this.id,
+            cellType: this.cellType,
+            code: this.text,
+            height: this.height,
+        };
+    }
+
+    //
+    // Serialize the CELL for evaluation. This excludes elements of the data that aren't needed for evaluation.
+    //
+    serializeForEval(): ISerializedCell1 {
+        return {
+            id: this.id,
+            cellType: this.cellType,
+            code: this.text,
+        };
     }
 
     //

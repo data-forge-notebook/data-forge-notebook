@@ -1,3 +1,5 @@
+//TODO: deprecated.
+
 import { ISerializedNotebook1 } from "./serialization/serialized1";
 import { ICell, Cell } from "./cell";
 import { v4 as uuid } from "uuid";

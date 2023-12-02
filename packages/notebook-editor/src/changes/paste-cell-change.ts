@@ -33,7 +33,7 @@ export class PasteCellChange implements IChange {
     async do(): Promise<void> {
         const cellToPaste = Object.assign({}, this.cellClipboard);
         cellToPaste.id = this.idGenerator.genId(); // Give the new cell a new id.
-        this.cell = cellViewModelFactory(Cell.deserialize(cellToPaste));
+        this.cell = cellViewModelFactory(cellToPaste);
         await this.notebook.addCell(this.cell, this.cellIndex);
         await this.cell.select();
     }
@@ -44,7 +44,7 @@ export class PasteCellChange implements IChange {
     async redo(): Promise<void> {
         const cellToPaste = Object.assign({}, this.cellClipboard);
         cellToPaste.id = this.idGenerator.genId(); // Give the new cell a new id.
-        this.cell = cellViewModelFactory(Cell.deserialize(cellToPaste));
+        this.cell = cellViewModelFactory(cellToPaste);
         await this.notebook.addCell(this.cell, this.cellIndex);
     }
 

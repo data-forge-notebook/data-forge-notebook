@@ -3,45 +3,34 @@ import { INotebookCaretPosition } from "./notebook-caret-position";
 import { IMonacoEditorViewModel } from "./monaco-editor";
 import { CodeCellViewModel } from "./code-cell";
 import { IEventSource, BasicEventHandler, EventSource, ILog, ILogId } from "utils";
-import { CellType, ICell } from "model";
-import { INotebook, Notebook } from "model";
-import { ISerializedNotebook1 } from "model";
+import { CellType, ISerializedCell1, ISerializedNotebook1 } from "model";
 import { MarkdownCellViewModel } from "./markdown-cell";
-import { CellErrorViewModel } from "./cell-error";
-import { CellOutputViewModel } from "./cell-output";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { CellOutputValueViewModel } from "./cell-output-value";
+import { v4 as uuid } from "uuid";
+
+export const notebookVersion = 3;
+
 export type TextChangedEventHandler = (cell: ICellViewModel) => Promise<void>;
 
 //
 // Creates a cell view-model based on cell type.
 //
 
-export function cellViewModelFactory(cell: ICell): ICellViewModel {
+export function cellViewModelFactory(cell: ISerializedCell1): ICellViewModel {
 
     if (!cell) {
         throw new Error("Cell model not specified.");
     }
 
-    const cellType = cell.getCellType();
-    if (cellType === CellType.Code) {
-        return new CodeCellViewModel(
-            cell,
-            cell.getOutput().map(output => {
-                const outputValue = output.getValue();
-                const valueViewModel = new CellOutputValueViewModel(outputValue.getDisplayType(), outputValue.getPlugin(), outputValue.getData());
-                const outputViewModel = new CellOutputViewModel(valueViewModel, output.getHeight());
-                return outputViewModel;
-            }),
-            cell.getErrors().map(error => new CellErrorViewModel(error.getMsg()))
-        );
+    if (cell.cellType === CellType.Code) {
+        return CodeCellViewModel.deserialize(cell);
     }
-    else if (cellType === CellType.Markdown) {
-        return new MarkdownCellViewModel(cell);
+    else if (cell.cellType === CellType.Markdown) {
+        return MarkdownCellViewModel.deserialize(cell);
     }
     else {
-        throw new Error("Unexpected cell type: " + cellType);
+        throw new Error("Unexpected cell type: " + cell.cellType);
     }
 }
 
@@ -287,10 +276,26 @@ export class NotebookViewModel implements INotebookViewModel {
     private storageId: INotebookStorageId;
 
     //
-    // The model underlying the view-model.
+    // The ID for this notebook instance.
+    // This is not serialized and not persistant.
     //
-    private notebook: INotebook;
+    private instanceId: string = uuid();
     
+    //
+    // The Nodejs version for this notebook.
+    //
+    private nodejsVersion?: string;
+
+    //
+    // The language of the notebook.
+    //
+    private language: string;
+
+    //
+    // Description of the notebook, if any.
+    //
+    private description?: string;
+
     //
     // List of cells in the notebook.
     //
@@ -326,11 +331,13 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     private readOnly: boolean;
 
-    constructor(notebookStorageId: INotebookStorageId, notebook: INotebook, cells: ICellViewModel[], unsaved: boolean, readOnly: boolean, defaultNodeJsVersion: string) {
+    constructor(notebookStorageId: INotebookStorageId, nodejsVersion: string | undefined, language: string, cells: ICellViewModel[], description: string | undefined, unsaved: boolean, readOnly: boolean, defaultNodeJsVersion: string) {
         this.storageId = notebookStorageId;
-        this.notebook = notebook;
-        this.defaultNodejsVersion = defaultNodeJsVersion;
+        this.nodejsVersion = nodejsVersion;
+        this.language = language;
         this.cells = cells;
+        this.description = description;
+        this.defaultNodejsVersion = defaultNodeJsVersion;
         this.modified = false;
         this.unsaved = unsaved;
         this.readOnly = readOnly;
@@ -396,17 +403,17 @@ export class NotebookViewModel implements INotebookViewModel {
 
     //
     // Get the ID for this notebook instance.
-    // This is not serialized and not persistant.
+    // This is not `seri`alized and not persistant.
     //
     getInstanceId(): string {
-        return this.notebook.getInstanceId();
+        return this.instanceId;
     }
-
+    
     //
     // Get the language of the notebook.
     //
     getLanguage(): string {
-        return this.notebook.getLanguage();
+        return this.language;
     }
 
     //
@@ -443,7 +450,21 @@ export class NotebookViewModel implements INotebookViewModel {
 
         await this.flushChanges();
 
-        this.notebook.addCell(cellIndex, cellViewModel.getModel());
+        //fio:
+        // this.notebook.addCell(cellIndex, cellViewModel.getModel());
+
+        if (cellIndex > this.cells.length) {
+            throw new Error(`Bad index ${cellIndex} for new cell in notebook with ${this.cells.length} existing cells!`);
+        }
+
+        //fio:
+        // if (cellIndex === this.cells.length) {
+        //     // Adding at end.
+        //     this.cells.push(cellViewModel);
+        // }
+        // else {
+        //     this.cells.splice(cellIndex, 0, cellViewModel)
+        // }        
         
         this.cells.splice(cellIndex, 0, cellViewModel)
         await this.onCellsChanged.raise();
@@ -473,7 +494,6 @@ export class NotebookViewModel implements INotebookViewModel {
         }
 
         const cellId = cell.getId();
-        this.notebook.deleteCell(cellId);
 
         const cellsRemoved = this.cells.filter(cell => cell.getId() === cellId);
 
@@ -496,8 +516,6 @@ export class NotebookViewModel implements INotebookViewModel {
     // Move a cell from one index to another.
     //
     async moveCell(sourceIndex: number, destIndex: number): Promise<void> {
-
-        this.notebook.moveCell(sourceIndex, destIndex);
 
         const reorderedCells = Array.from(this.cells);
         const [ movedCell ] = reorderedCells.splice(sourceIndex, 1);
@@ -705,8 +723,7 @@ export class NotebookViewModel implements INotebookViewModel {
     // Gets the Nodejs version for this notebook.
     //
     getNodejsVersion(): string {
-        const curNodejsVersion = this.notebook.getNodejsVersion();
-        return curNodejsVersion
+        return this.nodejsVersion
             || this.defaultNodejsVersion;
     }
 
@@ -714,7 +731,7 @@ export class NotebookViewModel implements INotebookViewModel {
     // Sets the Nodejs version for this version.
     //
     async setNodejsVersion(version: string): Promise<void> {
-        this.notebook.setNodejsVersion(version);
+        this.nodejsVersion = version;
         await this.notifyModified();
     }
     
@@ -722,24 +739,45 @@ export class NotebookViewModel implements INotebookViewModel {
     // Serialize to a data structure suitable for serialization.
     //
     serialize(): ISerializedNotebook1 {
-        return this.notebook.serialize();
+        return {
+            version: notebookVersion,
+            nodejs: this.nodejsVersion,
+            language: this.language,
+            description: this.description,
+            cells: this.cells.map(cell => cell.serialize()),
+        };
     }
 
     //
     // Serialize the notebook for evaluation. This excludes elements of the data that aren't needed for evaluation.
     //
     serializeForEval(): ISerializedNotebook1 {
-        return this.notebook.serializeForEval();
+        return {
+            version: notebookVersion,
+            nodejs: this.nodejsVersion,
+            language: this.language,
+            cells: this.cells.map(cell => cell.serializeForEval()),
+        };
     }
 
     //
     // Deserialize the model from a previously serialized data structure.
     //
     static deserialize(notebookStorageId: INotebookStorageId, unsaved: boolean, readOnly: boolean, defaultNodejsVersion: string, input: ISerializedNotebook1): INotebookViewModel {
-        const notebook = Notebook.deserialize(input);
-        const cells = notebook.getCells().map(cell => cellViewModelFactory(cell));
-        return new NotebookViewModel(notebookStorageId, notebook, cells, unsaved, readOnly, defaultNodejsVersion);
-    }
+        let language: string;
+        let cells: ICellViewModel[];
+        if (input.sheet) {
+            // This is preserved for backward compatibility and loading old notebooks.
+            language = input.sheet.language || "javascript";
+            cells = input.sheet.cells && input.sheet.cells.map(cell => cellViewModelFactory(cell)) || [];
+        }
+        else {
+            language = input.language || "javascript";
+            cells = input.cells && input.cells.map(cell => cellViewModelFactory(cell)) || [];
+        }
+
+        return new NotebookViewModel(notebookStorageId, input.nodejs, language, cells, input.description, unsaved, readOnly, defaultNodejsVersion);
+    }    
 
     //
     // Saves the notebook.

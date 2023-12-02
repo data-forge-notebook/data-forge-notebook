@@ -1,3 +1,4 @@
+import { CellType } from "model";
 import { MarkdownCellViewModel } from "../../view-model/markdown-cell";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
 
@@ -6,19 +7,16 @@ describe("view-model / markdown-cell", () => {
 	//
     // Creates a cell view model for testing.
     //
-    function createCellViewModel(mockModel: any) {
-        const cell = new MarkdownCellViewModel(mockModel);
-        return cell;
+    function createCellViewModel() {
+        return new MarkdownCellViewModel("", CellType.Markdown, "", undefined);
     }
 
     //
     // Creates a cell for testing.
     //
     function createCell() {
-        const mockModel: any = {
-        };
-        const cell = createCellViewModel(mockModel);
-        return { cell, mockModel };
+        const cell = createCellViewModel();
+        return { cell };
     }    
 
     test("can construct", () => {

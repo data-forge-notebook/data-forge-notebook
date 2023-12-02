@@ -17,6 +17,7 @@ import { IHotkeysOverlayViewModel } from "../components/hotkeys-overlay";
 import { IRecentFiles, IRecentFiles_ID } from "../services/recent-files";
 import { IZoom, IZoomId } from "../services/zoom";
 import { ICellViewModel } from "./cell";
+import { CellOutputViewModel } from "./cell-output";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -756,7 +757,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             for (const cellOutput of args.outputs) {
                 const cell = this.getOpenNotebook().findCell(cellOutput.cellId) as ICodeCellViewModel;
                 if (cell) {
-                    cell.addOutput(CellOutput.deserialize({ value:  cellOutput.output }));
+                    cell.addOutput(CellOutputViewModel.deserialize({ value:  cellOutput.output }));
                 }
                 else {
                     this.log.error("receive-display: Failed to find cell " + cellOutput.cellId);

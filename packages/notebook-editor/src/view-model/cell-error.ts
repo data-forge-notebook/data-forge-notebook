@@ -18,6 +18,11 @@ export interface ICellErrorViewModel {
     getMsg(): string;
 
     //
+    // Serialize to a data structure suitable for serialization.
+    //
+    serialize (): ISerializedCellError1;
+    
+    //
     // Returns true if this is fresh output.
     //
     isFresh(): boolean;

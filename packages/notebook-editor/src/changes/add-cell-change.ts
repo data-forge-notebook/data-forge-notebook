@@ -41,7 +41,7 @@ export class AddCellChange implements IChange {
             code: this.cellCode,
         };
 
-        this.cell = cellViewModelFactory(Cell.deserialize(cellToAdd));
+        this.cell = cellViewModelFactory(cellToAdd);
         await this.notebook.addCell(this.cell, this.cellIndex);
         if (this.selectCell) {
             await this.cell.select();
@@ -58,7 +58,7 @@ export class AddCellChange implements IChange {
             code: this.cellCode,
         };
 
-        this.cell = cellViewModelFactory(Cell.deserialize(cellToAdd));
+        this.cell = cellViewModelFactory(cellToAdd);
         await this.notebook.addCell(this.cell, this.cellIndex);
     }
 

@@ -1,10 +1,11 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { ICell, ICellError, ICellOutput } from "model";
 import { IDateProvider, IDateProviderId } from "../services/date-provider";
 import { ICellViewModel, CellViewModel } from "./cell";
 import { CellErrorViewModel, ICellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel, ICellOutputViewModel } from "./cell-output";
 import { CellOutputValueViewModel } from "./cell-output-value";
+import moment from 'moment';
+import { CellType, ISerializedCell1 } from "model";
 
 //
 // View-model for a code cell.
@@ -34,7 +35,7 @@ export interface ICodeCellViewModel extends ICellViewModel {
     //
     // Add output to the cell.
     //
-    addOutput(output: ICellOutput): Promise<void>;
+    addOutput(output: ICellOutputViewModel): Promise<void>;
 
     //
     // Clear all the outputs from the cell.
@@ -59,7 +60,7 @@ export interface ICodeCellViewModel extends ICellViewModel {
     //
     // Add an error to the cell.
     //
-    addError(error: ICellError): Promise<void>;
+    addError(error: ICellErrorViewModel): Promise<void>;
 
     //
     // Clear all the errors from the cell.
@@ -75,6 +76,16 @@ export interface ICodeCellViewModel extends ICellViewModel {
     // Clear errors that weren't updated.
     //
     clearStaleErrors(): void;
+
+    //
+    // Gets the date when this cell last evaluated.
+    //
+    getLastEvaluationDate(): Date | undefined;
+
+    //
+    // Sets the last time the cell was evaluated.
+    //
+    setLastEvaluationDate(lastEvaluationDate: Date): void;
 }
 
 @InjectableClass()
@@ -110,16 +121,21 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     private nextErrorIndex = 0;
 
-    constructor(cell: ICell, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
-        super(cell)
+    //
+    // The date that the cell was last evaluated.
+    //
+    private lastEvaluationDate?: Date;
 
+    constructor(id: string, cellType: CellType, text: string, lastEvaluationDate: string | undefined, height: number | undefined, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
+        super(id, cellType, text, height);
+
+        this.lastEvaluationDate = lastEvaluationDate && moment(lastEvaluationDate, moment.ISO_8601).toDate() || undefined;
         this.output = output;
+        this.errors = errors;
 
         for (const output of this.output) {
             this.hookOutputHandlers(output);
         }
-
-        this.errors = errors;
     }
 
     //
@@ -129,13 +145,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         return this.executing;
     }
 
-    //
-    // Gets the date when this code last evaluated.
-    //
-    getLastEvaluationDate(): Date | undefined {
-        return this.cell.getLastEvaluationDate();
-    }
-       
     //
     // Returns true when the code is known to be in error.
     //
@@ -166,7 +175,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
 
         if (this.executing) {
             // Was actually executing, update the last eval date.
-            this.cell.setLastEvaluationDate(this.dateProvider.now());
+            this.setLastEvaluationDate(this.dateProvider.now());
 
             // Only clear output and errors if the cell was executing.
             // This has to be done in the if-stmt here so that running a single code cell 
@@ -209,8 +218,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Add output to the cell.
     //
-    async addOutput(output: ICellOutput): Promise<void> {
-        this.cell.addOutput(output);
+    async addOutput(output: ICellOutputViewModel): Promise<void> {
 
         const outputValue = output.getValue();
         const valueViewModel = new CellOutputValueViewModel(outputValue.getDisplayType(), outputValue.getPlugin(), outputValue.getData());
@@ -253,7 +261,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         this.nextOutputIndex = 0;
         this.output = [];
 
-        this.cell.clearOutputs();
         await this.onOutputChanged.raise();
     }
 
@@ -261,7 +268,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     // Reset the outputs of the cell.
     //
     resetOutputs(): void {
-        this.cell.resetOutputs();
         this.nextOutputIndex = 0;
         for (const output of this.output) {
             output.markStale();
@@ -272,7 +278,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     // Clear outputs that weren't updated.
     //
     clearStaleOutputs(): void {
-        this.cell.clearStaleOutputs();
         this.output = this.output.filter(output => output.isFresh());
     }
 
@@ -286,17 +291,14 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Add an error to the cell.
     //
-    async addError(error: ICellError): Promise<void> {
-        this.cell.addError(error);
-
-        const errorViewModel = new CellErrorViewModel(error.getMsg()); //todo:
+    async addError(error: ICellErrorViewModel): Promise<void> {
 
         if (this.errors.length > this.nextErrorIndex) {
             // Replace existing output.
-            this.errors[this.nextErrorIndex] = errorViewModel;
+            this.errors[this.nextErrorIndex] = error;
         }
         else {
-            this.errors = this.errors.concat([errorViewModel]);
+            this.errors = this.errors.concat([error]);
         }
 
         ++this.nextErrorIndex;
@@ -312,7 +314,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         this.nextErrorIndex = 0;
         this.errors = [];
 
-        this.cell.clearErrors();
         await this.onErrorsChanged.raise();
     }  
 
@@ -320,8 +321,9 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     // Reset the errors of the cell.
     //
     resetErrors(): void {
-        this.cell.resetErrors();
+
         this.nextErrorIndex = 0;
+
         for (const error of this.errors) {
             error.markStale();
         }
@@ -331,7 +333,70 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     // Clear errors that weren't updated.
     //
     clearStaleErrors(): void {
-        this.cell.clearStaleErrors();
         this.errors = this.errors.filter(error => error.isFresh());
     }
+
+    //
+    // Serialize to a data structure suitable for serialization.
+    //
+    serialize(): ISerializedCell1 {
+        return {
+            ...super.serialize(),
+            lastEvaluationDate: this.lastEvaluationDate && moment(this.lastEvaluationDate).toISOString(true) || undefined,
+            output: this.output.map(output => output.serialize()),
+            errors: this.errors.map(error => error.serialize()),
+        };
+    }    
+
+    //
+    // Gets the date when this cell last evaluated.
+    //
+    getLastEvaluationDate(): Date | undefined {
+        return this.lastEvaluationDate;
+    }
+
+    //
+    // Sets the last time the cell was evaluated.
+    //
+    setLastEvaluationDate(lastEvaluationDate: Date): void {
+        this.lastEvaluationDate = lastEvaluationDate;
+    }
+
+       //
+    // Deserialize the model from a previously serialized data structure.
+    //
+    static deserialize(input: ISerializedCell1): ICodeCellViewModel {
+        const output = [];
+        if (input.output) {
+            //
+            // Convert multi-outputs to single outputs.
+            //
+            for (const cellOutput of input.output) {
+                if (cellOutput.value) {
+                    output.push(CellOutputViewModel.deserialize(cellOutput));
+                }
+                else if (cellOutput.values) {
+                    //
+                    // This format can be deserialized for backward compatibility,
+                    // but is no longer serialized.
+                    //
+                    for (const cellOutputValue of cellOutput.values) {
+                        const singleOutput = Object.assign({}, cellOutput, { value: cellOutputValue });
+                        delete singleOutput.values;
+                        output.push(CellOutputViewModel.deserialize(singleOutput));
+                    }
+                }
+            }
+        }
+
+        return new CodeCellViewModel(
+            input.id,
+            input.cellType || CellType.Code,
+            input.code || "",
+            input.lastEvaluationDate,
+            input.height,
+            output,
+            input.errors && input.errors.map(error => CellErrorViewModel.deserialize(error)) || [],
+        );
+    }       
 }

@@ -46,25 +46,9 @@ describe('view-model / notebook', () => {
     }
 
     //
-    // Creates a mock notebook model.
-    //
-    function createMockNotebookModel(fields: any = {}) {
-        const mockNotebookModel: any = {
-            getCells: () => fields.cells || (fields.cell && [ fields.cell ]) || [],
-            addCell: jest.fn(),
-            deleteCell: jest.fn(),
-            moveCell: jest.fn(),
-            getNodejsVersion: () => undefined,
-            setNodejsVersion: jest.fn(),
-            serialize: () => ({}),
-        };
-        return mockNotebookModel;
-    }
-
-    //
     // Helper function to create the notebook view model.
     //
-    function createNotebookViewModel(mockNotebookModel: INotebook, mockCells: ICellViewModel[]) {
+    function createNotebookViewModel(mockCells: ICellViewModel[]) {
         
         const mockStorageId: any = { 
             a: "orig storage id",
@@ -72,7 +56,7 @@ describe('view-model / notebook', () => {
                 return "a storage id";
             },
         };
-        const notebook = new NotebookViewModel(mockStorageId, mockNotebookModel, mockCells, false, false, defaultNodejsVersion);
+        const notebook = new NotebookViewModel(mockStorageId, "", "", mockCells, "", false, false, defaultNodejsVersion);
 
         const mockLog: any =  {
             info: () => {},
@@ -91,33 +75,18 @@ describe('view-model / notebook', () => {
             mockRepository,
         };
     }
-    
-    
-    //
-    // Creates an empty notebook.
-    //
-    function createEmptyNotebook(fields: any = {}) {
-        const mockNotebookModel = createMockNotebookModel(fields.model || {});
-        return {
-            mockNotebookModel,
-            ...createNotebookViewModel(mockNotebookModel, []),
-        };
-    }
-
+        
     //
     // Creates a notebook with a single cell.
     //
     function createNotebookWithCell() {
         const mockCellModel = createMockCellModel();
         const mockCellViewModel = createMockCellViewModel({ model: mockCellModel });
-        const mockNotebookModel = createMockNotebookModel({ cell: mockCellModel });
-        const created = createNotebookViewModel(mockNotebookModel, [ mockCellViewModel ]);
+        const created = createNotebookViewModel([ mockCellViewModel ]);
         const [ cell ] = created.notebook.getCells();
         return { 
             ...created, 
             cell, 
-            mockCellModel, 
-            mockNotebookModel,
         };
     }
 
@@ -132,11 +101,9 @@ describe('view-model / notebook', () => {
         const mockCellViewModels = mockCellModels.map(mockCellModel => {
             return createMockCellViewModel({ model: mockCellModel })
         });
-        const mockNotebookModel = createMockNotebookModel({ cells: mockCellModels }); 
         return { 
-            ...createNotebookViewModel(mockNotebookModel, mockCellViewModels),
+            ...createNotebookViewModel(mockCellViewModels),
             mockCellModels,
-            mockNotebookModel,
         };
     }
 
@@ -146,15 +113,8 @@ describe('view-model / notebook', () => {
         const language = "javascript";
         const fileName = "a-file.notebook";
         const path = "some/path";
-        const mockModel: any = {
-            getCells: () => [],
-            getInstanceId: () => instanceId,
-            getLanguage: () => language,
-            getFileName: () => fileName,
-            getContainingPath: () => path,
-        };
         
-        const { notebook } = createNotebookViewModel(mockModel, []);
+        const { notebook } = createNotebookViewModel([]);
 
         expect(notebook.getInstanceId()).toEqual(instanceId);
         expect(notebook.getLanguage()).toEqual(language);
@@ -167,9 +127,8 @@ describe('view-model / notebook', () => {
     test("can construct with cell", () => {
         const mockCellModel = createMockCellModel();
         const mockCellViewModel = createMockCellViewModel({ model: mockCellModel });
-        const mockNotebookModel = createMockNotebookModel({ cell: mockCellModel });
         
-        const { cells } = createNotebookViewModel(mockNotebookModel, [ mockCellViewModel ]);
+        const { cells } = createNotebookViewModel([ mockCellViewModel ]);
         
         expect(cells.length).toEqual(1);
         
@@ -182,9 +141,8 @@ describe('view-model / notebook', () => {
         const mockCellModel2 = createMockCellModel();
         const mockCellViewModel1 = createMockCellViewModel({ model: mockCellModel1 });
         const mockCellViewModel2 = createMockCellViewModel({ model: mockCellModel2 });
-        const mockNotebookModel = createMockNotebookModel({ cells: [ mockCellModel1, mockCellModel2 ] });
 
-        const { cells } = createNotebookViewModel(mockNotebookModel, [ mockCellViewModel1, mockCellViewModel2 ]);
+        const { cells } = createNotebookViewModel([ mockCellViewModel1, mockCellViewModel2 ]);
 
         expect(cells.length).toEqual(2);
         expect(cells[0]).toBeDefined();
@@ -192,7 +150,7 @@ describe('view-model / notebook', () => {
     });
 
     test("can add cells", async () => {
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         const cell1 = createMockCellViewModel();
         await notebook.addCell(cell1, 0);
@@ -206,18 +164,8 @@ describe('view-model / notebook', () => {
         expect(cells[1]).toBe(cell2);
     });
 
-    test("adding a cell to the view-model also adds it to the model", async () => {
-        const { notebook, mockNotebookModel } = createEmptyNotebook();
-
-        const cellModel: any = {};
-        const cell = createMockCellViewModel();
-        await notebook.addCell(cell, 0);
-
-        expect(mockNotebookModel.addCell).toHaveBeenCalledWith(0, cellModel);
-    });
-
     test("adding a cell raises onCellsChanged", async () => {
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onCellsChanged", async () => {
             await notebook.addCell(createMockCellViewModel(), 0);
@@ -225,7 +173,7 @@ describe('view-model / notebook', () => {
     });
 
     test("adding a cell raises onModified", async () => {
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onModified", async () => {
             await notebook.addCell(createMockCellViewModel(), 0);
@@ -253,7 +201,7 @@ describe('view-model / notebook', () => {
     });
 
     test("flushing changes raises onFlushChanges", async () => {
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onFlushChanges", async () => {
             await notebook.flushChanges();
@@ -261,7 +209,7 @@ describe('view-model / notebook', () => {
     });
 
     test("adding a cell flushes changes", async () => {
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onFlushChanges", async () => {
             await notebook.addCell(createMockCellViewModel(), 0);
@@ -269,7 +217,7 @@ describe('view-model / notebook', () => {
     });
 
     test("flushing changes is forwarded to cells", async () => {
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         const flushChanges = jest.fn();
         await notebook.addCell(createMockCellViewModel({ flushChanges }), 0);
@@ -280,7 +228,7 @@ describe('view-model / notebook', () => {
 
     test("onModified event bubbles up for added cells", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onModified", async () => {
             const mockCell = createMockCellViewModel()
@@ -401,18 +349,9 @@ describe('view-model / notebook', () => {
         expect(notebook.getCells()).toEqual([]);
     });
 
-    test("deleting a cell removes it from the model", async () => {
-
-        const { notebook, cell, mockNotebookModel } = createNotebookWithCell();
-
-        await notebook.deleteCell(cell, false);
-
-        expect(mockNotebookModel.deleteCell).toHaveBeenCalledWith(cell.getId());
-    });
-
     test("deleting a cell raises onCellsChanged", async () => {
 
-        const { notebook, cell, mockNotebookModel } = createNotebookWithCell();
+        const { notebook, cell } = createNotebookWithCell();
 
         await expectEventRaised(notebook, "onCellsChanged", async () => {
             await notebook.deleteCell(cell, false);
@@ -435,7 +374,7 @@ describe('view-model / notebook', () => {
 
     test("deleting a cell raises onModified", async () => {
 
-        const { notebook, cell, mockNotebookModel } = createNotebookWithCell();
+        const { notebook, cell } = createNotebookWithCell();
 
         await expectEventRaised(notebook, "onModified", async () => {
             await notebook.deleteCell(cell, false);
@@ -455,16 +394,7 @@ describe('view-model / notebook', () => {
        ]);
     });
    
-    test("moving a cell moves it from the model", async () => {
-
-        const { notebook, mockNotebookModel } = createNotebookWithCells(3);
-
-        await notebook.moveCell(0, 2);
- 
-        expect(mockNotebookModel.moveCell).toHaveBeenCalledWith(0, 2);
-    });
-
-    test("moving a cell raises onCellsChanged", async () => {
+     test("moving a cell raises onCellsChanged", async () => {
 
         const { notebook } = createNotebookWithCells(3);
 
@@ -513,7 +443,7 @@ describe('view-model / notebook', () => {
 
     test("finding a cell in a empty notebook returns undefined", () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         expect(notebook.findCell("1234")).toBeUndefined();
     });
@@ -527,7 +457,7 @@ describe('view-model / notebook', () => {
 
     test("finding the next cell in a empty notebook returns undefined", () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         expect(notebook.findNextCell("1234")).toBeUndefined();
     });
@@ -548,7 +478,7 @@ describe('view-model / notebook', () => {
 
     test("finding the prev cell in a empty notebook returns undefined", () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         expect(notebook.findPrevCell("1234")).toBeUndefined();
     });
@@ -576,7 +506,7 @@ describe('view-model / notebook', () => {
 
     test("getting first cell returns undefined for empty notebook", () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         expect(notebook.getFirstCell()).toBeUndefined();
     });
@@ -590,7 +520,7 @@ describe('view-model / notebook', () => {
 
     test("getting last cell returns undefined for empty notebook", () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         expect(notebook.getLastCell()).toBeUndefined();
     });
@@ -630,14 +560,14 @@ describe('view-model / notebook', () => {
 
     test("notebook is not modified at the start", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         expect(notebook.isModified()).toBe(false);
     });
     
     test("can set the modified flag", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
         await notebook.setModified(true);
 
         expect(notebook.isModified()).toBe(true);
@@ -645,7 +575,7 @@ describe('view-model / notebook', () => {
 
     test("can clear the modified flag", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
         await notebook.setModified(true);
         await notebook.setModified(false);
 
@@ -654,7 +584,7 @@ describe('view-model / notebook', () => {
 
     test("setting the modified flag raises onModified", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onModified", async () => {
             await notebook.setModified(true);
@@ -663,7 +593,7 @@ describe('view-model / notebook', () => {
 
     test("clearing the modified flag raises onModified", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await notebook.setModified(true);
 
@@ -674,7 +604,7 @@ describe('view-model / notebook', () => {
 
     test("clearing the modified flag has no effect when not modified", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventNotRaised(notebook, "onModified", async () => {
             await notebook.setModified(false);
@@ -683,7 +613,7 @@ describe('view-model / notebook', () => {
 
     test("can notify modified", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await notebook.notifyModified();
 
@@ -692,7 +622,7 @@ describe('view-model / notebook', () => {
 
     test("can clear the modified flag", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await notebook.notifyModified();
 
@@ -703,48 +633,19 @@ describe('view-model / notebook', () => {
 
     test("default Node.js version is returned when not explicitly set", () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         expect(notebook.getNodejsVersion()).toEqual(defaultNodejsVersion);
     });
 
-    test("when Node.js version is set on the model that is returned", async () => {
-
-        const { notebook, mockNotebookModel } = createEmptyNotebook();
-
-        const nodejsVersion = "v12";
-        mockNotebookModel.getNodejsVersion = () => nodejsVersion;
-
-        expect(notebook.getNodejsVersion()).toEqual(nodejsVersion);
-    });
-
-    test("setting Node.js version sets on the model", async () => {
-
-        const { notebook, mockNotebookModel } = createEmptyNotebook();
-
-        const nodejsVersion = "v12";
-        await notebook.setNodejsVersion(nodejsVersion);
-
-        expect(mockNotebookModel.setNodejsVersion).toBeCalledWith(nodejsVersion);
-    });
 
     test("setting Node.js version raises onModfiied", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onModified", async () => {
             await notebook.setNodejsVersion("v12");
         });
-    });
-
-    test("serialize forwards to the model", () => {
-
-        const { notebook, mockNotebookModel } = createEmptyNotebook();
-
-        const serialized = {};
-        mockNotebookModel.serialize = () => serialized;
-
-        expect(notebook.serialize()).toBe(serialized);
     });
 
     test("can deserialize", () => {
@@ -800,7 +701,7 @@ describe('view-model / notebook', () => {
 
     test("calling flush changes raises onFlushChanges", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onFlushChanges", async () => {
             await notebook.flushChanges();
@@ -809,22 +710,21 @@ describe('view-model / notebook', () => {
 
     test("saving notebook writes the serialized notebook to storage", async () => {
 
-        const { notebook, mockNotebookModel, mockRepository, mockStorageId } = createEmptyNotebook();
-
-        const mockSerializedNotebook = {};
-        mockNotebookModel.serialize = () => mockSerializedNotebook;
+        const { notebook, mockRepository, mockStorageId } = createNotebookViewModel([]);
 
         mockRepository.writeNotebook = jest.fn();
+
+        const serializedNotebook = {};
 
         await notebook.save();
 
         expect(mockRepository.writeNotebook).toHaveBeenCalledTimes(1);
-        expect(mockRepository.writeNotebook).toHaveBeenCalledWith(mockSerializedNotebook, mockStorageId);
+        expect(mockRepository.writeNotebook).toHaveBeenCalledWith(serializedNotebook, mockStorageId);
     });
 
     test("saving notebook flushing changes", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onFlushChanges", async () => {
             await notebook.save();
@@ -833,7 +733,7 @@ describe('view-model / notebook', () => {
 
     test("saving notebook resets modified flag", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         notebook.setModified(true);
 
@@ -847,10 +747,9 @@ describe('view-model / notebook', () => {
     
     test("saving notebook as writes the serialized notebook to storage", async () => {
 
-        const { notebook, mockNotebookModel, mockRepository, mockStorageId } = createEmptyNotebook();
+        const { notebook, mockRepository } = createNotebookViewModel([]);
 
-        const mockSerializedNotebook = { a: "serialized notebook" };
-        mockNotebookModel.serialize = () => mockSerializedNotebook;
+        const serializedNotebook = { a: "serialized notebook" };
 
         mockRepository.writeNotebook = jest.fn();
 
@@ -858,12 +757,12 @@ describe('view-model / notebook', () => {
         await notebook.saveAs(newStorageId);
 
         expect(mockRepository.writeNotebook).toHaveBeenCalledTimes(1);
-        expect(mockRepository.writeNotebook).toHaveBeenCalledWith(mockSerializedNotebook, newStorageId);
+        expect(mockRepository.writeNotebook).toHaveBeenCalledWith(serializedNotebook, newStorageId);
     });
 
     test("saving notebook as flushing changes", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         await expectEventRaised(notebook, "onFlushChanges", async () => {
             const newStorageId: any = { displayName: () => "a/path" };
@@ -873,7 +772,7 @@ describe('view-model / notebook', () => {
 
     test("saving notebook as resets modified flag", async () => {
 
-        const { notebook } = createEmptyNotebook();
+        const { notebook } = createNotebookViewModel([]);
 
         notebook.setModified(true);
 

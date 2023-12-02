@@ -1,5 +1,5 @@
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
-import { ICell } from "model";
+import { CellType, ICell, ISerializedCell1 } from "model";
 import { ICellViewModel, CellViewModel } from "./cell";
 
 //
@@ -33,10 +33,10 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Set to true when the markdown cell is in editing mode.
     //
-    editing: boolean;
+    private editing: boolean;
 
-    constructor (cell: ICell) {
-        super(cell);
+    constructor(id: string, cellType: CellType, text: string, height: number | undefined) {
+        super(id, cellType, text, height);
 
         this.editing = false;
     }
@@ -83,4 +83,16 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     // Event raised with the markdown cell switches from preview to editing mode and vice-versa.
     //
     onModeChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+   //
+    // Deserialize the model from a previously serialized data structure.
+    //
+    static deserialize(input: ISerializedCell1): IMarkdownCellViewModel {
+        return new MarkdownCellViewModel(
+            input.id,
+            input.cellType || CellType.Code,
+            input.code || "",
+            input.height
+        );
+    }           
 }

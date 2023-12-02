@@ -17,14 +17,11 @@ function App() {
                 <MonacoEditor
                     model={
                         new CodeCellViewModel(
-                            new Cell(
-                                "1234",
-                                CellType.Code,
-                                "const x = 1;",
-                                undefined,
-                                undefined,
-                                [], []
-                            ),
+                            "1234",
+                            CellType.Code,
+                            "const x = 1;",
+                            undefined,
+                            undefined,
                             [], []
                         )
                     }
