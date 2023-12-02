@@ -1,8 +1,7 @@
 import { sleep } from "utils";
 import { CellType } from "model";
-import { CellViewModel } from "../../view-model/cell";
+import { CellViewModel, ICellViewModel, IFindDetails, ITextRange, SearchDirection } from "../../view-model/cell";
 import { IEditorCaretPosition } from "../../view-model/editor-caret-position";
-import { IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from "../../view-model/monaco-editor";
 import { expectEventRaised, trackEventsRaised } from "../lib/utils";
 
 describe("view-model / cell", () => {
@@ -116,7 +115,7 @@ describe("view-model / cell", () => {
             async () => {
                 await cell.setCaretPosition(caretPosition);
             },
-            async (sender: IMonacoEditorViewModel, caretPositionThatWasSet: IEditorCaretPosition | undefined) => {
+            async (sender: ICellViewModel, caretPositionThatWasSet: IEditorCaretPosition | undefined) => {
                 expect(caretPositionThatWasSet).toBe(caretPosition);
             }
         );

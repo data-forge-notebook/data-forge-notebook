@@ -1,6 +1,5 @@
 import _ from "lodash";
-import { CellModifiedEventHandler, ICellViewModel } from "../../view-model/cell";
-import { EditorSelectionChangedEventHandler, TextChangedEventHandler } from "../../view-model/monaco-editor";
+import { CellModifiedEventHandler, EditorSelectionChangedEventHandler, ICellViewModel, TextChangedEventHandler } from "../../view-model/cell";
 import { NotebookViewModel } from "../../view-model/notebook";
 import { EventSource } from "utils";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";

@@ -8,8 +8,6 @@ import * as _ from 'lodash';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 import { CellHandle } from './cell-handle';
-import { IMonacoEditorViewModel } from '../../../../view-model/monaco-editor';
-import { EventSource, BasicEventHandler } from 'utils';
 import { throttleAsync } from 'utils';
 import { forceUpdate } from 'browser-utils';
 import { isElementPartiallyInViewport } from 'browser-utils';
@@ -138,7 +136,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     //
     // Event raised when this cell has been selected or unselected.
     //
-    private onEditorSelectionChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
+    private onEditorSelectionChanged = async (cell: ICellViewModel): Promise<void> => {
         await forceUpdate(this);
     }
 

@@ -1,6 +1,5 @@
 import { ICellViewModel } from "./cell";
 import { INotebookCaretPosition } from "./notebook-caret-position";
-import { IMonacoEditorViewModel } from "./monaco-editor";
 import { CodeCellViewModel } from "./code-cell";
 import { IEventSource, BasicEventHandler, EventSource, ILog, ILogId } from "utils";
 import { CellType, ISerializedCell1, ISerializedNotebook1 } from "model";
@@ -361,7 +360,7 @@ export class NotebookViewModel implements INotebookViewModel {
         cell.onTextChanged.detach(this._onTextChanged);
     }
 
-    private onEditorSelectionChanging = async (cell: IMonacoEditorViewModel, willBeSelected: boolean): Promise<void> => {
+    private onEditorSelectionChanging = async (cell: ICellViewModel, willBeSelected: boolean): Promise<void> => {
         if (willBeSelected) {
             // 
             // Make sure everything else is selected before applying the new selection.
@@ -370,27 +369,27 @@ export class NotebookViewModel implements INotebookViewModel {
         }
     }
 
-    private onEditorSelectionChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
+    private onEditorSelectionChanged = async (cell: ICellViewModel): Promise<void> => {
         if (this.selectedCell === cell) {
             // Didn't change.
             return;
         }
 
-        this.selectedCell = cell as ICellViewModel; //TODO: Is it possible to get rid of this cast? And others like it.
+        this.selectedCell = cell;
         await this.onSelectedCellChanged.raise();
     }
 
     //
     // Event raised when the text in a cell has changed.
     //
-    private _onTextChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
-        await this.onTextChanged.raise(cell as ICellViewModel);
+    private _onTextChanged = async (cell: ICellViewModel): Promise<void> => {
+        await this.onTextChanged.raise(cell);
     }
 
     //
     // Handles onCellModified from cells and bubbles the event upward.
     //
-    private onCellModified = async (cell: IMonacoEditorViewModel): Promise<void> => {
+    private onCellModified = async (cell: ICellViewModel): Promise<void> => {
         await this.notifyModified();
     }
   

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { IMarkdownCellViewModel } from '../../../../view-model/markdown-cell';
-import { IMonacoEditorViewModel } from '../../../../view-model/monaco-editor';
 import { handleAsyncErrors } from 'utils';
 import { forceUpdate } from 'browser-utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
@@ -9,6 +8,7 @@ import { InjectProperty, InjectableClass } from '@codecapers/fusion';
 import { ICommander, ICommanderId } from '../../../../services/commander';
 import { IOpen, IOpen_ID } from '../../../../services/open';
 import { INotebookViewModel } from '../../../../view-model/notebook';
+import { ICellViewModel } from '../../../../view-model/cell';
 
 export interface IMarkdownCellProps {
     //
@@ -60,7 +60,7 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
         await this.props.model.enterPreviewMode();
     }
 
-    private onEditorSelectionChanged = async (cell: IMonacoEditorViewModel): Promise<void> => {
+    private onEditorSelectionChanged = async (cell: ICellViewModel): Promise<void> => {
         
         if (this.props.model.isSelected()) { //TODO: COULD BE DONE IN THE VIEW MODEL.
             await this.props.model.enterEditMode();

@@ -3,13 +3,13 @@ import * as monaco from 'monaco-editor';
 import { Spinner } from '@blueprintjs/core';
 import * as _ from 'lodash';
 import { debounceAsync, handleAsyncErrors, ILog, ILogId, throttleAsync } from 'utils';
-import { IFindDetails, IMonacoEditorViewModel, ITextRange, SearchDirection } from '../view-model/monaco-editor';
 import { IEditorCaretPosition } from '../view-model/editor-caret-position';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { ICommander, ICommanderId } from '../services/commander';
 import { IUndoRedo, IUndoRedoId } from '../services/undoredo';
 import { CellTextChange } from '../changes/cell-text-change';
 import { IPlatform, IPlatformId } from '../services/platform';
+import { ICellViewModel, IFindDetails, ITextRange, SearchDirection } from '../view-model/cell';
 
 let monacoInitialised = false;
 
@@ -150,9 +150,9 @@ export interface IMonacoEditorProps {
     language: string;
 
     //
-    // The model for the editor.
+    // The model for the code cell.
     //
-    model: IMonacoEditorViewModel;
+    model: ICellViewModel;
 
     //
     // Set to true to show the progress spinner.
@@ -596,7 +596,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     //
     // Event raised to give this editor the focus.
     //
-    private onSetFocus = async (cell: IMonacoEditorViewModel): Promise<void> => {
+    private onSetFocus = async (cell: ICellViewModel): Promise<void> => {
         if (this.editor) {
             this.editor.focus();
         }
@@ -614,7 +614,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }
 
-    private onSetCaretPosition = async (viewModel: IMonacoEditorViewModel, caretPosition: IEditorCaretPosition): Promise<void> => {
+    private onSetCaretPosition = async (viewModel: ICellViewModel, caretPosition: IEditorCaretPosition): Promise<void> => {
         if (this.editor) {
             if (caretPosition) {
                 this.editor.setPosition(caretPosition);
