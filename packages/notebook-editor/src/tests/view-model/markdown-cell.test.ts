@@ -4,23 +4,18 @@ import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
 
 describe("view-model / markdown-cell", () => {
 
-	//
-    // Creates a cell view model for testing.
-    //
-    function createCellViewModel() {
-        return new MarkdownCellViewModel("", CellType.Markdown, "", undefined);
-    }
-
     //
     // Creates a cell for testing.
     //
     function createCell() {
-        const cell = createCellViewModel();
+        const cell = new MarkdownCellViewModel("", CellType.Markdown, "", undefined);
         return { cell };
     }    
 
     test("can construct", () => {
-        createCell();
+
+        const cell = new MarkdownCellViewModel("", CellType.Markdown, "", undefined);
+        expect(cell.getText()).toEqual("");
     });
 
     test("is in preview mode by default", () => {
@@ -114,5 +109,32 @@ describe("view-model / markdown-cell", () => {
             await cell.enterPreviewMode();
         });
     });
+
+    test("can serialize markdown cell", () => {
+        const theId = "1234";
+        const theText = "# Hello markdown;";
+        const cell = new MarkdownCellViewModel(theId, CellType.Markdown, theText, undefined);
+        expect(cell.serialize()).toEqual({
+            id: theId,
+            cellType: CellType.Markdown,
+            code: theText,
+            height: undefined,
+        });        
+    });
+
+    test("can deserialize markdown cell", () => {
+
+        const theId = "1234";
+        const theText = "# Hello markdown;";
+        const cell = MarkdownCellViewModel.deserialize({
+            id: theId,
+            cellType: CellType.Markdown,
+            code: theText,
+        });
+        expect(cell.getId()).toEqual(theId);
+        expect(cell.getText()).toEqual(theText);
+        expect(cell.getCellType()).toEqual(CellType.Markdown);
+    });
+
 
 });

@@ -1,11 +1,10 @@
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { BasicEventHandler, IEventSource, EventSource, ILogId, ILog } from "utils";
-import { CellError, CellOutput, CellType, ISerializedCell1 } from "model";
-import { notebookVersion } from "model";
+import { CellType, ISerializedCell1 } from "model";
 import { ISerializedNotebook1 } from "model";
 import { IIdGenerator, IIdGeneratorId } from "utils/src/lib/id-generator";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
-import { INotebookViewModel, NotebookViewModel } from "./notebook";
+import { INotebookViewModel, notebookVersion, NotebookViewModel } from "./notebook";
 import * as path from "path";
 import { IConfirmationDialog, IConfirmationDialogId } from "../services/confirmation-dialog";
 import { INotification, INotificationId } from "../services/notification";
@@ -18,6 +17,7 @@ import { IRecentFiles, IRecentFiles_ID } from "../services/recent-files";
 import { IZoom, IZoomId } from "../services/zoom";
 import { ICellViewModel } from "./cell";
 import { CellOutputViewModel } from "./cell-output";
+import { CellErrorViewModel } from "./cell-error";
 
 const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
 
@@ -797,7 +797,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     private reportError(cellId: string | undefined, error: string) {
         const cell = cellId && this.getOpenNotebook().findCell(cellId) as ICodeCellViewModel;
         if (cell) {
-            cell.addError(new CellError(error));
+            cell.addError(new CellErrorViewModel(error));
         }
         else {
             //
@@ -805,7 +805,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             //
             for (const cell of this.getOpenNotebook().getCells()) {
                 if (cell.getCellType() === CellType.Code) {
-                    (cell as ICodeCellViewModel).addError(new CellError(error));
+                    (cell as ICodeCellViewModel).addError(new CellErrorViewModel(error));
                     return;
                 }
             }

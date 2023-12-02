@@ -3,7 +3,7 @@
 // A change that pastes a cell to a notebook.
 
 import { InjectProperty, InjectableClass } from "@codecapers/fusion";
-import { Cell, ISerializedCell1 } from "model";
+import { ISerializedCell1 } from "model";
 import { IIdGeneratorId, IIdGenerator } from "utils";
 import { IChange } from "../services/undoredo";
 import { ICellViewModel } from "../view-model/cell";

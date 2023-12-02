@@ -1,20 +1,39 @@
 import { CellOutputValueViewModel } from "../../view-model/cell-output-value";
-import { expectEventRaised } from "../lib/utils";
 
 describe("view-model / cell-output-value", () => {
 
     test("can construct", () => {
 
-        const displayType = "display-type";
-        const plugin = "something";
-        const data = {};
-        const mockModel: any = {
-            getDisplayType: () => displayType,
-            getData: () => data,
-        };
-        const cellOutput = new CellOutputValueViewModel(displayType, plugin, data);
-        expect(cellOutput.getDisplayType()).toEqual(displayType);
-        expect(cellOutput.getPlugin()).toEqual(plugin);
-        expect(cellOutput.getData()).toBe(data);
+        const theDisplayType = "string";
+        const theData = "hello";
+        const thePlugin = "a-plugin";
+        const cellOutputValue = new CellOutputValueViewModel(theDisplayType, thePlugin, theData);
+        expect(cellOutputValue.getDisplayType()).toEqual(theDisplayType);
+        expect(cellOutputValue.getData()).toEqual(theData);
+        expect(cellOutputValue.getPlugin()).toEqual(thePlugin)
     });
+
+    test("can serialize", () => {
+
+        const theDisplayType = "string";
+        const theData = "hello";
+        const cellOutputValue = new CellOutputValueViewModel(theDisplayType, undefined, theData);
+        expect(cellOutputValue.serialize()).toEqual({
+            displayType: theDisplayType,
+            data: theData,
+        });
+    });
+
+    test("can deserialize", () => {
+
+        const theDisplayType = "string";
+        const theData = "hello";
+        const cellOutputValue = CellOutputValueViewModel.deserialize({
+            displayType: theDisplayType,
+            data: theData,
+        });
+        expect(cellOutputValue.getDisplayType()).toEqual(theDisplayType);
+        expect(cellOutputValue.getData()).toEqual(theData);
+    });    
+    
 });

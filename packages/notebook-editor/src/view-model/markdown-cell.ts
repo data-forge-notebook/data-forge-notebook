@@ -1,5 +1,5 @@
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
-import { CellType, ICell, ISerializedCell1 } from "model";
+import { CellType, ISerializedCell1 } from "model";
 import { ICellViewModel, CellViewModel } from "./cell";
 
 //

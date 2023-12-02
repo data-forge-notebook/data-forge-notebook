@@ -29,7 +29,32 @@ describe("view-model / cell", () => {
         });
     });
 
-      test("setting text raises onTextChanged event", async () => {
+    test("setting the text to the same makes no change", async () => {
+
+        const cell = new CellViewModel("", CellType.Code, "hello", undefined);
+
+        expect(await cell.setText("hello")).toBe(false);
+    });
+
+    test("setting the text to the different changes the text", async () => {
+
+        const cell = new CellViewModel("", CellType.Code, "hello", undefined);
+
+        const newText = "world";
+        expect(await cell.setText(newText)).toBe(true);
+        expect(cell.getText()).toBe(newText);
+    });
+
+    test("setting the text trims whitespace from the end", async () => {
+
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
+
+        const baseText = "Hello world";
+        expect(await cell.setText(`${baseText} `)).toBe(true);
+        expect(cell.getText()).toEqual(baseText);
+    });    
+
+    test("setting text raises onTextChanged event", async () => {
 
         const cell = new CellViewModel("", CellType.Code, "", undefined);
 
@@ -257,5 +282,15 @@ describe("view-model / cell", () => {
             }  
         );
     });
+
+    test("can set height", () => {
+        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        
+        expect(cell.getHeight()).toBeUndefined();
+
+        const theHeight = 22;
+        cell.setHeight(theHeight);
+        expect(cell.getHeight()).toBe(theHeight);
+    });    
 });
 

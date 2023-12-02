@@ -3,32 +3,46 @@ import { CellErrorViewModel } from "../../view-model/cell-error";
 describe("view-model / cell-error", () => {
 
     test("can construct", () => {
-
-        const instanceId = "1234"
         const msg = "ABCD";
-        const mockModel: any = {
-            getInstanceId: () => instanceId,
-            getMsg: () => msg,
-        };
-        const cellError = new CellErrorViewModel(mockModel);
-        expect(cellError.getInstanceId()).toEqual(instanceId);
+        const cellError = new CellErrorViewModel(msg);
+        expect(cellError.getInstanceId()).toBeDefined();
         expect(cellError.getMsg()).toEqual(msg);
 
     });
 
     test("new cell error is fresh", () => {
-        
-        const mockModel: any = {};
-        const cellError = new CellErrorViewModel(mockModel);
+        const cellError = new CellErrorViewModel("");
         expect(cellError.isFresh()).toBe(true);
     });
 
     test("can mark cell error as stale", () => {
-
-        const mockModel: any = {};
-        const cellError = new CellErrorViewModel(mockModel);
+        const cellError = new CellErrorViewModel("");
 
         cellError.markStale();
         expect(cellError.isFresh()).toBe(false);
     });
+
+    test("can serialize", () => {
+        const theMessage = "An error";
+        const cellError = new CellErrorViewModel(theMessage);
+        expect(cellError.serialize()).toEqual({
+            msg: theMessage,
+        });
+    });
+
+    test("can deserialize", () => {
+        const theMessage = "An error";
+        const cellError = CellErrorViewModel.deserialize({
+            msg: theMessage,
+        });
+        expect(cellError.getMsg()).toEqual(theMessage);
+    });
+
+    test("can mark stale", () => {
+        const cellError = new CellErrorViewModel("");
+        expect(cellError.isFresh()).toEqual(true);
+
+        cellError.markStale();
+        expect(cellError.isFresh()).toEqual(false);
+    });    
 });

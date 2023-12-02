@@ -3,8 +3,9 @@ import { CellType } from "model";
 import { EventSource, BasicEventHandler } from "utils";
 import { ICellErrorViewModel } from "../../view-model/cell-error";
 import { ICellOutputViewModel } from "../../view-model/cell-output";
-import { CodeCellViewModel, ICodeCellViewModel } from "../../view-model/code-cell";
+import { CodeCellViewModel } from "../../view-model/code-cell";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
+import moment from "moment";
 
 describe("view-model / code-cell", () => {
     
@@ -12,18 +13,11 @@ describe("view-model / code-cell", () => {
         disableInjector();
     });
 
-	//
-    // Creates a cell view model for testing.
-    //
-    function createCellViewModel(output: ICellOutputViewModel[] = [], errors: ICellErrorViewModel[] = []) {
-        return new CodeCellViewModel("", CellType.Code, "", undefined, undefined, output, errors);
-    }
-
     //
     // Creates a cell for testing.
     //
     function createCell() {
-        const cell = createCellViewModel();
+        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, undefined, [], []);
         return { cell };
     }
 
@@ -31,16 +25,14 @@ describe("view-model / code-cell", () => {
     // Creates a mock output that can be added to a cell.
     //
     function createMockCellOutput(fields?: any) {
-        const mockCellOutputModel: any = {};
         const mockCellOutputViewModel: any = {
-            getModel: () => mockCellOutputModel,
             onModified: new EventSource<BasicEventHandler>(),
             markStale: jest.fn(),
             getHeight: () => undefined,
             setHeight: jest.fn(),
             ...fields,
         };
-        return { mockCellOutputViewModel, mockCellOutputModel };
+        return { mockCellOutputViewModel };
     }   
 
     //
@@ -62,10 +54,10 @@ describe("view-model / code-cell", () => {
     async function createCellWithOutput() {
         const { cell } = createCell();
 
-        const { mockCellOutputViewModel, mockCellOutputModel } = createMockCellOutput();
+        const { mockCellOutputViewModel } = createMockCellOutput();
         await cell.addOutput(mockCellOutputViewModel);
 
-        return { cell, mockCellOutputViewModel, mockCellOutputModel };
+        return { cell, mockCellOutputViewModel };
     }
 
     //
@@ -85,8 +77,7 @@ describe("view-model / code-cell", () => {
         const now = new Date();
         const output: ICellOutputViewModel[] = [];
         const errors: ICellErrorViewModel[] = [];
-        const cell = createCellViewModel(output, errors);
-
+        const cell = new CodeCellViewModel("", CellType.Code, "", now, undefined, output, errors);
         expect(cell.getLastEvaluationDate()).toBe(now);
         expect(cell.getOutput()).toBe(output);
         expect(cell.getErrors()).toBe(errors);
@@ -94,7 +85,7 @@ describe("view-model / code-cell", () => {
 
     test("can add an output", async () => {
 
-        const { cell } = createCell();
+        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, undefined, [], []);
 
         const { mockCellOutputViewModel } = createMockCellOutput();
         await cell.addOutput(mockCellOutputViewModel);
@@ -104,7 +95,7 @@ describe("view-model / code-cell", () => {
 
     test("adding an output raises onOutputChanged", async () => {
 
-        const { cell } = createCell();
+        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, undefined, [], []);
 
         await expectEventRaised(cell, "onOutputChanged", async () => {
             const { mockCellOutputViewModel } = createMockCellOutput();
@@ -346,4 +337,97 @@ describe("view-model / code-cell", () => {
         expect(cell.getErrors()).toEqual([ mockFreshError ]);
     });
 
+    test("can serialize code cell", () => {
+        const theId = "1234";
+        const theText = "const x = 3;";
+        const theLastEvaluationDate = moment();
+        const theHeight = 18;
+        const cell = new CodeCellViewModel(theId, CellType.Code, theText, theLastEvaluationDate.toDate(), theHeight, [], []);
+        expect(cell.serialize()).toEqual({
+            id: theId,
+            cellType: CellType.Code,
+            code: theText,
+            lastEvaluationDate: theLastEvaluationDate.toISOString(true),
+            output: [],
+            errors: [],
+            height: theHeight,
+        });        
+    });
+
+    test("can serialize cell with output and errors", () => {
+        const serializedOutput: any = {};
+        const { mockCellOutputViewModel: mockOutput } = createMockCellOutput({ serialize: () => serializedOutput });
+        const serializedError: any = {};
+        const mockError: any = {
+            serialize: () => serializedError,
+        };
+        const cell = new CodeCellViewModel("1234", CellType.Code, "", undefined, undefined, [ mockOutput ], [ mockError ]);
+        const serialized = cell.serialize();
+        expect(serialized.output).toEqual([ serializedOutput ]);
+        expect(serialized.errors).toEqual([ serializedError ]);
+    });
+
+    test("can deserialize code cell", () => {
+
+        const theId = "1234";
+        const theText = "const x = 1;";
+        const cell = CodeCellViewModel.deserialize({
+            id: theId,
+            cellType: CellType.Code,
+            code: theText,
+        });
+        expect(cell.getId()).toEqual(theId);
+        expect(cell.getText()).toEqual(theText);
+        expect(cell.getCellType()).toEqual(CellType.Code);
+        expect(cell.getOutput()).toEqual([]);
+        expect(cell.getErrors()).toEqual([]);
+        expect(cell.getLastEvaluationDate()).toBeUndefined();
+    });
+
+    test("can deserialize cell with evaluation date", () => {
+
+        const theLastEvaluationDate = moment();
+        const cell = CodeCellViewModel.deserialize({
+            id: "1234",
+            cellType: CellType.Code,
+            code: "",
+            lastEvaluationDate: theLastEvaluationDate.toISOString(true),
+        });
+        expect(cell.getLastEvaluationDate()).toEqual(theLastEvaluationDate.toDate());
+    });
+
+    test("can deserialize code cell with output", () => {
+
+        const serializedOutputValue: any = {};
+        const serializedOutput: any = {
+            value: serializedOutputValue,
+        };
+        const cell = CodeCellViewModel.deserialize({
+            id: "1234",
+            cellType: CellType.Code,
+            code: "",
+            output: [
+                serializedOutput,
+            ]
+        });
+
+        expect(cell.getOutput().length).toEqual(1);
+        expect(cell.getOutput()[0]).toBeDefined();
+    });
+
+    test("can deserialize code cell with error", () => {
+
+        const serializedError: any = {};
+        const cell = CodeCellViewModel.deserialize({
+            id: "1234",
+            cellType: CellType.Code,
+            code: "",
+            errors: [
+                serializedError,
+            ]
+        });
+
+        expect(cell.getErrors().length).toEqual(1);
+        expect(cell.getErrors()[0]).toBeDefined();
+    });
 });

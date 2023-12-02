@@ -1,8 +1,11 @@
-import { CellType } from "../cell";
-
 //
 // Interfaces for a serialized notebook version 1.
 //
+
+export enum CellType {
+    Code = "code",
+    Markdown = "markdown",
+}
 
 //
 // Serialized format for a value of a cell output.

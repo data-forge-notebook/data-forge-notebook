@@ -1,4 +1,4 @@
-import { ICellError, ISerializedCellError1 } from "model";
+import { ISerializedCellError1 } from "model";
 import { v4 as uuid } from "uuid";
 
 //

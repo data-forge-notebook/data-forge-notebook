@@ -3,7 +3,7 @@
 // A change that adds a cell to a notebook.
 
 import { InjectProperty, InjectableClass } from "@codecapers/fusion";
-import { Cell, CellType, ISerializedCell1 } from "model";
+import { CellType, ISerializedCell1 } from "model";
 import { IChange } from "../services/undoredo";
 import { ICellViewModel } from "../view-model/cell";
 import { INotebookViewModel, cellViewModelFactory } from "../view-model/notebook";

@@ -3,7 +3,6 @@ import { IDateProvider, IDateProviderId } from "../services/date-provider";
 import { ICellViewModel, CellViewModel } from "./cell";
 import { CellErrorViewModel, ICellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel, ICellOutputViewModel } from "./cell-output";
-import { CellOutputValueViewModel } from "./cell-output-value";
 import moment from 'moment';
 import { CellType, ISerializedCell1 } from "model";
 
@@ -16,11 +15,6 @@ export interface ICodeCellViewModel extends ICellViewModel {
     // Returns true when the code is currently executing.
     //
     isExecuting(): boolean;
-
-    //
-    // Gets the date when this code last evaluated.
-    //
-    getLastEvaluationDate(): Date | undefined;
 
     //
     // Returns true when the code is known to be in error.
@@ -126,10 +120,10 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     private lastEvaluationDate?: Date;
 
-    constructor(id: string, cellType: CellType, text: string, lastEvaluationDate: string | undefined, height: number | undefined, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
+    constructor(id: string, cellType: CellType, text: string, lastEvaluationDate: Date | undefined, height: number | undefined, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
         super(id, cellType, text, height);
 
-        this.lastEvaluationDate = lastEvaluationDate && moment(lastEvaluationDate, moment.ISO_8601).toDate() || undefined;
+        this.lastEvaluationDate = lastEvaluationDate;
         this.output = output;
         this.errors = errors;
 
@@ -220,10 +214,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     async addOutput(output: ICellOutputViewModel): Promise<void> {
 
-        const outputValue = output.getValue();
-        const valueViewModel = new CellOutputValueViewModel(outputValue.getDisplayType(), outputValue.getPlugin(), outputValue.getData());
-        const outputViewModel = new CellOutputViewModel(valueViewModel, output.getHeight());
-        this.hookOutputHandlers(outputViewModel);
+        this.hookOutputHandlers(output);
 
         if (this.output.length > this.nextOutputIndex) {
 
@@ -233,7 +224,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             // Replace existing output.
             this.unhookOutputHandlers(origOutput);
             
-            this.output[this.nextOutputIndex] = outputViewModel;
+            this.output[this.nextOutputIndex] = output;
             if (origOutputHeight !== undefined) {
                 if (origOutput.getValue().getDisplayType() === output.getValue().getDisplayType()) {
                     // Preserve the height the user selected for this output, but only if the display type is the same.
@@ -242,7 +233,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             }
         }
         else {
-            this.output = this.output.concat([outputViewModel]);
+            this.output = this.output.concat([output]);
         }
 
         ++this.nextOutputIndex;
@@ -389,11 +380,13 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             }
         }
 
+        const lastEvaluationDate = input.lastEvaluationDate && moment(input.lastEvaluationDate, moment.ISO_8601).toDate() || undefined;
+
         return new CodeCellViewModel(
             input.id,
             input.cellType || CellType.Code,
             input.code || "",
-            input.lastEvaluationDate,
+            lastEvaluationDate,
             input.height,
             output,
             input.errors && input.errors.map(error => CellErrorViewModel.deserialize(error)) || [],

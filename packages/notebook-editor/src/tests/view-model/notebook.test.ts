@@ -4,7 +4,6 @@ import { EditorSelectionChangedEventHandler, TextChangedEventHandler } from "../
 import { NotebookViewModel } from "../../view-model/notebook";
 import { EventSource } from "utils";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
-import { INotebook } from "model";
 import { disableInjector } from "@codecapers/fusion";
 
 describe('view-model / notebook', () => {
@@ -16,27 +15,16 @@ describe('view-model / notebook', () => {
     });
 
     //
-    // Creates a mock cell model.
-    //
-    function createMockCellModel(fields: any = {}) {
-        const mockCell: any = {
-            getId: () => fields.id || "1234",
-            ...fields,
-        };
-        return mockCell;
-    }
-
-    //
     // Creates a mock cell view model.
     //
     function createMockCellViewModel(fields: any = {}) {
         const mockCell: any = {
-            getId: () => fields.id || (fields.model && fields.model.getId()) || "1234",
+            getId: () => fields.id || "1234",
+            getCellType: () => fields.cellType || "code",
             onEditorSelectionChanging: new EventSource<EditorSelectionChangedEventHandler>(),
             onEditorSelectionChanged: new EventSource<EditorSelectionChangedEventHandler>(),
             onModified: new EventSource<CellModifiedEventHandler>(),
             onTextChanged: new EventSource<TextChangedEventHandler>(),
-            getModel: () => fields.model || {},
             flushChanges: () => {},
             select: jest.fn(),
             deselect: jest.fn(),
@@ -80,8 +68,7 @@ describe('view-model / notebook', () => {
     // Creates a notebook with a single cell.
     //
     function createNotebookWithCell() {
-        const mockCellModel = createMockCellModel();
-        const mockCellViewModel = createMockCellViewModel({ model: mockCellModel });
+        const mockCellViewModel = createMockCellViewModel();
         const created = createNotebookViewModel([ mockCellViewModel ]);
         const [ cell ] = created.notebook.getCells();
         return { 
@@ -94,39 +81,28 @@ describe('view-model / notebook', () => {
     // Creates a notebook with a multiples cells.
     //
     function createNotebookWithCells(numCells: number) {
-        const mockCellModels = _.range(0, numCells)
-            .map((cellIndex) => createMockCellModel({
-                id: cellIndex.toString(),
-            }));
-        const mockCellViewModels = mockCellModels.map(mockCellModel => {
-            return createMockCellViewModel({ model: mockCellModel })
-        });
+        const mockCellViewModels = _.range(0, numCells).map(cellIndex => createMockCellViewModel({ id: cellIndex.toString() }));
         return { 
             ...createNotebookViewModel(mockCellViewModels),
-            mockCellModels,
+            mockCellViewModels,
         };
     }
 
     test("can construct", () => {
-
-        const instanceId = "1234";
-        const language = "javascript";
-        const fileName = "a-file.notebook";
-        const path = "some/path";
-        
-        const { notebook } = createNotebookViewModel([]);
-
-        expect(notebook.getInstanceId()).toEqual(instanceId);
-        expect(notebook.getLanguage()).toEqual(language);
+        const mockStorageId: any = {};
+        const theLanguage = "javascript";
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = new NotebookViewModel(mockStorageId, theNodeJsVersion, theLanguage, [], undefined, false, false, "");
+        expect(notebook.getInstanceId()).toBeDefined();
+        expect(notebook.getLanguage()).toEqual(theLanguage);
         expect(notebook.getCells()).toEqual([]);
+        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
         expect(notebook.isUnsaved()).toBe(false);
         expect(notebook.isReadOnly()).toBe(false);
-
-    });
+    });    
 
     test("can construct with cell", () => {
-        const mockCellModel = createMockCellModel();
-        const mockCellViewModel = createMockCellViewModel({ model: mockCellModel });
+        const mockCellViewModel = createMockCellViewModel();
         
         const { cells } = createNotebookViewModel([ mockCellViewModel ]);
         
@@ -137,10 +113,8 @@ describe('view-model / notebook', () => {
     });
 
     test("can construct with multiple cells", () => {
-        const mockCellModel1 = createMockCellModel();
-        const mockCellModel2 = createMockCellModel();
-        const mockCellViewModel1 = createMockCellViewModel({ model: mockCellModel1 });
-        const mockCellViewModel2 = createMockCellViewModel({ model: mockCellModel2 });
+        const mockCellViewModel1 = createMockCellViewModel();
+        const mockCellViewModel2 = createMockCellViewModel();
 
         const { cells } = createNotebookViewModel([ mockCellViewModel1, mockCellViewModel2 ]);
 
@@ -162,6 +136,38 @@ describe('view-model / notebook', () => {
         expect(cells.length).toEqual(2);
         expect(cells[0]).toBe(cell1);
         expect(cells[1]).toBe(cell2);
+    });
+
+    test("can add second cell at start", async () => {        
+        const { notebook } = createNotebookViewModel([]);
+
+        const mockCell1 = createMockCellViewModel();
+        const mockCell2 = createMockCellViewModel();
+        await notebook.addCell(mockCell1, 0);
+        await notebook.addCell(mockCell2, 0);
+
+        expect(notebook.getCells()).toEqual([ mockCell2, mockCell1 ]);
+    });
+
+    test("can add cell in the middle", async () => {        
+        const { notebook } = createNotebookViewModel([]);
+
+        const mockCell1 = createMockCellViewModel();
+        const mockCell2 = createMockCellViewModel();
+        const mockCell3 = createMockCellViewModel();
+        await notebook.addCell(mockCell1, 0);
+        await notebook.addCell(mockCell2, 1);
+        await notebook.addCell(mockCell3, 1);
+
+        expect(notebook.getCells()).toEqual([ mockCell1, mockCell3, mockCell2 ]);
+    });
+
+    test("throws when adding a cell beyond the range", async () => {
+
+        const { notebook } = createNotebookViewModel([]);
+        await expect(() => notebook.addCell(createMockCellViewModel(), 1))
+            .rejects
+            .toThrow();
     });
 
     test("adding a cell raises onCellsChanged", async () => {
@@ -382,7 +388,6 @@ describe('view-model / notebook', () => {
     });
 
     test("can move a cell", async () => {
-
        const { notebook, cells } = createNotebookWithCells(3);
 
        await notebook.moveCell(0, 2);
@@ -394,8 +399,23 @@ describe('view-model / notebook', () => {
        ]);
     });
    
-     test("moving a cell raises onCellsChanged", async () => {
+    test("can move cell to start", async () => {        
+        const { notebook, cells } = createNotebookWithCells(3);
 
+        await notebook.moveCell(2, 0)
+
+        expect(notebook.getCells()).toEqual([ cells[2], cells[0], cells[1] ]);
+    });
+
+    test("can move cell to middle", async () => {        
+        const { notebook, cells } = createNotebookWithCells(3);
+
+        await notebook.moveCell(0, 1);
+
+        expect(notebook.getCells()).toEqual([ cells[1], cells[0], cells[2] ]);
+    });
+
+    test("moving a cell raises onCellsChanged", async () => {
         const { notebook } = createNotebookWithCells(3);
 
         await expectEventRaised(notebook, "onCellsChanged", async () => {
@@ -404,7 +424,6 @@ describe('view-model / notebook', () => {
     });
 
     test("moving a cell raises onModified", async () => {
-
         const { notebook } = createNotebookWithCells(3);
 
         await expectEventRaised(notebook, "onModified", async () => {
@@ -714,12 +733,10 @@ describe('view-model / notebook', () => {
 
         mockRepository.writeNotebook = jest.fn();
 
-        const serializedNotebook = {};
-
         await notebook.save();
 
         expect(mockRepository.writeNotebook).toHaveBeenCalledTimes(1);
-        expect(mockRepository.writeNotebook).toHaveBeenCalledWith(serializedNotebook, mockStorageId);
+        expect(mockRepository.writeNotebook).toHaveBeenCalledWith(expect.objectContaining({}), mockStorageId);
     });
 
     test("saving notebook flushing changes", async () => {
@@ -749,15 +766,13 @@ describe('view-model / notebook', () => {
 
         const { notebook, mockRepository } = createNotebookViewModel([]);
 
-        const serializedNotebook = { a: "serialized notebook" };
-
         mockRepository.writeNotebook = jest.fn();
 
         const newStorageId: any = { a: "new storage id", displayName: () => "a/path" };
         await notebook.saveAs(newStorageId);
 
         expect(mockRepository.writeNotebook).toHaveBeenCalledTimes(1);
-        expect(mockRepository.writeNotebook).toHaveBeenCalledWith(serializedNotebook, newStorageId);
+        expect(mockRepository.writeNotebook).toHaveBeenCalledWith(expect.objectContaining({}), newStorageId);
     });
 
     test("saving notebook as flushing changes", async () => {
@@ -784,6 +799,100 @@ describe('view-model / notebook', () => {
         await notebook.saveAs(newStorageId);
 
         expect(notebook.isModified()).toBe(false);
+    });
+
+    test("can serialize", () => {
+        const storageId: any = {};
+        const theLanguage = "javascript";
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = new NotebookViewModel(storageId, theNodeJsVersion, theLanguage, [], undefined, false, false, "");
+        expect(notebook.serialize()).toEqual({
+            version: 3,
+            language: theLanguage,
+            nodejs: theNodeJsVersion,
+            cells: [],
+        });
+    });
+
+    test("can deserialize", () => {
+        const storageId: any = {};
+        const theLanguage = "javascript";
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+            version: 3,
+            nodejs: theNodeJsVersion,
+            language: theLanguage,
+            cells: [],
+        });
+        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
+        expect(notebook.getLanguage()).toEqual(theLanguage);
+        expect(notebook.getCells()).toEqual([]);
+        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+    });
+
+    test("can deserialize with undefined cells", () => {
+        const storageId: any = {};
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+            version: 3,
+            nodejs: theNodeJsVersion,
+            language: undefined,
+            cells: undefined,
+        } as any);
+        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
+        expect(notebook.getLanguage()).toEqual("javascript");
+        expect(notebook.getCells()).toEqual([]);
+        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+    });
+
+    test("can deserialize with cells", () => {
+        const storageId: any = {};
+        const serializedCell: any = { cellType: "code" };
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+            version: 3,
+            language: "",
+            cells: [
+                serializedCell,
+            ],
+        });
+        expect(notebook.getCells().length).toEqual(1);
+        expect(notebook.getCells()[0]).toBeDefined();
+    });
+
+    test("can deserialize with sheet", () => {
+        const storageId: any = {};
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+            version: 2,
+            nodejs: theNodeJsVersion,
+            sheet: {
+                id: "1234",
+                language: undefined,
+                cells: [],
+            },
+        } as any);
+        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
+        expect(notebook.getLanguage()).toEqual("javascript");
+        expect(notebook.getCells()).toEqual([]);
+        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+    });
+
+    test("can deserialize with sheet and undefined cells", () => {
+        const storageId: any = {};
+        const theNodeJsVersion = "v10.0.0";
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+            version: 2,
+            nodejs: theNodeJsVersion,
+            sheet: {
+                id: "1234",
+                language: undefined,
+                cells: undefined,
+            },
+        } as any);
+        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
+        expect(notebook.getLanguage()).toEqual("javascript");
+        expect(notebook.getCells()).toEqual([]);
+        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
     });
 
 

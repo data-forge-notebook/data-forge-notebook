@@ -450,22 +450,10 @@ export class NotebookViewModel implements INotebookViewModel {
 
         await this.flushChanges();
 
-        //fio:
-        // this.notebook.addCell(cellIndex, cellViewModel.getModel());
-
         if (cellIndex > this.cells.length) {
             throw new Error(`Bad index ${cellIndex} for new cell in notebook with ${this.cells.length} existing cells!`);
         }
-
-        //fio:
-        // if (cellIndex === this.cells.length) {
-        //     // Adding at end.
-        //     this.cells.push(cellViewModel);
-        // }
-        // else {
-        //     this.cells.splice(cellIndex, 0, cellViewModel)
-        // }        
-        
+       
         this.cells.splice(cellIndex, 0, cellViewModel)
         await this.onCellsChanged.raise();
 
@@ -480,7 +468,7 @@ export class NotebookViewModel implements INotebookViewModel {
         let nextSelectedCell = -1; // -1 Indicates no cell is selected next.
         const cells = this.getCells();
         const cellIndex = cells.indexOf(cell);
-        if (cellIndex >= cells.length-1) {
+        if (selectNextCell && cellIndex >= cells.length-1) {
             // Last cell is being deleted.
             if (cellIndex > 0) {
                 nextSelectedCell = cellIndex-1; // Previous cell will be selected next.
