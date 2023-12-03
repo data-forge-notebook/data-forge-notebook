@@ -15,13 +15,12 @@ function App() {
             <div>
                 <Button icon="refresh" />
                 <MonacoEditor
-                    model={
+                    cell={
                         new CodeCellViewModel(
                             "1234",
                             CellType.Code,
                             "const x = 1;",
-                            undefined,
-                            undefined,
+                            undefined,                            
                             [], []
                         )
                     }

@@ -62,13 +62,13 @@ async function onEditorReady() {
 // Raises the event in the main process that a new notebook has been set.
 //
 async function onNotebookSet() {
-    if (!notebookEditorViewModel.isNotebookOpen()) {
+    const notebook = notebookEditorViewModel.notebook;
+    if (!notebook) {
         return;
     }
-    const notebook = notebookEditorViewModel.getOpenNotebook();
-    const notebookId = notebook.getStorageId() as NotebookStorageId;
+    const notebookId = notebook.storageId as NotebookStorageId;
     const fileName = notebookId.getFileName();
-    const isModified = notebook.isModified();
+    const isModified = notebook.modified;
     ipcRenderer.send("notebook-editor-event", {
         editorWindowId: editorWindowId,
         eventName: "onNotebookSet",
@@ -83,7 +83,8 @@ async function onNotebookSet() {
 // Raises the event in the main process to show the window after the notebook has been rendered.
 //
 async function onNotebookRendered() {
-    if (!notebookEditorViewModel.isNotebookOpen()) {
+    const notebook = notebookEditorViewModel.notebook;
+    if (!notebook) {
         return;
     }
     ipcRenderer.send("notebook-editor-event", {
@@ -97,13 +98,15 @@ async function onNotebookRendered() {
 // Raises the event in the main process that the notebook has been modified.
 //
 async function onNotebookModified() {
-    const notebook = notebookEditorViewModel.getOpenNotebook();
-    const isModified = notebook.isModified();
+    const notebook = notebookEditorViewModel.notebook;
+    if (!notebook) {
+        return;
+    }
     ipcRenderer.send("notebook-editor-event", {
         editorWindowId: editorWindowId,
         eventName: "onModified",
         payload: {
-            isModified: isModified,
+            isModified: notebook.modified,
         },
     });
 }

@@ -38,7 +38,7 @@ const mockId: any = {
 };
 
 // Example notebook:
-const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, "v16", testNotebook);
+const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, testNotebook);
 const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 
 // Welcome screen.
