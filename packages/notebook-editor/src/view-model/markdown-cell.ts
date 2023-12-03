@@ -79,4 +79,44 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
             input.code || ""
         );
     }           
+
+    //
+    // The notebook has started executing.
+    //
+    @action
+    notifyNotebookEvalStarted(): void {
+        // Only implemented for code cells.
+    }
+
+    //
+    // Start asynchonrous evaluation of the cell's code.
+    //
+    @action
+    async notifyCodeEvalStarted(): Promise<void> {
+        // Only implemented for code cells.
+    }
+
+    //
+    // Notify the cell that code evaluation has completed.
+    //
+    @action
+    async notifyCodeEvalComplete(): Promise<void> {
+        // Only implemented for code cells.
+    }
+
+    //
+    // Clear all the outputs from the cell.
+    //
+    @action
+    async clearOutputs(): Promise<void> {
+        // Only implemented for code cells.
+    }
+
+    //
+    // Clear all the errors from the cell.
+    //
+    @action
+    async clearErrors(): Promise<void> {
+        // Only implemented for code cells.
+    }
 }

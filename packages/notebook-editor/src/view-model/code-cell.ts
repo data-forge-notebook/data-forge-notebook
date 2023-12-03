@@ -160,7 +160,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     }
 
     //
-    // Notify the cell that code evaluation has compled.
+    // Notify the cell that code evaluation has completed.
     //
     @action
     async notifyCodeEvalComplete(): Promise<void> {

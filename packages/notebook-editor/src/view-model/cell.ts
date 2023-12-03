@@ -292,7 +292,7 @@ export interface ICellViewModel {
     onFlushChanges: IEventSource<BasicEventHandler>;
 }
 
-export class CellViewModel implements ICellViewModel {
+export abstract class CellViewModel implements ICellViewModel {
 
     //
     // Unique id for the cell.
@@ -456,18 +456,12 @@ export class CellViewModel implements ICellViewModel {
     //
     // Clear all the outputs from the cell.
     //
-    @action
-    async clearOutputs(): Promise<void> {
-        // Nothing to do for generic cell.
-    }
+    abstract clearOutputs(): Promise<void>;
 
     //
     // Clear all the errors from the cell.
     //
-    @action
-    async clearErrors(): Promise<void> {
-        // Nothing to do for generic cell.
-    }
+    abstract clearErrors(): Promise<void>;
     
     //
     // Select this cell.
@@ -599,24 +593,15 @@ export class CellViewModel implements ICellViewModel {
     //
     // The notebook has started executing.
     //
-    @action
-    notifyNotebookEvalStarted(): void {
-        // Only implemented for code cells.
-    }
+    abstract notifyNotebookEvalStarted(): void;
 
     //
     // Start asynchonrous evaluation of the cell's code.
     //
-    @action
-    async notifyCodeEvalStarted(): Promise<void> {
-        // Only implemented for code cells.
-    }
+    abstract notifyCodeEvalStarted(): Promise<void>;
 
     //
     // Notify the cell that code evaluation has compled.
     //
-    @action
-    async notifyCodeEvalComplete(): Promise<void> {
-        // Only implemented for code cells.
-    }
+    abstract notifyCodeEvalComplete(): Promise<void>;
 }
