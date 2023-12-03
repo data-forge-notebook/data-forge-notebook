@@ -5,21 +5,21 @@ describe("view-model / cell-error", () => {
     test("can construct", () => {
         const msg = "ABCD";
         const cellError = new CellErrorViewModel(msg);
-        expect(cellError.getInstanceId()).toBeDefined();
-        expect(cellError.getMsg()).toEqual(msg);
+        expect(cellError.instanceId).toBeDefined();
+        expect(cellError.msg).toEqual(msg);
 
     });
 
     test("new cell error is fresh", () => {
         const cellError = new CellErrorViewModel("");
-        expect(cellError.isFresh()).toBe(true);
+        expect(cellError.fresh).toBe(true);
     });
 
     test("can mark cell error as stale", () => {
         const cellError = new CellErrorViewModel("");
 
         cellError.markStale();
-        expect(cellError.isFresh()).toBe(false);
+        expect(cellError.fresh).toBe(false);
     });
 
     test("can serialize", () => {
@@ -35,14 +35,14 @@ describe("view-model / cell-error", () => {
         const cellError = CellErrorViewModel.deserialize({
             msg: theMessage,
         });
-        expect(cellError.getMsg()).toEqual(theMessage);
+        expect(cellError.msg).toEqual(theMessage);
     });
 
     test("can mark stale", () => {
         const cellError = new CellErrorViewModel("");
-        expect(cellError.isFresh()).toEqual(true);
+        expect(cellError.fresh).toEqual(true);
 
         cellError.markStale();
-        expect(cellError.isFresh()).toEqual(false);
+        expect(cellError.fresh).toEqual(false);
     });    
 });

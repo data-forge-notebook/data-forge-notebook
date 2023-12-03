@@ -8,9 +8,9 @@ describe("view-model / cell-output-value", () => {
         const theData = "hello";
         const thePlugin = "a-plugin";
         const cellOutputValue = new CellOutputValueViewModel(theDisplayType, thePlugin, theData);
-        expect(cellOutputValue.getDisplayType()).toEqual(theDisplayType);
-        expect(cellOutputValue.getData()).toEqual(theData);
-        expect(cellOutputValue.getPlugin()).toEqual(thePlugin)
+        expect(cellOutputValue.displayType).toEqual(theDisplayType);
+        expect(cellOutputValue.data).toEqual(theData);
+        expect(cellOutputValue.plugin).toEqual(thePlugin)
     });
 
     test("can serialize", () => {
@@ -32,8 +32,8 @@ describe("view-model / cell-output-value", () => {
             displayType: theDisplayType,
             data: theData,
         });
-        expect(cellOutputValue.getDisplayType()).toEqual(theDisplayType);
-        expect(cellOutputValue.getData()).toEqual(theData);
+        expect(cellOutputValue.displayType).toEqual(theDisplayType);
+        expect(cellOutputValue.data).toEqual(theData);
     });    
     
 });

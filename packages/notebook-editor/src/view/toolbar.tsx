@@ -1,6 +1,5 @@
 import { Button, ButtonGroup, Icon, Menu, MenuItem, Popover, PopoverInteractionKind, PopoverPosition, Position, Spinner, Tooltip } from '@blueprintjs/core';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
-import { forceUpdate } from 'browser-utils';
 import * as React from 'react';
 import { ICommander, ICommanderId } from '../services/commander';
 import { IPlatform, IPlatformId } from '../services/platform';
@@ -40,57 +39,11 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
         this.state = {};
     }
 
-    componentDidMount() {
-        this.props.model.onOpenNotebookWillChange.attach(this.onOpenNotebookWillChange);
-        this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
-        this.props.model.onModified.attach(this.onNeedUpdate);
-        this.evaluator.onJobsChanged.attach(this.onNeedUpdate);
-        
-        this.hookNotebookEvents();
-    }
-
-    componentWillUnmount(): void {
-        this.props.model.onOpenNotebookWillChange.detach(this.onOpenNotebookWillChange);
-        this.props.model.onOpenNotebookChanged.detach(this.onOpenNotebookChanged);
-        this.props.model.onModified.detach(this.onNeedUpdate);
-        this.evaluator.onJobsChanged.detach(this.onNeedUpdate);
-
-        this.unhookNotebookEvents();
-    }
-
-    hookNotebookEvents(): void {
-        if (this.props.model.isNotebookOpen()) {
-            const notebook = this.props.model.getOpenNotebook();
-            notebook.onEvalStarted.attach(this.onNeedUpdate); //fio: ???
-            notebook.onEvalCompleted.attach(this.onNeedUpdate); //fio: ???
-        }
-    }
-
-    unhookNotebookEvents(): void {
-        if (this.props.model.isNotebookOpen()) {
-            const notebook = this.props.model.getOpenNotebook();
-            notebook.onEvalStarted.detach(this.onNeedUpdate); //fio: ???
-            notebook.onEvalCompleted.detach(this.onNeedUpdate); //fio: ???
-        }
-    }
-
-    private onOpenNotebookWillChange = async (): Promise<void> => {
-        this.unhookNotebookEvents();
-    }
-
-    private onOpenNotebookChanged = async (): Promise<void> => {
-        this.hookNotebookEvents();
-    }
-
-    private onNeedUpdate = async () => {
-        await forceUpdate(this);
-    }
-
     render(): JSX.Element {
-        const isNotebookOpen = this.props.model.isNotebookOpen();
-        const notebook = this.props.model.isNotebookOpen() && this.props.model.getOpenNotebook() || undefined;
-        const isExecuting = notebook && notebook.isExecuting() || false;
-        let language = notebook && notebook.getLanguage();
+        const isNotebookOpen = this.props.model.notebook !== undefined;
+        const notebook = this.props.model.notebook || undefined;
+        const isExecuting = notebook && notebook.executing || false;
+        let language = notebook && notebook.language;
         if (language === "javascript") {
             language = "JavaScript";
         }
@@ -137,14 +90,14 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         }
                     </ButtonGroup>
                     
-                    {this.props.model.isNotebookOpen()
+                    {this.props.model.notebook
                         && <ButtonGroup className="ml-2">
                             {makeButton(this.commander, "undo", { pos: Position.BOTTOM }, this.platform)}
                             {makeButton(this.commander, "redo", { pos: Position.BOTTOM }, this.platform)}
                         </ButtonGroup>
                     }
 
-                    {this.props.model.isNotebookOpen()
+                    {this.props.model.notebook
                         && <Popover
                             className="ml-2"
                             autoFocus={false}
@@ -178,7 +131,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         {makeButton(this.commander, "toggle-command-palette", { pos: Position.BOTTOM }, this.platform)}
                     </ButtonGroup>
 
-                    {this.props.model.isNotebookOpen()
+                    {this.props.model.notebook
                         &&<ButtonGroup className="ml-2">
                             {makeButton(this.commander, "clear-outputs", { pos: Position.BOTTOM }, this.platform)}
                         </ButtonGroup>
@@ -224,7 +177,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         </Tooltip>
                     </ButtonGroup>
 
-                    {this.props.model.isNotebookOpen()
+                    {this.props.model.notebook
                         &&<ButtonGroup className="ml-2">
                             {makeButton(this.commander, "split-cell", { pos: Position.BOTTOM }, this.platform)}
                             {makeButton(this.commander, "merge-cell-up", { pos: Position.BOTTOM }, this.platform)}
@@ -233,7 +186,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         </ButtonGroup>
                     }
 
-                    {this.props.model.isNotebookOpen()
+                    {this.props.model.notebook
                         &&<ButtonGroup className="ml-2">
                             {makeButton(this.commander, "focus-top-cell", { pos: Position.BOTTOM }, this.platform)}
                             {makeButton(this.commander, "focus-prev-cell", { pos: Position.BOTTOM }, this.platform)}

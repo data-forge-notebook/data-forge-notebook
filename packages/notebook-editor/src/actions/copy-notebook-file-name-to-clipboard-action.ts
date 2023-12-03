@@ -21,12 +21,12 @@ export class CopyNotebookFileNameToClipboard implements IAction {
 
     async invoke(context: IActionContext): Promise<void> {
         const notebook = context.getNotebook();
-        if (notebook.isUnsaved()) {
+        if (notebook.unsaved) {
             this.notification.warn("This notebook has not been saved into the file system, please save it first.");
             return;
         }
 
-        const filePath = notebook.getStorageId().toString()!
+        const filePath = notebook.storageId.toString()!
         const fileName = path.basename(filePath);
         this.clipboard.write(fileName);
 

@@ -20,7 +20,7 @@ export class PasteCellBelowAction implements IAction {
     
     async invoke(context: IActionContext): Promise<IChange | void> {
         const notebookEditor = context.getNotebookEditor();
-        const cellClipboard = notebookEditor.getCellClipboard();
+        const cellClipboard = notebookEditor.cellClipboard;
         if (!cellClipboard) {
             this.notification.warn("To paste a cell, first cut or copy it.");
             return;
@@ -29,14 +29,14 @@ export class PasteCellBelowAction implements IAction {
         const notebook = context.getNotebook();
         const selectedCell = context.getSelectedCell();
         if (selectedCell) {
-            const selectedCellIndex = notebook.getCells().indexOf(selectedCell);
+            const selectedCellIndex = notebook.cells.indexOf(selectedCell);
             if (selectedCellIndex < 0) {
                 throw new Error("Couldn't find index of selected cell.");
             }
             return new PasteCellChange(notebook, selectedCellIndex+1, cellClipboard);
         }
         else {
-            const cells = notebook.getCells();
+            const cells = notebook.cells;
             if (cells.length === 0) {
                 return new PasteCellChange(notebook, 0, cellClipboard);
             }

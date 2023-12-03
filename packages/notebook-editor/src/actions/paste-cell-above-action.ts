@@ -19,7 +19,7 @@ export class PasteCellAboveAction implements IAction {
     
     async invoke(context: IActionContext): Promise<IChange | void> {
         const notebookEditor = context.getNotebookEditor();
-        const cellClipboard = notebookEditor.getCellClipboard();
+        const cellClipboard = notebookEditor.cellClipboard;
         if (!cellClipboard) {
             this.notification.warn("To paste a cell, first cut or copy it.");
             return;
@@ -29,7 +29,7 @@ export class PasteCellAboveAction implements IAction {
         const selectedCell = context.getSelectedCell();
         if (selectedCell) {
             // Insert above selected cell.
-            const selectedCellIndex = notebook.getCells().indexOf(selectedCell);
+            const selectedCellIndex = notebook.cells.indexOf(selectedCell);
             return new PasteCellChange(notebook, selectedCellIndex, cellClipboard);
         }
         else {

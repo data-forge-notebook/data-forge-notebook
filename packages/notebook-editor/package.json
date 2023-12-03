@@ -38,6 +38,8 @@
         "host-bridge": "workspace:*",
         "humanize-duration": "^3.27.1",
         "lodash": "^4.17.21",
+        "mobx": "^6.12.0",
+        "mobx-react": "^9.1.0",
         "model": "workspace:*",
         "moment": "^2.29.1",
         "plugins": "workspace:*",

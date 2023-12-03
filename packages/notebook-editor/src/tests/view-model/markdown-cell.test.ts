@@ -8,20 +8,20 @@ describe("view-model / markdown-cell", () => {
     // Creates a cell for testing.
     //
     function createCell() {
-        const cell = new MarkdownCellViewModel("", CellType.Markdown, "", undefined);
+        const cell = new MarkdownCellViewModel("", CellType.Markdown, "");
         return { cell };
     }    
 
     test("can construct", () => {
 
-        const cell = new MarkdownCellViewModel("", CellType.Markdown, "", undefined);
-        expect(cell.getText()).toEqual("");
+        const cell = new MarkdownCellViewModel("", CellType.Markdown, "");
+        expect(cell.text).toEqual("");
     });
 
     test("is in preview mode by default", () => {
         
         const { cell } = createCell();
-        expect(cell.isEditing()).toBe(false);
+        expect(cell.editing).toBe(false);
     });
 
     test("can enter edit mode", async () => {
@@ -29,27 +29,7 @@ describe("view-model / markdown-cell", () => {
         const { cell } = createCell();
         await cell.enterEditMode();
 
-        expect(cell.isEditing()).toBe(true);
-    });
-
-    test("entering edit mode raises onModeChanged", async () => {
-
-        const { cell } = createCell();
-
-        await expectEventRaised(cell, "onModeChanged", async () => {
-            await cell.enterEditMode();
-        });
-    });
-
-    test("entering edit mode again has no effect", async () => {
-
-        const { cell } = createCell();
-
-        await cell.enterEditMode();
-
-        await expectEventNotRaised(cell, "onModeChanged", async () => {
-            await cell.enterEditMode();
-        });
+        expect(cell.editing).toBe(true);
     });
 
     test("entering edit mode focuses the cell", async () => {
@@ -67,7 +47,7 @@ describe("view-model / markdown-cell", () => {
 
         await cell.enterEditMode();
 
-        expect(cell.isSelected()).toBe(true);
+        expect(cell.selected).toBe(true);
     });
     
     test("can return to preview mode", async () => {
@@ -76,7 +56,7 @@ describe("view-model / markdown-cell", () => {
         await cell.enterEditMode();
         await cell.enterPreviewMode();
 
-        expect(cell.isEditing()).toBe(false);
+        expect(cell.editing).toBe(false);
     });
 
     test("entering preview mode flushes changes", async () => {
@@ -100,20 +80,10 @@ describe("view-model / markdown-cell", () => {
         });
     });
 
-    test("entering preview mode raises onModeChanged", async () => {
-
-        const { cell } = createCell();
-        await cell.enterEditMode();
-
-        await expectEventRaised(cell, "onModeChanged", async () => {
-            await cell.enterPreviewMode();
-        });
-    });
-
     test("can serialize markdown cell", () => {
         const theId = "1234";
         const theText = "# Hello markdown;";
-        const cell = new MarkdownCellViewModel(theId, CellType.Markdown, theText, undefined);
+        const cell = new MarkdownCellViewModel(theId, CellType.Markdown, theText);
         expect(cell.serialize()).toEqual({
             id: theId,
             cellType: CellType.Markdown,
@@ -131,10 +101,8 @@ describe("view-model / markdown-cell", () => {
             cellType: CellType.Markdown,
             code: theText,
         });
-        expect(cell.getId()).toEqual(theId);
-        expect(cell.getText()).toEqual(theText);
-        expect(cell.getCellType()).toEqual(CellType.Markdown);
+        expect(cell.id).toEqual(theId);
+        expect(cell.text).toEqual(theText);
+        expect(cell.cellType).toEqual(CellType.Markdown);
     });
-
-
 });

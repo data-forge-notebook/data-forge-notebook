@@ -2,11 +2,14 @@ import * as React from 'react';
 import { INotebookViewModel } from "../../view-model/notebook";
 import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { CellUI } from './editor/cell/cell';
-import { forceUpdate } from 'browser-utils';
 import classNames from 'classnames';
+import { observer } from 'mobx-react';
 
 export interface INotebookProps {
-    model: INotebookViewModel;
+    //
+    // The model of the notebook.
+    //
+    notebook: INotebookViewModel;
 }
 
 export interface INotebookState {
@@ -16,6 +19,7 @@ export interface INotebookState {
     isDragging: boolean;
 }
 
+@observer
 export class NotebookUI extends React.Component<INotebookProps, INotebookState> {
 
     constructor (props: any) {
@@ -26,18 +30,6 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
         };
     }
 
-    componentDidMount() {
-        this.props.model.onCellsChanged.attach(this.onCellsChanged);
-    }
-
-    componentWillUnmount() {
-        this.props.model.onCellsChanged.detach(this.onCellsChanged);
-    }
-
-    private onCellsChanged = async (): Promise<void> => {
-        await forceUpdate(this); 
-    }
-    
     private onDragStart = () => {
         this.setState({ isDragging: true });
     }
@@ -52,7 +44,7 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
             return;
         }
 
-        this.props.model.moveCell(result.source.index, result.destination.index);
+        this.props.notebook.moveCell(result.source.index, result.destination.index);
 
         this.setState({ isDragging: false });
     }
@@ -73,7 +65,7 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
     }
 
     render () {
-        const cells = this.props.model.getCells();
+        const cells = this.props.notebook.cells;
 
         return (
             <div>
@@ -84,7 +76,7 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
                         onDragEnd={this.onDragEnd}
                         >
                         <Droppable
-                            droppableId={this.props.model.getInstanceId()}
+                            droppableId={this.props.notebook.instanceId}
                             type="cell"
                             >
                             {(provided) => ( 
@@ -95,8 +87,8 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
                                     >
                                     {cells.map((cell, index) => (
                                         <Draggable
-                                            key={cell.getId()} 
-                                            draggableId={cell.getId()}
+                                            key={cell.id} 
+                                            draggableId={cell.id}
                                             index={index}
                                             >
                                             {(provided, snapshot) => (
@@ -116,9 +108,9 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
                                                     )}
                                                     >
                                                     <CellUI
-                                                        language={this.props.model.getLanguage()}
-                                                        model={cell} 
-                                                        notebookModel={this.props.model}
+                                                        language={this.props.notebook.language}
+                                                        cell={cell} 
+                                                        notebook={this.props.notebook}
                                                         dragHandleProps={provided.dragHandleProps}
                                                         />
                                                 </div>

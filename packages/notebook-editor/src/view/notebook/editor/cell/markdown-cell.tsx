@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { IMarkdownCellViewModel } from '../../../../view-model/markdown-cell';
 import { handleAsyncErrors } from 'utils';
-import { forceUpdate } from 'browser-utils';
 import { MonacoEditor } from '../../../../components/monaco-editor';
 import ReactMarkdown from 'react-markdown';
 import { InjectProperty, InjectableClass } from '@codecapers/fusion';
@@ -9,6 +8,7 @@ import { ICommander, ICommanderId } from '../../../../services/commander';
 import { IOpen, IOpen_ID } from '../../../../services/open';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 import { ICellViewModel } from '../../../../view-model/cell';
+import { observer } from 'mobx-react';
 
 export interface IMarkdownCellProps {
     //
@@ -26,6 +26,7 @@ export interface IMarkdownCellState {
 }
 
 @InjectableClass()
+@observer
 export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdownCellState> {
 
     @InjectProperty(ICommanderId)
@@ -42,18 +43,10 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
 
     componentDidMount() {
         this.props.model.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
-        this.props.model.onModeChanged.attach(this.onModeChanged);
-        this.props.model.onTextChanged.attach(this.onTextChanged);
     }
 
     componentWillUnmount() {
         this.props.model.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
-        this.props.model.onModeChanged.detach(this.onModeChanged);
-        this.props.model.onTextChanged.detach(this.onTextChanged);
-    }
-
-    private onModeChanged = async (): Promise<void> => {
-        await forceUpdate(this);
     }
 
     async enterPreviewMode(): Promise<void> {
@@ -61,16 +54,12 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
     }
 
     private onEditorSelectionChanged = async (cell: ICellViewModel): Promise<void> => {
-        
-        if (this.props.model.isSelected()) { //TODO: COULD BE DONE IN THE VIEW MODEL.
+        if (this.props.model.selected) {
             await this.props.model.enterEditMode();
         }
         else {
             await this.enterPreviewMode();
         }
-
-        // Force a render in preview or edit mode so that we can scroll to the element.
-        await forceUpdate(this); 
     }
 
     private onBlur = async (): Promise<void> => {
@@ -85,18 +74,6 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
     private onEscapeKey = async () => {
         await this.enterPreviewMode();
         await this.props.notebookModel.deselect();
-    }
-
-    //
-    // Event raised when the text in the view model has changed.
-    //
-    private onTextChanged = async (): Promise<void> => {
-        if (!this.props.model.isEditing()) {
-            //
-            // When in preview mode and the text has changed, rerender the markdown.
-            //
-            await forceUpdate(this);
-        }
     }
 
     //
@@ -122,7 +99,7 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
     }
 
     render () {
-        const inEditMode = this.props.model.isEditing();
+        const inEditMode = this.props.model.editing;
 
         return (
             <div 
@@ -140,7 +117,7 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
                         >
                         <MonacoEditor
                             language="markdown"
-                            model={this.props.model} 
+                            cell={this.props.model} 
                             onEscapeKey={this.onEscapeKey}
                             />
                     </div>
@@ -151,7 +128,7 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
                         }}
                         >
                         <ReactMarkdown
-                            children={this.props.model.getText()} 
+                            children={this.props.model.text} 
                             components={{
                                 a: (props: any) => {
                                     return (

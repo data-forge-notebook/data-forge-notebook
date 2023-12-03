@@ -9,7 +9,6 @@ import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 import { CellHandle } from './cell-handle';
 import { throttleAsync } from 'utils';
-import { forceUpdate } from 'browser-utils';
 import { isElementPartiallyInViewport } from 'browser-utils';
 import { CellType } from 'model';
 import { makeButton } from '../../../make-button';
@@ -17,6 +16,7 @@ import { InjectProperty, InjectableClass } from '@codecapers/fusion';
 import { ICommander, ICommanderId } from '../../../../services/commander';
 import { Position } from '@blueprintjs/core';
 import { IPlatform, IPlatformId } from '../../../../services/platform';
+import { observer } from 'mobx-react';
 const classnames = require("classnames");
 
 export interface ICellProps {
@@ -29,12 +29,12 @@ export interface ICellProps {
     //
     // The model for the cell.
     //
-    model: ICellViewModel;
+    cell: ICellViewModel;
 
     //
     // The model for the notebook.
     //
-    notebookModel: INotebookViewModel;
+    notebook: INotebookViewModel;
 
     //
     // Props for a draggable cell.
@@ -46,6 +46,7 @@ export interface ICellState {
 }
 
 @InjectableClass()
+@observer
 export class CellUI extends React.Component<ICellProps, ICellState> {
 
     @InjectProperty(ICommanderId)
@@ -64,16 +65,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     // 
     innerCellContainerElement: React.RefObject<HTMLDivElement>;
     
-    //
-    // Throttled version of onErrorAdded event handler.
-    //
-    onErrorAddedThrottled: _.DebouncedFunc<any>;
-
-    //
-    // Throttled version of onOutputChanged event handler.
-    //
-    onOutputChangedThrottled: _.DebouncedFunc<any>;
-
     constructor (props: any) {
         super(props)
 
@@ -81,40 +72,14 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
 
         this.cellContainerElement = React.createRef<HTMLDivElement>();
         this.innerCellContainerElement = React.createRef<HTMLDivElement>();
-
-        this.onErrorAddedThrottled = throttleAsync(this, this.onErrorAdded, 500);
-        this.onOutputChangedThrottled = throttleAsync(this, this.onOutputChanged, 500);        
     }
 
     componentDidMount() {
-        this.props.model.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
-        this.props.model.onScrollIntoView.attach(this.onScrollIntoView);
-        this.props.model.onErrorsChanged.attach(this.onErrorAddedThrottled);
-        this.props.model.onOutputChanged.attach(this.onOutputChangedThrottled);
-        this.props.model.onEvalCompleted.attach(this.onEvalCompleted);
-        this.props.notebookModel.onEvalStarted.attach(this.needUpdate);
-        this.props.notebookModel.onEvalCompleted.attach(this.needUpdate);
-        this.props.model.onFlushChanges.attach(this.onFlushChanges);
-
-        if (this.props.model.getHeight() === undefined) {
-            // No starting height.
-            // this.log.info(`-- No starting height for cell ${this.props.model.getId()}, recording initial height.`);
-            this.recordCellHeight();
-        }
-        else {
-            // this.log.info(`-- Cell ${this.props.model.getId()} has starting height recorded at ${this.props.model.getHeight()}.`);
-        }
+        this.props.cell.onScrollIntoView.attach(this.onScrollIntoView);
     }
 
     componentWillUnmount() {
-        this.props.model.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
-        this.props.model.onScrollIntoView.detach(this.onScrollIntoView);
-        this.props.model.onErrorsChanged.detach(this.onErrorAddedThrottled);
-        this.props.model.onOutputChanged.detach(this.onOutputChangedThrottled);
-        this.props.model.onEvalCompleted.detach(this.onEvalCompleted);
-        this.props.notebookModel.onEvalStarted.detach(this.needUpdate);
-        this.props.notebookModel.onEvalCompleted.detach(this.needUpdate);
-        this.props.model.onFlushChanges.detach(this.onFlushChanges);
+        this.props.cell.onScrollIntoView.detach(this.onScrollIntoView);
     }
 
     shouldComponentUpdate(nextProps: any, nextState: any) {
@@ -122,60 +87,9 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
         return false;
     }
 
-    //
-    // Event raised to flush changes through the model.
-    //
-    private onFlushChanges = async (): Promise<void> => {
-        this.onOutputChangedThrottled.cancel();
-    }
-
-   private needUpdate = async (): Promise<void> => {  //TODO: Only really need to rerender the output or errors for the control! Or render the play/stop button!!
-        await forceUpdate(this);
-    }
-
-    //
-    // Event raised when this cell has been selected or unselected.
-    //
-    private onEditorSelectionChanged = async (cell: ICellViewModel): Promise<void> => {
-        await forceUpdate(this);
-    }
-
     private onCellFocused = async (): Promise<void> => {
         // Automatically select cell when focused.
-        if (!this.props.model.isSelected()) {
-            await this.props.model.select();
-        }
-    }
-
-
-    //
-    // Errors where added to the cell.
-    //
-    private onErrorAdded = async (): Promise<void> => {
-        await forceUpdate(this);
-    }
-
-    //
-    // Output was added to the cell.
-    //
-    private onOutputChanged = async (): Promise<void> => {
-        await forceUpdate(this);
-    }
-
-    //
-    // Redraw and measure cell height after evaluation completed because errors or outputs might have been cleared.
-    //
-    private onEvalCompleted = async (): Promise<void> => {
-        await forceUpdate(this);
-    }
-
-    //
-    // Record the rendered height of the cell.
-    //
-    private recordCellHeight(): void {
-        if (this.cellContainerElement.current) {
-            this.props.model.setHeight(this.cellContainerElement.current.offsetHeight);
-        }
+        await this.props.cell.select();
     }
 
     //
@@ -213,21 +127,21 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     // Return the particular type of cell.
     //
     private renderCellType(): JSX.Element { //TODO: Can the cell type be some kind of plugin, instead of being hard coded?
-        const cellType = this.props.model.getCellType();
+        const cellType = this.props.cell.cellType;
         if (cellType === CellType.Code) {
             return (
                 <CodeCellUI 
                     language={this.props.language}
-                    model={this.props.model as ICodeCellViewModel} 
-                    notebookModel={this.props.notebookModel}
+                    cell={this.props.cell as ICodeCellViewModel} 
+                    notebook={this.props.notebook}
                     />
             );
         }
         else if (cellType === CellType.Markdown) {
             return (
                 <MarkdownCellUI 
-                    model={this.props.model as IMarkdownCellViewModel} 
-                    notebookModel={this.props.notebookModel}
+                    model={this.props.cell as IMarkdownCellViewModel} 
+                    notebookModel={this.props.notebook}
                     />
             );
         }
@@ -237,15 +151,14 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     }
 
     render () {
-        const canExecute = this.props.model.getCellType() === CellType.Code;
-        const notebookExecuting = this.props.notebookModel.isExecuting();
-        const isSelected = this.props.model.isSelected();
+        const canExecute = this.props.cell.cellType === CellType.Code;
+        const notebookExecuting = this.props.notebook.executing;
+        const isSelected = this.props.cell.selected;
 
         return (
             <div 
                 ref={this.cellContainerElement}
                 onFocus={this.onCellFocused}
-                data-test={this.props.model.getHeight()}
                 >
                 <div 
                     className="centered-container cell-container pos-relative"
@@ -273,15 +186,15 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                     }}
                                     >
                                     <div>
-                                        {makeButton(this.commander, "move-cell-up", { pos: Position.LEFT }, this.platform, { cell: this.props.model })}
+                                        {makeButton(this.commander, "move-cell-up", { pos: Position.LEFT }, this.platform, { cell: this.props.cell })}
                                     </div>
 
                                     <div>
-                                        {makeButton(this.commander, "move-cell-down", { pos: Position.LEFT }, this.platform, { cell: this.props.model })}
+                                        {makeButton(this.commander, "move-cell-down", { pos: Position.LEFT }, this.platform, { cell: this.props.cell })}
                                     </div>
 
                                     <div className="mt-4">
-                                        {makeButton(this.commander, "delete-cell", { pos: Position.LEFT, intent: "danger" }, this.platform, { cell: this.props.model })}
+                                        {makeButton(this.commander, "delete-cell", { pos: Position.LEFT, intent: "danger" }, this.platform, { cell: this.props.cell })}
                                     </div>
                                 </div>
 
@@ -297,13 +210,13 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                         >
                                         <div>
                                             {canExecute 
-                                                && makeButton(this.commander, "eval-to-cell", {}, this.platform, { cell: this.props.model }, notebookExecuting ? "executing" : "notExecuting")
+                                                && makeButton(this.commander, "eval-to-cell", {}, this.platform, { cell: this.props.cell }, notebookExecuting ? "executing" : "notExecuting")
                                             }
                                         </div>
 
                                         <div>
                                             {canExecute 
-                                                && makeButton(this.commander, "eval-single-cell", {}, this.platform, { cell: this.props.model }, notebookExecuting ? "executing" : "notExecuting")
+                                                && makeButton(this.commander, "eval-single-cell", {}, this.platform, { cell: this.props.cell }, notebookExecuting ? "executing" : "notExecuting")
                                             }
                                         </div>
 
@@ -315,7 +228,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                                         pos: Position.BOTTOM, 
                                                     }, 
                                                     this.platform,
-                                                    { cell: this.props.model }
+                                                    { cell: this.props.cell }
                                                 )}
                                             </div>
 
@@ -324,7 +237,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                                         pos: Position.BOTTOM, 
                                                     }, 
                                                     this.platform, 
-                                                    { cell: this.props.model }
+                                                    { cell: this.props.cell }
                                                 )}
                                             </div>
                                         </div>
@@ -338,7 +251,7 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                     <div className="relative">
                         <CellHandle
                             cell={this}
-                            model={this.props.model}
+                            model={this.props.cell}
                             cellContainerElement={this.innerCellContainerElement}
                             isSelected={isSelected}
                             dragHandleProps={this.props.dragHandleProps}
@@ -350,10 +263,10 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
                                 "cell-border",
                                 "inline-block", 
                                 "align-top",
-                                this.props.model.getCellType(),
+                                this.props.cell.cellType,
                                 {
                                     focused: isSelected,
-                                    empty: this.props.model.getText() === "",
+                                    empty: this.props.cell.text === "",
                                 }
                             )}
                             style={{

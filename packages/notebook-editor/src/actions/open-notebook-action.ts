@@ -21,9 +21,10 @@ export class OpenNotebookAction implements IAction {
         if (params.file) {
             let filePath = params.file;
             if (filePath.startsWith("./")) {
-                if (context.getNotebookEditor().isNotebookOpen()) {
+                const notebook = context.getNotebookEditor().notebook;
+                if (notebook) {
                     // The path to open is relative to the currently open notebok.
-                    const currentPath = context.getNotebookEditor().getOpenNotebook().getStorageId().getContainingPath();
+                    const currentPath = notebook.storageId.getContainingPath();
                     if (currentPath) {
                         filePath = path.join(currentPath, filePath.substr(2));
                     }

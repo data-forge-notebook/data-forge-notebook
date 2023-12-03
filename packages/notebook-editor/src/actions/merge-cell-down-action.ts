@@ -22,7 +22,7 @@ export class MergeCellDownAction implements IAction {
         const notebook = context.getNotebook();
         const cell = context.getCell();
         const cellIndex = notebook.getCellIndex(cell);
-        if (cellIndex >= notebook.getCells().length-1) {
+        if (cellIndex >= notebook.cells.length-1) {
             this.notification.error("There is no cell above to merge to!");
             return;
         }
@@ -32,7 +32,7 @@ export class MergeCellDownAction implements IAction {
             throw new Error("Failed to next cell when there should be one!");
         }
         
-        if (cellBelow.getCellType() !== cell.getCellType()) {
+        if (cellBelow.cellType !== cell.cellType) {
             this.notification.error("Can only merge cells with the same type.");
             return;
         }
@@ -40,7 +40,7 @@ export class MergeCellDownAction implements IAction {
         return [
             new DeleteCellChange(notebook, cellBelow, false),
             new DeleteCellChange(notebook, cell, false),
-            new AddCellChange(notebook, cellIndex-1, cell.getText() + "\r\n" + cellBelow.getText(), cell.getCellType(), true),
+            new AddCellChange(notebook, cellIndex-1, cell.text + "\r\n" + cellBelow.text, cell.cellType, true),
         ];
     }
 }

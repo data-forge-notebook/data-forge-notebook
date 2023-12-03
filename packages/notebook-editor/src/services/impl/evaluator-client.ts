@@ -295,8 +295,6 @@ export class EvaluatorClient implements IEvaluatorClient {
     //
     private async addJob(jobName: string): Promise<void> {
         this.jobNames.add(jobName);
-
-        await this.onJobsChanged.raise();        
     }
 
     //
@@ -304,8 +302,6 @@ export class EvaluatorClient implements IEvaluatorClient {
     //
     private async removeJob(jobName: string): Promise<void> {
         this.jobNames.delete(jobName);
-
-        await this.onJobsChanged.raise();        
     }
 
     //
@@ -313,15 +309,7 @@ export class EvaluatorClient implements IEvaluatorClient {
     //
     private async clearJobs(): Promise<void> {
         this.jobNames.clear();
-
-        await this.onJobsChanged.raise();        
     }
-
-    //
-    // Event raised when the jobs being handled by the evaluation engine have change.
-    //
-    onJobsChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
-
 
     //
     // Event raised on a message from the evaluation engine.

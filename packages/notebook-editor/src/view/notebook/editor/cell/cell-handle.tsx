@@ -6,6 +6,7 @@ import * as React from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { CellUI } from './cell';
 import { ICellViewModel } from '../../../../view-model/cell';
+import { observer } from 'mobx-react';
 const classnames = require("classnames");
 
 export interface ICellHandleProps {
@@ -39,6 +40,7 @@ export interface ICellHandleProps {
 export interface ICellHandleState {
 }
 
+@observer
 export class CellHandle extends React.Component<ICellHandleProps, ICellHandleState> {
 
     constructor(props: ICellHandleProps) {
@@ -57,7 +59,7 @@ export class CellHandle extends React.Component<ICellHandleProps, ICellHandleSta
                         "selected-cell-handle", 
                         "inline-block",
                         "align-top",
-                        this.props.model.getCellType(),
+                        this.props.model.cellType,
                         { 
                             focused: this.props.isSelected
                         }

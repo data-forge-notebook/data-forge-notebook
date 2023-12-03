@@ -15,6 +15,6 @@ export class CopyCellAction implements IAction {
     async invoke(context: IActionContext): Promise<IChange | void> {
         const cell = context.getCell();
         const cellClipboard = cell.serialize();
-        context.getNotebookEditor().setCellClipboard(cellClipboard);
+        context.getNotebookEditor().cellClipboard = cellClipboard;
     }
 }

@@ -151,7 +151,7 @@ export class UndoRedo implements IUndoRedo {
     async applyChanges(changes: IChange[]): Promise<void> {
       
         const notebook = this.notebook!;
-        const beforeModified = notebook.isModified();
+        const beforeModified = notebook.modified;
         const beforeCaretPosition = notebook.getCaretPosition();
 
         // console.log("!! Appying undoable change.");
@@ -165,7 +165,7 @@ export class UndoRedo implements IUndoRedo {
             await change.do();
         }
 
-        const afterModified = notebook.isModified();
+        const afterModified = notebook.modified;
         const afterCaretPosition = notebook.getCaretPosition();
         // this.log.info(`Notebook modified state after is ${afterModified}`);
         // this.log.info(`Caret position after is ${JSON.stringify(afterCaretPosition)}.`);

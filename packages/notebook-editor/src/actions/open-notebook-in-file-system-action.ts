@@ -20,11 +20,11 @@ export class OpenNotebookInFileSystem implements IAction {
 
     async invoke(context: IActionContext): Promise<void> {
         const notebook = context.getNotebook();
-        if (notebook.isUnsaved()) {
+        if (notebook.unsaved) {
             this.notification.warn("This notebook has not been saved into the file system, please save it first.");
             return;
         }
 
-        this.open.showItemInFolder(notebook.getStorageId().toString()!);
+        this.open.showItemInFolder(notebook.storageId.toString()!);
     }
 }

@@ -1,6 +1,5 @@
 import { Button } from "@blueprintjs/core";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { forceUpdate } from "browser-utils";
 import * as React from "react";
 import { BasicEventHandler, IEventSource } from "utils";
 import { commands, humanizeAccelerator } from "../services/command";
@@ -10,20 +9,16 @@ import { IPlatform, IPlatformId } from "../services/platform";
 // View model for the hotkeys overlay.
 //
 export interface IHotkeysOverlayViewModel {
+
+    //
+    // Set to true when the hotkeys overlay is open.
+    //
+    showHotkeysOverlay: boolean;
+
     //
     // Toggle the hotkeys overlay.
     //
     toggleHotkeysOverlay(): Promise<void>;
-
-    //
-    // Returns true when the hotkeys overlay is open.
-    //
-    isHotkeysOverlayOpen(): boolean;
-
-    //
-    // Event raised when the hotkeys overlay is opened or closed.
-    //
-    onHotkeysOverlayChanged: IEventSource<BasicEventHandler>;
 }
 
 export interface IHotkey {
@@ -55,21 +50,6 @@ export class HotkeysOverlay extends React.Component<IHotkeyOverlayProps, IHotkey
     @InjectProperty(IPlatformId)
     platform!: IPlatform;
 
-    async componentDidMount() {
-        this.props.model.onHotkeysOverlayChanged.attach(this.onHotkeysOverlayChanged);
-    }
-
-    componentWillUnmount(): void {
-        this.props.model.onHotkeysOverlayChanged.detach(this.onHotkeysOverlayChanged);
-    }
-    
-    //
-    // Event raised when the hotkeys overlay is shown or hidden.
-    //
-    private onHotkeysOverlayChanged = async (): Promise<void> => {
-        await forceUpdate(this);
-    }
-
     //
     // Format hotkeys for display to the user.
     //
@@ -90,7 +70,7 @@ export class HotkeysOverlay extends React.Component<IHotkeyOverlayProps, IHotkey
     }
 
     render() {
-        if (!this.props.model.isHotkeysOverlayOpen()) {
+        if (!this.props.model.showHotkeysOverlay) {
             return null;
         }
 

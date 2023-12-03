@@ -1,6 +1,7 @@
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { CellType, ISerializedCell1 } from "model";
 import { ICellViewModel, CellViewModel } from "./cell";
+import { action, observable } from "mobx";
 
 //
 // Represents a cell within a notebook.
@@ -8,9 +9,9 @@ import { ICellViewModel, CellViewModel } from "./cell";
 export interface IMarkdownCellViewModel extends ICellViewModel {
 
     //
-    // Returns true when the markdown cell is in editing mode.
+    // Set to true when the markdown cell is in editing mode.
     //
-    isEditing(): boolean;
+    editing: boolean;
 
     //
     // Switch the markdown cell to edit mode.
@@ -21,11 +22,6 @@ export interface IMarkdownCellViewModel extends ICellViewModel {
     // Switch the markdown cell to preview mode.
     //
     enterPreviewMode(): Promise<void>;
-
-    //
-    // Event raised with the markdown cell switches from preview to editing mode and vice-versa.
-    //
-    onModeChanged: IEventSource<BasicEventHandler>;
 }
 
 export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCellViewModel {
@@ -33,31 +29,25 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Set to true when the markdown cell is in editing mode.
     //
-    private editing: boolean;
+    @observable
+    editing: boolean;
 
-    constructor(id: string, cellType: CellType, text: string, height: number | undefined) {
-        super(id, cellType, text, height);
+    constructor(id: string, cellType: CellType, text: string) {
+        super(id, cellType, text);
 
         this.editing = false;
     }
 
     //
-    // Returns true when the markdown cell is in editing mode.
-    //
-    isEditing(): boolean {
-        return this.editing;
-    }
-
-    //
     // Switch the markdown cell to edit mode.
     //
+    @action
     async enterEditMode(): Promise<void> {
         if (this.editing) {
             return; // Already in edit mode.
         }
 
         this.editing = true;
-        await this.onModeChanged.raise();
 
         // Automatically select and focus cells when editing has started.
         await this.focus(); // Entering edit mode should focus even when the cell is already selected.
@@ -67,6 +57,7 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Switch the markdown cell to preview mode.
     //
+    @action
     async enterPreviewMode(): Promise<void> {
         if (!this.editing) {
             return; // Already in preview mode.
@@ -76,13 +67,7 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
         await this.flushChanges();
 
         this.editing = false;
-        await this.onModeChanged.raise();
     }
-    
-    //
-    // Event raised with the markdown cell switches from preview to editing mode and vice-versa.
-    //
-    onModeChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
    //
     // Deserialize the model from a previously serialized data structure.
@@ -91,8 +76,7 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
         return new MarkdownCellViewModel(
             input.id,
             input.cellType || CellType.Code,
-            input.code || "",
-            input.height
+            input.code || ""
         );
     }           
 }

@@ -98,8 +98,7 @@ describe('view-model / notebook-editor', () => {
 
         const { notebookEditor } = createNotebookEditor();
 
-        expect(notebookEditor.isNotebookOpen()).toBe(false);
-        expect(() => notebookEditor.getOpenNotebook()).toThrow();
+        expect(notebookEditor.notebook).toBeUndefined();
     });
 
     test("can create a new notebook", async () => {
@@ -107,9 +106,8 @@ describe('view-model / notebook-editor', () => {
         const { notebookEditor, notebook, mockNotebookId } = await createNotebookEditorWithNotebook();
 
         expect(notebook).toBeDefined();
-        expect(notebookEditor.isNotebookOpen()).toBe(true);
-        expect(notebookEditor.getOpenNotebook()).toBe(notebook);
-        expect(notebook?.getStorageId()).toBe(mockNotebookId);
+        expect(notebookEditor.notebook).toBe(notebook);
+        expect(notebook.storageId).toBe(mockNotebookId);
     });
 
     test("creating a new notebook over a modified notebook prompts the user to save", async () => {
@@ -192,9 +190,8 @@ describe('view-model / notebook-editor', () => {
         const notebook = await notebookEditor.openNotebook();
 
         expect(notebook).toBeDefined();
-        expect(notebookEditor.isNotebookOpen()).toBe(true);
-        expect(notebookEditor.getOpenNotebook()).toBe(notebook);
-        expect(notebook?.getStorageId()).toBe(notebookToOpenId);
+        expect(notebookEditor.notebook).toBe(notebook);
+        expect(notebook!.storageId).toBe(notebookToOpenId);
         expect(notebookWasLoaded).toBe(true);
     });
 
@@ -249,9 +246,8 @@ describe('view-model / notebook-editor', () => {
         const notebook = await notebookEditor.openSpecificNotebook(notebookToOpenId);
 
         expect(notebook).toBeDefined();
-        expect(notebookEditor.isNotebookOpen()).toBe(true);
-        expect(notebookEditor.getOpenNotebook()).toBe(notebook);
-        expect(notebook?.getStorageId()).toBe(notebookToOpenId);
+        expect(notebookEditor.notebook).toBe(notebook);
+        expect(notebook?.storageId).toBe(notebookToOpenId);
         expect(notebookWasLoaded).toBe(true);
     });
 
@@ -276,7 +272,7 @@ describe('view-model / notebook-editor', () => {
         const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
 
         // Force the code path that saves the "already saved" notebook.
-        notebook.isUnsaved = () => false;
+        notebook.unsaved = false;
 
         notebook.save = jest.fn();
 
@@ -290,7 +286,7 @@ describe('view-model / notebook-editor', () => {
         const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
 
         // Force the code path that defaults to "save as".
-        notebook.isUnsaved = () => true;
+        notebook.unsaved = true;
 
         notebookEditor.saveNotebookAs = jest.fn();
 

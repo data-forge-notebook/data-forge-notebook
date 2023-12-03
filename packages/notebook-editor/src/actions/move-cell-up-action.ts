@@ -16,7 +16,7 @@ export class MoveCellUpAction implements IAction {
     async invoke(context: IActionContext): Promise<IChange | void> {
         const notebook = context.getNotebook();
         const cell = context.getCell();
-        const cellIndex = notebook.getCells().indexOf(cell);
+        const cellIndex = notebook.cells.indexOf(cell);
         if (cellIndex < 1) {
             // That's as far it will go!
         }

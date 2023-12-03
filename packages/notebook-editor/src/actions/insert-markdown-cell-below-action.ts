@@ -18,14 +18,14 @@ export class InsertMarkdownCellBelowAction implements IAction {
         const notebook = context.getNotebook();
         const selectedCell = context.getSelectedCell();
         if (selectedCell) {
-            const selectedCellIndex = notebook.getCells().indexOf(selectedCell);
+            const selectedCellIndex = notebook.cells.indexOf(selectedCell);
             if (selectedCellIndex < 0) {
                 throw new Error("Couldn't find index of selected cell.");
             }
             return new AddCellChange(notebook, selectedCellIndex+1, "", CellType.Markdown, true);
         }
         else {
-            const cells = notebook.getCells();
+            const cells = notebook.cells;
             return new AddCellChange(notebook, cells.length, "", CellType.Markdown, true);
         }
         

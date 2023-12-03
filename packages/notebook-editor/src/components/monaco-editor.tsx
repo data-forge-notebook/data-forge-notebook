@@ -10,6 +10,7 @@ import { IUndoRedo, IUndoRedoId } from '../services/undoredo';
 import { CellTextChange } from '../changes/cell-text-change';
 import { IPlatform, IPlatformId } from '../services/platform';
 import { ICellViewModel, IFindDetails, ITextRange, SearchDirection } from '../view-model/cell';
+import { observer } from 'mobx-react';
 
 let monacoInitialised = false;
 
@@ -152,7 +153,7 @@ export interface IMonacoEditorProps {
     //
     // The model for the code cell.
     //
-    model: ICellViewModel;
+    cell: ICellViewModel;
 
     //
     // Set to true to show the progress spinner.
@@ -169,6 +170,7 @@ export interface IMonacoEditorState {
 }
 
 @InjectableClass()
+@observer
 export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEditorState> {
 
     @InjectProperty(ILogId)
@@ -232,7 +234,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         this.state = {};
 
         this.onWindowResize = _.throttle(this.onWindowResize, 400, { leading: false, trailing: true });
-        this.props.model.caretPositionProvider = this.caretPositionProvider;
+        this.props.cell.caretPositionProvider = this.caretPositionProvider;
         
         // Throttle is used to not just to prevent too many updates, but also because
         // on the first cursor change after the Monaco Editor is focused the caret is
@@ -244,7 +246,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     }
 
     private invokeNamedCommand(commandId: string) {
-        this.commander.invokeNamedCommand(commandId, { cell: this.props.model as any }) //TODO: This cast to any is a bit dodgy.
+        this.commander.invokeNamedCommand(commandId, { cell: this.props.cell as any }) //TODO: This cast to any is a bit dodgy.
             .catch(err => {
                 this.log.error("Command " + commandId + " failed.");
                 this.log.error(err && err.stack || err);
@@ -258,7 +260,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     componentDidMount() {
         const ext = this.props.language === "typescript" ? "ts" : "js"; //todo: is this needed?
         this.editorModel = monaco.editor.createModel(
-            this.props.model.getText(),
+            this.props.cell.text,
             this.props.language
         );
         
@@ -350,15 +352,15 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             }, "");
         }
 
-        this.props.model.onSetFocus.attach(this.onSetFocus);
-        this.props.model.onSetCaretPosition.attach(this.onSetCaretPosition);
-        this.props.model.onTextChanged.attach(this.onTextChanged);
-        this.props.model.onFlushChanges.attach(this.onFlushChanges);
-        this.props.model.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
-        this.props.model.onFindNextMatch.attach(this.onFindNextMatch);
-        this.props.model.onSelectText.attach(this.onSelectText);
-        this.props.model.onDeselectText.attach(this.onDeselectText);
-        this.props.model.onReplaceText.attach(this.onReplaceText);
+        this.props.cell.onSetFocus.attach(this.onSetFocus);
+        this.props.cell.onSetCaretPosition.attach(this.onSetCaretPosition);
+        this.props.cell.onTextChanged.attach(this.onTextChanged);
+        this.props.cell.onFlushChanges.attach(this.onFlushChanges);
+        this.props.cell.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
+        this.props.cell.onFindNextMatch.attach(this.onFindNextMatch);
+        this.props.cell.onSelectText.attach(this.onSelectText);
+        this.props.cell.onDeselectText.attach(this.onDeselectText);
+        this.props.cell.onReplaceText.attach(this.onReplaceText);
     }
 
     componentWillUnmount () {
@@ -391,15 +393,15 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         this.caretElement = null;
 
         window.removeEventListener("resize", this.onWindowResize);
-        this.props.model.onSetFocus.detach(this.onSetFocus);
-        this.props.model.onSetCaretPosition.detach(this.onSetCaretPosition);
-        this.props.model.onTextChanged.detach(this.onTextChanged);
-        this.props.model.onFlushChanges.detach(this.onFlushChanges);
-        this.props.model.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
-        this.props.model.onFindNextMatch.detach(this.onFindNextMatch);
-        this.props.model.onSelectText.detach(this.onSelectText);
-        this.props.model.onDeselectText.detach(this.onDeselectText);
-        this.props.model.onReplaceText.detach(this.onReplaceText);
+        this.props.cell.onSetFocus.detach(this.onSetFocus);
+        this.props.cell.onSetCaretPosition.detach(this.onSetCaretPosition);
+        this.props.cell.onTextChanged.detach(this.onTextChanged);
+        this.props.cell.onFlushChanges.detach(this.onFlushChanges);
+        this.props.cell.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
+        this.props.cell.onFindNextMatch.detach(this.onFindNextMatch);
+        this.props.cell.onSelectText.detach(this.onSelectText);
+        this.props.cell.onDeselectText.detach(this.onDeselectText);
+        this.props.cell.onReplaceText.detach(this.onReplaceText);
     }
 
     //
@@ -560,7 +562,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             // 
             // Push caret offset into the view model.
             //
-            this.props.model.setCaretOffset(caretOffset);
+            this.props.cell.caretOffset = caretOffset;
         }
     }
    
@@ -570,8 +572,8 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     private onChangeCursorSelection = (event: any) => {
         if (this.editorModel) {
             const selectedText = this.editorModel.getValueInRange(event.selection);
-            this.props.model.setSelectedText(selectedText);
-            this.props.model.setSelectedTextRange(event.selection);
+            this.props.cell.selectedText = selectedText;
+            this.props.cell.selectedTextRange = event.selection;
         }
     }
 
@@ -585,7 +587,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             this.updatingCode = true;
             try {
                 //TODO: get rid of this cast.
-                await this.undoRedo.applyChanges([new CellTextChange(this.props.model as any, updatedCode)]); 
+                await this.undoRedo.applyChanges([new CellTextChange(this.props.cell as any, updatedCode)]); 
             }
             finally {
                 this.updatingCode = false;
@@ -628,7 +630,7 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
     private onTextChanged = async (): Promise<void> => {
         if (!this.updatingCode) {
             if (this.editor) {
-                const updatedCode = this.props.model.getText();
+                const updatedCode = this.props.cell.text;
                 if (this.editor.getValue() !== updatedCode) {
                     this.updatingCode = true;
                     try {
@@ -699,8 +701,8 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
             this.forceUpdate(); //TODO: Shouldn't have to do this here.
         }
 
-        if (this.editor!.getValue() !== nextProps.model.getText()) { //TODO: Is this really needed?
-            this.editor!.setValue(nextProps.model.getText());
+        if (this.editor!.getValue() !== nextProps.cell.text) { //TODO: Is this really needed?
+            this.editor!.setValue(nextProps.cell.text);
         }
 
         return false; // No need to ever rerender.

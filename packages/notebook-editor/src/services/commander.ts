@@ -103,7 +103,7 @@ export class Commander implements ICommander {
 
             const context = new ActionContext(this.notebookEditor, contextInitializer || {}, params);
             if (command.isCellCommand()) {
-                if (context.getNotebookEditor().isWorking()) {
+                if (context.getNotebookEditor().isWorking) {
                     this.log.info("User attempted to execute command " + command.getId() + ", but notebook is still loading..");
                     this.notification.warn("Can't invoke " + command.getId() + " whlie notebook is loading, please wait a moment.");
                     return;
@@ -117,7 +117,7 @@ export class Commander implements ICommander {
             }
 
             if (command.isNotebookCommand()) {
-                if (context.getNotebookEditor().isWorking()) {
+                if (context.getNotebookEditor().isWorking) {
                     this.log.info("User attempted to execute command " + command.getId() + ", but notebook is still loading..");
                     this.notification.warn("Can't invoke " + command.getId() + " whlie notebook is loading, please wait a moment.");
                     return;

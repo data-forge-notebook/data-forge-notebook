@@ -2,6 +2,7 @@ import { ICellOutputValueViewModel, CellOutputValueViewModel } from "./cell-outp
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { ISerializedCellOutput1 } from "model";
 import { v4 as uuid } from "uuid";
+import { action, observable } from "mobx";
 
 //
 // View-model for output from a cell.
@@ -10,14 +11,24 @@ import { v4 as uuid } from "uuid";
 export interface ICellOutputViewModel {
 
     //
-    // Get the (non-serialized) instance ID.
+    // Instance ID of the model.
     //
-    getInstanceId(): string;
+    instanceId: string;
 
     //
-    // Get the value of the output.
+    // Actual value of the output.
     //
-    getValue(): ICellOutputValueViewModel;
+    value: ICellOutputValueViewModel;
+
+    //
+    // Height of the output, if set.
+    //
+    height?: number;
+
+    //
+    // The output is fresh when true, out of date when false.
+    //
+    fresh: boolean;
 
     //
     // Serialize to a data structure suitable for serialization.
@@ -25,19 +36,9 @@ export interface ICellOutputViewModel {
     serialize(): ISerializedCellOutput1;
 
     //
-    // Returns true if this is fresh output.
-    //
-    isFresh(): boolean;
-
-    //
     // Mark the output as out of data.
     //
     markStale(): void;
-
-    //
-    // Get the height of the output, if set.
-    //
-    getHeight(): number | undefined;
 
     //
     // Set the height of the output.
@@ -55,22 +56,26 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     //
     // Instance ID of the model.
     //
-    private instanceId: string;
+    @observable
+    instanceId: string;
 
     //
     // Actual value of the output.
     //
-    private value: ICellOutputValueViewModel;
+    @observable
+    value: ICellOutputValueViewModel;
 
     //
     // Height of the output, if set.
     //
-    private height?: number;
+    @observable
+    height?: number;
 
     //
     // The output is fresh when true, out of date when false.
     //
-    private fresh: boolean = true;
+    @observable
+    fresh: boolean = true;
 
     constructor(value: ICellOutputValueViewModel, height?: number) {
         this.instanceId = uuid();
@@ -79,23 +84,9 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     }
 
     //
-    // Get the (non-serialized) instance ID.
-    //
-    getInstanceId(): string {
-        return this.instanceId;
-    }
-    
-    //
-    // Get the value of the output.
-    //
-    getValue(): ICellOutputValueViewModel {
-        return this.value;
-    }
-    
-    //
     // Serialize to a data structure suitable for serialization.
     //
-    serialize (): ISerializedCellOutput1 {
+    serialize(): ISerializedCellOutput1 {
         return {
             value: this.value.serialize(),
             height: this.height,
@@ -110,29 +101,17 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     }
 
     //
-    // Returns true if this is fresh output.
-    //
-    isFresh(): boolean {
-        return this.fresh;
-    }
-
-    //
     // Mark the output as out of data.
     //
+    @action
     markStale(): void {
         this.fresh = false;
     }
 
     //
-    // Get the height of the output, if set.
-    //
-    getHeight(): number | undefined {
-        return this.height;
-    }
-
-    //
     // Set the height of the output.
     //
+    @action
     async setHeight(height: number): Promise<void> {
         this.height = height;
         await this.onModified.raise();

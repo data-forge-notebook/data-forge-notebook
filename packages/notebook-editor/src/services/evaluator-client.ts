@@ -47,11 +47,6 @@ export interface IEvaluatorClient {
     evalNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void;
 
     //
-    // Event raised when the jobs being handled by the evaluation engine have change.
-    //
-    onJobsChanged: IEventSource<BasicEventHandler>;
-
-    //
     // Event raised on a message from the evaluation engin.
     //
     onEvaluationEvent: IEventSource<EvaluationEventHandler>;

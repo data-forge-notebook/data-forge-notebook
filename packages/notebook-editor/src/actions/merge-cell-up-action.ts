@@ -32,7 +32,7 @@ export class MergeCellUpAction implements IAction {
             throw new Error("Failed to previous cell when there should be one!");
         }
         
-        if (cellAbove.getCellType() !== cell.getCellType()) {
+        if (cellAbove.cellType !== cell.cellType) {
             this.notification.error("Can only merge cells with the same type.");
             return;
         }
@@ -40,7 +40,7 @@ export class MergeCellUpAction implements IAction {
         return [
             new DeleteCellChange(notebook, cellAbove, false),
             new DeleteCellChange(notebook, cell, false),
-            new AddCellChange(notebook, cellIndex-1, cellAbove.getText() + "\r\n" + cell.getText(), cell.getCellType(), true),
+            new AddCellChange(notebook, cellIndex-1, cellAbove.text + "\r\n" + cell.text, cell.cellType, true),
         ];
     }
 }

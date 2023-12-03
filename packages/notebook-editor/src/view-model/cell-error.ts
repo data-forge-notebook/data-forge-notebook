@@ -1,3 +1,4 @@
+import { action, observable } from "mobx";
 import { ISerializedCellError1 } from "model";
 import { v4 as uuid } from "uuid";
 
@@ -8,24 +9,25 @@ import { v4 as uuid } from "uuid";
 export interface ICellErrorViewModel {
 
     //
-    // Get the (non-serialized) instance ID.
+    // Instance ID of the model.
+    // Not serialized.
     //
-    getInstanceId(): string;
+    instanceId: string;
 
     //
-    // Get the message from the error.
+    // The error message.
     //
-    getMsg(): string;
+    msg: string;
+
+    //
+    // The output is fresh when true, out of date when false.
+    //
+    fresh: boolean;
 
     //
     // Serialize to a data structure suitable for serialization.
     //
-    serialize (): ISerializedCellError1;
-    
-    //
-    // Returns true if this is fresh output.
-    //
-    isFresh(): boolean;
+    serialize(): ISerializedCellError1;
 
     //
     // Mark the output as out of data.
@@ -39,37 +41,26 @@ export class CellErrorViewModel implements ICellErrorViewModel {
     // Instance ID of the model.
     // Not serialized.
     //
-    private instanceId: string;
+    @observable
+    instanceId: string;
 
     //
     // The error message.
     //
-    private msg: string;
+    @observable
+    msg: string;
 
     //
     // The output is fresh when true, out of date when false.
     //
-    private fresh: boolean = true;
+    @observable
+    fresh: boolean = true;
 
     constructor (msg: string) {
         this.instanceId = uuid();
         this.msg = msg;
     }
 
-    //
-    // Get the (non-serialized) instance ID.
-    //
-    getInstanceId(): string {
-        return this.instanceId;
-    }
-
-    //
-    // Get the message from the error.
-    //
-    getMsg(): string {
-        return this.msg;
-    }
-    
     //
     // Serialize to a data structure suitable for serialization.
     //
@@ -87,15 +78,9 @@ export class CellErrorViewModel implements ICellErrorViewModel {
     }       
 
     //
-    // Returns true if this is fresh output.
-    //
-    isFresh(): boolean {
-        return this.fresh;
-    }
-
-    //
     // Mark the output as out of data.
     //
+    @action
     markStale(): void {
         this.fresh = false;
     }

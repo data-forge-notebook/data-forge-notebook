@@ -7,8 +7,6 @@ import { disableInjector } from "@codecapers/fusion";
 
 describe('view-model / notebook', () => {
 
-    const defaultNodejsVersion = "v16";
-
     beforeAll(() => {
         disableInjector();
     });
@@ -43,7 +41,7 @@ describe('view-model / notebook', () => {
                 return "a storage id";
             },
         };
-        const notebook = new NotebookViewModel(mockStorageId, "", "", mockCells, "", false, false, defaultNodejsVersion);
+        const notebook = new NotebookViewModel(mockStorageId, "", mockCells, "", false, false);
 
         const mockLog: any =  {
             info: () => {},
@@ -57,7 +55,7 @@ describe('view-model / notebook', () => {
 
         return { 
             notebook, 
-            cells: notebook.getCells(),
+            cells: notebook.cells,
             mockStorageId, 
             mockRepository,
         };
@@ -69,7 +67,7 @@ describe('view-model / notebook', () => {
     function createNotebookWithCell() {
         const mockCellViewModel = createMockCellViewModel();
         const created = createNotebookViewModel([ mockCellViewModel ]);
-        const [ cell ] = created.notebook.getCells();
+        const [ cell ] = created.notebook.cells;
         return { 
             ...created, 
             cell, 
@@ -90,14 +88,12 @@ describe('view-model / notebook', () => {
     test("can construct", () => {
         const mockStorageId: any = {};
         const theLanguage = "javascript";
-        const theNodeJsVersion = "v10.0.0";
-        const notebook = new NotebookViewModel(mockStorageId, theNodeJsVersion, theLanguage, [], undefined, false, false, "");
-        expect(notebook.getInstanceId()).toBeDefined();
-        expect(notebook.getLanguage()).toEqual(theLanguage);
-        expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
-        expect(notebook.isUnsaved()).toBe(false);
-        expect(notebook.isReadOnly()).toBe(false);
+        const notebook = new NotebookViewModel(mockStorageId, theLanguage, [], undefined, false, false);
+        expect(notebook.instanceId).toBeDefined();
+        expect(notebook.language).toEqual(theLanguage);
+        expect(notebook.cells).toEqual([]);
+        expect(notebook.unsaved).toBe(false);
+        expect(notebook.readOnly).toBe(false);
     });    
 
     test("can construct with cell", () => {
@@ -131,7 +127,7 @@ describe('view-model / notebook', () => {
         const cell2 = createMockCellViewModel();
         await notebook.addCell(cell2, 1);
 
-        const cells = notebook.getCells();
+        const cells = notebook.cells;
         expect(cells.length).toEqual(2);
         expect(cells[0]).toBe(cell1);
         expect(cells[1]).toBe(cell2);
@@ -145,7 +141,7 @@ describe('view-model / notebook', () => {
         await notebook.addCell(mockCell1, 0);
         await notebook.addCell(mockCell2, 0);
 
-        expect(notebook.getCells()).toEqual([ mockCell2, mockCell1 ]);
+        expect(notebook.cells).toEqual([ mockCell2, mockCell1 ]);
     });
 
     test("can add cell in the middle", async () => {        
@@ -158,7 +154,7 @@ describe('view-model / notebook', () => {
         await notebook.addCell(mockCell2, 1);
         await notebook.addCell(mockCell3, 1);
 
-        expect(notebook.getCells()).toEqual([ mockCell1, mockCell3, mockCell2 ]);
+        expect(notebook.cells).toEqual([ mockCell1, mockCell3, mockCell2 ]);
     });
 
     test("throws when adding a cell beyond the range", async () => {
@@ -167,14 +163,6 @@ describe('view-model / notebook', () => {
         await expect(() => notebook.addCell(createMockCellViewModel(), 1))
             .rejects
             .toThrow();
-    });
-
-    test("adding a cell raises onCellsChanged", async () => {
-        const { notebook } = createNotebookViewModel([]);
-
-        await expectEventRaised(notebook, "onCellsChanged", async () => {
-            await notebook.addCell(createMockCellViewModel(), 0);
-        });
     });
 
     test("adding a cell raises onModified", async () => {
@@ -191,7 +179,7 @@ describe('view-model / notebook', () => {
         const newCell = createMockCellViewModel();
         await notebook.addCell(newCell, 1);
 
-        const cells = notebook.getCells();
+        const cells = notebook.cells;
         expect(cells.length).toEqual(2);
         expect(cells[0]).toBeDefined();
         expect(cells[1]).toBe(newCell);
@@ -248,7 +236,7 @@ describe('view-model / notebook', () => {
 
         await cell.onEditorSelectionChanged.raise(cell);
 
-        expect(notebook.getSelectedCell()).toBe(cell);
+        expect(notebook.selectedCell).toBe(cell);
     });
 
     test("can get the index of the selected cell", async () => {
@@ -268,7 +256,7 @@ describe('view-model / notebook', () => {
 
         await notebook.deselect();
 
-        expect(notebook.getSelectedCell()).toBeUndefined();
+        expect(notebook.selectedCell).toBeUndefined();
     });
 
     test("selecting a new cell deselects old cells", async () => {
@@ -279,7 +267,7 @@ describe('view-model / notebook', () => {
 
         await cell1.onEditorSelectionChanged.raise(cell1);
 
-        expect(notebook.getSelectedCell()).toBe(cell1);
+        expect(notebook.selectedCell).toBe(cell1);
 
         const cell2 = cells[1];
 
@@ -289,7 +277,7 @@ describe('view-model / notebook', () => {
 
         await cell2.onEditorSelectionChanged.raise(cell2);
 
-        expect(notebook.getSelectedCell()).toBe(cell2);
+        expect(notebook.selectedCell).toBe(cell2);
     });
 
     test("selecting a cell raises onSelectedCellChanged", async () => {
@@ -321,7 +309,7 @@ describe('view-model / notebook', () => {
 
         await notebook.deleteCell(cell, false);
 
-        expect(notebook.getCells()).toEqual([]);
+        expect(notebook.cells).toEqual([]);
     });
 
     test("can delete cell when there are other cells", async () => {
@@ -330,7 +318,7 @@ describe('view-model / notebook', () => {
 
         await notebook.deleteCell(cells[1], false);
 
-        expect(notebook.getCells()).toEqual([
+        expect(notebook.cells).toEqual([
             cells[0],
             cells[2],
         ]);
@@ -351,16 +339,7 @@ describe('view-model / notebook', () => {
 
         await notebook.deleteCell(cell, true);
 
-        expect(notebook.getCells()).toEqual([]);
-    });
-
-    test("deleting a cell raises onCellsChanged", async () => {
-
-        const { notebook, cell } = createNotebookWithCell();
-
-        await expectEventRaised(notebook, "onCellsChanged", async () => {
-            await notebook.deleteCell(cell, false);
-        });
+        expect(notebook.cells).toEqual([]);
     });
 
     test("deleting a cell unhooks cell events", async () => {
@@ -391,7 +370,7 @@ describe('view-model / notebook', () => {
 
        await notebook.moveCell(0, 2);
 
-       expect(notebook.getCells()).toEqual([
+       expect(notebook.cells).toEqual([
            cells[1],
            cells[2],
            cells[0],
@@ -403,7 +382,7 @@ describe('view-model / notebook', () => {
 
         await notebook.moveCell(2, 0)
 
-        expect(notebook.getCells()).toEqual([ cells[2], cells[0], cells[1] ]);
+        expect(notebook.cells).toEqual([ cells[2], cells[0], cells[1] ]);
     });
 
     test("can move cell to middle", async () => {        
@@ -411,15 +390,7 @@ describe('view-model / notebook', () => {
 
         await notebook.moveCell(0, 1);
 
-        expect(notebook.getCells()).toEqual([ cells[1], cells[0], cells[2] ]);
-    });
-
-    test("moving a cell raises onCellsChanged", async () => {
-        const { notebook } = createNotebookWithCells(3);
-
-        await expectEventRaised(notebook, "onCellsChanged", async () => {
-            await notebook.moveCell(0, 2);
-        });
+        expect(notebook.cells).toEqual([ cells[1], cells[0], cells[2] ]);
     });
 
     test("moving a cell raises onModified", async () => {
@@ -454,9 +425,9 @@ describe('view-model / notebook', () => {
 
         const { notebook, cells } = createNotebookWithCells(3);
 
-        expect(notebook.findCell(cells[0].getId())).toBe(cells[0]);
-        expect(notebook.findCell(cells[1].getId())).toBe(cells[1]);
-        expect(notebook.findCell(cells[2].getId())).toBe(cells[2]);
+        expect(notebook.findCell(cells[0].id)).toBe(cells[0]);
+        expect(notebook.findCell(cells[1].id)).toBe(cells[1]);
+        expect(notebook.findCell(cells[2].id)).toBe(cells[2]);
     });
 
     test("finding a cell in a empty notebook returns undefined", () => {
@@ -484,14 +455,14 @@ describe('view-model / notebook', () => {
 
         const { notebook, cells } = createNotebookWithCells(2);
 
-        expect(notebook.findNextCell(cells[0].getId())).toBe(cells[1]);
+        expect(notebook.findNextCell(cells[0].id)).toBe(cells[1]);
     });
 
     test("finding the next cell returns undefined when there is no next cell", () => {
 
         const { notebook, cells } = createNotebookWithCells(1);
 
-        expect(notebook.findNextCell(cells[0].getId())).toBeUndefined();
+        expect(notebook.findNextCell(cells[0].id)).toBeUndefined();
     });
 
     test("finding the prev cell in a empty notebook returns undefined", () => {
@@ -505,14 +476,14 @@ describe('view-model / notebook', () => {
 
         const { notebook, cells } = createNotebookWithCells(2);
 
-        expect(notebook.findPrevCell(cells[1].getId())).toBe(cells[0]);
+        expect(notebook.findPrevCell(cells[1].id)).toBe(cells[0]);
     });
 
     test("finding the prev cell returns undefined when there is no prev cell", () => {
 
         const { notebook, cells } = createNotebookWithCells(1);
 
-        expect(notebook.findPrevCell(cells[0].getId())).toBeUndefined();
+        expect(notebook.findPrevCell(cells[0].id)).toBeUndefined();
     });
 
     test("can get first cell", () => {
@@ -580,7 +551,7 @@ describe('view-model / notebook', () => {
 
         const { notebook } = createNotebookViewModel([]);
 
-        expect(notebook.isModified()).toBe(false);
+        expect(notebook.modified).toBe(false);
     });
     
     test("can set the modified flag", async () => {
@@ -588,7 +559,7 @@ describe('view-model / notebook', () => {
         const { notebook } = createNotebookViewModel([]);
         await notebook.setModified(true);
 
-        expect(notebook.isModified()).toBe(true);
+        expect(notebook.modified).toBe(true);
     });
 
     test("can clear the modified flag", async () => {
@@ -597,7 +568,7 @@ describe('view-model / notebook', () => {
         await notebook.setModified(true);
         await notebook.setModified(false);
 
-        expect(notebook.isModified()).toBe(false);
+        expect(notebook.modified).toBe(false);
     });
 
     test("setting the modified flag raises onModified", async () => {
@@ -635,7 +606,7 @@ describe('view-model / notebook', () => {
 
         await notebook.notifyModified();
 
-        expect(notebook.isModified()).toBe(true);
+        expect(notebook.modified).toBe(true);
     });
 
     test("can clear the modified flag", async () => {
@@ -646,42 +617,22 @@ describe('view-model / notebook', () => {
 
         await notebook.clearModified();
 
-        expect(notebook.isModified()).toBe(false);
-    });
-
-    test("default Node.js version is returned when not explicitly set", () => {
-
-        const { notebook } = createNotebookViewModel([]);
-
-        expect(notebook.getNodejsVersion()).toEqual(defaultNodejsVersion);
-    });
-
-
-    test("setting Node.js version raises onModfiied", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-
-        await expectEventRaised(notebook, "onModified", async () => {
-            await notebook.setNodejsVersion("v12");
-        });
+        expect(notebook.modified).toBe(false);
     });
 
     test("can deserialize", () => {
 
         const mockId: any = {};
         const theLanguage = "javascript";
-        const theNodeJsVersion = "v10.0.0";
-        const notebook = NotebookViewModel.deserialize(mockId, false, false, "v16", {
+        const notebook = NotebookViewModel.deserialize(mockId, false, false, {
             version: 3,
-            nodejs: theNodeJsVersion,
             language: theLanguage,
             cells: [],
         });
-        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
-        expect(notebook.getLanguage()).toEqual(theLanguage);
-        expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getStorageId()).toEqual(mockId);
-        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+        expect(notebook.instanceId.length).toBeGreaterThan(0);
+        expect(notebook.language).toEqual(theLanguage);
+        expect(notebook.cells).toEqual([]);
+        expect(notebook.storageId).toEqual(mockId);
     });
 
     test("can clear outputs", async () => {
@@ -753,11 +704,11 @@ describe('view-model / notebook', () => {
 
         notebook.setModified(true);
 
-        expect(notebook.isModified()).toBe(true);
+        expect(notebook.modified).toBe(true);
 
         await notebook.save();
 
-        expect(notebook.isModified()).toBe(false);
+        expect(notebook.modified).toBe(false);
     });
 
     
@@ -790,25 +741,23 @@ describe('view-model / notebook', () => {
 
         notebook.setModified(true);
 
-        expect(notebook.isModified()).toBe(true);
+        expect(notebook.modified).toBe(true);
 
         const newStorageId: any = { 
             displayName: () => "a new path",
         };
         await notebook.saveAs(newStorageId);
 
-        expect(notebook.isModified()).toBe(false);
+        expect(notebook.modified).toBe(false);
     });
 
     test("can serialize", () => {
         const storageId: any = {};
         const theLanguage = "javascript";
-        const theNodeJsVersion = "v10.0.0";
-        const notebook = new NotebookViewModel(storageId, theNodeJsVersion, theLanguage, [], undefined, false, false, "");
+        const notebook = new NotebookViewModel(storageId, theLanguage, [], undefined, false, false);
         expect(notebook.serialize()).toEqual({
             version: 3,
             language: theLanguage,
-            nodejs: theNodeJsVersion,
             cells: [],
         });
     });
@@ -816,83 +765,69 @@ describe('view-model / notebook', () => {
     test("can deserialize", () => {
         const storageId: any = {};
         const theLanguage = "javascript";
-        const theNodeJsVersion = "v10.0.0";
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
             version: 3,
-            nodejs: theNodeJsVersion,
             language: theLanguage,
             cells: [],
         });
-        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
-        expect(notebook.getLanguage()).toEqual(theLanguage);
-        expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+        expect(notebook.instanceId.length).toBeGreaterThan(0);
+        expect(notebook.language).toEqual(theLanguage);
+        expect(notebook.cells).toEqual([]);
     });
 
     test("can deserialize with undefined cells", () => {
         const storageId: any = {};
-        const theNodeJsVersion = "v10.0.0";
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
             version: 3,
-            nodejs: theNodeJsVersion,
             language: undefined,
             cells: undefined,
         } as any);
-        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
-        expect(notebook.getLanguage()).toEqual("javascript");
-        expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+        expect(notebook.instanceId.length).toBeGreaterThan(0);
+        expect(notebook.language).toEqual("javascript");
+        expect(notebook.cells).toEqual([]);
     });
 
     test("can deserialize with cells", () => {
         const storageId: any = {};
         const serializedCell: any = { cellType: "code" };
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
             version: 3,
             language: "",
             cells: [
                 serializedCell,
             ],
         });
-        expect(notebook.getCells().length).toEqual(1);
-        expect(notebook.getCells()[0]).toBeDefined();
+        expect(notebook.cells.length).toEqual(1);
+        expect(notebook.cells[0]).toBeDefined();
     });
 
     test("can deserialize with sheet", () => {
         const storageId: any = {};
-        const theNodeJsVersion = "v10.0.0";
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
             version: 2,
-            nodejs: theNodeJsVersion,
             sheet: {
                 id: "1234",
                 language: undefined,
                 cells: [],
             },
         } as any);
-        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
-        expect(notebook.getLanguage()).toEqual("javascript");
-        expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+        expect(notebook.instanceId.length).toBeGreaterThan(0);
+        expect(notebook.language).toEqual("javascript");
+        expect(notebook.cells).toEqual([]);
     });
 
     test("can deserialize with sheet and undefined cells", () => {
         const storageId: any = {};
-        const theNodeJsVersion = "v10.0.0";
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, "", {
+        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
             version: 2,
-            nodejs: theNodeJsVersion,
             sheet: {
                 id: "1234",
                 language: undefined,
                 cells: undefined,
             },
         } as any);
-        expect(notebook.getInstanceId().length).toBeGreaterThan(0);
-        expect(notebook.getLanguage()).toEqual("javascript");
-        expect(notebook.getCells()).toEqual([]);
-        expect(notebook.getNodejsVersion()).toEqual(theNodeJsVersion);
+        expect(notebook.instanceId.length).toBeGreaterThan(0);
+        expect(notebook.language).toEqual("javascript");
+        expect(notebook.cells).toEqual([]);
     });
-
-
 });

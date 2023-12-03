@@ -11,17 +11,15 @@ describe("view-model / cell", () => {
         const theId = "1234";
         const theCellType = CellType.Code;
         const theText = "const x = 3;";
-        const theHeight = 13;
-        const cell = new CellViewModel(theId, theCellType, theText, theHeight);
-        expect(cell.getId()).toEqual(theId);
-        expect(cell.getCellType()).toEqual(CellType.Code);
-        expect(cell.getText()).toEqual(theText);
-        expect(cell.getHeight()).toEqual(theHeight);
+        const cell = new CellViewModel(theId, theCellType, theText);
+        expect(cell.id).toEqual(theId);
+        expect(cell.cellType).toEqual(CellType.Code);
+        expect(cell.text).toEqual(theText);
     });
 
     test("notifyModifed raises onModified event", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         await expectEventRaised(cell, "onModified", async () => {
             await cell.notifyModified();
@@ -30,32 +28,32 @@ describe("view-model / cell", () => {
 
     test("setting the text to the same makes no change", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "hello", undefined);
+        const cell = new CellViewModel("", CellType.Code, "hello");
 
         expect(await cell.setText("hello")).toBe(false);
     });
 
     test("setting the text to the different changes the text", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "hello", undefined);
+        const cell = new CellViewModel("", CellType.Code, "hello");
 
         const newText = "world";
         expect(await cell.setText(newText)).toBe(true);
-        expect(cell.getText()).toBe(newText);
+        expect(cell.text).toBe(newText);
     });
 
     test("setting the text trims whitespace from the end", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         const baseText = "Hello world";
         expect(await cell.setText(`${baseText} `)).toBe(true);
-        expect(cell.getText()).toEqual(baseText);
+        expect(cell.text).toEqual(baseText);
     });    
 
     test("setting text raises onTextChanged event", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         await expectEventRaised(cell, "onTextChanged", async () => {
             await cell.setText("some text!");
@@ -65,7 +63,7 @@ describe("view-model / cell", () => {
 
     test("setting text raises onModified event", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         await expectEventRaised(cell, "onModified", async () => {
             await cell.setText("some text!");
@@ -74,7 +72,7 @@ describe("view-model / cell", () => {
 
     test("can scroll into view", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         await expectEventRaised(cell, "onScrollIntoView", async () => {
             await cell.scrollIntoView("some reason");
@@ -83,7 +81,7 @@ describe("view-model / cell", () => {
 
     test("can set focus", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         await expectEventRaised(cell, "onSetFocus", async () => {
             await cell.focus();
@@ -92,14 +90,14 @@ describe("view-model / cell", () => {
 
     test("getting caret postition when provider is not set returns null", () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         expect(cell.getCaretPosition()).toBeNull();
     });
 
     test("getting caret postition forwards to the provider", () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
         const caretPosition = { lineNumber: 1, column: 2 };
         cell.caretPositionProvider = () => caretPosition;
         expect(cell.getCaretPosition()).toBe(caretPosition);
@@ -107,7 +105,7 @@ describe("view-model / cell", () => {
 
     test("can set caret position", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
         const caretPosition = { lineNumber: 1, column: 2 };
         await expectEventRaised(
             cell, 
@@ -122,25 +120,16 @@ describe("view-model / cell", () => {
       
     });
 
-    test("can set caret offset", () => {
-
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
-        expect(cell.getCaretOffset()).toBeUndefined();
-        const caretOffset = 52;
-        cell.setCaretOffset(caretOffset);
-        expect(cell.getCaretOffset()).toBe(caretOffset);
-    });
-
     test("can select cell", async () => {
         
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged", "onSetFocus"]);
         
-        expect(cell.isSelected()).toBe(false);
+        expect(cell.selected).toBe(false);
 
         await cell.select();
 
-        expect(cell.isSelected()).toBe(true);
+        expect(cell.selected).toBe(true);
 
         // Note that sell selection also focuses the cell.
         events.expectEventRaised();
@@ -148,52 +137,52 @@ describe("view-model / cell", () => {
 
     test("more than one cell selection has no effect", async () => {
         
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
         await cell.select();
 
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged", "onSetFocus"]);
 
         await cell.select();
 
-        expect(cell.isSelected()).toBe(true);
+        expect(cell.selected).toBe(true);
 
         events.expectEventNotRaised();
     });
 
     test("can deselect cell", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
         await cell.select();
 
-        expect(cell.isSelected()).toBe(true);
+        expect(cell.selected).toBe(true);
 
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged"]);
 
         await cell.deselect();
 
-        expect(cell.isSelected()).toBe(false);
+        expect(cell.selected).toBe(false);
 
         events.expectEventRaised();
     });
 
     test("deselecting an unselected cell has no effect", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
-        expect(cell.isSelected()).toBe(false);
+        expect(cell.selected).toBe(false);
 
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged"]);
 
         await cell.deselect();
 
-        expect(cell.isSelected()).toBe(false);
+        expect(cell.selected).toBe(false);
 
         events.expectEventNotRaised();
     });
 
     test("can select text", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         const range = { startLineNumber: 1, endLineNumber: 2, startColumn: 3,  endColumn: 4 };
         await expectEventRaised(
@@ -210,7 +199,7 @@ describe("view-model / cell", () => {
 
     test("can deselect text", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
         await expectEventRaised(cell, "onDeselectText", async () => {
             await cell.deselectText();
         });
@@ -218,7 +207,7 @@ describe("view-model / cell", () => {
 
     test("can replace text", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         const range = { startLineNumber: 1, endLineNumber: 2, startColumn: 3,  endColumn: 4 };
         const text = "the replacement text";
@@ -235,27 +224,9 @@ describe("view-model / cell", () => {
         );
     });
 
-    test("can set selected text", () => {
-
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
-
-        const text = "some text";
-        cell.setSelectedText(text);
-        expect(cell.getSelectedText()).toEqual(text);
-    });
-
-    test("can set selected text range", () => {
-
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
-
-        const range = { startLineNumber: 1, endLineNumber: 2, startColumn: 3,  endColumn: 4 };
-        cell.setSelectedTextRange(range);
-        expect(cell.getSelectedTextRange()).toEqual(range);
-    });
-
     test("can flush changes", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
         await expectEventRaised(cell, "onFlushChanges", async () => {
             await cell.flushChanges();
         });
@@ -263,7 +234,7 @@ describe("view-model / cell", () => {
 
     test("can find next match", async () => {
 
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
+        const cell = new CellViewModel("", CellType.Code, "");
 
         const startingPosition = { lineNumber: 1, column: 2 };
         const searchDirection = SearchDirection.Backward;
@@ -280,16 +251,6 @@ describe("view-model / cell", () => {
                 expect(onFindNextMatchParams).toEqual({ startingPosition, searchDirection, doSelection, findDetails });
             }  
         );
-    });
-
-    test("can set height", () => {
-        const cell = new CellViewModel("", CellType.Code, "", undefined);
-        
-        expect(cell.getHeight()).toBeUndefined();
-
-        const theHeight = 22;
-        cell.setHeight(theHeight);
-        expect(cell.getHeight()).toBe(theHeight);
-    });    
+    }); 
 });
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
-import { forceUpdate, updateState } from "browser-utils";
+import { updateState } from "browser-utils";
 import { INotebookEditorViewModel } from "../../view-model/notebook-editor";
 import { NotebookUI } from "./notebook";
 import { Toolbar } from "../toolbar";
@@ -14,6 +14,7 @@ import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebook
 import { IRecentFiles, IRecentFiles_ID } from "../../services/recent-files";
 import { WelcomeScreen } from "./welcome-screen";
 import { asyncHandler } from "utils";
+import { observer } from "mobx-react";
 
 export interface INotebookEditorProps {
     //
@@ -55,6 +56,7 @@ export interface INotebookEditorState {
 }
 
 @InjectableClass()
+@observer
 export class NotebookEditor extends React.Component<INotebookEditorProps, INotebookEditorState> {
 
     @InjectProperty(ICommanderId)
@@ -83,8 +85,6 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     }
 
     private onOpenNotebookChanged = async (isReload: boolean): Promise<void> => {
-        await forceUpdate(this);
-
         if (!isReload) {
             document.documentElement.scrollTop = 0;
         }
@@ -146,8 +146,8 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
     }
 
     private invokeCommand = async (command: ICommand): Promise<void> => {
-        const notebook = this.props.model.isNotebookOpen() ? this.props.model.getOpenNotebook() : undefined;
-        const selectedCell = notebook ? notebook.getSelectedCell() : undefined;
+        const notebook = this.props.model.notebook;
+        const selectedCell = notebook ? notebook.selectedCell : undefined;
 
         if (selectedCell) {
             await this.commander.invokeCommand(command, { cell: selectedCell });
@@ -209,10 +209,10 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
                             marginTop: "4px",
                         }}
                         >
-                        {this.props.model.isNotebookOpen()
+                        {this.props.model.notebook
                             ? <NotebookUI
-                                key={this.props.model.getOpenNotebook().getInstanceId()}
-                                model={this.props.model.getOpenNotebook()} 
+                                key={this.props.model.notebook.instanceId}
+                                notebook={this.props.model.notebook} 
                                 />
                             : <WelcomeScreen
                                 model={this.props.model}

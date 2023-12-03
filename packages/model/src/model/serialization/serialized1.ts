@@ -92,11 +92,6 @@ export interface ISerializedCell1 {
     // Serialized errors from the cell.
     //
     errors?: ISerializedCellError1[];
-
-    //
-    // The height of the cell (if recorded).
-    //
-    height?: number;
 }
 
 //
@@ -128,11 +123,6 @@ export interface ISerializedNotebook1 {
     // Notebooks with no version number are pre-versioning.
     //
     version: number;
-
-    //
-    // The Nodejs version for this notebook.
-    //
-    nodejs?: string;
 
     //
     // Language for the sheet.

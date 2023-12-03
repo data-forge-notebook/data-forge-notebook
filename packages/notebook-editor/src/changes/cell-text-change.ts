@@ -22,7 +22,7 @@ export class CellTextChange implements IChange {
     // Do a change.
     //
     async do(): Promise<void> {
-        this.oldCellText = this.cell.getText();
+        this.oldCellText = this.cell.text;
         await this.cell.setText(this.newCellText);
     }
 

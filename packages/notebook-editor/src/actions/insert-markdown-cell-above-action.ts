@@ -18,7 +18,7 @@ export class InsertMarkdownCellAboveAction implements IAction {
         const selectedCell = context.getSelectedCell();
         if (selectedCell) {
             // Insert above selected cell.
-            const selectedCellIndex = notebook.getCells().indexOf(selectedCell);
+            const selectedCellIndex = notebook.cells.indexOf(selectedCell);
             return new AddCellChange(notebook, selectedCellIndex, "", CellType.Markdown, true);
         }
         else {

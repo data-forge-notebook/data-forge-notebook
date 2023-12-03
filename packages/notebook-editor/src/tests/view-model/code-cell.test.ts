@@ -17,7 +17,7 @@ describe("view-model / code-cell", () => {
     // Creates a cell for testing.
     //
     function createCell() {
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
         return { cell };
     }
 
@@ -77,25 +77,25 @@ describe("view-model / code-cell", () => {
         const now = new Date();
         const output: ICellOutputViewModel[] = [];
         const errors: ICellErrorViewModel[] = [];
-        const cell = new CodeCellViewModel("", CellType.Code, "", now, undefined, output, errors);
-        expect(cell.getLastEvaluationDate()).toBe(now);
-        expect(cell.getOutput()).toBe(output);
-        expect(cell.getErrors()).toBe(errors);
+        const cell = new CodeCellViewModel("", CellType.Code, "", now, output, errors);
+        expect(cell.lastEvaluationDate).toBe(now);
+        expect(cell.output).toBe(output);
+        expect(cell.errors).toBe(errors);
     });
 
     test("can add an output", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
 
         const { mockCellOutputViewModel } = createMockCellOutput();
         await cell.addOutput(mockCellOutputViewModel);
 
-        expect(cell.getOutput()).toEqual([ mockCellOutputViewModel ]);
+        expect(cell.output).toEqual([ mockCellOutputViewModel ]);
     });
 
     test("adding an output raises onOutputChanged", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
 
         await expectEventRaised(cell, "onOutputChanged", async () => {
             const { mockCellOutputViewModel } = createMockCellOutput();
@@ -109,7 +109,7 @@ describe("view-model / code-cell", () => {
 
         await cell.clearOutputs();
 
-        expect(cell.getOutput()).toEqual([]);
+        expect(cell.output).toEqual([]);
     });
     
     test("clearing outputs raises onOutputChanged", async () => {
@@ -161,7 +161,7 @@ describe("view-model / code-cell", () => {
         const { mockCellOutputViewModel: mockFreshOutput } = createMockCellOutput();
         await cell.addOutput(mockFreshOutput);
 
-        expect(cell.getOutput()).toEqual([ mockFreshOutput, mockOutput2 ]);
+        expect(cell.output).toEqual([ mockFreshOutput, mockOutput2 ]);
     });
 
     test("height is replicated to fresh output when display type is the same", async () => {
@@ -237,7 +237,7 @@ describe("view-model / code-cell", () => {
 
         cell.clearStaleOutputs();
 
-        expect(cell.getOutput()).toEqual([ mockFreshOutput ]);
+        expect(cell.output).toEqual([ mockFreshOutput ]);
     });
 
     test("can add an error", async () => {
@@ -247,21 +247,7 @@ describe("view-model / code-cell", () => {
         const { mockCellErrorViewModel } = createMockCellError();
         await cell.addError(mockCellErrorViewModel);
 
-        expect(cell.getErrors()).toEqual([ mockCellErrorViewModel ]);
-    });
-
-    test("in error returns false when no errors are added", () => {
-
-        const { cell } = createCell();
-
-        expect(cell.inError()).toBe(false);
-    });
-
-    test("in error returns true when an error has been added", async () => {
-
-        const { cell } = await createCellWithError();
-
-        expect(cell.inError()).toBe(true);
+        expect(cell.errors).toEqual([ mockCellErrorViewModel ]);
     });
 
     test("adding an error raises onErrorsChanged", async () => {
@@ -280,7 +266,7 @@ describe("view-model / code-cell", () => {
 
         await cell.clearErrors();
 
-        expect(cell.getErrors()).toEqual([]);
+        expect(cell.errors).toEqual([]);
     });
     
     test("clearing errors raises onErrorsChanged", async () => {
@@ -312,7 +298,7 @@ describe("view-model / code-cell", () => {
         const { mockCellErrorViewModel: mockFreshError } = createMockCellError();
         await cell.addError(mockFreshError);
 
-        expect(cell.getErrors()).toEqual([ mockFreshError, mockError2 ]);
+        expect(cell.errors).toEqual([ mockFreshError, mockError2 ]);
     });
 
     test("can clear stale errors", async () => {
@@ -334,15 +320,14 @@ describe("view-model / code-cell", () => {
 
         cell.clearStaleErrors();
 
-        expect(cell.getErrors()).toEqual([ mockFreshError ]);
+        expect(cell.errors).toEqual([ mockFreshError ]);
     });
 
     test("can serialize code cell", () => {
         const theId = "1234";
         const theText = "const x = 3;";
         const theLastEvaluationDate = moment();
-        const theHeight = 18;
-        const cell = new CodeCellViewModel(theId, CellType.Code, theText, theLastEvaluationDate.toDate(), theHeight, [], []);
+        const cell = new CodeCellViewModel(theId, CellType.Code, theText, theLastEvaluationDate.toDate(), [], []);
         expect(cell.serialize()).toEqual({
             id: theId,
             cellType: CellType.Code,
@@ -350,7 +335,6 @@ describe("view-model / code-cell", () => {
             lastEvaluationDate: theLastEvaluationDate.toISOString(true),
             output: [],
             errors: [],
-            height: theHeight,
         });        
     });
 
@@ -361,7 +345,7 @@ describe("view-model / code-cell", () => {
         const mockError: any = {
             serialize: () => serializedError,
         };
-        const cell = new CodeCellViewModel("1234", CellType.Code, "", undefined, undefined, [ mockOutput ], [ mockError ]);
+        const cell = new CodeCellViewModel("1234", CellType.Code, "", undefined, [ mockOutput ], [ mockError ]);
         const serialized = cell.serialize();
         expect(serialized.output).toEqual([ serializedOutput ]);
         expect(serialized.errors).toEqual([ serializedError ]);
@@ -376,12 +360,12 @@ describe("view-model / code-cell", () => {
             cellType: CellType.Code,
             code: theText,
         });
-        expect(cell.getId()).toEqual(theId);
-        expect(cell.getText()).toEqual(theText);
-        expect(cell.getCellType()).toEqual(CellType.Code);
-        expect(cell.getOutput()).toEqual([]);
-        expect(cell.getErrors()).toEqual([]);
-        expect(cell.getLastEvaluationDate()).toBeUndefined();
+        expect(cell.id).toEqual(theId);
+        expect(cell.text).toEqual(theText);
+        expect(cell.cellType).toEqual(CellType.Code);
+        expect(cell.output).toEqual([]);
+        expect(cell.errors).toEqual([]);
+        expect(cell.lastEvaluationDate).toBeUndefined();
     });
 
     test("can deserialize cell with evaluation date", () => {
@@ -393,7 +377,7 @@ describe("view-model / code-cell", () => {
             code: "",
             lastEvaluationDate: theLastEvaluationDate.toISOString(true),
         });
-        expect(cell.getLastEvaluationDate()).toEqual(theLastEvaluationDate.toDate());
+        expect(cell.lastEvaluationDate).toEqual(theLastEvaluationDate.toDate());
     });
 
     test("can deserialize code cell with output", () => {
@@ -411,8 +395,8 @@ describe("view-model / code-cell", () => {
             ]
         });
 
-        expect(cell.getOutput().length).toEqual(1);
-        expect(cell.getOutput()[0]).toBeDefined();
+        expect(cell.output.length).toEqual(1);
+        expect(cell.output[0]).toBeDefined();
     });
 
     test("can deserialize code cell with error", () => {
@@ -427,7 +411,7 @@ describe("view-model / code-cell", () => {
             ]
         });
 
-        expect(cell.getErrors().length).toEqual(1);
-        expect(cell.getErrors()[0]).toBeDefined();
+        expect(cell.errors.length).toEqual(1);
+        expect(cell.errors[0]).toBeDefined();
     });
 });

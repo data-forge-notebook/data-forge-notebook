@@ -15,31 +15,33 @@ import { InjectableClass, InjectProperty } from '@codecapers/fusion';
 import { updateState } from 'browser-utils';
 import { IPluginRequest } from 'host-bridge';
 import { INotebookViewModel } from '../../../../view-model/notebook';
+import { observer } from 'mobx-react';
 
 export interface ICellOutputProps {
 
     //
-    // View model for the cell.
+    // View model for the output.
     //
-    model: ICellOutputViewModel;
+    output: ICellOutputViewModel;
 
     //
     // View model for the notebook.   
     //
-    notebookModel: INotebookViewModel;
+    notebook: INotebookViewModel;
 }
 
 export interface ICellOutputState {
     //
     // Height of the output.
     //
-    height?: number;
+    height?: number; //todo: Does this need to be in local component state?
 }
 
 const MIN_OUTPUT_HEIGHT = 30;
 const MAX_INITIAL_HEIGHT = 200;
 
 @InjectableClass()
+@observer
 export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputState> {
 
     @InjectProperty(IPluginRepo_ID)
@@ -59,7 +61,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         super(props);
 
         this.state = {
-            height: this.props.model.getHeight(), // Get the previoulsy saved height.
+            height: this.props.output.height, // Get the previoulsy saved height.
         };
     }
 
@@ -82,14 +84,14 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
 
     render() {
 
-        const outputValue = this.props.model.getValue();
-        const what = outputValue.getDisplayType() || "unset";
+        const outputValue = this.props.output.value;
+        const what = outputValue.displayType || "unset";
 
         if (this.pluginRequest === undefined) {
             this.pluginRequest = {
-                displayType: outputValue.getDisplayType(),
-                plugin: outputValue.getPlugin(),
-                data: outputValue.getData(),
+                displayType: outputValue.displayType,
+                plugin: outputValue.plugin,
+                data: outputValue.data,
             };
     
             this.pluginConfig = this.pluginRepo.getPlugin(this.pluginRequest);
@@ -116,7 +118,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                             pluginRequest={this.pluginRequest}
                             pluginConfig={this.pluginConfig}
                             pluginOptions={{
-                                cwd: this.props.notebookModel.getStorageId().getContainingPath(),
+                                cwd: this.props.notebook.storageId.getContainingPath(),
                             }}
                             onResize={this.setHeightFromContent}
                             />
@@ -199,7 +201,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 this.setState({
                                     height,
                                 });
-                                handleAsyncErrors(() => this.props.model.setHeight(height)); // Save height to notebook.
+                                handleAsyncErrors(() => this.props.output.setHeight(height)); // Save height to notebook.
                             }}
                             >
                             {/*
@@ -210,7 +212,7 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
                                 pluginRequest={this.pluginRequest}
                                 pluginConfig={this.pluginConfig}
                                 pluginOptions={{
-                                    cwd: this.props.notebookModel.getStorageId().getContainingPath(),
+                                    cwd: this.props.notebook.storageId.getContainingPath(),
                                 }}        
                                 />
                         </Resizable>

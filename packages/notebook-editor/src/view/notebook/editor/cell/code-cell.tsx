@@ -5,8 +5,8 @@ import moment from 'moment';
 import { ICodeCellViewModel } from '../../../../view-model/code-cell';
 import { CellOutputUI } from './cell-output';
 import { MonacoEditor } from '../../../../components/monaco-editor';
-import { forceUpdate } from 'browser-utils';
 import { INotebookViewModel } from '../../../../view-model/notebook';
+import { observer } from 'mobx-react';
 
 export interface ICodeCellProps {
 
@@ -18,37 +18,24 @@ export interface ICodeCellProps {
     //
     // The view-model for the code cell.
     //
-    model: ICodeCellViewModel;
+    cell: ICodeCellViewModel;
 
     //
     // The view-model for the notebook.
     //
-    notebookModel: INotebookViewModel;
+    notebook: INotebookViewModel;
 }
 
 export interface ICodeCellState {
 }
 
+@observer
 export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> {
   
     constructor (props: any) {
         super(props)
 
         this.state = {};
-    }
-    
-    componentDidMount() {
-        this.props.model.onEvalStarted.attach(this.needUpdate);
-        this.props.model.onEvalCompleted.attach(this.needUpdate);
-    }
-
-    componentWillUnmount() {
-        this.props.model.onEvalStarted.detach(this.needUpdate);
-        this.props.model.onEvalCompleted.detach(this.needUpdate);
-    }
-
-    private needUpdate = async (): Promise<void> => {  //TODO: Only really need to rerender the output or errors for the control! Or render the play/stop button!!
-        await forceUpdate(this);
     }
 
     //
@@ -69,15 +56,15 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
     }
     
     private onEscapeKey = async () => {
-        await this.props.notebookModel.deselect();
+        await this.props.notebook.deselect();
     }
 
     render () {
-        const cellExecuting = this.props.model.isExecuting();
-        const inError = !cellExecuting && this.props.model.inError();
+        const cellExecuting = this.props.cell.executing;
+        const inError = !cellExecuting && this.props.cell.errors?.length > 0;
 
         let lastEvaluationMsg = "Not evaluated";
-        const lastEvaluationDate = this.props.model.getLastEvaluationDate();
+        const lastEvaluationDate = this.props.cell.lastEvaluationDate;
         const lastEvaluationDuration = lastEvaluationDate !== undefined ? moment().diff(lastEvaluationDate!) : undefined;
         const humanizedDuration = lastEvaluationDuration !== undefined ? this.humanizeDuration(lastEvaluationDuration!) : undefined;
 
@@ -95,8 +82,8 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
             lastEvaluationMsg = "Evaluated " + humanizedDuration;
         }
 
-        const errors = this.props.model.getErrors();
-        const outputs = this.props.model.getOutput();
+        const errors = this.props.cell.errors;
+        const outputs = this.props.cell.output;
 
         return (
             <div>
@@ -110,7 +97,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                         >
                         <MonacoEditor
                             language={this.props.language}
-                            model={this.props.model} 
+                            cell={this.props.cell} 
                             working={cellExecuting}
                             onEscapeKey={this.onEscapeKey}
                             />
@@ -120,8 +107,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                             && <div className="errors-border">
                                 {errors.map((error, index) => 
                                     <CellErrorUI 
-                                        msg={error.getMsg()} 
-                                        key={error.getInstanceId()} 
+                                        error={error} 
                                         />
                                 )}
                             </div>
@@ -131,9 +117,8 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                             && <div className="outputs-border">
                                 {outputs.map(output => 
                                     <CellOutputUI 
-                                        model={output} 
-                                        notebookModel={this.props.notebookModel}   
-                                        key={output.getInstanceId()} 
+                                        output={output} 
+                                        notebook={this.props.notebook}   
                                         />
                                 )}
                             </div>

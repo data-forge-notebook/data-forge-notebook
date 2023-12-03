@@ -16,7 +16,7 @@ export class MoveCellDownAction implements IAction {
     async invoke(context: IActionContext): Promise<IChange | void> {
         const notebook = context.getNotebook();
         const cell = context.getCell();
-        const cells = notebook.getCells();
+        const cells = notebook.cells;
         const cellIndex = cells.indexOf(cell);
         if (cellIndex >= cells.length-1) {
             // That's as far it will go!

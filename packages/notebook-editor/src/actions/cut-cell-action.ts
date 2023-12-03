@@ -17,7 +17,7 @@ export class CutCellAction implements IAction {
         const notebook = context.getNotebook();
         const cell = context.getCell();
         const cellClipboard = cell.serialize();
-        context.getNotebookEditor().setCellClipboard(cellClipboard);
+        context.getNotebookEditor().cellClipboard = cellClipboard;
         return new DeleteCellChange(notebook, cell, true);
     }
 }

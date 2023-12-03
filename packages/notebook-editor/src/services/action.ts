@@ -114,7 +114,7 @@ export class ActionContext implements IActionContext {
             return true;
         }
 
-        return this.notebookEditor.isNotebookOpen();
+        return this.notebookEditor.notebook !== undefined;
     }
 
     //
@@ -125,7 +125,7 @@ export class ActionContext implements IActionContext {
             return this.initializer.notebook;
         }
 
-        return this.notebookEditor.getOpenNotebook();
+        return this.notebookEditor.notebook!;
     }
 
     //
@@ -160,7 +160,7 @@ export class ActionContext implements IActionContext {
         }
 
         const notebook = this.getNotebook();
-        const selectedCell = notebook.getSelectedCell();
+        const selectedCell = notebook.selectedCell;
         if (selectedCell) {
             return selectedCell;
         }

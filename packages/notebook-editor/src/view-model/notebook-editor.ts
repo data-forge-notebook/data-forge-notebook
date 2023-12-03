@@ -18,8 +18,7 @@ import { IZoom, IZoomId } from "../services/zoom";
 import { ICellViewModel } from "./cell";
 import { CellOutputViewModel } from "./cell-output";
 import { CellErrorViewModel } from "./cell-error";
-
-const defaultNodejsVersion = "v16.14.0"; //TODO: eventually this needs to be determined by the installer.
+import { action, computed, observable } from "mobx";
 
 type OpenNotebookChangedEventHandler = (isReload: boolean) => Promise<void>;
 
@@ -38,6 +37,21 @@ export enum SaveChoice {
 export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
 
     //
+    // The currently open notebook.
+    //
+    notebook: INotebookViewModel | undefined;
+
+    //
+    // When greater than 0 the app is busy wth a global task.
+    //
+    working: number;
+
+    //
+    // Cell currently in the clipboard to be pasted.
+    //
+    cellClipboard: ISerializedCell1 | undefined;
+
+    //
     // Mounts the UI.
     //
     mount(): void;
@@ -50,7 +64,7 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     //
     // Returns true when the app has a global task in progress.
     //
-    isWorking(): boolean;
+    get isWorking(): boolean;
 
     //
     // Start a global task.
@@ -66,16 +80,6 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     // Event raised when the app has started or stopped a task.
     //
     isWorkingChanged: IEventSource<BasicEventHandler>;
-    
-    //
-    // Returns true after a notebook has been opened.
-    //
-    isNotebookOpen(): boolean; 
-
-    //
-    // Get the currently open notebook.
-    //
-    getOpenNotebook(): INotebookViewModel;
 
     //
     // Sets a new notebook and rebind/raise appropriate events.
@@ -132,21 +136,6 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     // Evaluate the single cell.
     //
     evaluateSingleCell(cell: ICellViewModel): Promise<void>;
-
-    //
-    // Set the cell currently in the clipboard.
-    //
-    setCellClipboard(cell: ISerializedCell1): void;
-
-    //
-    // Get the cell currently in the clipboard, if any.
-    //
-    getCellClipboard(): ISerializedCell1 | undefined;
-
-    //
-    // Clear the cell clipboard.
-    //
-    clearCellClipboard(): void;
 
     //
     // Notify the app that a notebook was modified.
@@ -250,22 +239,26 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // The currently open notebook.
     //
-    private notebook: INotebookViewModel | undefined = undefined;
+    @observable
+    notebook: INotebookViewModel | undefined = undefined;
 
     //
     // When greater than 0 the app is busy wth a global task.
     //
-    private working: number = 0;
+    @observable
+    working: number = 0;
 
     //
     // Set to true when the hotkeys overlay is open.
     //
-    private showHotkeysOverlay: boolean = false;
+    @observable
+    showHotkeysOverlay: boolean = false;
 
     //
     // Cell currently in the clipboard to be pasted.
     //
-    private cellClipboard: ISerializedCell1 | undefined;
+    @observable
+    cellClipboard: ISerializedCell1 | undefined;
 
     constructor(notebook?: INotebookViewModel) { 
         if (notebook) {
@@ -286,7 +279,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         this.commander.setNotebookEditor(this);
 
         if (this.notebook) {
-            this.undoRedo.clearStack(this.getOpenNotebook());
+            this.undoRedo.clearStack(this.notebook!);
         }
 
         this.zoom.init();
@@ -304,13 +297,15 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Returns true when the app has a global task in progress.
     //
-    isWorking(): boolean {
+    @computed
+    get isWorking(): boolean {
         return this.working > 0;
     }
 
     //
     // Start a global task.
     //
+    @action
     async startBlockingTask(): Promise<void> {
         const isFirstTask = this.working <= 0;
         ++this.working;
@@ -322,6 +317,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // End a global task.
     //
+    @action
     async endBlockingTask(): Promise<void> {
         --this.working;
         if (this.working <= 0) {
@@ -335,27 +331,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     isWorkingChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
     
     //
-    // Returns true after a notebook has been opened.
-    //
-    isNotebookOpen(): boolean {
-        return !!this.notebook;
-    }
-    
-    //
-    // Get the currently open notebook.
-    //
-    getOpenNotebook(): INotebookViewModel {
-        if (this.notebook) {
-            return this.notebook;
-        }
-        else {
-            throw new Error("No notebook is currently open.");
-        }
-    }
-
-    //
     // Sets a new notebook and rebind/raise appropriate events.
     //
+    @action
     async setNotebook(notebook: INotebookViewModel, isReload: boolean): Promise<void> {
 
         await this.onOpenNotebookWillChange.raise();
@@ -366,13 +344,13 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             //
             // Stop evaluation of whatever  notebook is being unloaded.
             //
-            this.evaluator.stopEvaluation(this.notebook.getInstanceId());
+            this.evaluator.stopEvaluation(this.notebook.instanceId);
         }
         
         this.notebook = notebook;
         this.notebook.onModified.attach(this.notifyModified);
 
-        this.evaluator.installNotebook(notebook.getInstanceId(), notebook.serializeForEval(), notebook.getStorageId().getContainingPath());
+        this.evaluator.installNotebook(notebook.instanceId, notebook.serializeForEval(), notebook.storageId.getContainingPath());
 
         await this.notifyOpenNotebookChanged(isReload);
 
@@ -387,7 +365,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return true; // Notebook notebook loaded yet, allow operation to procede.
         }
 
-        if (!this.notebook.isModified()) {
+        if (!this.notebook.modified) {
             return true; // Notebook not modified, allow operation to procede.
         }
 
@@ -395,7 +373,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             title: title,
             options: [SaveChoice.Save, SaveChoice.DontSave, SaveChoice.Cancel],
             msg: 
-                "Do you want to save changes that you made to " + this.notebook.getStorageId().displayName() +
+                "Do you want to save changes that you made to " + this.notebook.storageId.displayName() +
                 "\r\nIf you don't save your changes will be lost.",
         }) as SaveChoice;
 
@@ -413,10 +391,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Create a template for a new notebok.
     //
-    private newNotebookTemplate(language: string, nodejsVersion: string): ISerializedNotebook1 {
+    newNotebookTemplate(language: string): ISerializedNotebook1 {
         const template: ISerializedNotebook1 = {
             "version": notebookVersion,
-            "nodejs": nodejsVersion, 
             "language": language,
             "cells": [
                 {
@@ -434,9 +411,10 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Create a new notebook.
     //
+    @action
     async newNotebook(language: string): Promise<INotebookViewModel | undefined> { 
 
-        if (this.isWorking()) {
+        if (this.isWorking) {
             this.notification.warn("Already working!");
             return undefined;
         }
@@ -448,10 +426,10 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         	
             try {
                 const newNotebookId = this.notebookRepository.makeUntitledNotebookId();
-                const notebookTemplate = this.newNotebookTemplate(language, defaultNodejsVersion);
-                const notebook = NotebookViewModel.deserialize(newNotebookId, true, false, defaultNodejsVersion, notebookTemplate);
+                const notebookTemplate = this.newNotebookTemplate(language);
+                const notebook = NotebookViewModel.deserialize(newNotebookId, true, false, notebookTemplate);
                 await this.setNotebook(notebook, false);
-                this.notebook!.getCells()[0].select();
+                this.notebook!.cells[0].select();
                 return this.notebook!;
             }
             finally {
@@ -466,8 +444,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Open a notebook from a user-selected file.
     //
+    @action
     async openNotebook(directoryPath?: string): Promise<INotebookViewModel | undefined> {
-        if (this.isWorking()) {
+        if (this.isWorking) {
             this.notification.warn("Already working!");
             return undefined;
         }
@@ -488,9 +467,10 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Open a notebook from a specific location.
     //
+    @action
     async openSpecificNotebook(notebookId: INotebookStorageId): Promise<INotebookViewModel | undefined> {
 
-        if (this.isWorking()) {
+        if (this.isWorking) {
             this.notification.warn("Already working!");
             return undefined;
         }
@@ -507,7 +487,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Open a notebook from a specific file.
     //
-    private async internalOpenNotebook(notebookId: INotebookStorageId, isReload: boolean): Promise<INotebookViewModel | undefined> {
+    @action
+    async internalOpenNotebook(notebookId: INotebookStorageId, isReload: boolean): Promise<INotebookViewModel | undefined> {
 
 		await this.startBlockingTask();
 
@@ -515,7 +496,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         try {
 			const { data, readOnly } = await this.notebookRepository.readNotebook(notebookId);
-			const notebook = NotebookViewModel.deserialize(notebookId, false, readOnly, defaultNodejsVersion, data);
+			const notebook = NotebookViewModel.deserialize(notebookId, false, readOnly, data);
 			await this.setNotebook(notebook, isReload);
             const filePath = notebookId.toString();
             if (filePath) {
@@ -542,32 +523,42 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Save the currently open notebook to it's previous file name.
     //
+    @action
     async saveNotebook(): Promise<void> {
-        if (this.isWorking()) {
+        if (this.isWorking) {
             this.notification.warn("Already working!");
             return;
         }
 
-        const notebook = this.getOpenNotebook();
-        if (notebook.isUnsaved() || notebook.isReadOnly()) {
+        if (!this.notebook) {
+            this.notification.warn("No notebook open!");
+            return;
+        }
+
+        if (this.notebook.unsaved || this.notebook.readOnly) {
             await this.saveNotebookAs();
         }
         else {
-            await notebook.save();
+            await this.notebook.save();
         }
     }
 
     //
     // Save the notebook as a new file.
     //
+    @action
     async saveNotebookAs(): Promise<void> {
-        if (this.isWorking()) {
+        if (this.isWorking) {
             this.notification.warn("Already working!");
             return;
         }
 
-        const notebook = this.getOpenNotebook();
-        const newStorageId = await this.notebookRepository.showNotebookSaveAsDialog(notebook.getStorageId())
+        if (!this.notebook) {
+            this.notification.warn("No notebook open!");
+            return;
+        }
+
+        const newStorageId = await this.notebookRepository.showNotebookSaveAsDialog(this.notebook.storageId)
         if (!newStorageId) {
             // User cancelled.
             return;
@@ -575,7 +566,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         await this.onOpenNotebookWillChange.raise();
 
-        await notebook.saveAs(newStorageId);
+        await this.notebook.saveAs(newStorageId);
         this.recentFiles.addRecentFile(newStorageId.toString()!);
 
         await this.notifyOpenNotebookChanged(false);
@@ -584,9 +575,15 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Reloads the current notebook.
     //
+    @action
     async reloadNotebook(): Promise<void> {
-        if (this.isWorking()) {
+        if (this.isWorking) {
             this.notification.warn("Already working!");
+            return;
+        }
+
+        if (!this.notebook) {
+            this.notification.warn("No notebook open!");
             return;
         }
 
@@ -595,25 +592,24 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return;
         }
 
-        await this.internalOpenNotebook(this.getOpenNotebook().getStorageId(), true);
+        await this.internalOpenNotebook(this.notebook.storageId, true);
     }
 
     //
     // Checks if the current notebook can be evaluated.
     //
-    private async checkCanEvaluateNotebook(): Promise<boolean> {
-        if (this.isWorking()) {
+    async checkCanEvaluateNotebook(): Promise<boolean> {
+        if (this.isWorking) {
             this.notification.warn("Already working!");
             return false;
         }
 
-        if (!this.isNotebookOpen()) {
+        if (!this.notebook) {
             this.notification.warn("You must create or open a notebook before evaluating it.");
             return false;
         }
 
-        const notebook = this.getOpenNotebook();
-        if (notebook.isReadOnly()) {
+        if (this.notebook.readOnly) {
             this.notification.error("The file for this notebook is readonly, please save it to a different location and copy any data files that it uses. Then you can run it.");
             return false;
         }
@@ -624,26 +620,30 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Evaluates the current notebook.
     //
+    @action
     async evaluateNotebook(): Promise<void> {
 
         if (!await this.checkCanEvaluateNotebook()) {
             return;
         }
 
-        const notebook = this.getOpenNotebook();
+        if (!this.notebook) {
+            this.notification.warn("No notebook open!");
+            return;
+        }
 
-        if (notebook.isExecuting()) {
+        if (this.notebook.executing) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
-            this.evaluator.stopEvaluation(notebook.getInstanceId());
+            this.evaluator.stopEvaluation(this.notebook.instanceId);
             await this.onEvaluationFinished();
             return;
         }
 
-        await notebook.flushChanges();
+        await this.notebook.flushChanges();
 
-        this.evaluator.evalNotebook(notebook.getInstanceId(), notebook.serializeForEval(), notebook.getStorageId().getContainingPath());
+        this.evaluator.evalNotebook(this.notebook.instanceId, this.notebook.serializeForEval(), this.notebook.storageId.getContainingPath());
 
         await this.onEvaluationStarted();
     }
@@ -651,26 +651,30 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Evaluate up to the particular cell.
     //
+    @action
     async evaluateToCell(cell: ICellViewModel): Promise<void> {
         
         if (!await this.checkCanEvaluateNotebook()) {
             return;
         }
 
-        const notebook = this.getOpenNotebook();
-
-        if (notebook.isExecuting()) {
+        if (!this.notebook) {
+            this.notification.warn("No notebook open!");
+            return;
+        }
+        
+        if (this.notebook.executing) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
-            this.evaluator.stopEvaluation(notebook.getInstanceId());
+            this.evaluator.stopEvaluation(this.notebook.instanceId);
             await this.onEvaluationFinished();
             return;
         }
 
-        await notebook.flushChanges();
+        await this.notebook.flushChanges();
 
-        this.evaluator.evalToCell(notebook.getInstanceId(), notebook.serializeForEval(), cell.getId(), notebook.getStorageId().getContainingPath());
+        this.evaluator.evalToCell(this.notebook.instanceId, this.notebook.serializeForEval(), cell.id, this.notebook.storageId.getContainingPath());
 
         await this.onEvaluationStarted();
     }
@@ -678,32 +682,36 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Evaluate the single cell.
     //
+    @action
     async evaluateSingleCell(cell: ICellViewModel): Promise<void> {
         
         if (!await this.checkCanEvaluateNotebook()) {
             return;
         }
 
-        const notebook = this.getOpenNotebook();
+        if (!this.notebook) {
+            this.notification.warn("No notebook open!");
+            return;
+        }
 
-        if (notebook.isExecuting()) {
+        if (this.notebook.executing) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
-            this.evaluator.stopEvaluation(notebook.getInstanceId());
+            this.evaluator.stopEvaluation(this.notebook.instanceId);
             await this.onEvaluationFinished();
             return;
         }
 
         
-        await notebook.flushChanges();
+        await this.notebook.flushChanges();
 
-        if (cell.getCellType() !== CellType.Code) {
+        if (cell.cellType !== CellType.Code) {
             this.notification.warn("Requested cell is not a code cell.");
             return;
         }
 
-        this.evaluator.evalSingleCell(notebook.getInstanceId(), notebook.serializeForEval(), cell.getId(), notebook.getStorageId().getContainingPath());
+        this.evaluator.evalSingleCell(this.notebook.instanceId, this.notebook.serializeForEval(), cell.id, this.notebook.storageId.getContainingPath());
 
         await this.onEvaluationStarted();
     }
@@ -711,7 +719,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Event handlers for the evaluation engine.
     //
-    private evaluatorEventHandlers: { [index: string]: (args: any) => Promise<void> } = {
+    evaluatorEventHandlers: { [index: string]: (args: any) => Promise<void> } = {
 
         "notebook-install-started": async (args: any): Promise<void> => {
             // Nothing yet.
@@ -726,7 +734,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         },
 
         "cell-eval-started": async (args: any): Promise<void> => {
-            const cell = this.getOpenNotebook().findCell(args.cellId);
+            const cell = this.notebook!.findCell(args.cellId);
             if (cell) {
                 await cell.notifyCodeEvalStarted();
             }
@@ -736,7 +744,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         },
 
         "cell-eval-completed": async (args: any): Promise<void> => {
-            const cell = this.getOpenNotebook().findCell(args.cellId);
+            const cell = this.notebook!.findCell(args.cellId);
             if (cell) {
                 await cell.notifyCodeEvalComplete();
             }
@@ -755,7 +763,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         "receive-display": async (args: any): Promise<void> => {
             for (const cellOutput of args.outputs) {
-                const cell = this.getOpenNotebook().findCell(cellOutput.cellId) as ICodeCellViewModel;
+                const cell = this.notebook!.findCell(cellOutput.cellId) as ICodeCellViewModel;
                 if (cell) {
                     cell.addOutput(CellOutputViewModel.deserialize({ value:  cellOutput.output }));
                 }
@@ -771,31 +779,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     };
 
     //
-    // Set the cell currently in the clipboard.
-    //
-    setCellClipboard(cell: ISerializedCell1): void {
-        this.cellClipboard = cell;
-    }
-
-    //
-    // Get the cell currently in the clipboard, if any.
-    //
-    getCellClipboard(): ISerializedCell1 | undefined {
-        return this.cellClipboard;
-    }
-
-    //
-    // Clear the cell clipboard.
-    //
-    clearCellClipboard(): void {
-        this.cellClipboard = undefined;
-    }
-
-    //
     // Report an error to a particular cell.
     //
-    private reportError(cellId: string | undefined, error: string) {
-        const cell = cellId && this.getOpenNotebook().findCell(cellId) as ICodeCellViewModel;
+    @action
+    reportError(cellId: string | undefined, error: string) {
+        const cell = cellId && this.notebook!.findCell(cellId) as ICodeCellViewModel;
         if (cell) {
             cell.addError(new CellErrorViewModel(error));
         }
@@ -803,8 +791,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             //
             // Just add the error to the first code cell.
             //
-            for (const cell of this.getOpenNotebook().getCells()) {
-                if (cell.getCellType() === CellType.Code) {
+            for (const cell of this.notebook!.cells) {
+                if (cell.cellType === CellType.Code) {
                     (cell as ICodeCellViewModel).addError(new CellErrorViewModel(error));
                     return;
                 }
@@ -817,7 +805,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Event raised when an event is recieved from the evaluator.
     //
-    private onEvaluatorEvent = async (args: any): Promise<void> => {
+    onEvaluatorEvent = async (args: any): Promise<void> => {
         const event = args.event as string;
         const eventHandler = this.evaluatorEventHandlers[event];
         if (eventHandler) {
@@ -831,15 +819,17 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Notification that evaluation has started.
     //
-    private async onEvaluationStarted(): Promise<void> {
-        await this.getOpenNotebook().notifyCodeEvalStarted();
+    @action
+    async onEvaluationStarted(): Promise<void> {
+        await this.notebook!.notifyCodeEvalStarted();
     }
 
     //
     // Notification that evaluation has completed.
     //
-    private async onEvaluationFinished(): Promise<void> {
-        await this.getOpenNotebook().notifyCodeEvalComplete();
+    @action
+    async onEvaluationFinished(): Promise<void> {
+        await this.notebook!.notifyCodeEvalComplete();
     }
 
     //
@@ -874,10 +864,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Called when the currently open notebook has changed.
     //
-    private async notifyOpenNotebookChanged(isReload: boolean): Promise<void> {
+    @action
+    async notifyOpenNotebookChanged(isReload: boolean): Promise<void> {
         await this.onOpenNotebookChanged.raise(isReload);
 
-        this.undoRedo.clearStack(this.getOpenNotebook());
+        this.undoRedo.clearStack(this.notebook!);
     }
     
     //
@@ -893,22 +884,10 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Toggle the hotkeys overlay.
     //
+    @action
     async toggleHotkeysOverlay(): Promise<void> {
         this.showHotkeysOverlay = !this.showHotkeysOverlay;
-        await this.onHotkeysOverlayChanged.raise();
     }
-
-    //
-    // Returns true when the hotkeys overlay is open.
-    //
-    isHotkeysOverlayOpen(): boolean {
-        return this.showHotkeysOverlay;
-    }
-
-    //
-    // Event raised when the hotkeys overlay is opened or closed.
-    //
-    onHotkeysOverlayChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // Opens or closes the command palette.

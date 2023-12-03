@@ -15,6 +15,6 @@ export class DuplicateCellAction implements IAction {
     async invoke(context: IActionContext): Promise<IChange> {
         const notebook = context.getNotebook();
         const cell = context.getCell();
-        return new AddCellChange(notebook, notebook.getCellIndex(cell) + 1, cell.getText(), cell.getCellType(), true);
+        return new AddCellChange(notebook, notebook.getCellIndex(cell) + 1, cell.text, cell.cellType, true);
     }
 }

@@ -14,8 +14,8 @@ export class FocusNextCellAction implements IAction {
 
     async invoke(context: IActionContext): Promise<void> {
         const notebook = context.getNotebook();
-        const selectedCell = notebook.getSelectedCell();
-        const cells = notebook.getCells();
+        const selectedCell = notebook.selectedCell;
+        const cells = notebook.cells;
         let cell: ICellViewModel | undefined;
 
         if (!selectedCell) {

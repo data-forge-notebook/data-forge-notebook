@@ -1,6 +1,7 @@
 import { IEditorCaretPosition } from "./editor-caret-position";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { CellType, ISerializedCell1 } from "model";
+import { action, observable } from "mobx";
 
 export type FocusedEventHandler = (sender: ICellViewModel) => Promise<void>;
 export type SetCaretPositionEventHandler = (sender: ICellViewModel, caretPosition: IEditorCaretPosition) => Promise<void>;
@@ -85,20 +86,39 @@ export type CellModifiedEventHandler = (cell: ICellViewModel) => Promise<void>;
 export interface ICellViewModel {   
 
     //
-    // Get the unique id for the cell.
+    // Unique id for the cell.
     //
-    getId(): string;
-
-   
-    //
-    // Get the type of the cell.
-    //
-    getCellType(): CellType;
+    id: string;
 
     //
-    // Get the text from the editor.
+    // The type of the cell.
     //
-    getText(): string;
+    cellType: CellType;
+
+    //
+    // The text for the cell.
+    //
+    text: string;
+
+    //
+    // Set to true if this cell is currently selected.
+    //
+    selected: boolean;    
+    
+    //
+    // Records the text that is selected in the editor.
+    //
+    selectedText: string;
+
+    // 
+    // Range of the currently selected text.
+    //
+    selectedTextRange: ITextRange | undefined;
+
+    //
+    // The latest caret postition.
+    //
+    caretOffset?: number;    
 
     //
     // Set the text in the editor.
@@ -110,16 +130,6 @@ export interface ICellViewModel {
     // Event raised when the text in this editor has changed.
     //
     onTextChanged: IEventSource<TextChangedEventHandler>;
-
-    //
-    // Gets the height of the cell (if recorded).
-    //
-    getHeight(): number | undefined;
-    
-    //
-    // Sets the height of the cell (once known).
-    //
-    setHeight(height: number): void;
 
     //
     // Scroll the notebook so this cell is visible.
@@ -182,21 +192,6 @@ export interface ICellViewModel {
     notifyCodeEvalComplete(): Promise<void>;
 
     //
-    // Event raised when the cell has started evaluation.
-    //
-    onEvalStarted: IEventSource<BasicEventHandler>;
-    
-    //
-    // Event raised when the cell has completed evaluation.
-    //
-    onEvalCompleted: IEventSource<BasicEventHandler>;
-
-    //
-    // Returns true if this editor is currently selected.
-    //
-    isSelected(): boolean;
-
-    //
     // Select this editor.
     //
     select(): Promise<void>; 
@@ -209,12 +204,12 @@ export interface ICellViewModel {
     //
     // Event raised when the selected editor is about to change.
     //
-    onEditorSelectionChanging: IEventSource<EditorSelectionChangingEventHandler>; 
+    onEditorSelectionChanging: IEventSource<EditorSelectionChangingEventHandler>;  //todo: ???
 
     //
     // Event raised when the selected editor has changed.
     //
-    onEditorSelectionChanged: IEventSource<EditorSelectionChangedEventHandler>; 
+    onEditorSelectionChanged: IEventSource<EditorSelectionChangedEventHandler>;   //todo: ???
 
     //
     // Focus the editor.
@@ -247,16 +242,6 @@ export interface ICellViewModel {
     onSetCaretPosition: IEventSource<SetCaretPositionEventHandler>;
 
     //
-    // Gets the latest caret offset in the editor.
-    //
-    getCaretOffset(): number | undefined;
-
-    //
-    // Sets the carent offset.
-    //
-    setCaretOffset(caretOffset: number): void;
-
-    //
     // Select a range of text in the editor.
     //
     selectText(range: ITextRange): Promise<void>;
@@ -287,26 +272,6 @@ export interface ICellViewModel {
     onReplaceText: IEventSource<ReplaceTextEventHandler>; 
 
     //
-    // Records the text that is selected in the editor.
-    //
-    setSelectedText(selectedText: string): void;
-
-    //
-    // Gets the text that is selected in the editor.
-    //
-    getSelectedText(): string;    
-
-    //
-    // Gets the range of the currently selected text.
-    //
-    setSelectedTextRange(range: ITextRange | undefined): void;
-
-    //
-    // Gets the range of the currently selected text.
-    //
-    getSelectedTextRange(): ITextRange | undefined;
-
-    //
     // Find the next instance of text.
     //
     findNextMatch(startingPosition: IEditorCaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails): Promise<void>;
@@ -324,7 +289,7 @@ export interface ICellViewModel {
     //
     // Event raised before the model is saved.
     //
-    onFlushChanges: IEventSource<BasicEventHandler>;    
+    onFlushChanges: IEventSource<BasicEventHandler>;
 }
 
 export class CellViewModel implements ICellViewModel {
@@ -332,76 +297,56 @@ export class CellViewModel implements ICellViewModel {
     //
     // Unique id for the cell.
     //
-    private id: string;
+    @observable
+    id: string;
 
     //
     // The type of the cell.
     //
-    private cellType: CellType;
+    @observable
+    cellType: CellType;
 
     //
     // The text for the cell.
     //
-    private text: string;
+    @observable
+    text: string;
 
-    //
-    // The height of the cell (if recorded).
-    //
-    height: number | undefined;    
-       
     //
     // Set to true if this cell is currently selected.
     //
-    private selected: boolean = false;    
+    @observable
+    selected: boolean = false;    
     
     //
     // Records the text that is selected in the editor.
     //
-    private selectedText: string = "";
+    @observable
+    selectedText: string = "";
 
     // 
     // Range of the currently selected text.
     //
-    private selectedTextRange: ITextRange | undefined;
+    @observable
+    selectedTextRange: ITextRange | undefined;
 
     //
-    // The latest care
+    // The latest caret postition.
     //
-    private caretOffset?: number;
+    @observable
+    caretOffset?: number;
 
-    constructor(id: string, cellType: CellType, text: string, height: number | undefined) {
+    constructor(id: string, cellType: CellType, text: string) {
         this.id = id;
         this.cellType = cellType;
         this.text = text;
-        this.height = height;
-    }
-
-    //
-    // Get the unique id for the cell.
-    //
-    getId(): string {
-        return this.id;
-    }
-
-    //
-    // Get the type of the cell.
-    //
-    getCellType(): CellType {
-        return this.cellType;
-    }
-
-    //
-    // Get the text for the cell.
-    //
-    getText(): string {
-        return this.text;
     }
 
     //
     // Set the txt for the cell.
     // Returns true if the text was changed.
     //
-    private _setText(text: string): boolean {
+    _setText(text: string): boolean {
         const trimmed = text.trimRight();
         if (this.text === trimmed) {
             return false; // No change.
@@ -415,6 +360,7 @@ export class CellViewModel implements ICellViewModel {
     // Set the text for the cell.
     // Marks the text as dirty if changed.
     //
+    @action
     async setText(text: string): Promise<boolean> {
 
         if (this._setText(text)) {
@@ -432,20 +378,6 @@ export class CellViewModel implements ICellViewModel {
     onTextChanged: IEventSource<TextChangedEventHandler> = new EventSource<TextChangedEventHandler>();
     
     //
-    // Gets the height of the cell (if recorded).
-    //
-    getHeight(): number | undefined {
-        return this.height;
-    }
-
-    //
-    // Sets the height of the cell (once known).
-    //
-    setHeight(height: number): void {
-        this.height = height;
-    }
-
-    //
     // Serialize to a data structure suitable for serialization.
     //
     serialize(): ISerializedCell1 {
@@ -453,7 +385,6 @@ export class CellViewModel implements ICellViewModel {
             id: this.id,
             cellType: this.cellType,
             code: this.text,
-            height: this.height,
         };
     }
 
@@ -523,22 +454,9 @@ export class CellViewModel implements ICellViewModel {
     onSetCaretPosition: IEventSource<SetCaretPositionEventHandler> = new EventSource<SetCaretPositionEventHandler>();
 
     //
-    // Get the latest caret offset in the cell.
-    //
-    getCaretOffset(): number | undefined {
-        return this.caretOffset;
-    }
-
-    //
-    // Sets the carent offset.
-    //
-    setCaretOffset(caretOffset: number): void {
-        this.caretOffset = caretOffset;
-    }
-
-    //
     // Clear all the outputs from the cell.
     //
+    @action
     async clearOutputs(): Promise<void> {
         // Nothing to do for generic cell.
     }
@@ -546,20 +464,15 @@ export class CellViewModel implements ICellViewModel {
     //
     // Clear all the errors from the cell.
     //
+    @action
     async clearErrors(): Promise<void> {
         // Nothing to do for generic cell.
     }
     
     //
-    // Returns true if this cell is currently selected.
-    //
-    isSelected(): boolean {
-        return this.selected;
-    }
-
-    //
     // Select this cell.
     //
+    @action
     async select(): Promise<void> {
         
         if (this.selected) {
@@ -580,6 +493,7 @@ export class CellViewModel implements ICellViewModel {
     //
     // Deselect this cell.
     //
+    @action
     async deselect(): Promise<void> {
         if (!this.selected) {
             // Already deselected.
@@ -637,34 +551,6 @@ export class CellViewModel implements ICellViewModel {
     onReplaceText: IEventSource<ReplaceTextEventHandler> = new EventSource<ReplaceTextEventHandler>();
 
     //
-    // Records the text that is selected in the editor.
-    //
-    setSelectedText(selectedText: string): void {
-        this.selectedText = selectedText;
-    }
-
-    //
-    // Gets the text that is selected in the editor.
-    //
-    getSelectedText(): string {
-        return this.selectedText;
-    }
-
-    //
-    // Gets the range of the currently selected text.
-    //
-    setSelectedTextRange(range: ITextRange | undefined): void {
-        this.selectedTextRange = range;
-    }
-
-    //
-    // Gets the range of the currently selected text.
-    //
-    getSelectedTextRange(): ITextRange | undefined {
-        return this.selectedTextRange;
-    }
-
-    //
     // Notify the model it is about to be saved.
     //
     async flushChanges(): Promise<void> {
@@ -713,6 +599,7 @@ export class CellViewModel implements ICellViewModel {
     //
     // The notebook has started executing.
     //
+    @action
     notifyNotebookEvalStarted(): void {
         // Only implemented for code cells.
     }
@@ -720,6 +607,7 @@ export class CellViewModel implements ICellViewModel {
     //
     // Start asynchonrous evaluation of the cell's code.
     //
+    @action
     async notifyCodeEvalStarted(): Promise<void> {
         // Only implemented for code cells.
     }
@@ -727,17 +615,8 @@ export class CellViewModel implements ICellViewModel {
     //
     // Notify the cell that code evaluation has compled.
     //
+    @action
     async notifyCodeEvalComplete(): Promise<void> {
         // Only implemented for code cells.
     }
-
-    //
-    // Event raised when the cell has started evaluation.
-    //
-    onEvalStarted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
-    
-    //
-    // Event raised when the cell has completed evaluation.
-    //
-    onEvalCompleted: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }
