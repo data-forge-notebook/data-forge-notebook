@@ -107,6 +107,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                             && <div className="errors-border">
                                 {errors.map((error, index) => 
                                     <CellErrorUI 
+                                        key={error.instanceId}
                                         error={error} 
                                         />
                                 )}
@@ -117,6 +118,7 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
                             && <div className="outputs-border">
                                 {outputs.map(output => 
                                     <CellOutputUI 
+                                        key={output.instanceId}
                                         output={output} 
                                         notebook={this.props.notebook}   
                                         />
