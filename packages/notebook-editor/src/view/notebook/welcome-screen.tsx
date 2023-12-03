@@ -6,7 +6,7 @@ import { IRecentFiles, IRecentFiles_ID } from '../../services/recent-files';
 import { ICommander, ICommanderId } from '../../services/commander';
 import { ISettings, ISettings_ID } from '../../services/settings';
 import { IOpen, IOpen_ID } from '../../services/open';
-import { asyncHandler, ILog, ILogId } from 'utils';
+import { ILog, ILogId } from 'utils';
 import { updateState } from 'browser-utils';
 import { INotebookRepository, INotebookRepositoryId } from 'storage';
 import { Button } from '@blueprintjs/core';
@@ -65,8 +65,6 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
         this.state = {
             showGettingStarted: true,
         };
-
-        this.componentDidMount = asyncHandler(this, this.componentDidMount);
     }
 
     async componentDidMount() {

@@ -13,7 +13,6 @@ import * as path from "path";
 import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { IRecentFiles, IRecentFiles_ID } from "../../services/recent-files";
 import { WelcomeScreen } from "./welcome-screen";
-import { asyncHandler } from "utils";
 import { observer } from "mobx-react";
 
 export interface INotebookEditorProps {
@@ -80,8 +79,6 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
             isRecentFilesPickerOpen: false,
             isExampleBrowserOpen: false,
         };
-
-        this.componentDidMount = asyncHandler(this, this.componentDidMount);
     }
 
     private onOpenNotebookChanged = async (isReload: boolean): Promise<void> => {
