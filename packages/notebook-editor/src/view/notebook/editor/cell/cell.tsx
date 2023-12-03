@@ -82,11 +82,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
         this.props.cell.onScrollIntoView.detach(this.onScrollIntoView);
     }
 
-    shouldComponentUpdate(nextProps: any, nextState: any) {
-        // Stops the cell from rerendering and makes drag and drop fast!
-        return false;
-    }
-
     private onCellFocused = async (): Promise<void> => {
         // Automatically select cell when focused.
         await this.props.cell.select();

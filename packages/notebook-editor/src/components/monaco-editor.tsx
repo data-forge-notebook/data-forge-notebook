@@ -695,19 +695,6 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         }
     }    
 
-    shouldComponentUpdate (nextProps: IMonacoEditorProps, nextState: IMonacoEditorState) {
-
-        if (nextProps.working !== this.props.working) {
-            this.forceUpdate(); //TODO: Shouldn't have to do this here.
-        }
-
-        if (this.editor!.getValue() !== nextProps.cell.text) { //TODO: Is this really needed?
-            this.editor!.setValue(nextProps.cell.text);
-        }
-
-        return false; // No need to ever rerender.
-    }
-
     render () {
         return (
             <div className="pos-relative">
