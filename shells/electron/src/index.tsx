@@ -6,6 +6,7 @@ import { handleAsyncErrors, ILogId } from "utils";
 import { instantiateSingleton, registerSingleton } from "@codecapers/fusion";
 import { ElectronWindowLog } from "./services/electron-renderer-log";
 import mixpanel from "mixpanel-browser";
+import { reaction } from "mobx";
 
 import "./services/file";
 import "./services/confirmation-dialog";
@@ -98,6 +99,7 @@ async function onNotebookRendered() {
 // Raises the event in the main process that the notebook has been modified.
 //
 async function onNotebookModified() {
+    console.log("onNotebookModified"); //fio:
     const notebook = notebookEditorViewModel.notebook;
     if (!notebook) {
         return;
@@ -114,7 +116,8 @@ async function onNotebookModified() {
 notebookEditorViewModel.onEditorReady.attach(onEditorReady);
 notebookEditorViewModel.onOpenNotebookChanged.attach(onNotebookSet);
 notebookEditorViewModel.onNotebookRendered.attach(onNotebookRendered);
-notebookEditorViewModel.onModified.attach(onNotebookModified);
+
+reaction(() => notebookEditorViewModel.notebook?.modified, onNotebookModified);
 
 class App extends React.Component {
 

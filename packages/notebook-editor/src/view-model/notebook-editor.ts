@@ -143,16 +143,6 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     evaluateSingleCell(cell: ICellViewModel): Promise<void>;
 
     //
-    // Notify the app that a notebook was modified.
-    //
-    notifyModified(): Promise<void>;
-
-    //
-    // Event raised when the content of the notebook has been modified.
-    //
-    onModified: IEventSource<BasicEventHandler>;
-
-    //
     // Notify that the editor is ready for use.
     //
     notifyEditorReady(): Promise<void>;
@@ -274,7 +264,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     constructor(notebook?: INotebookViewModel) { 
         if (notebook) {
             this.notebook = notebook;
-            this.notebook.onModified.attach(this.notifyModified);
         }
 
         makeAutoObservable(this);
@@ -351,8 +340,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         await this.onOpenNotebookWillChange.raise();
 
         if (this.notebook) {
-            this.notebook.onModified.detach(this.notifyModified);
-
             //
             // Stop evaluation of whatever  notebook is being unloaded.
             //
@@ -360,7 +347,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         }
         
         this.notebook = notebook;
-        this.notebook.onModified.attach(this.notifyModified);
 
         this.installing = true;
         this.evaluator.installNotebook(notebook.instanceId, notebook.serializeForEval(), notebook.storageId.getContainingPath());
@@ -834,18 +820,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         this.evaluating = false;
         await this.notebook!.notifyCodeEvalComplete();
     }
-
-    //
-    // Notify the app that a notebook was modified.
-    //
-    notifyModified = async (): Promise<void> => {
-        await this.onModified.raise();
-    }
-
-    //
-    // Event raised when the content of the notebook has been modified.
-    //
-    onModified: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // Notify that the editor is ready for use.

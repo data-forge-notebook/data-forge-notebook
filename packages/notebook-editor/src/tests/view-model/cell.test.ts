@@ -18,15 +18,6 @@ describe("view-model / cell", () => {
         expect(cell.text).toEqual(theText);
     });
 
-    test("notifyModifed raises onModified event", async () => {
-
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
-
-        await expectEventRaised(cell, "onModified", async () => {
-            await cell.notifyModified();
-        });
-    });
-
     test("setting the text to the same makes no change", async () => {
 
         const cell = new CodeCellViewModel("", CellType.Code, "hello", undefined, [], []);
@@ -59,15 +50,6 @@ describe("view-model / cell", () => {
         await expectEventRaised(cell, "onTextChanged", async () => {
             await cell.setText("some text!");
             await sleep(1000); // The event is debounced!
-        });
-    });
-
-    test("setting text raises onModified event", async () => {
-
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
-
-        await expectEventRaised(cell, "onModified", async () => {
-            await cell.setText("some text!");
         });
     });
 

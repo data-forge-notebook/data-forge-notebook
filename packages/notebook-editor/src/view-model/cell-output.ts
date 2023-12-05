@@ -2,7 +2,7 @@ import { ICellOutputValueViewModel, CellOutputValueViewModel } from "./cell-outp
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { ISerializedCellOutput1 } from "model";
 import { v4 as uuid } from "uuid";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, reaction } from "mobx";
 
 //
 // View-model for output from a cell.
@@ -31,6 +31,11 @@ export interface ICellOutputViewModel {
     fresh: boolean;
 
     //
+    // Set to true when modified.
+    //
+    modified: boolean;
+
+    //
     // Serialize to a data structure suitable for serialization.
     //
     serialize(): ISerializedCellOutput1;
@@ -39,16 +44,6 @@ export interface ICellOutputViewModel {
     // Mark the output as out of data.
     //
     markStale(): void;
-
-    //
-    // Set the height of the output.
-    //
-    setHeight(height: number): Promise<void>;
-
-    //
-    // Event raised when the model has been modified.
-    //
-    onModified: IEventSource<BasicEventHandler>;
 }
 
 export class CellOutputViewModel implements ICellOutputViewModel {
@@ -72,6 +67,11 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     // The output is fresh when true, out of date when false.
     //
     fresh: boolean = true;
+
+    //
+    // Set to true when modified.
+    //
+    modified: boolean = false;
 
     constructor(value: ICellOutputValueViewModel, height?: number) {
         this.instanceId = uuid();
@@ -104,17 +104,4 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     markStale(): void {
         this.fresh = false;
     }
-
-    //
-    // Set the height of the output.
-    //
-    async setHeight(height: number): Promise<void> {
-        this.height = height;
-        await this.onModified.raise();
-    }
-
-    //
-    // Event raised when the model has been modified.
-    //
-    onModified: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 }

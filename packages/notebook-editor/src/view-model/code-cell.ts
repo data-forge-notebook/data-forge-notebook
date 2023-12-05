@@ -5,7 +5,7 @@ import { CellErrorViewModel, ICellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel, ICellOutputViewModel } from "./cell-output";
 import moment from 'moment';
 import { CellType, ISerializedCell1 } from "model";
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
 
 //
 // View-model for a code cell.
@@ -130,10 +130,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         this.output = output;
         this.errors = errors;
 
-        for (const output of this.output) {
-            this.hookOutputHandlers(output);
-        }
-
         makeObservable(this, {
             executing: observable,
             output: observable,
@@ -153,6 +149,44 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             resetErrors: action,
             clearStaleErrors: action,
         });
+
+        reaction(() => this.output, () => {
+            console.log(`Outputs changed!`);
+            this.modified = true;
+        });
+
+        reaction(() => this.errors, () => {
+            console.log(`Errors changed!`);
+            this.modified = true;
+        });
+    }
+
+    //
+    // Returns true when the cell or children have been modified.
+    //
+    get isModified(): boolean {
+        if (super.isModified) {
+            return true;
+        }
+
+        for (const output of this.output) {
+            if (output.modified) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //
+    // Mark the entire model as unodified.
+    //
+    makeUnmodified(): void {
+        super.makeUnmodified();
+
+        for (const output of this.output) {
+            output.modified = false;
+        }
     }
 
     //
@@ -193,42 +227,21 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     }
 
     //
-    // Event raised when an output has been modified.
-    //
-    onOutputModified = async (): Promise<void> => {
-        await this.notifyModified();
-    }
-
-    hookOutputHandlers(outputViewModel: ICellOutputViewModel): void {
-        outputViewModel.onModified.attach(this.onOutputModified);
-    }
-
-    unhookOutputHandlers(outputViewModel: ICellOutputViewModel): void {
-        if (outputViewModel) {
-            outputViewModel.onModified.detach(this.onOutputModified);
-        }
-    }
-
-    //
     // Add output to the cell.
     //
     async addOutput(output: ICellOutputViewModel): Promise<void> {
-
-        this.hookOutputHandlers(output);
 
         if (this.output.length > this.nextOutputIndex) {
 
             const origOutput = this.output[this.nextOutputIndex];
             const origOutputHeight = origOutput.height;
 
-            // Replace existing output.
-            this.unhookOutputHandlers(origOutput);
-            
+           
             this.output[this.nextOutputIndex] = output;
             if (origOutputHeight !== undefined) {
                 if (origOutput.value.displayType === output.value.displayType) {
                     // Preserve the height the user selected for this output, but only if the display type is the same.
-                    this.output[this.nextOutputIndex].setHeight(origOutputHeight);
+                    this.output[this.nextOutputIndex].height = origOutputHeight;
                 }
             }
         }
@@ -245,10 +258,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     async clearOutputs(): Promise<void> {
 
-        for (const output of this.output) {
-            this.unhookOutputHandlers(output);
-        }
-        
         this.nextOutputIndex = 0;
         this.output = [];
 

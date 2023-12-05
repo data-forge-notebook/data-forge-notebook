@@ -46,22 +46,4 @@ describe("view-model / cell-output", () => {
         expect(cellOutput.fresh).toEqual(false);
     });
 
-    test("can set height", () => {
-        const cellOutput = new CellOutputViewModel({} as any, undefined);
-        expect(cellOutput.height).toBeUndefined();
-
-        const theHeight = 12;
-        cellOutput.setHeight(theHeight);
-        expect(cellOutput.height).toBe(theHeight);
-    });    
-
-
-    test("setting the height raises the onModified event", async () => {
-        const value: any = {};
-        const cellOutput = new CellOutputViewModel(value);
-        await expectEventRaised(cellOutput, "onModified", async () => {
-            await cellOutput.setHeight(22);
-        });
-    });
-
 });

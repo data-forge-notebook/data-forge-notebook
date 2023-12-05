@@ -26,7 +26,6 @@ describe("view-model / code-cell", () => {
     //
     function createMockCellOutput(fields?: any) {
         const mockCellOutputViewModel: any = {
-            onModified: new EventSource<BasicEventHandler>(),
             markStale: jest.fn(),
             getHeight: () => undefined,
             setHeight: jest.fn(),
@@ -118,26 +117,6 @@ describe("view-model / code-cell", () => {
 
         await expectEventRaised(cell, "onOutputChanged", async () => {
             await cell.clearOutputs();
-        });
-    });
-
-    test("onModified bubbles up from an output", async () => {
-
-        const { cell, mockCellOutputViewModel } = await createCellWithOutput();
-
-        await expectEventRaised(cell, "onModified", async () => {
-            await mockCellOutputViewModel.onModified.raise();   
-        });
-    });
-
-    test("onModified no longer bubbles up from a removed output", async () => {
-
-        const { cell, mockCellOutputViewModel } = await createCellWithOutput();
-
-        await cell.clearOutputs();
-
-        await expectEventNotRaised(cell, "onModified", async () => {
-            await mockCellOutputViewModel.onModified.raise();   
         });
     });
 

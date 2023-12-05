@@ -1,7 +1,7 @@
 import { IEditorCaretPosition } from "./editor-caret-position";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { CellType, ISerializedCell1 } from "model";
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export type FocusedEventHandler = (sender: ICellViewModel) => Promise<void>;
 export type SetCaretPositionEventHandler = (sender: ICellViewModel, caretPosition: IEditorCaretPosition) => Promise<void>;
@@ -121,6 +121,21 @@ export interface ICellViewModel {
     caretOffset?: number;    
 
     //
+    // Set to true when modified.
+    //
+    modified: boolean;
+
+    //
+    // Returns true when the cell or children have been modified.
+    //
+    get isModified(): boolean;    
+
+    //
+    // Mark the entire model as unodified.
+    //
+    makeUnmodified(): void;
+
+    //
     // Set the text in the editor.
     // Marks the code as dirty if changed.
     //
@@ -160,11 +175,6 @@ export interface ICellViewModel {
     // Serialize the CELL for evaluation. This excludes elements of the data that aren't needed for evaluation.
     //
     serializeForEval(): ISerializedCell1;
-
-    //
-    // Event raised when model has been modified.
-    //
-    onModified: IEventSource<CellModifiedEventHandler>;
 
     //
     // Event raised when output has been added to the cell.
@@ -329,6 +339,11 @@ export abstract class CellViewModel implements ICellViewModel {
     //
     caretOffset?: number;
 
+    //
+    // Set to true when modified.
+    //
+    modified: boolean = false;
+
     constructor(id: string, cellType: CellType, text: string) {
         this.id = id;
         this.cellType = cellType;
@@ -337,10 +352,26 @@ export abstract class CellViewModel implements ICellViewModel {
         makeObservable(this, {
             text: observable,
             selected: observable,
+            modified: observable,
+            isModified: computed,
             setText: action,
             select: action,
             deselect: action,           
         });
+    }
+
+    //
+    // Returns true when the cell or children have been modified.
+    //
+    get isModified(): boolean {
+        return this.modified;
+    }
+
+    //
+    // Mark the entire model as unodified.
+    //
+    makeUnmodified(): void {
+        this.modified = false
     }
 
     //
@@ -364,7 +395,7 @@ export abstract class CellViewModel implements ICellViewModel {
     async setText(text: string): Promise<boolean> {
 
         if (this._setText(text)) {
-            await this.notifyModified();
+            this.modified = true;
             await this.onTextChanged.raise(this);
             return true;
         }
@@ -553,18 +584,6 @@ export abstract class CellViewModel implements ICellViewModel {
     // Event raised before the model is saved.
     //
     onFlushChanges: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
-
-    //
-    // Notify listeners that the cells has been modified.
-    //
-    async notifyModified(): Promise<void> {
-        await this.onModified.raise(this);  
-    }
-
-    //
-    // Event raised when model has been modified.
-    //
-    onModified: IEventSource<CellModifiedEventHandler> = new EventSource<CellModifiedEventHandler>();
 
     //
     // Find the next instance of text.

@@ -63,6 +63,8 @@
         "lodash": "^4.17.21",
         "minimist": "^1.2.5",
         "mixpanel-browser": "^2.48.1",
+        "mobx": "^6.12.0",
+        "mobx-react": "^9.1.0",
         "model": "workspace:*",
         "notebook-editor": "workspace:*",
         "open": "^6.3.0",

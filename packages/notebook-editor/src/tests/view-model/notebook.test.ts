@@ -20,7 +20,6 @@ describe('view-model / notebook', () => {
             getCellType: () => fields.cellType || "code",
             onEditorSelectionChanging: new EventSource<EditorSelectionChangedEventHandler>(),
             onEditorSelectionChanged: new EventSource<EditorSelectionChangedEventHandler>(),
-            onModified: new EventSource<CellModifiedEventHandler>(),
             onTextChanged: new EventSource<TextChangedEventHandler>(),
             flushChanges: () => {},
             select: jest.fn(),
@@ -165,12 +164,14 @@ describe('view-model / notebook', () => {
             .toThrow();
     });
 
-    test("adding a cell raises onModified", async () => {
+    test("adding a cell sets the modified flag", async () => {
         const { notebook } = createNotebookViewModel([]);
+        
+        expect(notebook.modified).toBe(false);
 
-        await expectEventRaised(notebook, "onModified", async () => {
-            await notebook.addCell(createMockCellViewModel(), 0);
-        });
+        await notebook.addCell(createMockCellViewModel(), 0);
+
+        expect(notebook.modified).toBe(true);
     });
 
     test("can construct with a cell then add a new cell", async () => {
@@ -183,14 +184,6 @@ describe('view-model / notebook', () => {
         expect(cells.length).toEqual(2);
         expect(cells[0]).toBeDefined();
         expect(cells[1]).toBe(newCell);
-    });
-
-    test("onModified event bubbles up for initial cells", async () => {
-        const { notebook, cell } = createNotebookWithCell();
-
-        await expectEventRaised(notebook, "onModified", async () => {
-            await cell.onModified.raise(cell);
-        });
     });
 
     test("flushing changes raises onFlushChanges", async () => {
@@ -217,17 +210,6 @@ describe('view-model / notebook', () => {
 
         await notebook.flushChanges();
         expect(flushChanges).toHaveBeenCalledTimes(1);
-    });
-
-    test("onModified event bubbles up for added cells", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-
-        await expectEventRaised(notebook, "onModified", async () => {
-            const mockCell = createMockCellViewModel()
-            await notebook.addCell(mockCell, 0);
-            await mockCell.onModified.raise();
-        });
     });
 
     test("can select a cell", async () => {
@@ -356,13 +338,15 @@ describe('view-model / notebook', () => {
         });
     });
 
-    test("deleting a cell raises onModified", async () => {
+    test("deleting a cell sets the modified flag", async () => {
 
         const { notebook, cell } = createNotebookWithCell();
 
-        await expectEventRaised(notebook, "onModified", async () => {
-            await notebook.deleteCell(cell, false);
-        });
+        expect(notebook.modified).toBe(false);
+
+        await notebook.deleteCell(cell, false);
+
+        expect(notebook.modified).toBe(true);
     });
 
     test("can move a cell", async () => {
@@ -393,12 +377,14 @@ describe('view-model / notebook', () => {
         expect(notebook.cells).toEqual([ cells[1], cells[0], cells[2] ]);
     });
 
-    test("moving a cell raises onModified", async () => {
+    test("moving a cell sets the modified flag", async () => {
         const { notebook } = createNotebookWithCells(3);
 
-        await expectEventRaised(notebook, "onModified", async () => {
-            await notebook.moveCell(0, 2);
-        });
+        expect(notebook.modified).toBe(false);
+
+        await notebook.moveCell(0, 2);
+
+        expect(notebook.modified).toBe(true);
     });
 
     test("can get cell index by id", () => {
@@ -554,72 +540,6 @@ describe('view-model / notebook', () => {
         expect(notebook.modified).toBe(false);
     });
     
-    test("can set the modified flag", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-        await notebook.setModified(true);
-
-        expect(notebook.modified).toBe(true);
-    });
-
-    test("can clear the modified flag", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-        await notebook.setModified(true);
-        await notebook.setModified(false);
-
-        expect(notebook.modified).toBe(false);
-    });
-
-    test("setting the modified flag raises onModified", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-
-        await expectEventRaised(notebook, "onModified", async () => {
-            await notebook.setModified(true);
-        });
-    });
-
-    test("clearing the modified flag raises onModified", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-
-        await notebook.setModified(true);
-
-        await expectEventRaised(notebook, "onModified", async () => {
-            await notebook.setModified(false);
-        });
-    });
-
-    test("clearing the modified flag has no effect when not modified", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-
-        await expectEventNotRaised(notebook, "onModified", async () => {
-            await notebook.setModified(false);
-        });
-    });
-
-    test("can notify modified", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-
-        await notebook.notifyModified();
-
-        expect(notebook.modified).toBe(true);
-    });
-
-    test("can clear the modified flag", async () => {
-
-        const { notebook } = createNotebookViewModel([]);
-
-        await notebook.notifyModified();
-
-        await notebook.clearModified();
-
-        expect(notebook.modified).toBe(false);
-    });
-
     test("can deserialize", () => {
 
         const mockId: any = {};
@@ -702,7 +622,7 @@ describe('view-model / notebook', () => {
 
         const { notebook } = createNotebookViewModel([]);
 
-        notebook.setModified(true);
+        notebook.modified = true;
 
         expect(notebook.modified).toBe(true);
 
@@ -739,7 +659,7 @@ describe('view-model / notebook', () => {
 
         const { notebook } = createNotebookViewModel([]);
 
-        notebook.setModified(true);
+        notebook.modified = true;
 
         expect(notebook.modified).toBe(true);
 

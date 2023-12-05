@@ -92,6 +92,16 @@ export interface INotebookViewModel {
     readOnly: boolean;
 
     //
+    // Returns true when the cell or children have been modified.
+    //
+    get isModified(): boolean;    
+
+    //
+    // Mark the entire model as unodified.
+    //
+    makeUnmodified(): void;
+
+    //
     // Get the position of a cell.
     //
     getCellIndex(cellViewModel: ICellViewModel): number;
@@ -160,26 +170,6 @@ export interface INotebookViewModel {
     // Get the index of the currently selected cell in the notebook.
     //
     getSelectedCellIndex(): number | undefined;
-
-    //
-    // Notify the notebook that it has been modified`.
-    //
-    notifyModified(): Promise<void>;
-
-    //
-    // Clears the modified flag.
-    //
-    clearModified(): Promise<void>;
-
-    //
-    // Set or clear the modified state of the notebook.
-    //
-    setModified(modified: boolean): Promise<void>;
-
-    //
-    // Event raised when notebook has been modified.
-    //
-    onModified: IEventSource<BasicEventHandler>;
 
     //
     // Serialize to a data structure suitable for serialization.
@@ -306,24 +296,47 @@ export class NotebookViewModel implements INotebookViewModel {
         this.unsaved = unsaved;
         this.readOnly = readOnly;
 
-        for (const cell of this.cells) {
-            this.hookCellEvents(cell);
-        }
-
         makeAutoObservable(this);
     }
+
+    //
+    // Returns true when the cell or children have been modified.
+    //
+    get isModified(): boolean {
+        if (this.modified) {
+            return true;
+        }
+
+        for (const cell of this.cells) {
+            if (cell.isModified) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //
+    // Mark the entire model as unodified.
+    //
+    makeUnmodified(): void {
+        this.modified = false;
+
+        for (const cell of this.cells) {
+            cell.makeUnmodified();
+        }
+    }
+
 
     hookCellEvents(cell: ICellViewModel): void {
         cell.onEditorSelectionChanging.attach(this.onEditorSelectionChanging);
         cell.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
-        cell.onModified.attach(this.onCellModified);
         cell.onTextChanged.attach(this._onTextChanged);
     }
 
     unhookCellEvents(cell: ICellViewModel): void {
         cell.onEditorSelectionChanging.detach(this.onEditorSelectionChanging);
         cell.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
-        cell.onModified.detach(this.onCellModified);
         cell.onTextChanged.detach(this._onTextChanged);
     }
 
@@ -353,13 +366,7 @@ export class NotebookViewModel implements INotebookViewModel {
         await this.onTextChanged.raise(cell);
     }
 
-    //
-    // Handles onCellModified from cells and bubbles the event upward.
-    //
-    onCellModified = async (cell: ICellViewModel): Promise<void> => {
-        await this.notifyModified();
-    }
-  
+ 
     //
     // Get the position of a cell.
     // Returns -1 if the cell wasn't found.
@@ -393,7 +400,7 @@ export class NotebookViewModel implements INotebookViewModel {
        
         this.cells.splice(cellIndex, 0, cellViewModel)
 
-        await this.notifyModified();
+        this.modified = true;
     }
 
     //
@@ -432,7 +439,7 @@ export class NotebookViewModel implements INotebookViewModel {
             }
         }
 
-        await this.notifyModified();
+        this.modified = true;
     }
 
     //
@@ -444,7 +451,7 @@ export class NotebookViewModel implements INotebookViewModel {
         const [ movedCell ] = reorderedCells.splice(sourceIndex, 1);
         reorderedCells.splice(destIndex, 0, movedCell);
         this.cells = reorderedCells;
-        await this.notifyModified();
+        this.modified = true;
     }
 
     //
@@ -579,36 +586,6 @@ export class NotebookViewModel implements INotebookViewModel {
     }
 
     //
-    // Notify the notebook that it has been modified.
-    //
-    async notifyModified(): Promise<void> {
-        this.setModified(true);
-    }
-
-    //
-    // Clear the modified flag.
-    //
-    async clearModified(): Promise<void> {
-        this.setModified(false);
-    }
-
-    //
-    // Set or clear the modified state of the notebook.
-    //
-    async setModified(modified: boolean): Promise<void> {
-        if (this.modified == modified) {
-            return // No change.
-        }
-        this.modified = modified;
-        await this.onModified.raise();
-    }
-
-    //
-    // Event raised when data in the notebook has been modified.
-    //
-    onModified: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
-
-    //
     // Serialize to a data structure suitable for serialization.
     //
     serialize(): ISerializedNotebook1 {
@@ -659,7 +636,7 @@ export class NotebookViewModel implements INotebookViewModel {
         const serialized = this.serialize();
         await this.notebookRepository.writeNotebook(serialized, notebookId);
 
-        this.clearModified();
+        this.makeUnmodified();
     }
 
     //

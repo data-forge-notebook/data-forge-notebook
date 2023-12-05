@@ -113,7 +113,8 @@ describe('view-model / notebook-editor', () => {
     test("creating a new notebook over a modified notebook prompts the user to save", async () => {
 
         const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
-        await notebook!.notifyModified(); // Make the current notebook modified.
+        
+        notebook.modified = true;
 
         notebookEditor.promptSave = jest.fn(async () => true);
 
@@ -126,7 +127,8 @@ describe('view-model / notebook-editor', () => {
     test("can prompt save and user can choose to abort", async () => {
 
         const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
-        await notebook!.notifyModified(); // Make the current notebook modified.
+        
+        notebook.modified = true;
 
         // User cancels creation of the new notebook.
         mockConfirmationDialog.show = async () => SaveChoice.Cancel;
@@ -137,7 +139,8 @@ describe('view-model / notebook-editor', () => {
     test("can prompt save and user can choose to save", async () => {
 
         const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
-        await notebook!.notifyModified(); // Make the current notebook modified.
+        
+        notebook.modified = true;
 
         notebookEditor.saveNotebook = jest.fn();
 
@@ -151,7 +154,8 @@ describe('view-model / notebook-editor', () => {
     test("can prompt save and user can choose not to save", async () => {
 
         const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
-        await notebook!.notifyModified(); // Make the current notebook modified.
+        
+        notebook.modified = true;
 
         notebookEditor.saveNotebook = jest.fn();
 
@@ -348,24 +352,6 @@ describe('view-model / notebook-editor', () => {
         await notebookEditor.reloadNotebook();
 
         expect(notebookEditor.promptSave).toHaveBeenCalledTimes(1);
-    });
-
-    test("can raise onModified", async () => {
-
-        const { notebookEditor } = createNotebookEditor();
-        
-        await expectEventRaised(notebookEditor, "onModified", async () => {
-            await notebookEditor.notifyModified();
-        });
-    });
-
-    test("onModified is bubbled up from the notebook", async () => {
-
-        const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
-
-        await expectEventRaised(notebookEditor, "onModified", async () => {
-            await notebook.notifyModified();
-        });
     });
 
     test("constructing the view model with a notebook clears the undo stack", () => {

@@ -1,4 +1,4 @@
-//
+    //
 // Displays a snippet of output from a code cell.
 //
 
@@ -8,7 +8,6 @@ import { Icon } from '@blueprintjs/core';
 import { Direction } from 're-resizable/lib/resizer';
 import { ICellOutputViewModel } from '../../../../view-model/cell-output';
 import { ErrorBoundary } from 'browser-utils';
-import { handleAsyncErrors } from 'utils';
 import { PluggableVisualization } from './pluggable-visualization';
 import { IPluginConfig, IPluginRepo, IPluginRepo_ID } from '../../../../services/plugin-repository';
 import { InjectableClass, InjectProperty } from '@codecapers/fusion';
@@ -200,7 +199,7 @@ class CellOutputUIView extends React.Component<ICellOutputProps, ICellOutputStat
                                 this.setState({
                                     height,
                                 });
-                                handleAsyncErrors(() => this.props.output.setHeight(height)); // Save height to notebook.
+                                this.props.output.height = height; // Save height to notebook.
                             }}
                             >
                             {/*
