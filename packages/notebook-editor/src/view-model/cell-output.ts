@@ -84,6 +84,8 @@ export class CellOutputViewModel implements ICellOutputViewModel {
             modified: observable,
             markStale: action,
         });
+
+        reaction(() => this.height, () => this.modified = true);
     }
 
     //
