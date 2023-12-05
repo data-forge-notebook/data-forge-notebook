@@ -155,7 +155,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         });
     }
 
-   
     //
     // The notebook has started executing.
     //

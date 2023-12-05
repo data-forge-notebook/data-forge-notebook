@@ -18,7 +18,7 @@ export interface ICellOutputViewModel {
     //
     // Actual value of the output.
     //
-    value: ICellOutputValueViewModel;
+    readonly value: ICellOutputValueViewModel;
 
     //
     // Height of the output, if set.
@@ -61,7 +61,7 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     //
     // Actual value of the output.
     //
-    value: ICellOutputValueViewModel;
+    readonly value: ICellOutputValueViewModel;
 
     //
     // Height of the output, if set.

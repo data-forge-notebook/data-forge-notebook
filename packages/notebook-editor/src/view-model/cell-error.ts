@@ -17,7 +17,7 @@ export interface ICellErrorViewModel {
     //
     // The error message.
     //
-    msg: string;
+    readonly msg: string;
 
     //
     // The output is fresh when true, out of date when false.
@@ -46,7 +46,7 @@ export class CellErrorViewModel implements ICellErrorViewModel {
     //
     // The error message.
     //
-    msg: string;
+    readonly msg: string;
 
     //
     // The output is fresh when true, out of date when false.

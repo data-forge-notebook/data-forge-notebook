@@ -9,17 +9,17 @@ export interface ICellOutputValueViewModel {
     //
     // Type of the value for display formatting.
     //
-    displayType: string | undefined;
+    readonly displayType: string | undefined;
 
     //
     // The id of the plugin to use to render this output.
     //
-    plugin: string | undefined;
+    readonly plugin: string | undefined;
 
     //
     // The actual value.
     //
-    data: any;
+    readonly data: any;
 
     //
     // Serialize to a data structure suitable for serialization.
@@ -32,17 +32,17 @@ export class CellOutputValueViewModel implements ICellOutputValueViewModel {
     //
     // Type of the value for display formatting.
     //
-    displayType: string | undefined;
+    readonly displayType: string | undefined;
 
     //
     // The id of the plugin to use to render this output.
     //
-    plugin: string | undefined;
+    readonly plugin: string | undefined;
 
     //
     // The actual value.
     //
-    data: any;
+    readonly data: any;
 
     constructor(displayType: string | undefined, plugin: string | undefined, data: any) {
         this.displayType = displayType;
