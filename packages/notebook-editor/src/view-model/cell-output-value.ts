@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import { ISerializedCellOutputValue1 } from "model";
 
 //
@@ -49,8 +48,6 @@ export class CellOutputValueViewModel implements ICellOutputValueViewModel {
         this.displayType = displayType;
         this.plugin = plugin;
         this.data = data;
-
-        makeAutoObservable(this);
     }
     
     //
