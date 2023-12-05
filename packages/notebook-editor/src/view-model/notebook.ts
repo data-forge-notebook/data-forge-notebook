@@ -7,7 +7,7 @@ import { MarkdownCellViewModel } from "./markdown-cell";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { v4 as uuid } from "uuid";
-import { action, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export const notebookVersion = 3;
 
@@ -49,7 +49,7 @@ export interface INotebookViewModel {
     // The ID for this notebook instance.
     // This is not serialized and not persistant.
     //
-    instanceId: string;
+    readonly instanceId: string;
 
     //
     // The language of the notebook.
@@ -249,62 +249,52 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Identifies the notebook in storage.
     //
-    @observable
     storageId: INotebookStorageId;
 
     //
     // The ID for this notebook instance.
     // This is not serialized and not persistant.
     //
-    @observable
-    instanceId: string = uuid();
+    readonly instanceId: string = uuid();
     
     //
     // The language of the notebook.
     //
-    @observable
     language: string;
 
     //
     // Description of the notebook, if any.
     //
-    @observable
     description?: string;
 
     //
     // List of cells in the notebook.
     //
-    @observable
     cells: ICellViewModel[];
 
     //
     // Set to true when the notebook is executing.
     //
-    @observable
     executing: boolean = false;
     
     //
     // The currently selected cell.
     //
-    @observable
     selectedCell: ICellViewModel | undefined;
 
     //
     // Set to true when the notebook is modified but not saved.
     //
-    @observable
     modified: boolean;
 
     //
     // Set to true when the notebook is unsaved in memory.
     //
-    @observable
     unsaved: boolean;
 
     //
     // Set to true if the notebook was loaded from a read only file.
     //
-    @observable
     readOnly: boolean;
 
     constructor(notebookStorageId: INotebookStorageId, language: string, cells: ICellViewModel[], description: string | undefined, unsaved: boolean, readOnly: boolean) {
@@ -319,6 +309,8 @@ export class NotebookViewModel implements INotebookViewModel {
         for (const cell of this.cells) {
             this.hookCellEvents(cell);
         }
+
+        makeAutoObservable(this);
     }
 
     hookCellEvents(cell: ICellViewModel): void {
@@ -335,7 +327,6 @@ export class NotebookViewModel implements INotebookViewModel {
         cell.onTextChanged.detach(this._onTextChanged);
     }
 
-    @action
     onEditorSelectionChanging = async (cell: ICellViewModel, willBeSelected: boolean): Promise<void> => {
         if (willBeSelected) {
             // 
@@ -345,7 +336,6 @@ export class NotebookViewModel implements INotebookViewModel {
         }
     }
 
-    @action
     onEditorSelectionChanged = async (cell: ICellViewModel): Promise<void> => {
         if (this.selectedCell === cell) {
             // Didn't change.
@@ -392,7 +382,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Add an existing cell view model to the collection of cells.
     //
-    @action
     async addCell(cellViewModel: ICellViewModel, cellIndex: number): Promise<void> {
         this.hookCellEvents(cellViewModel);
 
@@ -410,7 +399,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Delete the cell from the notebook.
     //
-    @action
     async deleteCell(cell: ICellViewModel, selectNextCell: boolean): Promise<void> {
         
         let nextSelectedCell = -1; // -1 Indicates no cell is selected next.
@@ -450,7 +438,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Move a cell from one index to another.
     //
-    @action
     async moveCell(sourceIndex: number, destIndex: number): Promise<void> {
 
         const reorderedCells = Array.from(this.cells);
@@ -546,7 +533,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Deselect the currently selected cell, if any.
     //
-    @action
     async deselect(): Promise<void> {
         if (this.selectedCell) {
             await this.selectedCell.deselect(); // Deselect previously selected.
@@ -595,7 +581,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Notify the notebook that it has been modified.
     //
-    @action
     async notifyModified(): Promise<void> {
         this.setModified(true);
     }
@@ -603,7 +588,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Clear the modified flag.
     //
-    @action
     async clearModified(): Promise<void> {
         this.setModified(false);
     }
@@ -611,7 +595,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Set or clear the modified state of the notebook.
     //
-    @action
     async setModified(modified: boolean): Promise<void> {
         if (this.modified == modified) {
             return // No change.
@@ -682,7 +665,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Save the notebook to the current filename.
     //
-    @action
     async save(): Promise<void> {
 
         if (this.readOnly) {
@@ -703,7 +685,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Save the notebook to a new location.
     //
-    @action
     async saveAs(newNotebookId: INotebookStorageId): Promise<void> {
     
 		this.log.info("Saving notebook as: " + newNotebookId.displayName());
@@ -720,7 +701,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Clear all the outputs from the notebook.
     //
-    @action
     async clearOutputs(): Promise<void> {
         for (const cell of this.cells) {
             await cell.clearOutputs();
@@ -730,7 +710,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Clear all errors from the notebook.
     //
-    @action
     async clearErrors(): Promise<void> {
         for (const cell of this.cells) {
             await cell.clearErrors();
@@ -756,8 +735,7 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Start asynchronous evaluation of the notebook.
     //
-    @action
-    async notifyCodeEvalStarted (): Promise<void> {
+    async notifyCodeEvalStarted(): Promise<void> {
         this.executing = true;
         for (const cell of this.cells) {
             cell.notifyNotebookEvalStarted();
@@ -767,7 +745,6 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // Stop asynchronous evaluation of the notebook.
     //
-    @action
     async notifyCodeEvalComplete(): Promise<void> {
         this.executing = false;
 

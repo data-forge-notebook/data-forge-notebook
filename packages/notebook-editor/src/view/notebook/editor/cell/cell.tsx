@@ -8,7 +8,6 @@ import * as _ from 'lodash';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 import { CellHandle } from './cell-handle';
-import { throttleAsync } from 'utils';
 import { isElementPartiallyInViewport } from 'browser-utils';
 import { CellType } from 'model';
 import { makeButton } from '../../../make-button';
@@ -46,8 +45,7 @@ export interface ICellState {
 }
 
 @InjectableClass()
-@observer
-export class CellUI extends React.Component<ICellProps, ICellState> {
+class CellUIView extends React.Component<ICellProps, ICellState> {
 
     @InjectProperty(ICommanderId)
     commander!: ICommander;
@@ -245,7 +243,6 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
 
                     <div className="relative">
                         <CellHandle
-                            cell={this}
                             model={this.props.cell}
                             cellContainerElement={this.innerCellContainerElement}
                             isSelected={isSelected}
@@ -277,3 +274,4 @@ export class CellUI extends React.Component<ICellProps, ICellState> {
     }
 }
 
+export const CellUI = observer(CellUIView);

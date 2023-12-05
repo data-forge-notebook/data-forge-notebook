@@ -14,8 +14,7 @@ export interface ICellErrorProps {
     error: ICellErrorViewModel;
 }
 
-@observer
-export class CellErrorUI extends React.Component<ICellErrorProps, {}> {
+class CellErrorUIView extends React.Component<ICellErrorProps, {}> {
 
     render () {
         return (
@@ -28,3 +27,4 @@ export class CellErrorUI extends React.Component<ICellErrorProps, {}> {
     }
 }
 
+export const CellErrorUI = observer(CellErrorUIView);

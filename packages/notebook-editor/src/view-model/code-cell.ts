@@ -5,7 +5,7 @@ import { CellErrorViewModel, ICellErrorViewModel } from "./cell-error";
 import { CellOutputViewModel, ICellOutputViewModel } from "./cell-output";
 import moment from 'moment';
 import { CellType, ISerializedCell1 } from "model";
-import { action, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 //
 // View-model for a code cell.
@@ -94,39 +94,33 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Set to true when the code is currently executing.
     //
-    @observable
     executing: boolean = false;
     
     //
     // The output of code for the cell.
     //
-    @observable
     output: ICellOutputViewModel[];
 
     //
     // Index of the next slot for output.
     // This is used to place output while evaluating code.
     //
-    @observable
     nextOutputIndex: number = 0;
 
     //
     // Error output for the cell.
     //
-    @observable
     errors: ICellErrorViewModel[];
 
     //
     // Index of the next slot for an error.
     // This is used to place errors while evaluating code.
     //
-    @observable
     nextErrorIndex: number = 0;
 
     //
     // The date that the cell was last evaluated.
     //
-    @observable
     lastEvaluationDate?: Date;
 
     constructor(id: string, cellType: CellType, text: string, lastEvaluationDate: Date | undefined, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
@@ -139,13 +133,32 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         for (const output of this.output) {
             this.hookOutputHandlers(output);
         }
+
+        makeObservable(this, {
+            executing: observable,
+            output: observable,
+            nextOutputIndex: observable,
+            errors: observable,
+            nextErrorIndex: observable,
+            lastEvaluationDate: observable,
+            notifyNotebookEvalStarted: action,
+            notifyCodeEvalStarted: action,
+            notifyCodeEvalComplete: action,
+            addOutput: action,
+            clearOutputs: action,
+            resetOutputs: action,
+            clearStaleOutputs: action,
+            addError: action,
+            clearErrors: action,
+            resetErrors: action,
+            clearStaleErrors: action,
+        });
     }
 
    
     //
     // The notebook has started executing.
     //
-    @action
     notifyNotebookEvalStarted(): void {
         this.resetOutputs();
         this.resetErrors();
@@ -154,7 +167,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Start asynchonrous evaluation of the cell's code.
     //
-    @action
     async notifyCodeEvalStarted(): Promise<void> {
         this.executing = true;
     }
@@ -162,7 +174,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Notify the cell that code evaluation has completed.
     //
-    @action
     async notifyCodeEvalComplete(): Promise<void> {
 
         if (this.executing) {
@@ -202,7 +213,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Add output to the cell.
     //
-    @action
     async addOutput(output: ICellOutputViewModel): Promise<void> {
 
         this.hookOutputHandlers(output);
@@ -234,7 +244,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Clear all the outputs from the cell.
     //
-    @action
     async clearOutputs(): Promise<void> {
 
         for (const output of this.output) {
@@ -250,7 +259,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Reset the outputs of the cell.
     //
-    @action
     resetOutputs(): void {
         this.nextOutputIndex = 0;
         for (const output of this.output) {
@@ -261,7 +269,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Clear outputs that weren't updated.
     //
-    @action
     clearStaleOutputs(): void {
         this.output = this.output.filter(output => output.fresh);
     }
@@ -269,7 +276,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Add an error to the cell.
     //
-    @action
     async addError(error: ICellErrorViewModel): Promise<void> {
 
         if (this.errors.length > this.nextErrorIndex) {
@@ -288,7 +294,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Clear all the errors from the cell.
     //
-    @action
     async clearErrors(): Promise<void> {
 
         this.nextErrorIndex = 0;
@@ -300,7 +305,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Reset the errors of the cell.
     //
-    @action
     resetErrors(): void {
 
         this.nextErrorIndex = 0;
@@ -313,7 +317,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // Clear errors that weren't updated.
     //
-    @action
     clearStaleErrors(): void {
         this.errors = this.errors.filter(error => error.fresh);
     }

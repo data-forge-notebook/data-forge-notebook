@@ -1,7 +1,7 @@
 import { IEditorCaretPosition } from "./editor-caret-position";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { CellType, ISerializedCell1 } from "model";
-import { action, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 export type FocusedEventHandler = (sender: ICellViewModel) => Promise<void>;
 export type SetCaretPositionEventHandler = (sender: ICellViewModel, caretPosition: IEditorCaretPosition) => Promise<void>;
@@ -88,12 +88,12 @@ export interface ICellViewModel {
     //
     // Unique id for the cell.
     //
-    id: string;
+    readonly id: string;
 
     //
     // The type of the cell.
     //
-    cellType: CellType;
+    readonly cellType: CellType;
 
     //
     // The text for the cell.
@@ -297,49 +297,50 @@ export abstract class CellViewModel implements ICellViewModel {
     //
     // Unique id for the cell.
     //
-    @observable
-    id: string;
+    readonly id: string;
 
     //
     // The type of the cell.
     //
-    @observable
-    cellType: CellType;
+    readonly cellType: CellType;
 
     //
     // The text for the cell.
     //
-    @observable
     text: string;
 
     //
     // Set to true if this cell is currently selected.
     //
-    @observable
     selected: boolean = false;    
     
     //
     // Records the text that is selected in the editor.
     //
-    @observable
     selectedText: string = "";
 
     // 
     // Range of the currently selected text.
     //
-    @observable
     selectedTextRange: ITextRange | undefined;
 
     //
     // The latest caret postition.
     //
-    @observable
     caretOffset?: number;
 
     constructor(id: string, cellType: CellType, text: string) {
         this.id = id;
         this.cellType = cellType;
         this.text = text;
+
+        makeObservable(this, {
+            text: observable,
+            selected: observable,
+            setText: action,
+            select: action,
+            deselect: action,           
+        });
     }
 
     //
@@ -360,7 +361,6 @@ export abstract class CellViewModel implements ICellViewModel {
     // Set the text for the cell.
     // Marks the text as dirty if changed.
     //
-    @action
     async setText(text: string): Promise<boolean> {
 
         if (this._setText(text)) {
@@ -466,7 +466,6 @@ export abstract class CellViewModel implements ICellViewModel {
     //
     // Select this cell.
     //
-    @action
     async select(): Promise<void> {
         
         if (this.selected) {
@@ -487,7 +486,6 @@ export abstract class CellViewModel implements ICellViewModel {
     //
     // Deselect this cell.
     //
-    @action
     async deselect(): Promise<void> {
         if (!this.selected) {
             // Already deselected.

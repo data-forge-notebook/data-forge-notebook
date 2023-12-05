@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { ISerializedCellError1 } from "model";
 import { v4 as uuid } from "uuid";
 
@@ -12,7 +12,7 @@ export interface ICellErrorViewModel {
     // Instance ID of the model.
     // Not serialized.
     //
-    instanceId: string;
+    readonly instanceId: string;
 
     //
     // The error message.
@@ -41,24 +41,23 @@ export class CellErrorViewModel implements ICellErrorViewModel {
     // Instance ID of the model.
     // Not serialized.
     //
-    @observable
-    instanceId: string;
+    readonly instanceId: string;
 
     //
     // The error message.
     //
-    @observable
     msg: string;
 
     //
     // The output is fresh when true, out of date when false.
     //
-    @observable
     fresh: boolean = true;
 
     constructor (msg: string) {
         this.instanceId = uuid();
         this.msg = msg;
+
+        makeAutoObservable(this);
     }
 
     //
@@ -80,7 +79,6 @@ export class CellErrorViewModel implements ICellErrorViewModel {
     //
     // Mark the output as out of data.
     //
-    @action
     markStale(): void {
         this.fresh = false;
     }

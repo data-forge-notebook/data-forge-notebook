@@ -1,7 +1,6 @@
-import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { CellType, ISerializedCell1 } from "model";
 import { ICellViewModel, CellViewModel } from "./cell";
-import { action, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 //
 // Represents a cell within a notebook.
@@ -29,19 +28,23 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Set to true when the markdown cell is in editing mode.
     //
-    @observable
     editing: boolean;
 
     constructor(id: string, cellType: CellType, text: string) {
         super(id, cellType, text);
 
         this.editing = false;
+
+        makeObservable(this, {
+            editing: observable,
+            enterEditMode: action,
+            enterPreviewMode: action,        
+        });
     }
 
     //
     // Switch the markdown cell to edit mode.
     //
-    @action
     async enterEditMode(): Promise<void> {
         if (this.editing) {
             return; // Already in edit mode.
@@ -57,7 +60,6 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Switch the markdown cell to preview mode.
     //
-    @action
     async enterPreviewMode(): Promise<void> {
         if (!this.editing) {
             return; // Already in preview mode.
@@ -83,7 +85,6 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // The notebook has started executing.
     //
-    @action
     notifyNotebookEvalStarted(): void {
         // Only implemented for code cells.
     }
@@ -91,7 +92,6 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Start asynchonrous evaluation of the cell's code.
     //
-    @action
     async notifyCodeEvalStarted(): Promise<void> {
         // Only implemented for code cells.
     }
@@ -99,7 +99,6 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Notify the cell that code evaluation has completed.
     //
-    @action
     async notifyCodeEvalComplete(): Promise<void> {
         // Only implemented for code cells.
     }
@@ -107,7 +106,6 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Clear all the outputs from the cell.
     //
-    @action
     async clearOutputs(): Promise<void> {
         // Only implemented for code cells.
     }
@@ -115,7 +113,6 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     // Clear all the errors from the cell.
     //
-    @action
     async clearErrors(): Promise<void> {
         // Only implemented for code cells.
     }

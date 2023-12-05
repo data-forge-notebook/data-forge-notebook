@@ -26,8 +26,7 @@ export interface IMarkdownCellState {
 }
 
 @InjectableClass()
-@observer
-export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdownCellState> {
+class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCellState> {
 
     @InjectProperty(ICommanderId)
     commander!: ICommander;
@@ -151,3 +150,5 @@ export class MarkdownCellUI extends React.Component<IMarkdownCellProps, IMarkdow
         );
     }
 }
+
+export const MarkdownCellUI = observer(MarkdownCellUIView);

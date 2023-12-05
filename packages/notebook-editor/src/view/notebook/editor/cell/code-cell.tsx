@@ -29,8 +29,7 @@ export interface ICodeCellProps {
 export interface ICodeCellState {
 }
 
-@observer
-export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> {
+class CodeCellUIView extends React.Component<ICodeCellProps, ICodeCellState> {
   
     constructor (props: any) {
         super(props)
@@ -176,3 +175,4 @@ export class CodeCellUI extends React.Component<ICodeCellProps, ICodeCellState> 
     }
 }
 
+export const CodeCellUI = observer(CodeCellUIView);

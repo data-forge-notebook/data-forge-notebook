@@ -55,8 +55,7 @@ export interface INotebookEditorState {
 }
 
 @InjectableClass()
-@observer
-export class NotebookEditor extends React.Component<INotebookEditorProps, INotebookEditorState> {
+class NotebookEditorView extends React.Component<INotebookEditorProps, INotebookEditorState> {
 
     @InjectProperty(ICommanderId)
     commander!: ICommander;
@@ -305,4 +304,6 @@ export class NotebookEditor extends React.Component<INotebookEditorProps, INoteb
             </div>
         );
     }
-}
+    }
+
+export const NotebookEditor = observer(NotebookEditorView);

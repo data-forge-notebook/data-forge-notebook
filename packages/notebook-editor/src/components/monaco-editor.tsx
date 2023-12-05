@@ -170,8 +170,7 @@ export interface IMonacoEditorState {
 }
 
 @InjectableClass()
-@observer
-export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEditorState> {
+class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditorState> {
 
     @InjectProperty(ILogId)
     log!: ILog;
@@ -732,3 +731,5 @@ export class MonacoEditor extends React.Component<IMonacoEditorProps, IMonacoEdi
         );
     }
 }
+
+export const MonacoEditor = observer(MonacoEditorView);

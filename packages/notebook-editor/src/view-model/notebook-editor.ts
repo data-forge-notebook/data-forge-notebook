@@ -18,7 +18,7 @@ import { IZoom, IZoomId } from "../services/zoom";
 import { ICellViewModel } from "./cell";
 import { CellOutputViewModel } from "./cell-output";
 import { CellErrorViewModel } from "./cell-error";
-import { action, computed, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 type OpenNotebookChangedEventHandler = (isReload: boolean) => Promise<void>;
 
@@ -239,25 +239,21 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // The currently open notebook.
     //
-    @observable
     notebook: INotebookViewModel | undefined = undefined;
 
     //
     // When greater than 0 the app is busy wth a global task.
     //
-    @observable
     working: number = 0;
 
     //
     // Set to true when the hotkeys overlay is open.
     //
-    @observable
     showHotkeysOverlay: boolean = false;
 
     //
     // Cell currently in the clipboard to be pasted.
     //
-    @observable
     cellClipboard: ISerializedCell1 | undefined;
 
     constructor(notebook?: INotebookViewModel) { 
@@ -265,6 +261,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             this.notebook = notebook;
             this.notebook.onModified.attach(this.notifyModified);
         }
+
+        makeAutoObservable(this);
     }
 
     //
@@ -297,7 +295,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Returns true when the app has a global task in progress.
     //
-    @computed
     get isWorking(): boolean {
         return this.working > 0;
     }
@@ -305,7 +302,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Start a global task.
     //
-    @action
     async startBlockingTask(): Promise<void> {
         const isFirstTask = this.working <= 0;
         ++this.working;
@@ -317,7 +313,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // End a global task.
     //
-    @action
     async endBlockingTask(): Promise<void> {
         --this.working;
         if (this.working <= 0) {
@@ -333,7 +328,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Sets a new notebook and rebind/raise appropriate events.
     //
-    @action
     async setNotebook(notebook: INotebookViewModel, isReload: boolean): Promise<void> {
 
         await this.onOpenNotebookWillChange.raise();
@@ -411,7 +405,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Create a new notebook.
     //
-    @action
     async newNotebook(language: string): Promise<INotebookViewModel | undefined> { 
 
         if (this.isWorking) {
@@ -444,7 +437,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Open a notebook from a user-selected file.
     //
-    @action
     async openNotebook(directoryPath?: string): Promise<INotebookViewModel | undefined> {
         if (this.isWorking) {
             this.notification.warn("Already working!");
@@ -467,7 +459,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Open a notebook from a specific location.
     //
-    @action
     async openSpecificNotebook(notebookId: INotebookStorageId): Promise<INotebookViewModel | undefined> {
 
         if (this.isWorking) {
@@ -487,7 +478,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Open a notebook from a specific file.
     //
-    @action
     async internalOpenNotebook(notebookId: INotebookStorageId, isReload: boolean): Promise<INotebookViewModel | undefined> {
 
 		await this.startBlockingTask();
@@ -523,7 +513,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Save the currently open notebook to it's previous file name.
     //
-    @action
     async saveNotebook(): Promise<void> {
         if (this.isWorking) {
             this.notification.warn("Already working!");
@@ -546,7 +535,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Save the notebook as a new file.
     //
-    @action
     async saveNotebookAs(): Promise<void> {
         if (this.isWorking) {
             this.notification.warn("Already working!");
@@ -575,7 +563,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Reloads the current notebook.
     //
-    @action
     async reloadNotebook(): Promise<void> {
         if (this.isWorking) {
             this.notification.warn("Already working!");
@@ -620,7 +607,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Evaluates the current notebook.
     //
-    @action
     async evaluateNotebook(): Promise<void> {
 
         if (!await this.checkCanEvaluateNotebook()) {
@@ -651,7 +637,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Evaluate up to the particular cell.
     //
-    @action
     async evaluateToCell(cell: ICellViewModel): Promise<void> {
         
         if (!await this.checkCanEvaluateNotebook()) {
@@ -682,7 +667,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Evaluate the single cell.
     //
-    @action
     async evaluateSingleCell(cell: ICellViewModel): Promise<void> {
         
         if (!await this.checkCanEvaluateNotebook()) {
@@ -781,7 +765,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Report an error to a particular cell.
     //
-    @action
     reportError(cellId: string | undefined, error: string) {
         const cell = cellId && this.notebook!.findCell(cellId) as ICodeCellViewModel;
         if (cell) {
@@ -819,7 +802,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Notification that evaluation has started.
     //
-    @action
     async onEvaluationStarted(): Promise<void> {
         await this.notebook!.notifyCodeEvalStarted();
     }
@@ -827,7 +809,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Notification that evaluation has completed.
     //
-    @action
     async onEvaluationFinished(): Promise<void> {
         await this.notebook!.notifyCodeEvalComplete();
     }
@@ -864,7 +845,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Called when the currently open notebook has changed.
     //
-    @action
     async notifyOpenNotebookChanged(isReload: boolean): Promise<void> {
         await this.onOpenNotebookChanged.raise(isReload);
 
@@ -884,7 +864,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Toggle the hotkeys overlay.
     //
-    @action
     async toggleHotkeysOverlay(): Promise<void> {
         this.showHotkeysOverlay = !this.showHotkeysOverlay;
     }

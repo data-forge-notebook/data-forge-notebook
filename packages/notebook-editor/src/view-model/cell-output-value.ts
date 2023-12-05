@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { ISerializedCellOutputValue1 } from "model";
 
 //
@@ -33,25 +33,24 @@ export class CellOutputValueViewModel implements ICellOutputValueViewModel {
     //
     // Type of the value for display formatting.
     //
-    @observable
     displayType: string | undefined;
 
     //
     // The id of the plugin to use to render this output.
     //
-    @observable
     plugin: string | undefined;
 
     //
     // The actual value.
     //
-    @observable
     data: any;
 
     constructor(displayType: string | undefined, plugin: string | undefined, data: any) {
         this.displayType = displayType;
         this.plugin = plugin;
         this.data = data;
+
+        makeAutoObservable(this);
     }
     
     //

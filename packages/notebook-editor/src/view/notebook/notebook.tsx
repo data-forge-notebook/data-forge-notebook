@@ -19,8 +19,7 @@ export interface INotebookState {
     isDragging: boolean;
 }
 
-@observer
-export class NotebookUI extends React.Component<INotebookProps, INotebookState> {
+class NotebookUIView extends React.Component<INotebookProps, INotebookState> {
 
     constructor (props: any) {
         super(props);
@@ -135,3 +134,5 @@ export class NotebookUI extends React.Component<INotebookProps, INotebookState> 
         );
     }
 }
+
+export const NotebookUI = observer(NotebookUIView);

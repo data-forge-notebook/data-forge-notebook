@@ -12,11 +12,6 @@ const classnames = require("classnames");
 export interface ICellHandleProps {
 
     //
-    // The parent cell.
-    //
-    cell: CellUI;
-
-    //
     // The model for the cell.
     //
     model: ICellViewModel;
@@ -40,8 +35,7 @@ export interface ICellHandleProps {
 export interface ICellHandleState {
 }
 
-@observer
-export class CellHandle extends React.Component<ICellHandleProps, ICellHandleState> {
+class CellHandleView extends React.Component<ICellHandleProps, ICellHandleState> {
 
     constructor(props: ICellHandleProps) {
         super(props);
@@ -77,3 +71,5 @@ export class CellHandle extends React.Component<ICellHandleProps, ICellHandleSta
         );
     }
 }
+
+export const CellHandle = observer(CellHandleView);

@@ -41,8 +41,7 @@ const MIN_OUTPUT_HEIGHT = 30;
 const MAX_INITIAL_HEIGHT = 200;
 
 @InjectableClass()
-@observer
-export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputState> {
+class CellOutputUIView extends React.Component<ICellOutputProps, ICellOutputState> {
 
     @InjectProperty(IPluginRepo_ID)
     pluginRepo!: IPluginRepo;
@@ -222,3 +221,5 @@ export class CellOutputUI extends React.Component<ICellOutputProps, ICellOutputS
         );
     }
 }
+
+export const CellOutputUI = observer(CellOutputUIView);
