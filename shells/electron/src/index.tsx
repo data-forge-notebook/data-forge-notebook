@@ -117,7 +117,7 @@ notebookEditorViewModel.onEditorReady.attach(onEditorReady);
 notebookEditorViewModel.onOpenNotebookChanged.attach(onNotebookSet);
 notebookEditorViewModel.onNotebookRendered.attach(onNotebookRendered);
 
-reaction(() => notebookEditorViewModel.notebook?.modified, onNotebookModified);
+reaction(() => notebookEditorViewModel.notebook?.isModified, onNotebookModified);
 
 class App extends React.Component {
 

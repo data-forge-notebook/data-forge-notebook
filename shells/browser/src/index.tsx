@@ -45,7 +45,7 @@ const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 // Welcome screen.
 // const notebookEditorViewModel = new NotebookEditorViewModel();
 
-reaction(() => notebookEditorViewModel.notebook?.modified, () => {
+reaction(() => notebookEditorViewModel.notebook?.isModified, () => {
     console.log(`Notebook was modified.`);
 });
 
