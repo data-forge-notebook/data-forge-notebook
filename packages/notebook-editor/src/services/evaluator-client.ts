@@ -12,16 +12,6 @@ export const IEvaluatorId = "IEvaluator";
 export interface IEvaluatorClient {
 
     //
-    // Returns true if the evaluator is currentling doing someting.
-    //
-    isWorking(): boolean;
-
-    //
-    // Returns the name of the current job the evaluator is performing.
-    //
-    getCurrentJobName(): string;
-
-    //
     // Installs the notebook.
     //
     installNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void;

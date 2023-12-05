@@ -6,9 +6,6 @@ import { EvaluationEventHandler, IEvaluatorClient, IEvaluatorId } from "../evalu
 
 const baseUrl = process.env.EVALUATION_ENGINE_URL as string || "http://127.0.0.1:9000";
 
-const INSTALLING_NOTEBOOK_JOB_NAME = "Installing notebook";
-const EVALUATING_NOTEBOOK_JOB_NAME = "Evaluating notebook";
-
 console.log(`Connecting to evaluation engine via ${baseUrl}`);
 
 //
@@ -91,9 +88,9 @@ export class EvaluatorClient implements IEvaluatorClient {
     private intervalTimer?: NodeJS.Timer;
 
     //
-    // The name of the jobs the evaluator is performing.
+    // The number of jobs running.
     //
-    private jobNames = new Set<string>();
+    private numJobs: number = 0;
 
     //
     // Starts the message pump.
@@ -141,13 +138,13 @@ export class EvaluatorClient implements IEvaluatorClient {
                     if (event.args.event === "notebook-install-completed") {
                         console.log(`Install completed!`);
 
-                        this.removeJob(INSTALLING_NOTEBOOK_JOB_NAME);
+                        this.numJobs = Math.max(0, this.numJobs - 1);
 
                         //
                         // Wait a moment then stop the message pump.
                         //
                         setTimeout(() => {
-                            if (this.jobNames.size === 0) {
+                            if (this.numJobs === 0) {
                                 //
                                 // If no new evaluation has started, stop the message pump.
                                 //
@@ -158,13 +155,13 @@ export class EvaluatorClient implements IEvaluatorClient {
                     else if (event.args.event === "notebook-eval-completed") {
                         console.log(`Evaluation completed!`);
 
-                        this.removeJob(EVALUATING_NOTEBOOK_JOB_NAME);
+                        this.numJobs = Math.max(0, this.numJobs - 1);
 
                         //
                         // Wait a moment then stop the message pump.
                         //
                         setTimeout(() => {
-                            if (this.jobNames.size === 0) {
+                            if (this.numJobs === 0) {
                                 //
                                 // If no new evaluation has started, stop the message pump.
                                 //
@@ -180,32 +177,11 @@ export class EvaluatorClient implements IEvaluatorClient {
     }
 
     //
-    // Returns true if the evaluator is currently doing someting.
-    //
-    isWorking(): boolean {
-        return this.jobNames.size > 0;
-    }
-
-    //
-    // Returns the name of the current job the evaluator is performing.
-    //
-    getCurrentJobName(): string {
-        if (this.jobNames.size === 0) {
-            return "Idle";
-        }
-        else {            
-            return Array.from(this.jobNames.values()).join(", ");
-        }
-    }
-
-    //
     // Installs the notebook.
     //
     installNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void {
-        console.log(`Install notebook`); 
-
         this.notebookId = notebookId;
-        this.addJob(INSTALLING_NOTEBOOK_JOB_NAME);
+        this.numJobs += 1;
         this.startMessagePump();
 
         const installNotebookPayload: IInstallNotebookPayload = {
@@ -225,14 +201,13 @@ export class EvaluatorClient implements IEvaluatorClient {
     // Stops evaluation of the notebook.
     //
     stopEvaluation(notebookId: string): void {
-        
+
+        this.numJobs = 0;
+        this.stopMessagePump();
+
         const stopNotebookPayload: IStopEvaluationNotebookPayload = {
             notebookId: notebookId,
         };
-
-        this.clearJobs();
-        this.stopMessagePump();
-
         axios.post(`${baseUrl}/stop-evaluation`, stopNotebookPayload)
             .catch((err: any) => {
                 console.error(`API failed:`);
@@ -244,8 +219,6 @@ export class EvaluatorClient implements IEvaluatorClient {
     // Evaluate up to a particular cell.
     //
     evalToCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string, containingPath?: string): void {
-        console.log(`Eval to cell ${cellId}`); 
-
         this.startEvaluation(notebookId, notebook, cellId, false, containingPath);
     }
 
@@ -253,8 +226,6 @@ export class EvaluatorClient implements IEvaluatorClient {
     // Evaluate up a single cell.
     //
     evalSingleCell(notebookId: string, notebook: ISerializedNotebook1, cellId: string, containingPath?: string): void {
-        console.log(`Eval single cell ${cellId}`); 
-
         this.startEvaluation(notebookId, notebook, cellId, true, containingPath);
     }
 
@@ -262,8 +233,6 @@ export class EvaluatorClient implements IEvaluatorClient {
     // Evaluates the entire notebook.
     //
     evalNotebook(notebookId: string, notebook: ISerializedNotebook1, containingPath?: string): void {
-        console.log(`Eval notebook`); 
-
         this.startEvaluation(notebookId, notebook, undefined, undefined, containingPath);
     }
 
@@ -272,7 +241,7 @@ export class EvaluatorClient implements IEvaluatorClient {
     //
     private startEvaluation(notebookId: string, notebook: ISerializedNotebook1, cellId?: string, singleCell?: boolean, containingPath?: string) {
         this.notebookId = notebookId;
-        this.addJob(EVALUATING_NOTEBOOK_JOB_NAME);
+        this.numJobs += 1;
         this.startMessagePump();
 
         const evaluateNotebookPayload: IEvaluateNotebookPayload = {
@@ -288,27 +257,6 @@ export class EvaluatorClient implements IEvaluatorClient {
                 console.error(`API failed:`);
                 console.error(err && err.stack || err);
             });
-    }
-
-    //
-    // Adds a job to the tracking system.
-    //
-    private async addJob(jobName: string): Promise<void> {
-        this.jobNames.add(jobName);
-    }
-
-    //
-    // Removes a job from the tracking system.
-    //
-    private async removeJob(jobName: string): Promise<void> {
-        this.jobNames.delete(jobName);
-    }
-
-    //
-    // Removes all jobs from the tracking system.
-    //
-    private async clearJobs(): Promise<void> {
-        this.jobNames.clear();
     }
 
     //

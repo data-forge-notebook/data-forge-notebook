@@ -44,7 +44,7 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     //
     // When greater than 0 the app is busy wth a global task.
     //
-    working: number;
+    numBlockingTasks: number;
 
     //
     // Cell currently in the clipboard to be pasted.
@@ -62,24 +62,29 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     unmount(): void;
 
     //
-    // Returns true when the app has a global task in progress.
+    // Returns true when the app has a blocking task in progress.
     //
-    get isWorking(): boolean;
+    get isBlocked(): boolean;
 
     //
     // Start a global task.
     //
-    startBlockingTask(): Promise<void>;
+    startBlockingTask(): void;
 
     //
     // End a global task.
     //
-    endBlockingTask(): Promise<void>;
+    endBlockingTask(): void;
 
     //
-    // Event raised when the app has started or stopped a task.
+    // Returns true if the app is installing a notebook.
     //
-    isWorkingChanged: IEventSource<BasicEventHandler>;
+    get isInstalling(): boolean;
+
+    //
+    // Returns true if the app is evaluating a notebook.
+    //
+    get isEvaluating(): boolean;
 
     //
     // Sets a new notebook and rebind/raise appropriate events.
@@ -244,7 +249,17 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // When greater than 0 the app is busy wth a global task.
     //
-    working: number = 0;
+    numBlockingTasks: number = 0;
+
+    // 
+    // Set to true when the app is installing a notebook.
+    //
+    evaluating: boolean = false;
+
+    // 
+    // Set to true when the app is installing a notebook.
+    //
+    installing: boolean = false;
 
     //
     // Set to true when the hotkeys overlay is open.
@@ -295,36 +310,39 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Returns true when the app has a global task in progress.
     //
-    get isWorking(): boolean {
-        return this.working > 0;
+    get isBlocked(): boolean {
+        return this.numBlockingTasks > 0;
     }
 
     //
     // Start a global task.
     //
-    async startBlockingTask(): Promise<void> {
-        const isFirstTask = this.working <= 0;
-        ++this.working;
-        if (isFirstTask) {
-            await this.isWorkingChanged.raise();
-        }
+    startBlockingTask(): void {
+        const isFirstTask = this.numBlockingTasks <= 0;
+        ++this.numBlockingTasks;
     }
 
     //
     // End a global task.
     //
-    async endBlockingTask(): Promise<void> {
-        --this.working;
-        if (this.working <= 0) {
-            await this.isWorkingChanged.raise();
-        }
+    endBlockingTask(): void {
+        --this.numBlockingTasks;
     }
     
     //
-    // Event raised when the app has started or stopped a task.
+    // Returns true if the app is installing a notebook.
     //
-    isWorkingChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
-    
+    get isInstalling(): boolean {
+        return this.installing;
+    }
+
+    //
+    // Returns true if the app is evaluating a notebook.
+    //
+    get isEvaluating(): boolean {
+        return this.evaluating;
+    }
+
     //
     // Sets a new notebook and rebind/raise appropriate events.
     //
@@ -344,6 +362,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         this.notebook = notebook;
         this.notebook.onModified.attach(this.notifyModified);
 
+        this.installing = true;
         this.evaluator.installNotebook(notebook.instanceId, notebook.serializeForEval(), notebook.storageId.getContainingPath());
 
         await this.notifyOpenNotebookChanged(isReload);
@@ -407,7 +426,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     async newNotebook(language: string): Promise<INotebookViewModel | undefined> { 
 
-        if (this.isWorking) {
+        if (this.isBlocked) {
             this.notification.warn("Already working!");
             return undefined;
         }
@@ -415,7 +434,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         this.log.info(`Creating new notebook for language ${language}.`);
 
         if (await this.promptSave("New notebook")) {
-			await this.startBlockingTask();
+			this.startBlockingTask();
         	
             try {
                 const newNotebookId = this.notebookRepository.makeUntitledNotebookId();
@@ -426,7 +445,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
                 return this.notebook!;
             }
             finally {
-                await this.endBlockingTask();
+                this.endBlockingTask();
             }
         }
         else {
@@ -438,7 +457,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Open a notebook from a user-selected file.
     //
     async openNotebook(directoryPath?: string): Promise<INotebookViewModel | undefined> {
-        if (this.isWorking) {
+        if (this.isBlocked) {
             this.notification.warn("Already working!");
             return undefined;
         }
@@ -461,7 +480,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     async openSpecificNotebook(notebookId: INotebookStorageId): Promise<INotebookViewModel | undefined> {
 
-        if (this.isWorking) {
+        if (this.isBlocked) {
             this.notification.warn("Already working!");
             return undefined;
         }
@@ -480,7 +499,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     async internalOpenNotebook(notebookId: INotebookStorageId, isReload: boolean): Promise<INotebookViewModel | undefined> {
 
-		await this.startBlockingTask();
+		this.startBlockingTask();
 
 		this.log.info("Opening notebook: " + notebookId.displayName());
 
@@ -506,7 +525,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return undefined;
         }
         finally {
-            await this.endBlockingTask();
+            this.endBlockingTask();
         }
     }
 
@@ -514,7 +533,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Save the currently open notebook to it's previous file name.
     //
     async saveNotebook(): Promise<void> {
-        if (this.isWorking) {
+        if (this.isBlocked) {
             this.notification.warn("Already working!");
             return;
         }
@@ -536,7 +555,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Save the notebook as a new file.
     //
     async saveNotebookAs(): Promise<void> {
-        if (this.isWorking) {
+        if (this.isBlocked) {
             this.notification.warn("Already working!");
             return;
         }
@@ -564,7 +583,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Reloads the current notebook.
     //
     async reloadNotebook(): Promise<void> {
-        if (this.isWorking) {
+        if (this.isBlocked) {
             this.notification.warn("Already working!");
             return;
         }
@@ -586,7 +605,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Checks if the current notebook can be evaluated.
     //
     async checkCanEvaluateNotebook(): Promise<boolean> {
-        if (this.isWorking) {
+        if (this.isBlocked) {
             this.notification.warn("Already working!");
             return false;
         }
@@ -618,7 +637,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return;
         }
 
-        if (this.notebook.executing) {
+        if (this.evaluating) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
@@ -629,6 +648,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         await this.notebook.flushChanges();
 
+        this.evaluating = true;
         this.evaluator.evalNotebook(this.notebook.instanceId, this.notebook.serializeForEval(), this.notebook.storageId.getContainingPath());
 
         await this.onEvaluationStarted();
@@ -648,7 +668,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return;
         }
         
-        if (this.notebook.executing) {
+        if (this.evaluating) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
@@ -659,6 +679,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         await this.notebook.flushChanges();
 
+        this.evaluating = true;
         this.evaluator.evalToCell(this.notebook.instanceId, this.notebook.serializeForEval(), cell.id, this.notebook.storageId.getContainingPath());
 
         await this.onEvaluationStarted();
@@ -678,7 +699,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return;
         }
 
-        if (this.notebook.executing) {
+        if (this.evaluating) {
             //
             // Trying to start an evaluation while one is already in progress will stop it.
             //
@@ -687,7 +708,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return;
         }
 
-        
         await this.notebook.flushChanges();
 
         if (cell.cellType !== CellType.Code) {
@@ -695,6 +715,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return;
         }
 
+        this.evaluating = true;
         this.evaluator.evalSingleCell(this.notebook.instanceId, this.notebook.serializeForEval(), cell.id, this.notebook.storageId.getContainingPath());
 
         await this.onEvaluationStarted();
@@ -710,7 +731,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         },
 
         "notebook-install-completed": async (args: any): Promise<void> => {
-            // Nothing yet.
+            this.installing = true;
         },
 
         "notebook-eval-started": async (args: any): Promise<void> => {
@@ -810,6 +831,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Notification that evaluation has completed.
     //
     async onEvaluationFinished(): Promise<void> {
+        this.evaluating = false;
         await this.notebook!.notifyCodeEvalComplete();
     }
 

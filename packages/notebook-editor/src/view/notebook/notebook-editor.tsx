@@ -195,7 +195,7 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
                         }}
                         >
                         <Toolbar 
-                            model={this.props.model} 
+                            notebookEditor={this.props.model} 
                             />
                     </div>
 

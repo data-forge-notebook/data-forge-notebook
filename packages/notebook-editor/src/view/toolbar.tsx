@@ -8,18 +8,19 @@ import { BUTTON_TOOLTIP_DELAY, makeButton } from './make-button';
 import { makeMenuItem } from './make-menu';
 import { IZoom, IZoomId } from '../services/zoom';
 import { IEvaluatorClient, IEvaluatorId } from '../services/evaluator-client';
+import { observer } from 'mobx-react';
 
 const FPSStats = require("react-fps-stats").default;
 
 export interface IToolbarProps {
-    model: INotebookEditorViewModel;
+    notebookEditor: INotebookEditorViewModel;
 }
 
 export interface IToolbarState {
 }
 
 @InjectableClass()
-export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
+class ToolbarView extends React.Component<IToolbarProps, IToolbarState> {
 
     @InjectProperty(ICommanderId)
     commander!: ICommander;
@@ -40,15 +41,24 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     }
 
     render(): JSX.Element {
-        const isNotebookOpen = this.props.model.notebook !== undefined;
-        const notebook = this.props.model.notebook || undefined;
-        const isExecuting = notebook && notebook.executing || false;
+        const notebookEditor = this.props.notebookEditor;
+        const notebook = notebookEditor.notebook || undefined;
         let language = notebook && notebook.language;
         if (language === "javascript") {
             language = "JavaScript";
         }
         else if (language === "typescript") {
             language = "TypeScript";
+        }
+
+        let jobNames = [];
+
+        if (notebookEditor.isInstalling) {
+            jobNames.push("Installing notebook");
+        }
+
+        if (notebookEditor.isEvaluating) {
+            jobNames.push("Evaluating notebook");
         }
 
         return (
@@ -64,7 +74,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                     className="flex flex-row items-center centered-container"
                     >
 
-                    {isNotebookOpen
+                    {notebook
                         && <ButtonGroup>
                             {makeButton(this.commander, "eval-notebook", 
                                 { 
@@ -74,7 +84,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                 { 
                                     notebook
                                 }, 
-                                isExecuting ? "executing" : "notExecuting"
+                                notebookEditor.isEvaluating ? "executing" : "notExecuting"
                             )}
                         </ButtonGroup>
                     }
@@ -82,22 +92,22 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                     <ButtonGroup className="ml-2">
                         {makeButton(this.commander, "new-notebook", { pos: Position.BOTTOM }, this.platform)}
                         {makeButton(this.commander, "open-notebook", { pos: Position.BOTTOM }, this.platform)}
-                        {isNotebookOpen &&
+                        {notebook &&
                             makeButton(this.commander, "reload-notebook", { pos: Position.BOTTOM }, this.platform)
                         }
-                        {isNotebookOpen
+                        {notebook
                             && makeButton(this.commander, "save-notebook", { pos: Position.BOTTOM }, this.platform)
                         }
                     </ButtonGroup>
                     
-                    {this.props.model.notebook
+                    {notebook
                         && <ButtonGroup className="ml-2">
                             {makeButton(this.commander, "undo", { pos: Position.BOTTOM }, this.platform)}
                             {makeButton(this.commander, "redo", { pos: Position.BOTTOM }, this.platform)}
                         </ButtonGroup>
                     }
 
-                    {this.props.model.notebook
+                    {notebook
                         && <Popover
                             className="ml-2"
                             autoFocus={false}
@@ -131,7 +141,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         {makeButton(this.commander, "toggle-command-palette", { pos: Position.BOTTOM }, this.platform)}
                     </ButtonGroup>
 
-                    {this.props.model.notebook
+                    {notebook
                         &&<ButtonGroup className="ml-2">
                             {makeButton(this.commander, "clear-outputs", { pos: Position.BOTTOM }, this.platform)}
                         </ButtonGroup>
@@ -177,7 +187,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         </Tooltip>
                     </ButtonGroup>
 
-                    {this.props.model.notebook
+                    {notebook
                         &&<ButtonGroup className="ml-2">
                             {makeButton(this.commander, "split-cell", { pos: Position.BOTTOM }, this.platform)}
                             {makeButton(this.commander, "merge-cell-up", { pos: Position.BOTTOM }, this.platform)}
@@ -186,7 +196,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                         </ButtonGroup>
                     }
 
-                    {this.props.model.notebook
+                    {notebook
                         &&<ButtonGroup className="ml-2">
                             {makeButton(this.commander, "focus-top-cell", { pos: Position.BOTTOM }, this.platform)}
                             {makeButton(this.commander, "focus-prev-cell", { pos: Position.BOTTOM }, this.platform)}
@@ -224,7 +234,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                         padding: "5px",
                                     }}
                                     >
-                                    {this.evaluator.getCurrentJobName()}
+                                    {jobNames.join(", ")}
                                 </div>
                             )}
                             >
@@ -237,7 +247,7 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
                                     height: "20px",
                                 }}
                                 >
-                                {this.evaluator.isWorking()
+                                {jobNames.length > 0
                                     && <Spinner
                                         size={15}
                                         />
@@ -265,3 +275,4 @@ export class Toolbar extends React.Component<IToolbarProps, IToolbarState> {
     }
 }
 
+export const Toolbar = observer(ToolbarView);
