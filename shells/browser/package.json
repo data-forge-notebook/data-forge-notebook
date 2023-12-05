@@ -27,11 +27,13 @@
     },
     "dependencies": {
         "@codecapers/fusion": "1.0.15",
+        "hotkeys-js": "3.9.5",
+        "mobx": "^6.12.0",
+        "mobx-react": "^9.1.0",
+        "model": "workspace:*",
+        "notebook-editor": "workspace:*",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "notebook-editor": "workspace:*",
-        "utils": "workspace:*",
-        "model": "workspace:*",
-        "hotkeys-js": "3.9.5"
+        "utils": "workspace:*"
     }
 }

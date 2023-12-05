@@ -13,6 +13,7 @@ import "./services/open";
 import "./services/zoom";
 import "./services/clipboard";
 import "./services/paths";
+import { reaction } from "mobx";
 
 registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.
@@ -43,6 +44,10 @@ const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 
 // Welcome screen.
 // const notebookEditorViewModel = new NotebookEditorViewModel();
+
+reaction(() => notebookEditorViewModel.notebook?.modified, () => {
+    console.log(`Notebook was modified.`);
+});
 
 function App() {
     return (
