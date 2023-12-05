@@ -13,7 +13,7 @@ import "./services/open";
 import "./services/zoom";
 import "./services/clipboard";
 import "./services/paths";
-import { reaction } from "mobx";
+import { reaction, spy } from "mobx";
 
 registerSingleton(INotebookRepositoryId, {
     // Mock repository for now.
@@ -44,6 +44,11 @@ const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 
 // Welcome screen.
 // const notebookEditorViewModel = new NotebookEditorViewModel();
+
+spy(event => {
+    console.log(`@@ mobx event: ${event.type}`);
+    console.log(event);
+});
 
 reaction(() => notebookEditorViewModel.notebook?.isModified, () => {
     console.log(`Notebook was modified.`);
