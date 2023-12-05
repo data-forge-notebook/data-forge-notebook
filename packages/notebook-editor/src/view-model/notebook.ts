@@ -7,7 +7,7 @@ import { MarkdownCellViewModel } from "./markdown-cell";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { v4 as uuid } from "uuid";
-import { makeAutoObservable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export const notebookVersion = 3;
 
@@ -43,7 +43,7 @@ export interface INotebookViewModel {
     //
     // Identifies the notebook in storage.
     //
-    storageId: INotebookStorageId;
+    readonly storageId: INotebookStorageId;
 
     //
     // The ID for this notebook instance.
@@ -54,7 +54,7 @@ export interface INotebookViewModel {
     //
     // The language of the notebook.
     //
-    language: string;
+    readonly language: string;
 
     //
     // Description of the notebook, if any.
@@ -250,7 +250,7 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // The language of the notebook.
     //
-    language: string;
+    readonly language: string;
 
     //
     // Description of the notebook, if any.
@@ -270,7 +270,7 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     // The currently selected cell.
     //
-    selectedCell: ICellViewModel | undefined;
+    selectedCell: ICellViewModel | undefined = undefined;
 
     //
     // Set to true when the notebook is modified but not saved.
@@ -296,7 +296,30 @@ export class NotebookViewModel implements INotebookViewModel {
         this.unsaved = unsaved;
         this.readOnly = readOnly;
 
-        makeAutoObservable(this);
+        makeObservable(this, {
+            description: observable,
+            cells: observable,
+            executing: observable,
+            selectedCell: observable,
+            modified: observable,
+            unsaved: observable,
+            readOnly: observable,
+            isModified: computed,
+            makeUnmodified: action,
+            onEditorSelectionChanging: action,
+            onEditorSelectionChanged: action,
+            addCell: action,
+            deleteCell: action,
+            moveCell: action,
+            deselect: action,
+            _save: action,
+            save: action,
+            saveAs: action,
+            clearOutputs: action,
+            clearErrors: action,
+            notifyCodeEvalStarted: action,
+            notifyCodeEvalComplete: action,
+        });
     }
 
     //
@@ -326,7 +349,6 @@ export class NotebookViewModel implements INotebookViewModel {
             cell.makeUnmodified();
         }
     }
-
 
     hookCellEvents(cell: ICellViewModel): void {
         cell.onEditorSelectionChanging.attach(this.onEditorSelectionChanging);
@@ -682,6 +704,8 @@ export class NotebookViewModel implements INotebookViewModel {
         for (const cell of this.cells) {
             await cell.clearOutputs();
         }
+
+        this.modified = true;
     }
 
     //
@@ -691,6 +715,8 @@ export class NotebookViewModel implements INotebookViewModel {
         for (const cell of this.cells) {
             await cell.clearErrors();
         }
+
+        this.modified = true;
     }
 
     //

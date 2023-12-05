@@ -2,7 +2,7 @@ import { ICellOutputValueViewModel, CellOutputValueViewModel } from "./cell-outp
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { ISerializedCellOutput1 } from "model";
 import { v4 as uuid } from "uuid";
-import { makeAutoObservable, reaction } from "mobx";
+import { action, makeAutoObservable, makeObservable, observable, reaction } from "mobx";
 
 //
 // View-model for output from a cell.
@@ -61,7 +61,7 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     //
     // Height of the output, if set.
     //
-    height?: number;
+    height: number | undefined = undefined;
 
     //
     // The output is fresh when true, out of date when false.
@@ -78,7 +78,12 @@ export class CellOutputViewModel implements ICellOutputViewModel {
         this.value = value;
         this.height = height;
 
-        makeAutoObservable(this);        
+       makeObservable(this, {
+            height: observable,
+            fresh: observable,
+            modified: observable,
+            markStale: action,
+        });
     }
 
     //
