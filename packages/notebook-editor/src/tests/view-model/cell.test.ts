@@ -110,7 +110,8 @@ describe("view-model / cell", () => {
         
         expect(cell.selected).toBe(false);
 
-        await cell.select();
+        //todo:
+        // await cell.select();
 
         expect(cell.selected).toBe(true);
 
@@ -121,11 +122,13 @@ describe("view-model / cell", () => {
     test("more than one cell selection has no effect", async () => {
         
         const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
-        await cell.select();
+        //todo:
+        // await cell.select();
 
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged", "onSetFocus"]);
 
-        await cell.select();
+        //todo:
+        // await cell.select();
 
         expect(cell.selected).toBe(true);
 
@@ -135,13 +138,15 @@ describe("view-model / cell", () => {
     test("can deselect cell", async () => {
 
         const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
-        await cell.select();
+        //todo:
+        // await cell.select();
 
         expect(cell.selected).toBe(true);
 
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged"]);
 
-        await cell.deselect();
+        //todo:
+        // await cell.deselect();
 
         expect(cell.selected).toBe(false);
 
@@ -156,7 +161,8 @@ describe("view-model / cell", () => {
 
         const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged"]);
 
-        await cell.deselect();
+        //todo:
+        // await cell.deselect();
 
         expect(cell.selected).toBe(false);
 

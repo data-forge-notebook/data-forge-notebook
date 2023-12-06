@@ -355,7 +355,6 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
         this.props.cell.onSetFocus.attach(this.onSetFocus);
         this.props.cell.onSetCaretPosition.attach(this.onSetCaretPosition);
         this.props.cell.onFlushChanges.attach(this.onFlushChanges);
-        this.props.cell.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
         this.props.cell.onFindNextMatch.attach(this.onFindNextMatch);
         this.props.cell.onSelectText.attach(this.onSelectText);
         this.props.cell.onDeselectText.attach(this.onDeselectText);
@@ -398,7 +397,6 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
         this.props.cell.onSetFocus.detach(this.onSetFocus);
         this.props.cell.onSetCaretPosition.detach(this.onSetCaretPosition);
         this.props.cell.onFlushChanges.detach(this.onFlushChanges);
-        this.props.cell.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
         this.props.cell.onFindNextMatch.detach(this.onFindNextMatch);
         this.props.cell.onSelectText.detach(this.onSelectText);
         this.props.cell.onDeselectText.detach(this.onDeselectText);
@@ -467,28 +465,6 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
             await this.updateTextInModel.flush(); // Flush text changes so we don't lose them.
         }
     }    
-
-    //
-    // Event raised when the selected editor has changed.
-    //
-    private onEditorSelectionChanged = async (): Promise<void> => {
-
-        if (!this.editor) {
-            return;
-        }
-
-        //
-        // Code for toggling line numbers:
-        //
-        // if (this.props.model.isSelected()) {
-        //     this.editor.updateOptions({ lineNumbers: "on" });
-        //     this.hiddenEditor!.updateOptions({ lineNumbers: "on" });
-        // }
-        // else {
-        //     this.editor.updateOptions({ lineNumbers: "off" });
-        //     this.hiddenEditor!.updateOptions({ lineNumbers: "off" });
-        // }
-    }
 
     //
     // Flush text changes prior to saving.

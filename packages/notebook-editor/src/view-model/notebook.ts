@@ -100,6 +100,16 @@ export interface INotebookViewModel {
     makeUnmodified(): void;
 
     //
+    // Selects a cell in the notebook.
+    //
+    select(cell: ICellViewModel): Promise<void>;    
+
+    //
+    // Deselect the currently selected cell, if any.
+    //
+    deselect(): Promise<void>;
+
+    //
     // Get the position of a cell.
     //
     getCellIndex(cellViewModel: ICellViewModel): number;
@@ -149,10 +159,6 @@ export interface INotebookViewModel {
     //
     getLastCell(): ICellViewModel | undefined;
 
-    //
-    // Deselect the currently selected cell, if any.
-    //
-    deselect(): Promise<void>;
    
     //
     // Event raised when the selected cell has changed.
@@ -299,12 +305,11 @@ export class NotebookViewModel implements INotebookViewModel {
             readOnly: observable,
             isModified: computed,
             makeUnmodified: action,
-            onEditorSelectionChanging: action,
-            onEditorSelectionChanged: action,
+            select: action,
+            deselect: action,
             addCell: action,
             deleteCell: action,
             moveCell: action,
-            deselect: action,
             _save: action,
             save: action,
             saveAs: action,
@@ -343,35 +348,44 @@ export class NotebookViewModel implements INotebookViewModel {
         }
     }
 
-    hookCellEvents(cell: ICellViewModel): void {
-        cell.onEditorSelectionChanging.attach(this.onEditorSelectionChanging);
-        cell.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
-    }
-
-    unhookCellEvents(cell: ICellViewModel): void {
-        cell.onEditorSelectionChanging.detach(this.onEditorSelectionChanging);
-        cell.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
-    }
-
-    onEditorSelectionChanging = async (cell: ICellViewModel, willBeSelected: boolean): Promise<void> => {
-        if (willBeSelected) {
-            // 
-            // Make sure everything else is selected before applying the new selection.
-            //
-            await this.deselect();
-        }
-    }
-
-    onEditorSelectionChanged = async (cell: ICellViewModel): Promise<void> => {
+    //
+    // Selects a cell in the notebook.
+    //
+    async select(cell: ICellViewModel): Promise<void> {
         if (this.selectedCell === cell) {
-            // Didn't change.
+            // Already selected.
             return;
         }
+
+        // 
+        // Make sure everything else is selected before applying the new selection.
+        //
+        await this.deselect();
+
+        //
+        // Select the new cell.
+        //
+        await cell.select();
 
         this.selectedCell = cell;
         await this.onSelectedCellChanged.raise();
     }
- 
+
+    //
+    // Deselects the selected cell in the notebook.
+    //
+    async deselect(): Promise<void> {
+        if (this.selectedCell === undefined) {
+            // No change.
+            return;
+        }
+
+        await this.selectedCell.deselect();
+        this.selectedCell = undefined;
+
+        await this.onSelectedCellChanged.raise();
+    }
+
     //
     // Get the position of a cell.
     // Returns -1 if the cell wasn't found.
@@ -395,8 +409,6 @@ export class NotebookViewModel implements INotebookViewModel {
     // Add an existing cell view model to the collection of cells.
     //
     async addCell(cellViewModel: ICellViewModel, cellIndex: number): Promise<void> {
-        this.hookCellEvents(cellViewModel);
-
         await this.flushChanges();
 
         if (cellIndex > this.cells.length) {
@@ -433,14 +445,12 @@ export class NotebookViewModel implements INotebookViewModel {
 
         const cellsRemoved = this.cells.filter(cell => cell.id === cellId);
 
-        this.unhookCellEvents(cellsRemoved[0]);
-
         this.cells = this.cells.filter(cell => cell.id !== cellId);        
 
         if (selectNextCell && nextSelectedCell >= 0) {
             const nextFocusedCell = this.getCellByIndex(nextSelectedCell);
             if (nextFocusedCell) {
-                await nextFocusedCell.select(); // Automatically focus, select and edit next cell.
+                await this.select(nextFocusedCell); // Automatically select the following cell.
             }
         }
 
@@ -542,16 +552,6 @@ export class NotebookViewModel implements INotebookViewModel {
         return undefined;
     }
 
-    //
-    // Deselect the currently selected cell, if any.
-    //
-    async deselect(): Promise<void> {
-        if (this.selectedCell) {
-            await this.selectedCell.deselect(); // Deselect previously selected.
-            this.selectedCell = undefined;
-        }
-    }
-    
     //
     // Event raised when the selected cell has changed.
     //

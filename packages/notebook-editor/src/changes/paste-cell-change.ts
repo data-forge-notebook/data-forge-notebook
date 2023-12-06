@@ -35,7 +35,7 @@ export class PasteCellChange implements IChange {
         cellToPaste.id = this.idGenerator.genId(); // Give the new cell a new id.
         this.cell = cellViewModelFactory(cellToPaste);
         await this.notebook.addCell(this.cell, this.cellIndex);
-        await this.cell.select();
+        await this.notebook.select(this.cell);
     }
 
     //

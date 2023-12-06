@@ -40,7 +40,7 @@ export class FocusNextCellAction implements IAction {
         }
 
         // Select the cell.
-        await cell.select();
+        await notebook.select(cell);
 
         // Make sure we can see the cell.
         await cell.scrollIntoView("next cell was focused");

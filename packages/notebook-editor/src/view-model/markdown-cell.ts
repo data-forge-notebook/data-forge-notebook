@@ -46,15 +46,7 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     // Switch the markdown cell to edit mode.
     //
     async enterEditMode(): Promise<void> {
-        if (this.editing) {
-            return; // Already in edit mode.
-        }
-
         this.editing = true;
-
-        // Automatically select and focus cells when editing has started.
-        await this.focus(); // Entering edit mode should focus even when the cell is already selected.
-        await this.select(); // If cell is already selected, this has no effect.
     }
 
     //

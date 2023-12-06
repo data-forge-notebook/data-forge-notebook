@@ -82,7 +82,7 @@ class CellUIView extends React.Component<ICellProps, ICellState> {
 
     private onCellFocused = async (): Promise<void> => {
         // Automatically select cell when focused.
-        await this.props.cell.select();
+        await this.props.notebook.select(this.props.cell);
     }
 
     //
@@ -133,8 +133,8 @@ class CellUIView extends React.Component<ICellProps, ICellState> {
         else if (cellType === CellType.Markdown) {
             return (
                 <MarkdownCellUI 
-                    model={this.props.cell as IMarkdownCellViewModel} 
-                    notebookModel={this.props.notebook}
+                    cell={this.props.cell as IMarkdownCellViewModel} 
+                    notebook={this.props.notebook}
                     />
             );
         }

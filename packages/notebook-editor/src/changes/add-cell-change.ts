@@ -44,7 +44,7 @@ export class AddCellChange implements IChange {
         this.cell = cellViewModelFactory(cellToAdd);
         await this.notebook.addCell(this.cell, this.cellIndex);
         if (this.selectCell) {
-            await this.cell.select();
+            await this.notebook.select(this.cell);
         }
     }
 

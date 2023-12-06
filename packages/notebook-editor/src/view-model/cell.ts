@@ -194,16 +194,6 @@ export interface ICellViewModel {
     deselect(): Promise<void>; 
 
     //
-    // Event raised when the selected editor is about to change.
-    //
-    onEditorSelectionChanging: IEventSource<EditorSelectionChangingEventHandler>;  //todo: ???
-
-    //
-    // Event raised when the selected editor has changed.
-    //
-    onEditorSelectionChanged: IEventSource<EditorSelectionChangedEventHandler>;   //todo: ???
-
-    //
     // Focus the editor.
     //
     focus(): Promise<void>;
@@ -410,7 +400,7 @@ export abstract class CellViewModel implements ICellViewModel {
     //
     // Event raised to make the editor focused.
     //
-    onSetFocus: IEventSource<FocusedEventHandler> = new EventSource<FocusedEventHandler>();
+    onSetFocus: IEventSource<FocusedEventHandler> = new EventSource<FocusedEventHandler>(); //todo: Can probably replace this with a reaction.
     
     //
     // Get the caret position within the cell.
@@ -462,13 +452,9 @@ export abstract class CellViewModel implements ICellViewModel {
             return;
         }
 
-        await this.onEditorSelectionChanging.raise(this, true);
-
         this.selected = true;
 
-        await this.onEditorSelectionChanged.raise(this);
-
-        // Focus the seleted cell.
+        // Focus the seletecd cell.
         await this.focus();
     }
 
@@ -481,11 +467,7 @@ export abstract class CellViewModel implements ICellViewModel {
             return;
         }
 
-        await this.onEditorSelectionChanging.raise(this, false);
-
         this.selected = false;
-
-        await this.onEditorSelectionChanged.raise(this);
     }
 
     //

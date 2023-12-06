@@ -18,7 +18,7 @@ export class FocusBottomCellAction implements IAction {
             const cell = cells[cells.length-1];
             
             // Select the cell.
-            await cell.select();
+            await notebook.select(cell);
 
             // Make sure we can see the cell.
             await cell.scrollIntoView("bottom cell was focused");

@@ -250,7 +250,7 @@ export class UndoRedo implements IUndoRedo {
             if (!cell) {
                 throw new Error(`Cell with index ${changeRecord.caretPositionBefore.cellIndex} doesn't exist!`);
             }
-            await cell.select();
+            await notebook.select(cell);
             await cell.setCaretPosition(changeRecord.caretPositionBefore.cellPosition);
         }
 
@@ -290,7 +290,7 @@ export class UndoRedo implements IUndoRedo {
             if (!cell) {
                 throw new Error(`Cell with index ${changeRecord.caretPositionAfter.cellIndex} doesn't exist!`);
             }
-            await cell.select();
+            await notebook.select(cell);
             await cell.setCaretPosition(changeRecord.caretPositionAfter.cellPosition);
         }
 

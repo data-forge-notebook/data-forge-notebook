@@ -9,17 +9,18 @@ import { IOpen, IOpen_ID } from '../../../../services/open';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 import { ICellViewModel } from '../../../../view-model/cell';
 import { observer } from 'mobx-react';
+import { autorun } from 'mobx';
 
 export interface IMarkdownCellProps {
     //
     // The view-model for the markdown cell.
     //
-    model: IMarkdownCellViewModel;
+    cell: IMarkdownCellViewModel;
 
     //
     // View model for the notebook.
     //
-    notebookModel: INotebookViewModel;
+    notebook: INotebookViewModel;
 }
 
 export interface IMarkdownCellState {
@@ -41,24 +42,28 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
     }
 
     componentDidMount() {
-        this.props.model.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
+        const cell = this.props.cell;
+        autorun(async () => {
+            if (cell.selected) {
+                await this.enterEditMode();
+            }
+            else {
+                await this.enterPreviewMode();
+            }
+        });
     }
 
     componentWillUnmount() {
-        this.props.model.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
     }
 
-    async enterPreviewMode(): Promise<void> {
-        await this.props.model.enterPreviewMode();
+    private enterPreviewMode = async (): Promise<void> => {
+        await this.props.cell.enterPreviewMode();
     }
 
-    private onEditorSelectionChanged = async (cell: ICellViewModel): Promise<void> => {
-        if (this.props.model.selected) {
-            await this.props.model.enterEditMode();
-        }
-        else {
-            await this.enterPreviewMode();
-        }
+    private enterEditMode = async (): Promise<void> => {
+        await this.props.cell.enterEditMode();
+        await this.props.cell.focus();
+        await this.props.notebook.select(this.props.cell);
     }
 
     private onBlur = async (): Promise<void> => {
@@ -67,12 +72,12 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
     }
 
     private onMarkdownClick = async (): Promise<void> => {
-        await this.props.model.enterEditMode();
+        await this.enterEditMode();
     }
 
     private onEscapeKey = async () => {
         await this.enterPreviewMode();
-        await this.props.notebookModel.deselect();
+        await this.props.notebook.deselect();
     }
 
     //
@@ -84,7 +89,7 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
         const cmdLinkPrefix = "http://command+";
         if (link.startsWith(cmdLinkPrefix)) {
             const cmd = link.substring(cmdLinkPrefix.length);
-            await this.commander.invokeNamedCommand(cmd, { cell: this.props.model });
+            await this.commander.invokeNamedCommand(cmd, { cell: this.props.cell });
         }
         else if (link.startsWith(openFileLinkPrefix)) {
             await this.commander.invokeNamedCommand("open-notebook", undefined, { file: link.substring(openFileLinkPrefix.length) });
@@ -98,7 +103,7 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
     }
 
     render () {
-        const inEditMode = this.props.model.editing;
+        const inEditMode = this.props.cell.editing;
 
         return (
             <div 
@@ -116,7 +121,7 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
                         >
                         <MonacoEditor
                             language="markdown"
-                            cell={this.props.model} 
+                            cell={this.props.cell} 
                             onEscapeKey={this.onEscapeKey}
                             />
                     </div>
@@ -127,7 +132,7 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
                         }}
                         >
                         <ReactMarkdown
-                            children={this.props.model.text} 
+                            children={this.props.cell.text} 
                             components={{
                                 a: (props: any) => {
                                     return (

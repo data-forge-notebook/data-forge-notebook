@@ -18,7 +18,7 @@ export class FocusTopCellAction implements IAction {
             const cell =  cells[0];
 
             // Select the cell.
-            await cell.select();
+            await notebook.select(cell);
 
             document.documentElement.scrollTop = 0;
         }

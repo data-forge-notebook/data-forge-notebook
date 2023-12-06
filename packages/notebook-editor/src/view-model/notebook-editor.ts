@@ -449,7 +449,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
                 const notebookTemplate = this.newNotebookTemplate(language);
                 const notebook = NotebookViewModel.deserialize(newNotebookId, true, false, notebookTemplate);
                 await this.setNotebook(notebook, false);
-                this.notebook!.cells[0].select();
+                notebook.select(notebook.cells[0]); // Auto select the first cell.
                 return this.notebook!;
             }
             finally {
