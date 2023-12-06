@@ -145,19 +145,18 @@ export class PluginRepo implements IPluginRepo {
     //
     getPlugin(pluginRequest: IPluginRequest): IPluginConfig {
 
-        console.log(`Requesting plugin content:`);
-        console.log(pluginRequest);
+        // console.log(`Requesting plugin content:`);
+        // console.log(pluginRequest);
 
         let matchedPlugin = this.matchPlugin(pluginRequest);
         if (!matchedPlugin) {
-            console.log(`Didn't match any plugin, returning default plugin:`);
-            console.log(defaultPlugin);
-
+            // console.log(`Didn't match any plugin, returning default plugin:`);
+            // console.log(defaultPlugin);
             matchedPlugin = defaultPlugin;
         }
         else {
-            console.log(`Matched plugin request against plugin ${matchedPlugin.name}:`);
-            console.log(matchedPlugin);
+            // console.log(`Matched plugin request against plugin ${matchedPlugin.name}:`);
+            // console.log(matchedPlugin);
         }
         
         if (pluginRequest.plugin) {
