@@ -374,12 +374,7 @@ export abstract class CellViewModel implements ICellViewModel {
     // Marks the text as dirty if changed.
     //
     setText(text: string): void {
-        const trimmed = text.trimRight();
-        if (this.text === trimmed) {
-            return; // No change.
-        }
-
-        this.text = trimmed;
+        this.text = text.trimEnd();
     }
     
     //
