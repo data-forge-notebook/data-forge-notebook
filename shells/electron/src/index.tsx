@@ -69,13 +69,12 @@ async function onNotebookSet() {
     }
     const notebookId = notebook.storageId as NotebookStorageId;
     const fileName = notebookId.getFileName();
-    const isModified = notebook.modified;
     ipcRenderer.send("notebook-editor-event", {
         editorWindowId: editorWindowId,
         eventName: "onNotebookSet",
         payload: {
             fileName: fileName,
-            isModified: isModified,
+            isModified: notebook.isModified,
         },
     });
 }
@@ -99,7 +98,6 @@ async function onNotebookRendered() {
 // Raises the event in the main process that the notebook has been modified.
 //
 async function onNotebookModified() {
-    console.log("onNotebookModified"); //fio:
     const notebook = notebookEditorViewModel.notebook;
     if (!notebook) {
         return;
@@ -108,7 +106,7 @@ async function onNotebookModified() {
         editorWindowId: editorWindowId,
         eventName: "onModified",
         payload: {
-            isModified: notebook.modified,
+            isModified: notebook.isModified,
         },
     });
 }

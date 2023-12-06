@@ -386,8 +386,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             return true; // Notebook notebook loaded yet, allow operation to procede.
         }
 
-        if (!this.notebook.modified) {
-            return true; // Notebook not modified, allow operation to procede.
+        if (!this.notebook.isModified) {
+            return true; // Notebook not modified, allow operation to proceee.
         }
 
         const choice = await this.confirmationDialog.show({
