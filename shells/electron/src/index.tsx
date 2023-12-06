@@ -115,10 +115,10 @@ notebookEditorViewModel.onEditorReady.attach(onEditorReady);
 notebookEditorViewModel.onOpenNotebookChanged.attach(onNotebookSet);
 notebookEditorViewModel.onNotebookRendered.attach(onNotebookRendered);
 
-spy(event => {
-    console.log(`@@ mobx event: ${event.type}`);
-    console.log(event);
-});
+// spy(event => {
+//     console.log(`@@ mobx event: ${event.type}`);
+//     console.log(event);
+// });
 
 reaction(() => notebookEditorViewModel.notebook?.isModified, onNotebookModified);
 

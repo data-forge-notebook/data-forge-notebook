@@ -45,10 +45,10 @@ const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 // Welcome screen.
 // const notebookEditorViewModel = new NotebookEditorViewModel();
 
-spy(event => {
-    console.log(`@@ mobx event: ${event.type}`);
-    console.log(event);
-});
+// spy(event => {
+//     console.log(`@@ mobx event: ${event.type}`);
+//     console.log(event);
+// });
 
 reaction(() => notebookEditorViewModel.notebook?.isModified, () => {
     console.log(`Notebook was modified.`);
