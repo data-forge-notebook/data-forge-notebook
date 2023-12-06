@@ -169,16 +169,6 @@ export interface ICellViewModel {
     serializeForEval(): ISerializedCell1;
 
     //
-    // Event raised when output has been added to the cell.
-    //
-    onOutputChanged: IEventSource<BasicEventHandler>;
-
-    //
-    // Event raised when the cell's errors have changed.
-    //
-    onErrorsChanged: IEventSource<BasicEventHandler>;
-
-    //
     // The notebook has started executing.
     //
     notifyNotebookEvalStarted(): void;
@@ -564,16 +554,6 @@ export abstract class CellViewModel implements ICellViewModel {
     // Event raised when a request is made to find the next match.
     //
     onFindNextMatch: IEventSource<FindNextMatchEventHandler> = new EventSource<FindNextMatchEventHandler>();
-
-    //
-    // Event raised when the cell's output has changed.
-    //
-    onOutputChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
-
-    //
-    // Event raised when the cell's errors have changed.
-    //
-    onErrorsChanged: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // The notebook has started executing.

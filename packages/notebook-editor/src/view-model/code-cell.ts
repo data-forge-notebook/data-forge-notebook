@@ -250,7 +250,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         }
 
         ++this.nextOutputIndex;
-        await this.onOutputChanged.raise();
     }
 
     //
@@ -260,8 +259,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
 
         this.nextOutputIndex = 0;
         this.output = [];
-
-        await this.onOutputChanged.raise();
     }
 
     //
@@ -295,8 +292,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         }
 
         ++this.nextErrorIndex;
-        
-        await this.onErrorsChanged.raise();
     }
 
     //
@@ -306,8 +301,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
 
         this.nextErrorIndex = 0;
         this.errors = [];
-
-        await this.onErrorsChanged.raise();
     }  
 
     //
