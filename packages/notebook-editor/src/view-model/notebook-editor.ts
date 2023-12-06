@@ -47,7 +47,7 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     numBlockingTasks: number;
 
     // 
-    // Set to true when the app is installing a notebook.
+    // Set to true when the app is evaluating a notebook.
     //
     evaluating: boolean;
 
@@ -247,7 +247,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     numBlockingTasks: number = 0;
 
     // 
-    // Set to true when the app is installing a notebook.
+    // Set to true when the app is evaluating a notebook.
     //
     evaluating: boolean = false;
 
@@ -293,6 +293,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             evaluateToCell: action,
             evaluateSingleCell: action,
             onEvaluatorEvent: action,
+            onInstallationStarted: action,
+            onInstallationFinished: action,
             onEvaluationStarted: action,
             onEvaluationFinished: action,
             toggleHotkeysOverlay: action,
@@ -367,7 +369,8 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         
         this.notebook = notebook;
 
-        this.installing = true;
+        this.onInstallationStarted();
+
         this.evaluator.installNotebook(notebook.instanceId, notebook.serializeForEval(), notebook.storageId.getContainingPath());
 
         await this.notifyOpenNotebookChanged(isReload);
@@ -736,7 +739,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         },
 
         "notebook-install-completed": async (args: any): Promise<void> => {
-            this.installing = true;
+            this.onInstallationFinished();
         },
 
         "notebook-eval-started": async (args: any): Promise<void> => {
@@ -823,6 +826,20 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         else {
             this.log.error(`Not handling evaluation event ${event}.`);
         }
+    }
+
+    //
+    // Notification that notebook installation has started.
+    //
+    onInstallationStarted(): void {
+        this.installing = true;
+    }
+
+    //
+    // Notification that notebook installation has completed.
+    //
+    onInstallationFinished(): void {
+        this.installing = false;
     }
 
     //
