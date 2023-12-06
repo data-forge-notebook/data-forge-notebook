@@ -11,6 +11,7 @@ import { CellTextChange } from '../changes/cell-text-change';
 import { IPlatform, IPlatformId } from '../services/platform';
 import { ICellViewModel, IFindDetails, ITextRange, SearchDirection } from '../view-model/cell';
 import { observer } from 'mobx-react';
+import { reaction } from 'mobx';
 
 let monacoInitialised = false;
 
@@ -225,7 +226,7 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
     //
     prevComputedHeight?: number;
 
-    constructor(props: any) {
+    constructor(props: IMonacoEditorProps) {
         super(props);
 
         this.containerElement = React.createRef<HTMLDivElement>();
@@ -241,7 +242,7 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
         // causes screwy automatic scrolling of the notebook.
         // Throttling this update removes the initial 'bad scroll' on editor focus.
         this.onCursorPositionChanged = _.throttle(this.onCursorPositionChanged, 100, { leading: false, trailing: true });
-        this.onChangeCursorSelection = _.throttle(this.onChangeCursorSelection, 300, { leading: false, trailing: true });
+        this.onChangeCursorSelection = _.throttle(this.onChangeCursorSelection, 300, { leading: false, trailing: true });        
     }
 
     private invokeNamedCommand(commandId: string) {
@@ -353,13 +354,15 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
 
         this.props.cell.onSetFocus.attach(this.onSetFocus);
         this.props.cell.onSetCaretPosition.attach(this.onSetCaretPosition);
-        this.props.cell.onTextChanged.attach(this.onTextChanged);
         this.props.cell.onFlushChanges.attach(this.onFlushChanges);
         this.props.cell.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
         this.props.cell.onFindNextMatch.attach(this.onFindNextMatch);
         this.props.cell.onSelectText.attach(this.onSelectText);
         this.props.cell.onDeselectText.attach(this.onDeselectText);
         this.props.cell.onReplaceText.attach(this.onReplaceText);
+
+        const cell = this.props.cell;
+        reaction(() => cell.text, this.onTextChanged);
     }
 
     componentWillUnmount () {
@@ -394,7 +397,6 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
         window.removeEventListener("resize", this.onWindowResize);
         this.props.cell.onSetFocus.detach(this.onSetFocus);
         this.props.cell.onSetCaretPosition.detach(this.onSetCaretPosition);
-        this.props.cell.onTextChanged.detach(this.onTextChanged);
         this.props.cell.onFlushChanges.detach(this.onFlushChanges);
         this.props.cell.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
         this.props.cell.onFindNextMatch.detach(this.onFindNextMatch);
@@ -626,7 +628,7 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
     //
     // Event raised when the text in the view model has changed.
     //
-    private onTextChanged = async (): Promise<void> => {
+    private onTextChanged = (): void => {
         if (!this.updatingCode) {
             if (this.editor) {
                 const updatedCode = this.props.cell.text;

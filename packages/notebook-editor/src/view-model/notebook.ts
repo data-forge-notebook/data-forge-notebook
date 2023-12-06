@@ -11,8 +11,6 @@ import { action, computed, makeObservable, observable } from "mobx";
 
 export const notebookVersion = 3;
 
-export type TextChangedEventHandler = (cell: ICellViewModel) => Promise<void>;
-
 //
 // Creates a cell view-model based on cell type.
 //
@@ -220,11 +218,6 @@ export interface INotebookViewModel {
     // Stop asynchronous evaluation of the notebook.
     //
     notifyCodeEvalComplete(): Promise<void>;
-
-    //
-    // Event raised when the text in this editor has changed.
-    //
-    onTextChanged: IEventSource<TextChangedEventHandler>;
 }
 
 @InjectableClass()
@@ -353,13 +346,11 @@ export class NotebookViewModel implements INotebookViewModel {
     hookCellEvents(cell: ICellViewModel): void {
         cell.onEditorSelectionChanging.attach(this.onEditorSelectionChanging);
         cell.onEditorSelectionChanged.attach(this.onEditorSelectionChanged);
-        cell.onTextChanged.attach(this._onTextChanged);
     }
 
     unhookCellEvents(cell: ICellViewModel): void {
         cell.onEditorSelectionChanging.detach(this.onEditorSelectionChanging);
         cell.onEditorSelectionChanged.detach(this.onEditorSelectionChanged);
-        cell.onTextChanged.detach(this._onTextChanged);
     }
 
     onEditorSelectionChanging = async (cell: ICellViewModel, willBeSelected: boolean): Promise<void> => {
@@ -380,14 +371,6 @@ export class NotebookViewModel implements INotebookViewModel {
         this.selectedCell = cell;
         await this.onSelectedCellChanged.raise();
     }
-
-    //
-    // Event raised when the text in a cell has changed.
-    //
-    _onTextChanged = async (cell: ICellViewModel): Promise<void> => {
-        await this.onTextChanged.raise(cell);
-    }
-
  
     //
     // Get the position of a cell.
@@ -755,9 +738,4 @@ export class NotebookViewModel implements INotebookViewModel {
             await cell.notifyCodeEvalComplete(); // Make sure all cells are no longer marked as executing.
         }
     }
-
-    //
-    // Event raised when the text in this editor has changed.
-    //
-    onTextChanged: IEventSource<TextChangedEventHandler> = new EventSource<TextChangedEventHandler>();
 }

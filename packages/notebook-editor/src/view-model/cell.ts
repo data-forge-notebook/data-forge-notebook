@@ -10,7 +10,6 @@ export type SelectTextEventHandler = (range: ITextRange) => Promise<void>;
 export type ReplaceTextEventHandler = (range: ITextRange, replaceText: string) => Promise<void>;
 export type EditorSelectionChangingEventHandler = (sender: ICellViewModel, willBeSelected: boolean) => Promise<void>;
 export type EditorSelectionChangedEventHandler = (sender: ICellViewModel) => Promise<void>;
-export type TextChangedEventHandler = (sender: ICellViewModel) => Promise<void>;
 
 //
 // Specifies whether a text search goes forward or backward.
@@ -140,11 +139,6 @@ export interface ICellViewModel {
     // Marks the code as dirty if changed.
     //
     setText(code: string): Promise<boolean>;
-
-    //
-    // Event raised when the text in this editor has changed.
-    //
-    onTextChanged: IEventSource<TextChangedEventHandler>;
 
     //
     // Scroll the notebook so this cell is visible.
@@ -395,18 +389,12 @@ export abstract class CellViewModel implements ICellViewModel {
     async setText(text: string): Promise<boolean> {
 
         if (this._setText(text)) {
-            this.modified = true;
-            await this.onTextChanged.raise(this);
+            this.modified = true; //todo: Could make this automatic now.
             return true;
         }
 
         return false;
     }
-
-    //
-    // Event raised when the code in this cell has changed.
-    //
-    onTextChanged: IEventSource<TextChangedEventHandler> = new EventSource<TextChangedEventHandler>();
     
     //
     // Serialize to a data structure suitable for serialization.

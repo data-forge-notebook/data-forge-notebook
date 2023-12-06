@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { CellModifiedEventHandler, EditorSelectionChangedEventHandler, ICellViewModel, TextChangedEventHandler } from "../../view-model/cell";
+import { EditorSelectionChangedEventHandler, ICellViewModel } from "../../view-model/cell";
 import { NotebookViewModel } from "../../view-model/notebook";
 import { EventSource } from "utils";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
@@ -20,7 +20,6 @@ describe('view-model / notebook', () => {
             getCellType: () => fields.cellType || "code",
             onEditorSelectionChanging: new EventSource<EditorSelectionChangedEventHandler>(),
             onEditorSelectionChanged: new EventSource<EditorSelectionChangedEventHandler>(),
-            onTextChanged: new EventSource<TextChangedEventHandler>(),
             flushChanges: () => {},
             select: jest.fn(),
             deselect: jest.fn(),
