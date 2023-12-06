@@ -45,10 +45,14 @@ const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 // Welcome screen.
 // const notebookEditorViewModel = new NotebookEditorViewModel();
 
-// spy(event => {
-//     console.log(`@@ mobx event: ${event.type}`);
-//     console.log(event);
-// });
+spy((event: any) => {
+    if (event.type === "report-end") {
+        return;
+    }
+    // console.log(`@@ mobx event: ${event.type}`);
+    // console.log(event);
+    console.log(`--> ${event.type} ${event.name || ""} ${event.debugObjectName && ("/ " + event.debugObjectName) || ""} ${event.observableKind && ("/ " + event.observableKind) || ""}`);
+});
 
 reaction(() => notebookEditorViewModel.notebook?.isModified, () => {
     console.log(`Notebook was modified.`);
