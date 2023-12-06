@@ -370,25 +370,16 @@ export abstract class CellViewModel implements ICellViewModel {
     }
 
     //
-    // Set the txt for the cell.
-    // Returns true if the text was changed.
-    //
-    _setText(text: string): boolean {
-        const trimmed = text.trimRight();
-        if (this.text === trimmed) {
-            return false; // No change.
-        }
-
-        this.text = trimmed;
-        return true;
-    }
-
-    //
     // Set the text for the cell.
     // Marks the text as dirty if changed.
     //
     setText(text: string): void {
-        this._setText(text)
+        const trimmed = text.trimRight();
+        if (this.text === trimmed) {
+            return; // No change.
+        }
+
+        this.text = trimmed;
     }
     
     //
