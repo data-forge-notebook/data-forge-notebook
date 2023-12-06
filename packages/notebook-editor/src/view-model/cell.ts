@@ -1,7 +1,7 @@
 import { IEditorCaretPosition } from "./editor-caret-position";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { CellType, ISerializedCell1 } from "model";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
 
 export type FocusedEventHandler = (sender: ICellViewModel) => Promise<void>;
 export type SetCaretPositionEventHandler = (sender: ICellViewModel, caretPosition: IEditorCaretPosition) => Promise<void>;
@@ -352,6 +352,8 @@ export abstract class CellViewModel implements ICellViewModel {
             select: action,
             deselect: action,           
         });
+
+        reaction(() => this.text, () => this.modified = true);
     }
 
     //
@@ -389,7 +391,6 @@ export abstract class CellViewModel implements ICellViewModel {
     async setText(text: string): Promise<boolean> {
 
         if (this._setText(text)) {
-            this.modified = true; //todo: Could make this automatic now.
             return true;
         }
 
