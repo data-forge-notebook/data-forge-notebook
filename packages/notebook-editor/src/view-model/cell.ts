@@ -77,7 +77,6 @@ export interface IFindDetails {
 }
 
 export type ScrollIntoViewEventHandler = (scrollReason: string) => Promise<void>;
-export type CellModifiedEventHandler = (cell: ICellViewModel) => Promise<void>;
 
 //
 // View-model for a cell.
