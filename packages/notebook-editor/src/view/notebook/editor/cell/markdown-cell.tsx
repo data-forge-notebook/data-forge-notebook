@@ -35,11 +35,6 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
     @InjectProperty(IOpen_ID)
     open!: IOpen;
 
-    //
-    // To make Mobx happy. The cell has to be copied to a local variable.
-    //
-    private cell!: IMarkdownCellViewModel;
-
     constructor (props: any) {
         super(props)
         
@@ -47,9 +42,9 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
     }
 
     componentDidMount() {
-        this.cell = this.props.cell;
+        const cell = this.props.cell;
         autorun(async () => {
-            if (this.cell.selected) {
+            if (cell.selected) {
                 await this.enterEditMode();
             }
             else {
@@ -61,14 +56,14 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
     componentWillUnmount() {
     }
 
-    private async enterPreviewMode(): Promise<void> {
-        await this.cell.enterPreviewMode();
+    private enterPreviewMode = async (): Promise<void> => {
+        await this.props.cell.enterPreviewMode();
     }
 
-    private async enterEditMode(): Promise<void> {
-        await this.cell.enterEditMode();
-        await this.cell.focus();
-        await this.props.notebook.select(this.cell);
+    private enterEditMode = async (): Promise<void> => {
+        await this.props.cell.enterEditMode();
+        await this.props.cell.focus();
+        await this.props.notebook.select(this.props.cell);
     }
 
     private onBlur = async (): Promise<void> => {
@@ -94,7 +89,7 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
         const cmdLinkPrefix = "http://command+";
         if (link.startsWith(cmdLinkPrefix)) {
             const cmd = link.substring(cmdLinkPrefix.length);
-            await this.commander.invokeNamedCommand(cmd, { cell: this.cell });
+            await this.commander.invokeNamedCommand(cmd, { cell: this.props.cell });
         }
         else if (link.startsWith(openFileLinkPrefix)) {
             await this.commander.invokeNamedCommand("open-notebook", undefined, { file: link.substring(openFileLinkPrefix.length) });
