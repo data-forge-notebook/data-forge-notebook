@@ -7,7 +7,6 @@ import { InjectProperty, InjectableClass } from '@codecapers/fusion';
 import { ICommander, ICommanderId } from '../../../../services/commander';
 import { IOpen, IOpen_ID } from '../../../../services/open';
 import { INotebookViewModel } from '../../../../view-model/notebook';
-import { ICellViewModel } from '../../../../view-model/cell';
 import { observer } from 'mobx-react';
 import { autorun } from 'mobx';
 
