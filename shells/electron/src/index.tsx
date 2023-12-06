@@ -6,7 +6,7 @@ import { handleAsyncErrors, ILogId } from "utils";
 import { instantiateSingleton, registerSingleton } from "@codecapers/fusion";
 import { ElectronWindowLog } from "./services/electron-renderer-log";
 import mixpanel from "mixpanel-browser";
-import { reaction } from "mobx";
+import { reaction, spy } from "mobx";
 
 import "./services/file";
 import "./services/confirmation-dialog";
@@ -116,6 +116,11 @@ async function onNotebookModified() {
 notebookEditorViewModel.onEditorReady.attach(onEditorReady);
 notebookEditorViewModel.onOpenNotebookChanged.attach(onNotebookSet);
 notebookEditorViewModel.onNotebookRendered.attach(onNotebookRendered);
+
+spy(event => {
+    console.log(`@@ mobx event: ${event.type}`);
+    console.log(event);
+});
 
 reaction(() => notebookEditorViewModel.notebook?.isModified, onNotebookModified);
 
