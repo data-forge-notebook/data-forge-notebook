@@ -136,9 +136,8 @@ export interface ICellViewModel {
 
     //
     // Set the text in the editor.
-    // Marks the code as dirty if changed.
     //
-    setText(code: string): boolean;
+    setText(code: string): void;
 
     //
     // Scroll the notebook so this cell is visible.
@@ -388,13 +387,8 @@ export abstract class CellViewModel implements ICellViewModel {
     // Set the text for the cell.
     // Marks the text as dirty if changed.
     //
-    setText(text: string): boolean {
-
-        if (this._setText(text)) {
-            return true;
-        }
-
-        return false;
+    setText(text: string): void {
+        this._setText(text)
     }
     
     //
