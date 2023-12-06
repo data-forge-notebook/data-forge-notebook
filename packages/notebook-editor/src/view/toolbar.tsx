@@ -53,11 +53,11 @@ class ToolbarView extends React.Component<IToolbarProps, IToolbarState> {
 
         let jobNames = [];
 
-        if (notebookEditor.isInstalling) {
+        if (notebookEditor.installing) {
             jobNames.push("Installing notebook");
         }
 
-        if (notebookEditor.isEvaluating) {
+        if (notebookEditor.evaluating) {
             jobNames.push("Evaluating notebook");
         }
 
@@ -84,7 +84,7 @@ class ToolbarView extends React.Component<IToolbarProps, IToolbarState> {
                                 { 
                                     notebook
                                 }, 
-                                notebookEditor.isEvaluating ? "executing" : "notExecuting"
+                                notebookEditor.evaluating ? "executing" : "notExecuting"
                             )}
                         </ButtonGroup>
                     }

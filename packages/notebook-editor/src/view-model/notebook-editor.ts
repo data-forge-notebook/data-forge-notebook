@@ -18,7 +18,7 @@ import { IZoom, IZoomId } from "../services/zoom";
 import { ICellViewModel } from "./cell";
 import { CellOutputViewModel } from "./cell-output";
 import { CellErrorViewModel } from "./cell-error";
-import { makeAutoObservable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 
 type OpenNotebookChangedEventHandler = (isReload: boolean) => Promise<void>;
 
@@ -45,6 +45,21 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     // When greater than 0 the app is busy wth a global task.
     //
     numBlockingTasks: number;
+
+    // 
+    // Set to true when the app is installing a notebook.
+    //
+    evaluating: boolean;
+
+    // 
+    // Set to true when the app is installing a notebook.
+    //
+    installing: boolean;
+
+    //
+    // Set to true when the hotkeys overlay is open.
+    //
+    showHotkeysOverlay: boolean;
 
     //
     // Cell currently in the clipboard to be pasted.
@@ -75,16 +90,6 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     // End a global task.
     //
     endBlockingTask(): void;
-
-    //
-    // Returns true if the app is installing a notebook.
-    //
-    get isInstalling(): boolean;
-
-    //
-    // Returns true if the app is evaluating a notebook.
-    //
-    get isEvaluating(): boolean;
 
     //
     // Sets a new notebook and rebind/raise appropriate events.
@@ -259,14 +264,42 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Cell currently in the clipboard to be pasted.
     //
-    cellClipboard: ISerializedCell1 | undefined;
+    cellClipboard: ISerializedCell1 | undefined = undefined;
 
     constructor(notebook?: INotebookViewModel) { 
         if (notebook) {
             this.notebook = notebook;
         }
 
-        makeAutoObservable(this);
+        makeObservable(this, {
+            notebook: observable,
+            numBlockingTasks: observable,
+            evaluating: observable,
+            installing: observable,
+            showHotkeysOverlay: observable,
+            cellClipboard: observable,
+            isBlocked: computed,
+            startBlockingTask: action,
+            endBlockingTask: action,
+            setNotebook: action,
+            newNotebook: action,
+            openNotebook: action,
+            openSpecificNotebook: action,
+            internalOpenNotebook: action,
+            saveNotebook: action,
+            saveNotebookAs: action,
+            reloadNotebook: action,
+            evaluateNotebook: action,
+            evaluateToCell: action,
+            evaluateSingleCell: action,
+            onEvaluatorEvent: action,
+            onEvaluationStarted: action,
+            onEvaluationFinished: action,
+            toggleHotkeysOverlay: action,
+            toggleCommandPalette: action,
+            toggleRecentFilePicker: action,
+            toggleExamplesBrowser: action,
+        });
     }
 
     //
@@ -318,20 +351,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         --this.numBlockingTasks;
     }
     
-    //
-    // Returns true if the app is installing a notebook.
-    //
-    get isInstalling(): boolean {
-        return this.installing;
-    }
-
-    //
-    // Returns true if the app is evaluating a notebook.
-    //
-    get isEvaluating(): boolean {
-        return this.evaluating;
-    }
-
     //
     // Sets a new notebook and rebind/raise appropriate events.
     //
