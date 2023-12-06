@@ -23,7 +23,7 @@ export class CellTextChange implements IChange {
     //
     async do(): Promise<void> {
         this.oldCellText = this.cell.text;
-        await this.cell.setText(this.newCellText);
+        this.cell.setText(this.newCellText);
     }
 
     //
@@ -40,7 +40,7 @@ export class CellTextChange implements IChange {
         if (this.oldCellText === undefined) {
             throw new Error("this.oldCellText should have been set by previous 'do' operation.");
         }
-        await this.cell.setText(this.oldCellText);
+        this.cell.setText(this.oldCellText);
     }
 
     //

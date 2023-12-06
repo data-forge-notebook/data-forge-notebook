@@ -18,28 +18,28 @@ describe("view-model / cell", () => {
         expect(cell.text).toEqual(theText);
     });
 
-    test("setting the text to the same makes no change", async () => {
+    test("setting the text to the same makes no change", () => {
 
         const cell = new CodeCellViewModel("", CellType.Code, "hello", undefined, [], []);
 
-        expect(await cell.setText("hello")).toBe(false);
+        expect(cell.setText("hello")).toBe(false);
     });
 
-    test("setting the text to the different changes the text", async () => {
+    test("setting the text to the different changes the text", () => {
 
         const cell = new CodeCellViewModel("", CellType.Code, "hello", undefined, [], []);
 
         const newText = "world";
-        expect(await cell.setText(newText)).toBe(true);
+        expect(cell.setText(newText)).toBe(true);
         expect(cell.text).toBe(newText);
     });
 
-    test("setting the text trims whitespace from the end", async () => {
+    test("setting the text trims whitespace from the end", () => {
 
         const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
 
         const baseText = "Hello world";
-        expect(await cell.setText(`${baseText} `)).toBe(true);
+        expect(cell.setText(`${baseText} `)).toBe(true);
         expect(cell.text).toEqual(baseText);
     });    
 
@@ -48,7 +48,7 @@ describe("view-model / cell", () => {
         const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
 
         await expectEventRaised(cell, "onTextChanged", async () => {
-            await cell.setText("some text!");
+            cell.setText("some text!");
             await sleep(1000); // The event is debounced!
         });
     });
