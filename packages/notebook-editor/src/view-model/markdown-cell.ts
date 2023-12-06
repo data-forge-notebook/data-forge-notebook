@@ -10,7 +10,7 @@ export interface IMarkdownCellViewModel extends ICellViewModel {
     //
     // Set to true when the markdown cell is in editing mode.
     //
-    editing: boolean;
+    readonly editing: boolean;
 
     //
     // Switch the markdown cell to edit mode.
@@ -63,7 +63,7 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
         this.editing = false;
     }
 
-   //
+    //
     // Deserialize the model from a previously serialized data structure.
     //
     static deserialize(input: ISerializedCell1): IMarkdownCellViewModel {

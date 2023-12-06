@@ -39,33 +39,33 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     //
     // The currently open notebook.
     //
-    notebook: INotebookViewModel | undefined;
+    readonly notebook: INotebookViewModel | undefined;
 
     //
     // When greater than 0 the app is busy wth a global task.
     //
-    numBlockingTasks: number;
+    readonly numBlockingTasks: number;
 
     // 
     // Set to true when the app is evaluating a notebook.
     //
-    evaluating: boolean;
+    readonly evaluating: boolean;
 
     // 
     // Set to true when the app is installing a notebook.
     //
-    installing: boolean;
+    readonly installing: boolean;
 
     //
     // Set to true when the hotkeys overlay is open.
     //
-    showHotkeysOverlay: boolean;
+    readonly showHotkeysOverlay: boolean;
 
     //
     // Cell currently in the clipboard to be pasted.
     //
-    cellClipboard: ISerializedCell1 | undefined;
-
+    readonly cellClipboard: ISerializedCell1 | undefined;
+    
     //
     // Mounts the UI.
     //
@@ -201,6 +201,11 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     // Event raised to toggle the example notebook browser.
     //
     onToggleExamplesBrowser: IEventSource<BasicEventHandler>;
+
+    //
+    // Sets the cell currently in the clipboard to be pasted.
+    //
+    setCellClipboard(cellClipboard: ISerializedCell1 | undefined): void;
 }
 
 @InjectableClass()
@@ -277,7 +282,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             evaluating: observable,
             installing: observable,
             showHotkeysOverlay: observable,
-            cellClipboard: observable,
             isBlocked: computed,
             startBlockingTask: action,
             endBlockingTask: action,
@@ -935,4 +939,11 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Event raised to toggle the example notebook browser.
     //
     onToggleExamplesBrowser: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+    //
+    // Sets the cell currently in the clipboard to be pasted.
+    //
+    setCellClipboard(cellClipboard: ISerializedCell1 | undefined): void {
+        this.cellClipboard = cellClipboard;
+    }
 }

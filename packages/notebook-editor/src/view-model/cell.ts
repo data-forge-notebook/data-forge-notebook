@@ -96,32 +96,32 @@ export interface ICellViewModel {
     //
     // The text for the cell.
     //
-    text: string;
+    readonly text: string;
 
     //
     // Set to true if this cell is currently selected.
     //
-    selected: boolean;    
+    readonly selected: boolean;    
     
     //
     // Records the text that is selected in the editor.
     //
-    selectedText: string;
+    readonly selectedText: string;
 
     // 
     // Range of the currently selected text.
     //
-    selectedTextRange: ITextRange | undefined;
+    readonly selectedTextRange: ITextRange | undefined;
 
     //
     // The latest caret postition.
     //
-    caretOffset?: number;    
+    readonly caretOffset?: number;    
 
     //
     // Set to true when modified.
     //
-    modified: boolean;
+    readonly modified: boolean;
 
     //
     // Returns true when the cell or children have been modified.
@@ -204,6 +204,11 @@ export interface ICellViewModel {
     onSetFocus: IEventSource<FocusedEventHandler>;
 
     //
+    // Sets the caret offset.
+    //
+    setCaretOffset(caretOffset: number): void;
+
+    //
     // Get the caret position within the editor.
     //
     getCaretPosition(): IEditorCaretPosition | null;
@@ -242,6 +247,11 @@ export interface ICellViewModel {
     // Event raised when text should be deselected.
     //
     onDeselectText: IEventSource<BasicEventHandler>; 
+
+    //
+    // Sets the selected and range.
+    //
+    setSelectedText(text: string, range: ITextRange): void;
 
     //
     // Replace requested range with spedcified text..
@@ -403,6 +413,13 @@ export abstract class CellViewModel implements ICellViewModel {
     onSetFocus: IEventSource<FocusedEventHandler> = new EventSource<FocusedEventHandler>(); //todo: Can probably replace this with a reaction.
     
     //
+    // Sets the caret offset.
+    //
+    setCaretOffset(caretOffset: number): void {
+        this.caretOffset = caretOffset;
+    }
+
+    //
     // Get the caret position within the cell.
     //
     getCaretPosition(): IEditorCaretPosition | null {
@@ -503,6 +520,14 @@ export abstract class CellViewModel implements ICellViewModel {
     // Event raised when text should be deselected.
     //
     onDeselectText: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
+
+    //
+    // Sets the selected and range.
+    //
+    setSelectedText(text: string, range: ITextRange): void {
+        this.selectedText = text;
+        this.selectedTextRange = range;
+    }
 
     //
     // Replace requested range with spedcified text..

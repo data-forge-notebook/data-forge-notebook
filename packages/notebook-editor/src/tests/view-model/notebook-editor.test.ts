@@ -114,7 +114,7 @@ describe('view-model / notebook-editor', () => {
 
         const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
         
-        notebook.modified = true;
+        notebook.setModified(true);
 
         notebookEditor.promptSave = jest.fn(async () => true);
 
@@ -128,7 +128,7 @@ describe('view-model / notebook-editor', () => {
 
         const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
         
-        notebook.modified = true;
+        notebook.setModified(true);
 
         // User cancels creation of the new notebook.
         mockConfirmationDialog.show = async () => SaveChoice.Cancel;
@@ -140,7 +140,7 @@ describe('view-model / notebook-editor', () => {
 
         const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
         
-        notebook.modified = true;
+        notebook.setModified(true);
 
         notebookEditor.saveNotebook = jest.fn();
 
@@ -155,7 +155,7 @@ describe('view-model / notebook-editor', () => {
 
         const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
         
-        notebook.modified = true;
+        notebook.setModified(true);
 
         notebookEditor.saveNotebook = jest.fn();
 
@@ -276,7 +276,7 @@ describe('view-model / notebook-editor', () => {
         const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
 
         // Force the code path that saves the "already saved" notebook.
-        notebook.unsaved = false;
+        notebook.setModified(true);
 
         notebook.save = jest.fn();
 
@@ -290,7 +290,7 @@ describe('view-model / notebook-editor', () => {
         const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
 
         // Force the code path that defaults to "save as".
-        notebook.unsaved = true;
+        notebook.setModified(true);
 
         notebookEditor.saveNotebookAs = jest.fn();
 

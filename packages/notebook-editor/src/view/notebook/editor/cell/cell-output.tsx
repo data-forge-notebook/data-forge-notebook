@@ -199,7 +199,7 @@ class CellOutputUIView extends React.Component<ICellOutputProps, ICellOutputStat
                                 this.setState({
                                     height,
                                 });
-                                this.props.output.height = height; // Save height to notebook.
+                                this.props.output.setHeight(height); // Save height to notebook.
                             }}
                             >
                             {/*

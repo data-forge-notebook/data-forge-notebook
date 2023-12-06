@@ -1,8 +1,7 @@
 import { ICellOutputValueViewModel, CellOutputValueViewModel } from "./cell-output-value";
-import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { ISerializedCellOutput1 } from "model";
 import { v4 as uuid } from "uuid";
-import { action, makeAutoObservable, makeObservable, observable, reaction } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 //
 // View-model for output from a cell.
@@ -23,17 +22,17 @@ export interface ICellOutputViewModel {
     //
     // Height of the output, if set.
     //
-    height?: number;
+    readonly height?: number;
 
     //
     // The output is fresh when true, out of date when false.
     //
-    fresh: boolean;
+    readonly fresh: boolean;
 
     //
     // Set to true when modified.
     //
-    modified: boolean;
+    readonly modified: boolean;
 
     //
     // Serialize to a data structure suitable for serialization.
@@ -44,6 +43,16 @@ export interface ICellOutputViewModel {
     // Mark the output as out of data.
     //
     markStale(): void;
+
+    //
+    // Sets the height of the outptu.
+    //
+    setHeight(height: number): void;
+
+    //
+    // Mark the output as unmodified.
+    //
+    makeUnmodified(): void;
 }
 
 export class CellOutputViewModel implements ICellOutputViewModel {
@@ -82,10 +91,10 @@ export class CellOutputViewModel implements ICellOutputViewModel {
             height: observable,
             fresh: observable,
             modified: observable,
+            setHeight: action,
             markStale: action,
+            makeUnmodified: action,
         });
-
-        reaction(() => this.height, () => this.modified = true);
     }
 
     //
@@ -110,5 +119,20 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     //
     markStale(): void {
         this.fresh = false;
+    }
+
+    //
+    // Sets the height of the outptu.
+    //
+    setHeight(height: number): void {
+        this.height = height;
+        this.modified = true;
+    }
+
+    //
+    // Mark the output as unmodified.
+    //
+    makeUnmodified(): void {
+        this.modified = false;
     }
 }

@@ -22,7 +22,7 @@ export interface ICellErrorViewModel {
     //
     // The output is fresh when true, out of date when false.
     //
-    fresh: boolean;
+    readonly fresh: boolean;
 
     //
     // Serialize to a data structure suitable for serialization.
@@ -74,7 +74,7 @@ export class CellErrorViewModel implements ICellErrorViewModel {
     //
     static deserialize(input: ISerializedCellError1): ICellErrorViewModel {
         return new CellErrorViewModel(input.msg);
-    }       
+    }
 
     //
     // Mark the output as out of data.

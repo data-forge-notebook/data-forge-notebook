@@ -240,7 +240,7 @@ export class UndoRedo implements IUndoRedo {
         }
 
         notebook.makeUnmodified();
-        notebook.modified = changeRecord.isModifiedBefore;
+        notebook.setModified(changeRecord.isModifiedBefore);
 
         // this.log.info(`Set notebook modified state to ${changeRecord.isModifiedBefore}.`);
 
@@ -280,7 +280,7 @@ export class UndoRedo implements IUndoRedo {
         ++this.curPos;
 
         notebook.makeUnmodified();
-        notebook.modified = changeRecord.isModifiedAfter;
+        notebook.setModified(changeRecord.isModifiedAfter);
 
         // this.log.info(`Set notebook modified state to ${changeRecord.isModifiedAfter}.`);
 

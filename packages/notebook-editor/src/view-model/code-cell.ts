@@ -15,34 +15,34 @@ export interface ICodeCellViewModel extends ICellViewModel {
     //
     // Set to true when the code is currently executing.
     //
-    executing: boolean;
+    readonly executing: boolean;
     
     //
     // The output of code for the cell.
     //
-    output: ICellOutputViewModel[];
+    readonly output: ICellOutputViewModel[];
 
     //
     // Index of the next slot for output.
     // This is used to place output while evaluating code.
     //
-    nextOutputIndex: number;
+    readonly nextOutputIndex: number;
 
     //
     // Error output for the cell.
     //
-    errors: ICellErrorViewModel[];
+    readonly errors: ICellErrorViewModel[];
 
     //
     // Index of the next slot for an error.
     // This is used to place errors while evaluating code.
     //
-    nextErrorIndex: number;
+    readonly nextErrorIndex: number;
 
     //
     // The date that the cell was last evaluated.
     //
-    lastEvaluationDate?: Date;
+    readonly lastEvaluationDate: Date | undefined;
 
     //
     // Add output to the cell.
@@ -121,7 +121,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     // The date that the cell was last evaluated.
     //
-    lastEvaluationDate?: Date;
+    lastEvaluationDate: Date | undefined = undefined;
 
     constructor(id: string, cellType: CellType, text: string, lastEvaluationDate: Date | undefined, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
         super(id, cellType, text);
@@ -185,7 +185,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         super.makeUnmodified();
 
         for (const output of this.output) {
-            output.modified = false;
+            output.makeUnmodified();
         }
     }
 
@@ -241,7 +241,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             if (origOutputHeight !== undefined) {
                 if (origOutput.value.displayType === output.value.displayType) {
                     // Preserve the height the user selected for this output, but only if the display type is the same.
-                    this.output[this.nextOutputIndex].height = origOutputHeight;
+                    this.output[this.nextOutputIndex].setHeight(origOutputHeight);
                 }
             }
         }

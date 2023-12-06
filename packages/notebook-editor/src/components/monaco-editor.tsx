@@ -539,7 +539,7 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
             // 
             // Push caret offset into the view model.
             //
-            this.props.cell.caretOffset = caretOffset;
+            this.props.cell.setCaretOffset(caretOffset);
         }
     }
    
@@ -549,8 +549,7 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
     private onChangeCursorSelection = (event: any) => {
         if (this.editorModel) {
             const selectedText = this.editorModel.getValueInRange(event.selection);
-            this.props.cell.selectedText = selectedText;
-            this.props.cell.selectedTextRange = event.selection;
+            this.props.cell.setSelectedText(selectedText, event.selection);
         }
     }
 

@@ -57,37 +57,37 @@ export interface INotebookViewModel {
     //
     // Description of the notebook, if any.
     //
-    description?: string;
+    readonly description?: string;
 
     //
     // List of cells in the notebook.
     //
-    cells: ICellViewModel[];
+    readonly cells: ICellViewModel[];
 
     //
     // Set to true when the notebook is executing.
     //
-    executing: boolean;
+    readonly executing: boolean;
     
     //
     // The currently selected cell.
     //
-    selectedCell: ICellViewModel | undefined;
+    readonly selectedCell: ICellViewModel | undefined;
 
     //
     // Set to true when the notebook is modified but not saved.
     //
-    modified: boolean;
+    readonly modified: boolean;
     
     //
     // Set to true when the notebook is unsaved in memory.
     //
-    unsaved: boolean;
+    readonly unsaved: boolean;
 
     //
     // Set to true if the notebook was loaded from a read only file.
     //
-    readOnly: boolean;
+    readonly readOnly: boolean;
 
     //
     // Returns true when the cell or children have been modified.
@@ -95,7 +95,12 @@ export interface INotebookViewModel {
     get isModified(): boolean;    
 
     //
-    // Mark the entire model as unodified.
+    // Mark the notebook as modified or unmodified.
+    //
+    setModified(modified: boolean): void;
+
+    //
+    // Mark the entire model as umnodified.
     //
     makeUnmodified(): void;
 
@@ -304,6 +309,7 @@ export class NotebookViewModel implements INotebookViewModel {
             unsaved: observable,
             readOnly: observable,
             isModified: computed,
+            setModified: action,
             makeUnmodified: action,
             select: action,
             deselect: action,
@@ -335,6 +341,13 @@ export class NotebookViewModel implements INotebookViewModel {
         }
 
         return false;
+    }
+
+    //
+    // Mark the notebook as modified or unmodified.
+    //
+    setModified(modified: boolean): void {
+        this.modified = modified;
     }
 
     //
