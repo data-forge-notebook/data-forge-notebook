@@ -21,7 +21,7 @@ export interface INotebookState {
 
 class NotebookUIView extends React.Component<INotebookProps, INotebookState> {
 
-    constructor (props: any) {
+    constructor (props: INotebookProps) {
         super(props);
 
         this.state = {
