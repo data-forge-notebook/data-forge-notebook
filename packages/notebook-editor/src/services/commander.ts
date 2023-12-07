@@ -109,9 +109,15 @@ export class Commander implements ICommander {
                     return;
                 }
 
+                if (!context.hasNotebook()) {
+                    this.log.info("User attempted to execute notebook command " + command.getId() + ", but notebook is not open.");
+                    this.notification.warn("Invoking " + command.getId() + " requires a notebook. Please open or create a notebook.");
+                    return;
+                }
+
                 if (!context.hasCell()) {
                     this.log.info("User attempted to execute cell command " + command.getId() + ", but no cell is currently selected, notebook not loaded, or not finished loading..");
-                    this.notification.warn("Invoking " + command.getId() + " requires you to select a cell.");
+                    this.notification.warn("Invoking " + command.getId() + " requires you to select a cell. Please click a cell to select it.");
                     return;
                 }
             }
@@ -125,7 +131,7 @@ export class Commander implements ICommander {
 
                 if (!context.hasNotebook()) {
                     this.log.info("User attempted to execute notebook command " + command.getId() + ", but notebook is not open.");
-                    this.notification.warn("Invoking " + command.getId() + " requires a notebook.");
+                    this.notification.warn("Invoking " + command.getId() + " requires a notebook. Please open or create a notebook.");
                     return;
                 }
             }
