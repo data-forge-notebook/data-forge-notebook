@@ -97,9 +97,7 @@ export class Commander implements ICommander {
     //
     async invokeCommand(command: ICommand, contextInitializer?: IActionContextInitializer, params?: any): Promise<void> {
         try {
-            // this.log.info("Resolving command with action " + command.getActionName());
-    
-            // this.log.info("Invoking command " + command.getId());
+            this.log.info("Invoking command " + command.getId());
 
             const context = new ActionContext(this.notebookEditor, contextInitializer || {}, params);
             if (command.isCellCommand()) {
@@ -159,6 +157,8 @@ export class Commander implements ICommander {
             else {
                 //this.log.info(`Command ${command.getId()} completed without error.`);
             }
+
+            this.log.info(`Command ${command.getId()} completed without error.`);
         }
         catch (err) {
             this.log.error(`Command ${command.getId()} failed with error, passing error up the chain.`);
