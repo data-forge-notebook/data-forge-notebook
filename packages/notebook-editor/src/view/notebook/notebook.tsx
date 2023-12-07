@@ -4,6 +4,7 @@ import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautif
 import { CellUI } from './editor/cell/cell';
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
+import { ICellViewModel } from '../../view-model/cell';
 
 export interface INotebookProps {
     //
@@ -18,6 +19,60 @@ export interface INotebookState {
     //
     isDragging: boolean;
 }
+
+function getCellStyle(isDragging: boolean, draggableStyle: any) {
+    const style: any = { // Styles we need to apply on draggables.            
+        ...draggableStyle,
+        paddingTop: "5px",
+        paddingBottom: "3px",
+    };
+
+    if (isDragging) {
+        style.border = "black dashed 1px"
+        style.background = "#EBECF0";
+    }
+    
+    return style;
+}
+
+const NotebookCells = observer(({ notebook, isDragging }: { notebook: INotebookViewModel, isDragging: boolean }) => {
+    return (
+        <>
+            {notebook.cells.map((cell, index) => (
+                <Draggable
+                    key={cell.id} 
+                    draggableId={cell.id}
+                    index={index}
+                    >
+                    {(provided, snapshot) => (
+                        <div
+                            className={classNames(
+                                "pos-relative",
+                                {
+                                    dragging: isDragging
+                                },
+                            )}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+
+                            style={getCellStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                            )}
+                            >
+                            <CellUI
+                                language={notebook.language}
+                                cell={cell} 
+                                notebook={notebook}
+                                dragHandleProps={provided.dragHandleProps}
+                                />
+                        </div>
+                    )}
+                </Draggable>
+            ))}
+        </>
+    );
+});
 
 class NotebookUIView extends React.Component<INotebookProps, INotebookState> {
 
@@ -48,21 +103,6 @@ class NotebookUIView extends React.Component<INotebookProps, INotebookState> {
         this.setState({ isDragging: false });
     }
 
-    private getCellStyle(isDragging: boolean, draggableStyle: any) {
-        const style: any = { // Styles we need to apply on draggables.            
-            ...draggableStyle,
-            paddingTop: "5px",
-            paddingBottom: "3px",
-        };
-
-        if (isDragging) {
-            style.border = "black dashed 1px"
-            style.background = "#EBECF0";
-        }
-        
-        return style;
-    }
-
     render () {
         const cells = this.props.notebook.cells;
 
@@ -84,38 +124,10 @@ class NotebookUIView extends React.Component<INotebookProps, INotebookState> {
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
                                     >
-                                    {cells.map((cell, index) => (
-                                        <Draggable
-                                            key={cell.id} 
-                                            draggableId={cell.id}
-                                            index={index}
-                                            >
-                                            {(provided, snapshot) => (
-                                                <div
-                                                    className={classNames(
-                                                        "pos-relative",
-                                                        {
-                                                            dragging: this.state.isDragging
-                                                        },
-                                                    )}
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-
-                                                    style={this.getCellStyle(
-                                                        snapshot.isDragging,
-                                                        provided.draggableProps.style
-                                                    )}
-                                                    >
-                                                    <CellUI
-                                                        language={this.props.notebook.language}
-                                                        cell={cell} 
-                                                        notebook={this.props.notebook}
-                                                        dragHandleProps={provided.dragHandleProps}
-                                                        />
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    ))}
+                                    <NotebookCells
+                                        notebook={this.props.notebook}
+                                        isDragging={this.state.isDragging}
+                                        />
                                     {provided.placeholder}
                                 </div>
                             )}
