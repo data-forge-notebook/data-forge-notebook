@@ -1,6 +1,7 @@
 
 //
 // A change that adds a cell to a notebook.
+//
 
 import { InjectProperty, InjectableClass } from "@codecapers/fusion";
 import { CellType, ISerializedCell1 } from "model";
@@ -9,7 +10,6 @@ import { ICellViewModel } from "../view-model/cell";
 import { INotebookViewModel, cellViewModelFactory } from "../view-model/notebook";
 import { IIdGenerator, IIdGeneratorId } from "utils";
 
-//
 @InjectableClass()
 export class AddCellChange implements IChange {
     
