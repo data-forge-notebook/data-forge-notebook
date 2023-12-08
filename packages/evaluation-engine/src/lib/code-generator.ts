@@ -26,7 +26,9 @@ export interface ICodeGenerator {
 @InjectableClass()
 export class CodeGenerator implements ICodeGenerator {
     
+    //TODO: There doesn't need to be separate level of indirection here anymore.
     languageCodeGenerator: ILanguageCodeGenerator;
+
     notebook: ISerializedNotebook1;
 
     log: ILog;
@@ -35,13 +37,7 @@ export class CodeGenerator implements ICodeGenerator {
         this.notebook = notebook;
         this.log = log;
 
-        const language = notebook.language;
-        if (language === "javascript") {
-            this.languageCodeGenerator = new JavaScriptCodeGenerator(notebook, projectPath, log);
-        }
-        else {
-            throw new Error(`Code generator doesn't support language ${language}.`);
-        }
+        this.languageCodeGenerator = new JavaScriptCodeGenerator(notebook, projectPath, log);
     }
 
     //

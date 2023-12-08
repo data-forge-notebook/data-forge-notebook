@@ -419,7 +419,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     newNotebookTemplate(language: string): ISerializedNotebook1 {
         const template: ISerializedNotebook1 = {
             "version": notebookVersion,
-            "language": language,
             "cells": [
                 {
                     "id": this.idGenerator.genId(),

@@ -37,7 +37,6 @@ export function cellViewModelFactory(cell: ISerializedCell1): ICellViewModel {
 //
 export interface INotebookViewModel {
 
-
     //
     // Identifies the notebook in storage.
     //
@@ -48,11 +47,6 @@ export interface INotebookViewModel {
     // This is not serialized and not persistant.
     //
     readonly instanceId: string;
-
-    //
-    // The language of the notebook.
-    //
-    readonly language: string;
 
     //
     // Description of the notebook, if any.
@@ -252,11 +246,6 @@ export class NotebookViewModel implements INotebookViewModel {
     readonly instanceId: string = uuid();
     
     //
-    // The language of the notebook.
-    //
-    readonly language: string;
-
-    //
     // Description of the notebook, if any.
     //
     description?: string;
@@ -291,9 +280,8 @@ export class NotebookViewModel implements INotebookViewModel {
     //
     readOnly: boolean;
 
-    constructor(notebookStorageId: INotebookStorageId, language: string, cells: ICellViewModel[], description: string | undefined, unsaved: boolean, readOnly: boolean) {
+    constructor(notebookStorageId: INotebookStorageId, cells: ICellViewModel[], description: string | undefined, unsaved: boolean, readOnly: boolean) {
         this.storageId = notebookStorageId;
-        this.language = language;
         this.cells = cells;
         this.description = description;
         this.modified = false;
@@ -609,7 +597,6 @@ export class NotebookViewModel implements INotebookViewModel {
     serialize(): ISerializedNotebook1 {
         return {
             version: notebookVersion,
-            language: this.language,
             description: this.description,
             cells: this.cells.map(cell => cell.serialize()),
         };
@@ -621,7 +608,6 @@ export class NotebookViewModel implements INotebookViewModel {
     serializeForEval(): ISerializedNotebook1 {
         return {
             version: notebookVersion,
-            language: this.language,
             cells: this.cells.map(cell => cell.serializeForEval()),
         };
     }
@@ -634,15 +620,13 @@ export class NotebookViewModel implements INotebookViewModel {
         let cells: ICellViewModel[];
         if (input.sheet) {
             // This is preserved for backward compatibility and loading old notebooks.
-            language = input.sheet.language || "javascript";
             cells = input.sheet.cells && input.sheet.cells.map(cell => cellViewModelFactory(cell)) || [];
         }
         else {
-            language = input.language || "javascript";
             cells = input.cells && input.cells.map(cell => cellViewModelFactory(cell)) || [];
         }
 
-        return new NotebookViewModel(notebookStorageId, language, cells, input.description, unsaved, readOnly);
+        return new NotebookViewModel(notebookStorageId, cells, input.description, unsaved, readOnly);
     }    
 
     //

@@ -21,11 +21,6 @@ const classnames = require("classnames");
 export interface ICellProps {
 
     //
-    // The language of the code cell.
-    //
-    language: string;
-
-    //
     // The model for the cell.
     //
     cell: ICellViewModel;
@@ -124,7 +119,6 @@ class CellUIView extends React.Component<ICellProps, ICellState> {
         if (cellType === CellType.Code) {
             return (
                 <CodeCellUI 
-                    language={this.props.language}
                     cell={this.props.cell as ICodeCellViewModel} 
                     notebook={this.props.notebook}
                     />

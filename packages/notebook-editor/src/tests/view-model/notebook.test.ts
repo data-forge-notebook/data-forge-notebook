@@ -39,7 +39,7 @@ describe('view-model / notebook', () => {
                 return "a storage id";
             },
         };
-        const notebook = new NotebookViewModel(mockStorageId, "", mockCells, "", false, false);
+        const notebook = new NotebookViewModel(mockStorageId, mockCells, "", false, false);
 
         const mockLog: any =  {
             info: () => {},
@@ -85,10 +85,8 @@ describe('view-model / notebook', () => {
 
     test("can construct", () => {
         const mockStorageId: any = {};
-        const theLanguage = "javascript";
-        const notebook = new NotebookViewModel(mockStorageId, theLanguage, [], undefined, false, false);
+        const notebook = new NotebookViewModel(mockStorageId, [], undefined, false, false);
         expect(notebook.instanceId).toBeDefined();
-        expect(notebook.language).toEqual(theLanguage);
         expect(notebook.cells).toEqual([]);
         expect(notebook.unsaved).toBe(false);
         expect(notebook.readOnly).toBe(false);
@@ -531,14 +529,11 @@ describe('view-model / notebook', () => {
     test("can deserialize", () => {
 
         const mockId: any = {};
-        const theLanguage = "javascript";
         const notebook = NotebookViewModel.deserialize(mockId, false, false, {
             version: 3,
-            language: theLanguage,
             cells: [],
         });
         expect(notebook.instanceId.length).toBeGreaterThan(0);
-        expect(notebook.language).toEqual(theLanguage);
         expect(notebook.cells).toEqual([]);
         expect(notebook.storageId).toEqual(mockId);
     });
@@ -661,25 +656,20 @@ describe('view-model / notebook', () => {
 
     test("can serialize", () => {
         const storageId: any = {};
-        const theLanguage = "javascript";
-        const notebook = new NotebookViewModel(storageId, theLanguage, [], undefined, false, false);
+        const notebook = new NotebookViewModel(storageId, [], undefined, false, false);
         expect(notebook.serialize()).toEqual({
             version: 3,
-            language: theLanguage,
             cells: [],
         });
     });
 
     test("can deserialize", () => {
         const storageId: any = {};
-        const theLanguage = "javascript";
         const notebook = NotebookViewModel.deserialize(storageId, false, false, {
             version: 3,
-            language: theLanguage,
             cells: [],
         });
         expect(notebook.instanceId.length).toBeGreaterThan(0);
-        expect(notebook.language).toEqual(theLanguage);
         expect(notebook.cells).toEqual([]);
     });
 
@@ -687,11 +677,9 @@ describe('view-model / notebook', () => {
         const storageId: any = {};
         const notebook = NotebookViewModel.deserialize(storageId, false, false, {
             version: 3,
-            language: undefined,
             cells: undefined,
         } as any);
         expect(notebook.instanceId.length).toBeGreaterThan(0);
-        expect(notebook.language).toEqual("javascript");
         expect(notebook.cells).toEqual([]);
     });
 
@@ -700,7 +688,6 @@ describe('view-model / notebook', () => {
         const serializedCell: any = { cellType: "code" };
         const notebook = NotebookViewModel.deserialize(storageId, false, false, {
             version: 3,
-            language: "",
             cells: [
                 serializedCell,
             ],
@@ -715,12 +702,10 @@ describe('view-model / notebook', () => {
             version: 2,
             sheet: {
                 id: "1234",
-                language: undefined,
                 cells: [],
             },
         } as any);
         expect(notebook.instanceId.length).toBeGreaterThan(0);
-        expect(notebook.language).toEqual("javascript");
         expect(notebook.cells).toEqual([]);
     });
 
@@ -730,12 +715,10 @@ describe('view-model / notebook', () => {
             version: 2,
             sheet: {
                 id: "1234",
-                language: undefined,
                 cells: undefined,
             },
         } as any);
         expect(notebook.instanceId.length).toBeGreaterThan(0);
-        expect(notebook.language).toEqual("javascript");
         expect(notebook.cells).toEqual([]);
     });
 });

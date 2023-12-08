@@ -104,11 +104,6 @@ export interface ISerializedSheet1 {
     id: string;
 
     //
-    // Language for the sheet.
-    //
-    language: string;
-
-    //
     // Serialized cells.
     //
     cells: ISerializedCell1[];
@@ -123,11 +118,6 @@ export interface ISerializedNotebook1 {
     // Notebooks with no version number are pre-versioning.
     //
     version: number;
-
-    //
-    // Language for the sheet.
-    //
-    language: string;
 
     //
     // Description of the notebook, if any.

@@ -61,7 +61,6 @@ const NotebookCells = observer(({ notebook, isDragging }: { notebook: INotebookV
                             )}
                             >
                             <CellUI
-                                language={notebook.language}
                                 cell={cell} 
                                 notebook={notebook}
                                 dragHandleProps={provided.dragHandleProps}

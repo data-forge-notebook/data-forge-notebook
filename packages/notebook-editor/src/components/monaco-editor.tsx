@@ -258,7 +258,6 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
     }
 
     componentDidMount() {
-        const ext = this.props.language === "typescript" ? "ts" : "js"; //todo: is this needed?
         this.editorModel = monaco.editor.createModel(
             this.props.cell.text,
             this.props.language

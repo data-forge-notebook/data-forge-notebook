@@ -11,11 +11,6 @@ import { observer } from 'mobx-react';
 export interface ICodeCellProps {
 
     //
-    // The language of the code cell.
-    //
-    language: string;
-
-    //
     // The view-model for the code cell.
     //
     cell: ICodeCellViewModel;
@@ -95,7 +90,7 @@ class CodeCellUIView extends React.Component<ICodeCellProps, ICodeCellState> {
                         }}
                         >
                         <MonacoEditor
-                            language={this.props.language}
+                            language="javascript"
                             cell={this.props.cell} 
                             working={cellExecuting}
                             onEscapeKey={this.onEscapeKey}

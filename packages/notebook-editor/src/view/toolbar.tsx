@@ -43,13 +43,6 @@ class ToolbarView extends React.Component<IToolbarProps, IToolbarState> {
     render(): JSX.Element {
         const notebookEditor = this.props.notebookEditor;
         const notebook = notebookEditor.notebook || undefined;
-        let language = notebook && notebook.language;
-        if (language === "javascript") {
-            language = "JavaScript";
-        }
-        else if (language === "typescript") {
-            language = "TypeScript";
-        }
 
         let jobNames = [];
 
@@ -206,17 +199,6 @@ class ToolbarView extends React.Component<IToolbarProps, IToolbarState> {
                     }
                     
                     <span className="flex-grow ml-2" />
-
-                    {language 
-                        && <div
-                            className="flex flex-row items-center ml-2"
-                            style={{
-                                fontSize: "0.8em"
-                            }}
-                            >
-                            {language}
-                        </div>
-                    }
 
                     <div 
                         className="flex flex-row items-center justify-center ml-3"
