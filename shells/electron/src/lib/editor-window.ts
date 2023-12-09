@@ -441,7 +441,6 @@ export class EditorWindow implements IEditorWindow {
                 // Show the main window if not running headless.
                 this.browserWindow!.show();
 
-                this.browserWindow!.webContents.send("shown"); //todo: is this used in the old version?
 
                 if (this.loadingWindow) {
                     await this.fadeOutWindow(this.loadingWindow, 1000);
