@@ -129,6 +129,7 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
                         style={{
                             paddingTop: "12px",
                             paddingLeft: "16px",
+                            minHeight: "90px",
                         }}
                         >
                         <ReactMarkdown
