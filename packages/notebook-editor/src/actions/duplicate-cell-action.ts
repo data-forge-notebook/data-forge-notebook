@@ -9,6 +9,7 @@ import { IChange } from "../services/undoredo";
     cellCommand: true,
     label: "Duplicate cell",
     icon: "duplicate",
+    accelerator: "CmdOrCtrl+Shift+D",
 })
 export class DuplicateCellAction implements IAction {
 

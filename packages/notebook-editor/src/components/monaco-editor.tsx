@@ -336,6 +336,8 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyC, () => this.invokeNamedCommand("copy-cell"), "");
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyX, () => this.invokeNamedCommand("cut-cell"), "");
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyV, () => this.invokeNamedCommand("paste-cell-below"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.Backspace, () => this.invokeNamedCommand("delete-cell"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyD, () => this.invokeNamedCommand("duplicate-cell"), "");
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.DownArrow, () => this.invokeNamedCommand("focus-next-cell"), "");
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.UpArrow, () => this.invokeNamedCommand("focus-prev-cell"), "");
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.UpArrow, () => this.invokeNamedCommand("focus-top-cell"), "");

@@ -9,7 +9,7 @@ import { IChange } from "../services/undoredo";
     desc: "Deletes the cell", 
     cellCommand: true, 
     icon: "trash",
-    accelerator: "CmdOrCtrl+Alt+D",
+    accelerator: "CmdOrCtrl+Alt+Backspace",
 })
 export class DeleteCellAction implements IAction {
 
