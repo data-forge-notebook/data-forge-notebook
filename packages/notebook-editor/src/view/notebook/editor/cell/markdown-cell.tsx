@@ -8,7 +8,7 @@ import { ICommander, ICommanderId } from '../../../../services/commander';
 import { IOpen, IOpen_ID } from '../../../../services/open';
 import { INotebookViewModel } from '../../../../view-model/notebook';
 import { observer } from 'mobx-react';
-import { autorun } from 'mobx';
+import { reaction } from 'mobx';
 
 export interface IMarkdownCellProps {
     //
@@ -42,7 +42,8 @@ class MarkdownCellUIView extends React.Component<IMarkdownCellProps, IMarkdownCe
 
     componentDidMount() {
         const cell = this.props.cell;
-        autorun(async () => {
+
+        reaction(() => cell.selected, async () => {
             if (cell.selected) {
                 await this.enterEditMode();
             }
