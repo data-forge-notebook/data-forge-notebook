@@ -151,12 +151,10 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         });
 
         reaction(() => this.output, () => {
-            console.log(`Outputs changed!`);
             this.modified = true;
         });
 
         reaction(() => this.errors, () => {
-            console.log(`Errors changed!`);
             this.modified = true;
         });
     }
