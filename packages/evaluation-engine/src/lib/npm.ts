@@ -85,7 +85,7 @@ export class Npm implements INpm {
 
         // console.log("Installing module: " + module.name);
 
-        const installed = downloadPackage(module.name, module.version, projectPath);
+        const installed = await downloadPackage(module.name, module.version, projectPath);
         if (!installed) {
             // Already installed.
             return;
