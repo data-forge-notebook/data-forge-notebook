@@ -12,7 +12,6 @@ import { IEvaluatorClient, IEvaluatorId } from "../services/evaluator-client";
 import { ICodeCellViewModel } from "./code-cell";
 import { ICommander, ICommanderId } from "../services/commander";
 import { IUndoRedo, IUndoRedoId } from "../services/undoredo";
-import { IHotkeysOverlayViewModel } from "../components/hotkeys-overlay";
 import { IRecentFiles, IRecentFiles_ID } from "../services/recent-files";
 import { IZoom, IZoomId } from "../services/zoom";
 import { ICellViewModel } from "./cell";
@@ -34,7 +33,7 @@ export enum SaveChoice {
 //
 // View-mmodel for the app.
 //
-export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
+export interface INotebookEditorViewModel  {
 
     //
     // The currently open notebook.
@@ -171,6 +170,11 @@ export interface INotebookEditorViewModel extends IHotkeysOverlayViewModel {
     // Event raised when the set notebook has been rendered.
     //
     onNotebookRendered: IEventSource<BasicEventHandler>;
+
+    //
+    // Toggle the hotkeys overlay.
+    //
+    toggleHotkeysOverlay(): void;
 
     //
     // Opens or closes the command palette.
@@ -899,7 +903,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Toggle the hotkeys overlay.
     //
-    async toggleHotkeysOverlay(): Promise<void> {
+    toggleHotkeysOverlay(): void {
         this.showHotkeysOverlay = !this.showHotkeysOverlay;
     }
 

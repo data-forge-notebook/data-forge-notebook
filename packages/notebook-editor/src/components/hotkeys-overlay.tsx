@@ -1,25 +1,8 @@
 import { Button } from "@blueprintjs/core";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import * as React from "react";
-import { BasicEventHandler, IEventSource } from "utils";
 import { commands, humanizeAccelerator } from "../services/command";
 import { IPlatform, IPlatformId } from "../services/platform";
-
-//
-// View model for the hotkeys overlay.
-//
-export interface IHotkeysOverlayViewModel {
-
-    //
-    // Set to true when the hotkeys overlay is open.
-    //
-    showHotkeysOverlay: boolean;
-
-    //
-    // Toggle the hotkeys overlay.
-    //
-    toggleHotkeysOverlay(): Promise<void>;
-}
 
 export interface IHotkey {
     //
@@ -35,9 +18,9 @@ export interface IHotkey {
 
 export interface IHotkeyOverlayProps {
     //
-    // View model for the hotkeys overlay.
+    // Event raised to close the overlay.
     //
-    model: IHotkeysOverlayViewModel;
+    onClose: () => void;
 }
 
 export interface IHotkeyOverlayState {
@@ -62,18 +45,7 @@ export class HotkeysOverlay extends React.Component<IHotkeyOverlayProps, IHotkey
             }));
     }
 
-    //
-    // Event raised when the user is closing the hotkeys overlay.
-    //
-    private onClose = async (): Promise<void> => {
-        await this.props.model.toggleHotkeysOverlay();
-    }
-
     render() {
-        if (!this.props.model.showHotkeysOverlay) {
-            return null;
-        }
-
         const hotkeys = this.formatHotkeys();
         const keysCol1 = hotkeys.filter((hotkey, index) => (index+1) % 2);
         const keysCol2 = hotkeys.filter((hotkey, index) => index % 2);
@@ -89,7 +61,7 @@ export class HotkeysOverlay extends React.Component<IHotkeyOverlayProps, IHotkey
                     backgroundColor: "rgba(0,0,0,0.5)",
                     zIndex: 8000,
                 }}
-                onClick={this.onClose}
+                onClick={() => this.props.onClose()}
                 >
                 <div
                     style={{
@@ -166,7 +138,7 @@ export class HotkeysOverlay extends React.Component<IHotkeyOverlayProps, IHotkey
                                 minimal
                                 onClick={async (evt: any) => {
                                     evt.stopPropagation();
-                                    await this.onClose();
+                                    this.props.onClose();
                                 }}
                                 >
                                 ×

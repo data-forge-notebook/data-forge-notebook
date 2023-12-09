@@ -299,11 +299,14 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
                     pickExactItem={true}
                     />
 
-                <HotkeysOverlay model={this.props.model} />
-
+                {this.props.model.showHotkeysOverlay 
+                    && <HotkeysOverlay 
+                        onClose={() => this.props.model.toggleHotkeysOverlay()}
+                        />
+                }
             </div>
         );
     }
-    }
+}
 
 export const NotebookEditor = observer(NotebookEditorView);
