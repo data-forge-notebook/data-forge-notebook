@@ -4,7 +4,6 @@ import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautif
 import { CellUI } from './editor/cell/cell';
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
-import { ICellViewModel } from '../../view-model/cell';
 
 export interface INotebookProps {
     //

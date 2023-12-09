@@ -61,6 +61,21 @@ export interface INotebookEditorViewModel  {
     readonly showHotkeysOverlay: boolean;
 
     //
+    // Set to true to show the command palette.
+    //
+    readonly showCommandPalette: boolean;
+
+    //
+    // Set to true to show the recent file picker.
+    //
+    readonly showRecentFilePicker: boolean;
+
+    //
+    // Set to true to show the example browser.
+    //
+    readonly showExampleBrowser: boolean;
+
+    //
     // Cell currently in the clipboard to be pasted.
     //
     readonly cellClipboard: ISerializedCell1 | undefined;
@@ -182,29 +197,14 @@ export interface INotebookEditorViewModel  {
     toggleCommandPalette(): Promise<void>;
 
     //
-    // Event raised to toggle the command palette.
-    //
-    onToggleCommandPalette: IEventSource<BasicEventHandler>;
-
-    //
     // Opens or closes the recent file picker.
     //
     toggleRecentFilePicker(): Promise<void>;
 
     //
-    // Event raised to toggle the recent file picker.
-    //
-    onToggleRecentFilePicker: IEventSource<BasicEventHandler>;
-
-    //
     // Opens or closes the example notebook browser.
     //
     toggleExamplesBrowser(): Promise<void>;
-
-    //
-    // Event raised to toggle the example notebook browser.
-    //
-    onToggleExamplesBrowser: IEventSource<BasicEventHandler>;
 
     //
     // Sets the cell currently in the clipboard to be pasted.
@@ -271,6 +271,21 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     showHotkeysOverlay: boolean = false;
 
     //
+    // Set to true to show the command palette.
+    //
+    showCommandPalette: boolean = false;
+
+    //
+    // Set to true to show the recent file picker.
+    //
+    showRecentFilePicker: boolean = false;
+
+    //
+    // Set to true to show the example browser.
+    //
+    showExampleBrowser: boolean = false;
+
+    //
     // Cell currently in the clipboard to be pasted.
     //
     cellClipboard: ISerializedCell1 | undefined = undefined;
@@ -286,6 +301,9 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             evaluating: observable,
             installing: observable,
             showHotkeysOverlay: observable,
+            showCommandPalette: observable,
+            showRecentFilePicker: observable,
+            showExampleBrowser: observable,
             isBlocked: computed,
             startBlockingTask: action,
             endBlockingTask: action,
@@ -911,37 +929,22 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     // Opens or closes the command palette.
     //
     async toggleCommandPalette(): Promise<void> {
-        await this.onToggleCommandPalette.raise();
+        this.showCommandPalette = !this.showCommandPalette;
     }
-
-    //
-    // Event raised to toggle the command palette.
-    //
-    onToggleCommandPalette: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // Opens or closes the recent file picker.
     //
     async toggleRecentFilePicker(): Promise<void> {
-        await this.onToggleRecentFilePicker.raise();
+        this.showRecentFilePicker = !this.showRecentFilePicker;
     }
-
-    //
-    // Event raised to toggle the recent file picker.
-    //
-    onToggleRecentFilePicker: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // Opens or closes the example notebook browser.
     //
     async toggleExamplesBrowser(): Promise<void> {
-        await this.onToggleExamplesBrowser.raise();
+        this.showExampleBrowser = !this.showExampleBrowser;
     }
-
-    //
-    // Event raised to toggle the example notebook browser.
-    //
-    onToggleExamplesBrowser: IEventSource<BasicEventHandler> = new EventSource<BasicEventHandler>();
 
     //
     // Sets the cell currently in the clipboard to be pasted.

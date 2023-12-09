@@ -19,35 +19,10 @@ export interface INotebookEditorProps {
     //
     // The view model for the notebook editor.
     //
-    model: INotebookEditorViewModel;
+    notebookEditor: INotebookEditorViewModel;
 }
 
 export interface INotebookEditorState {
-    //
-    // Set to true to display settings.
-    //
-    isSettingsOpen: boolean;
-
-    //
-    // Records the initial tab to display in the settings dialog.
-    //
-    initialSettingsTab?: string;
-
-    //
-    // Set to true to display the cmd palette.
-    //
-    isCommandPaletteOpen: boolean;
-
-    //
-    // Set to true to display the recent files picker.
-    //
-    isRecentFilesPickerOpen: boolean;
-
-    //
-    // Set to true to open the example notebooks picker.
-    //
-    isExampleBrowserOpen: boolean;
-
     //
     // List of example noteboks.
     //
@@ -72,12 +47,7 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
     constructor (props: INotebookEditorProps) {
         super(props);
 
-        this.state = {
-            isSettingsOpen: false,
-            isCommandPaletteOpen: false,
-            isRecentFilesPickerOpen: false,
-            isExampleBrowserOpen: false,
-        };
+        this.state = {};
     }
 
     private onOpenNotebookChanged = async (isReload: boolean): Promise<void> => {
@@ -87,43 +57,29 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
     }
 
     async componentDidMount() {
-        this.props.model.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
-        this.props.model.onToggleCommandPalette.attach(this.toggleCommandPalette);
-        this.props.model.onToggleRecentFilePicker.attach(this.toggleRecentFilesPicker);
-        this.props.model.onToggleExamplesBrowser.attach(this.toggleExampleBrowser);
+        this.props.notebookEditor.onOpenNotebookChanged.attach(this.onOpenNotebookChanged);
 
         const exampleNotebooks = await this.notebookRepository.getExampleNotebooks();
         await updateState(this, {
             exampleNotebooks: exampleNotebooks,
         });
 
-        this.props.model.mount();
+        this.props.notebookEditor.mount();
     }
 
     componentWillUnmount(): void {
-        this.props.model.onOpenNotebookChanged.detach(this.onOpenNotebookChanged);
-        this.props.model.onToggleCommandPalette.detach(this.toggleCommandPalette);
-        this.props.model.onToggleRecentFilePicker.detach(this.toggleRecentFilesPicker);
-        this.props.model.onToggleExamplesBrowser.detach(this.toggleExampleBrowser);
+        this.props.notebookEditor.onOpenNotebookChanged.detach(this.onOpenNotebookChanged);
 
-        this.props.model.unmount();
-    }
-
-    private closeRecentFilesPicker = async (): Promise<void> => {
-        await updateState(this, { isRecentFilesPickerOpen: false });
-    }
-
-    private toggleRecentFilesPicker = async (): Promise<void> => {
-        await updateState(this, { isRecentFilesPickerOpen: !this.state.isRecentFilesPickerOpen });
+        this.props.notebookEditor.unmount();
     }
 
     //
     // Opens a recent notebook.
     //
     private openRecentFile = async (filePath: string): Promise<void> => {
-        await this.closeRecentFilesPicker();
+        await this.props.notebookEditor.toggleRecentFilePicker();
         const notebookStorageId = this.notebookRepository.idFromString(filePath);
-        await this.props.model.openSpecificNotebook(notebookStorageId);
+        await this.props.notebookEditor.openSpecificNotebook(notebookStorageId);
     }
 
     //
@@ -133,16 +89,11 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
         return this.recentFiles.getRecentFileList();
     }
 
-    private closeCommandPalette = async (): Promise<void> => {
-        await updateState(this, { isCommandPaletteOpen: false });
-    }
-
-    private toggleCommandPalette = async (): Promise<void> => {
-        await updateState(this, { isCommandPaletteOpen: !this.state.isCommandPaletteOpen });
-    }
-
+    //
+    // Invokes a comnmand against the editor.
+    //
     private invokeCommand = async (command: ICommand): Promise<void> => {
-        const notebook = this.props.model.notebook;
+        const notebook = this.props.notebookEditor.notebook;
         const selectedCell = notebook ? notebook.selectedCell : undefined;
 
         if (selectedCell) {
@@ -151,32 +102,14 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
         else {
             await this.commander.invokeCommand(command);
         }
-
-        if (command.getId() !== "toggle-command-palette") {
-            // Always close the command palette after a command is executed.
-            // Unless the command itself was the one that opened the command palette.
-            await this.closeCommandPalette();
-        }
     }
 
     //
     // Opens an example notebook.
     //
     private openExampleNotebook = async (exampleNotebook: IExampleNotebook): Promise<void> => {
-        await this.closeExampleBrowser();
-        await this.props.model.openSpecificNotebook(exampleNotebook.storageId);
-    }
-
-    private openExampleBrowser = async (): Promise<void> => {
-        await updateState(this, { isExampleBrowserOpen: true });
-    }
-
-    private closeExampleBrowser = async (): Promise<void> => {
-        await updateState(this, { isExampleBrowserOpen: false });
-    }
-
-    private toggleExampleBrowser = async (): Promise<void> => {
-        await updateState(this, { isExampleBrowserOpen: !this.state.isExampleBrowserOpen });
+        await this.props.notebookEditor.toggleExamplesBrowser();
+        await this.props.notebookEditor.openSpecificNotebook(exampleNotebook.storageId);
     }
 
     render () {
@@ -195,7 +128,7 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
                         }}
                         >
                         <Toolbar 
-                            notebookEditor={this.props.model} 
+                            notebookEditor={this.props.notebookEditor} 
                             />
                     </div>
 
@@ -205,13 +138,13 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
                             marginTop: "4px",
                         }}
                         >
-                        {this.props.model.notebook
+                        {this.props.notebookEditor.notebook
                             ? <NotebookUI
-                                key={this.props.model.notebook.instanceId}
-                                notebook={this.props.model.notebook} 
+                                key={this.props.notebookEditor.notebook.instanceId}
+                                notebook={this.props.notebookEditor.notebook} 
                                 />
                             : <WelcomeScreen
-                                model={this.props.model}
+                                model={this.props.notebookEditor}
                                 />
                         }
                         
@@ -221,8 +154,8 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
                 {this.state.exampleNotebooks 
                         && <FuzzyPicker
                         label="Example browser"
-                        isOpen={this.state.isExampleBrowserOpen}
-                        onClose={this.closeExampleBrowser}
+                        isOpen={this.props.notebookEditor.showExampleBrowser}
+                        onClose={() => this.props.notebookEditor.toggleExamplesBrowser()}
                         autoCloseOnEnter={true}
                         onChange={this.openExampleNotebook}
                         items={this.state.exampleNotebooks}
@@ -248,8 +181,8 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
 
                 <FuzzyPicker
                     label="Recent files"
-                    isOpen={this.state.isRecentFilesPickerOpen}
-                    onClose={this.closeRecentFilesPicker}
+                    isOpen={this.props.notebookEditor.showRecentFilePicker}
+                    onClose={() => this.props.notebookEditor.toggleRecentFilePicker()}
                     autoCloseOnEnter={true}
                     onChange={this.openRecentFile}
                     items={this.getRecentFiles()}
@@ -274,8 +207,8 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
 
                 <FuzzyPicker
                     label="Commands"
-                    isOpen={this.state.isCommandPaletteOpen}
-                    onClose={this.closeCommandPalette}
+                    isOpen={this.props.notebookEditor.showCommandPalette}
+                    onClose={() => this.props.notebookEditor.toggleCommandPalette()}
                     autoCloseOnEnter={true}
                     onChange={this.invokeCommand}
                     items={this.commander.getCommands()}
@@ -299,9 +232,9 @@ class NotebookEditorView extends React.Component<INotebookEditorProps, INotebook
                     pickExactItem={true}
                     />
 
-                {this.props.model.showHotkeysOverlay 
+                {this.props.notebookEditor.showHotkeysOverlay 
                     && <HotkeysOverlay 
-                        onClose={() => this.props.model.toggleHotkeysOverlay()}
+                        onClose={() => this.props.notebookEditor.toggleHotkeysOverlay()}
                         />
                 }
             </div>

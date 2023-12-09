@@ -60,7 +60,7 @@ reaction(() => notebookEditorViewModel.notebook?.isModified, () => {
 
 function App() {
     return (
-        <NotebookEditor model={notebookEditorViewModel} />
+        <NotebookEditor notebookEditor={notebookEditorViewModel} />
     );
 }
 

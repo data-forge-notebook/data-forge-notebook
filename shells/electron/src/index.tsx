@@ -126,7 +126,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <NotebookEditor model={notebookEditorViewModel} />
+            <NotebookEditor notebookEditor={notebookEditorViewModel} />
         );
     }
 }
