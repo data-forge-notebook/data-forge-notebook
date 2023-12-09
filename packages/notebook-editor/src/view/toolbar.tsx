@@ -216,7 +216,10 @@ class ToolbarView extends React.Component<IToolbarProps, IToolbarState> {
                                         padding: "5px",
                                     }}
                                     >
-                                    {jobNames.join(", ")}
+                                    {jobNames.length > 0
+                                        ? jobNames.join(", ")
+                                        : "Idle"
+                                    }
                                 </div>
                             )}
                             >
