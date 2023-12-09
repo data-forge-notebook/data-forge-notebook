@@ -150,6 +150,11 @@ export class EditorWindow implements IEditorWindow {
     private editorWindowId!: string;
 
     //
+    // Set to true when the window has actually been shown.
+    //
+    private visible: boolean = false;
+
+    //
     // Set to true when the window should be shown to the user.
     //
     private showCalled: boolean = false;
@@ -432,15 +437,16 @@ export class EditorWindow implements IEditorWindow {
         if (this.isReadyToShow()) {
             await this.onShow.raise(this);
 
-            if (this.browserWindow!.isVisible()) {
+            if (this.visible) {
                 this.log.info(`++ Editor window already visible ${this.getId()}.`);
             }
             else {
                 this.log.info(`++ Actually showing window ${this.getId()}.`);
 
+                this.visible = true;
+
                 // Show the main window if not running headless.
                 this.browserWindow!.show();
-
 
                 if (this.loadingWindow) {
                     await this.fadeOutWindow(this.loadingWindow, 1000);
