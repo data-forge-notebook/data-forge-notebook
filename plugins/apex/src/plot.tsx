@@ -142,6 +142,13 @@ export class Plot extends React.Component<IPlotProps, {}> {
             data.chart.animations.enabled = false;
         }
 
+        if (data.dataLabels === undefined) {
+            // Turn off data labels by default.
+            data.dataLabels = {
+                enabled: false,
+            };
+        }
+
         try {
             this.chart = new ApexCharts(this.containerElement.current!, data);
             this.chart.render();
