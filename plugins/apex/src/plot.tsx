@@ -127,8 +127,8 @@ export class Plot extends React.Component<IPlotProps, {}> {
         }
 
         if (data.chart.type === undefined) {
-            // Default to line charts.
-            data.chart.type = "line";
+            // Default to bar charts.
+            data.chart.type = "bar";
         }
 
         if (data.chart.animations == undefined) {
