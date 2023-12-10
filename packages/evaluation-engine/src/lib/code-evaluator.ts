@@ -13,6 +13,7 @@ import * as fs from "fs";
 import { EventEmitter } from "events";
 import { INpm } from "./npm";
 import { performance } from "perf_hooks";
+import stripAnsi from 'strip-ansi';
 
 //
 // Maximum number of outputs before outputs are capped.
@@ -312,9 +313,15 @@ export class CodeEvaluator implements ICodeEvaluator {
 
         if (!this.isOutputCapped()) {
             if (this.onDisplay) {
+                let value = args[0];
+                if (typeof(value) === "string") {
+                    // Strip color codes.
+                    value = stripAnsi(value);
+                }
+
                 this.onDisplay(this.getCurCellId(), {
                     displayType: "text",
-                    data: args[0]
+                    data: value,
                 });
             }
 
