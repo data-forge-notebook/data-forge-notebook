@@ -20,9 +20,9 @@
         "test:watch": "jest --watch"
     },
     "dependencies": {
-        "@babel/core": "^7.9.0",
-        "@babel/preset-env": "^7.10.2",
-        "@babel/types": "7.9.5",
+        "@babel/core": "^7.23.6",
+        "@babel/preset-env": "^7.23.6",
+        "@babel/types": "7.23.6",
         "@codecapers/fusion": "1.0.15",
         "axios": "^0.18.0",
         "babel-traverse": "^6.26.0",
@@ -39,9 +39,9 @@
         "utils": "workspace:*"
     },
     "devDependencies": {
-        "@types/babel-traverse": "^6.25.5",
-        "@types/babel-types": "^7.0.7",
-        "@types/babel__core": "7.1.7",
+        "@types/babel-traverse": "^6.25.10",
+        "@types/babel-types": "^7.0.15",
+        "@types/babel__core": "7.20.5",
         "@types/fs-extra": "^5.0.4",
         "@types/gunzip-maybe": "^1.4.2",
         "@types/jest": "^27.5.1",
