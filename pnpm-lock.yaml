@@ -15,18 +15,12 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
     devDependencies:
-      '@babel/core':
-        specifier: ^7.17.5
-        version: 7.17.5
       '@blueprintjs/core':
         specifier: ^5.7.1
         version: 5.7.1(@types/react@17.0.40)(react-dom@17.0.2)(react@17.0.2)
       '@blueprintjs/icons':
         specifier: ^5.4.1
         version: 5.4.1(@types/react@17.0.40)(react-dom@17.0.2)(react@17.0.2)
-      babel-loader:
-        specifier: ^8.2.3
-        version: 8.2.5(@babel/core@7.17.5)(webpack@5.72.1)
       concurrently:
         specifier: ^7.0.0
         version: 7.2.1
@@ -479,9 +473,6 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
     devDependencies:
-      '@babel/core':
-        specifier: ^7.17.2
-        version: 7.17.5
       '@types/react':
         specifier: ^17.0.37
         version: 17.0.40
@@ -513,9 +504,6 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
     devDependencies:
-      '@babel/core':
-        specifier: ^7.17.2
-        version: 7.17.5
       '@types/react':
         specifier: ^17.0.37
         version: 17.0.40
@@ -553,9 +541,6 @@ importers:
         specifier: ^2.6.3
         version: 2.6.3(leaflet@1.6.0)(react-dom@17.0.2)(react@17.0.2)
     devDependencies:
-      '@babel/core':
-        specifier: ^7.17.2
-        version: 7.17.5
       '@types/leaflet':
         specifier: ^1.5.12
         version: 1.9.7
@@ -593,9 +578,6 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
     devDependencies:
-      '@babel/core':
-        specifier: ^7.17.2
-        version: 7.17.5
       '@types/react':
         specifier: ^17.0.37
         version: 17.0.40
@@ -630,9 +612,6 @@ importers:
         specifier: ^3.3.0
         version: 3.3.0
     devDependencies:
-      '@babel/core':
-        specifier: ^7.17.2
-        version: 7.17.5
       '@types/react':
         specifier: ^17.0.37
         version: 17.0.40
@@ -664,9 +643,6 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
     devDependencies:
-      '@babel/core':
-        specifier: ^7.17.2
-        version: 7.17.5
       '@types/react':
         specifier: ^17.0.37
         version: 17.0.40
