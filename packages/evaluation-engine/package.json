@@ -35,6 +35,7 @@
         "resolve-cwd": "^2.0.0",
         "semver": "^7.5.4",
         "source-map-lib": "workspace:*",
+        "strip-ansi": "^6.0.1",
         "tar-stream": "^3.1.6",
         "typy": "^3.3.0",
         "utils": "workspace:*"
