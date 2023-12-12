@@ -89,9 +89,18 @@ function internalBabelCompile(log: ILog, code: string, babelConfig: TransformOpt
 // Generated babel configuration.
 //    
 const defaultBabelConfigFile = {
+    filename: "file.notebook",
     presets: [
         [
             require("@babel/preset-env"),
+            {
+                "targets": {
+                    "node": "20",
+                },
+            },
+        ],
+        [
+            require("@babel/preset-typescript"),
             {
                 "targets": {
                     "node": "20",
