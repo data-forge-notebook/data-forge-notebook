@@ -1,0 +1,569 @@
+{
+    "version": 3,
+    "cells": [
+        {
+            "id": "c41f88c0-98a9-11ee-975a-fff0b7b9e310",
+            "cellType": "markdown",
+            "code": "# Babel examples\r\n\r\n## Compiling JS code"
+        },
+        {
+            "id": "ae299600-98a9-11ee-975a-fff0b7b9e310",
+            "cellType": "code",
+            "code": "import { transform } from \"@babel/core\";\r\n\r\nconst babelConfig = {\r\n    filename: \"file.js\",\r\n    presets: [\r\n        [\r\n            require(\"@babel/preset-env\"),\r\n            {\r\n                \"targets\": {\r\n                    \"node\": \"20\",\r\n                },\r\n            },\r\n        ],\r\n    ],\r\n};\r\n\r\ntransform(\"1 + 2\", babelConfig, (err, result) => {\r\n    display(err);\r\n    display(result);\r\n});",
+            "lastEvaluationDate": "2023-12-12T14:55:21.108+10:00",
+            "output": [
+                {
+                    "value": {}
+                },
+                {
+                    "value": {
+                        "data": {
+                            "metadata": {},
+                            "options": {
+                                "assumptions": {},
+                                "filename": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\file.js",
+                                "targets": {},
+                                "cloneInputAst": true,
+                                "babelrc": false,
+                                "configFile": false,
+                                "browserslistConfigFile": false,
+                                "passPerPreset": false,
+                                "envName": "development",
+                                "cwd": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test",
+                                "root": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test",
+                                "rootMode": "root",
+                                "plugins": [
+                                    {
+                                        "key": "syntax-class-static-block",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-private-property-in-object",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-class-properties",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-numeric-separator",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-nullish-coalescing-operator",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-optional-chaining",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-json-strings",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-optional-catch-binding",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-async-generators",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-object-rest-spread",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "transform-export-namespace-from",
+                                        "visitor": {
+                                            "ExportNamedDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "transform-modules-commonjs",
+                                        "visitor": {
+                                            "Program": {
+                                                "exit": [
+                                                    null
+                                                ]
+                                            },
+                                            "_exploded": true,
+                                            "CallExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ImportExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "transform-dynamic-import",
+                                        "visitor": {
+                                            "Program": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-top-level-await",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    },
+                                    {
+                                        "key": "syntax-import-meta",
+                                        "visitor": {
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "spec": false,
+                                            "useBuiltIns": false
+                                        },
+                                        "externalDependencies": []
+                                    }
+                                ],
+                                "presets": [],
+                                "parserOpts": {
+                                    "sourceType": "module",
+                                    "sourceFileName": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\file.js",
+                                    "plugins": [
+                                        "classStaticBlock",
+                                        "privateIn",
+                                        "classProperties",
+                                        "classPrivateProperties",
+                                        "classPrivateMethods",
+                                        "numericSeparator",
+                                        "nullishCoalescingOperator",
+                                        "optionalChaining",
+                                        "jsonStrings",
+                                        "optionalCatchBinding",
+                                        "asyncGenerators",
+                                        "objectRestSpread",
+                                        "exportNamespaceFrom",
+                                        "dynamicImport",
+                                        "topLevelAwait",
+                                        "importMeta"
+                                    ]
+                                },
+                                "generatorOpts": {
+                                    "filename": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\file.js",
+                                    "comments": true,
+                                    "compact": "auto",
+                                    "sourceMaps": false,
+                                    "sourceFileName": "file.js"
+                                }
+                            },
+                            "ast": null,
+                            "code": "\"use strict\";\n\n1 + 2;",
+                            "map": null,
+                            "sourceType": "script",
+                            "externalDependencies": {}
+                        }
+                    }
+                }
+            ],
+            "errors": []
+        },
+        {
+            "id": "431165e0-98aa-11ee-975a-fff0b7b9e310",
+            "cellType": "markdown",
+            "code": "## Compiling TS code"
+        },
+        {
+            "id": "46e77420-98aa-11ee-975a-fff0b7b9e310",
+            "cellType": "code",
+            "code": "const babelConfig = {\r\n    filename: \"file.ts\",\r\n    presets: [\r\n        [\r\n            require(\"@babel/preset-env\"),\r\n            {\r\n                \"targets\": {\r\n                    \"node\": \"20\",\r\n                },\r\n            },\r\n        ],\r\n        [\r\n            require(\"@babel/preset-typescript\"),\r\n            {\r\n                \"targets\": {\r\n                    \"node\": \"20\",\r\n                },\r\n            },\r\n        ],\r\n    ],\r\n};\r\n\r\ntransform(\"function foo(): number { return 5; }\", babelConfig, (err, result) => {\r\n    console.log(err);\r\n    display(result);\r\n});",
+            "lastEvaluationDate": "2023-12-12T14:55:21.118+10:00",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "text",
+                        "data": "undefined\n"
+                    }
+                },
+                {
+                    "value": {
+                        "data": {
+                            "metadata": {},
+                            "options": {
+                                "assumptions": {},
+                                "filename": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\file.ts",
+                                "targets": {},
+                                "cloneInputAst": true,
+                                "babelrc": false,
+                                "configFile": false,
+                                "browserslistConfigFile": false,
+                                "passPerPreset": false,
+                                "envName": "development",
+                                "cwd": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test",
+                                "root": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test",
+                                "rootMode": "root",
+                                "plugins": [
+                                    {
+                                        "key": "transform-typescript",
+                                        "visitor": {
+                                            "Identifier": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "RestElement": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "Program": {
+                                                "enter": [
+                                                    null
+                                                ],
+                                                "exit": [
+                                                    null
+                                                ]
+                                            },
+                                            "ExportNamedDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ExportAllDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ExportSpecifier": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ExportDefaultDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSDeclareFunction": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSDeclareMethod": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "VariableDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "VariableDeclarator": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSIndexSignature": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ClassDeclaration": {
+                                                "enter": [
+                                                    null,
+                                                    null
+                                                ]
+                                            },
+                                            "TSModuleDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSInterfaceDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSTypeAliasDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSEnumDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSImportEqualsDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSExportAssignment": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSTypeAssertion": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "CallExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "OptionalCallExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "NewExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "JSXOpeningElement": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TaggedTemplateExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSAsExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSSatisfiesExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSNonNullExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "TSInstantiationExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "AssignmentPattern": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ArrayPattern": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ObjectPattern": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ClassExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "FunctionDeclaration": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "FunctionExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ObjectMethod": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ArrowFunctionExpression": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ClassMethod": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "ClassPrivateMethod": {
+                                                "enter": [
+                                                    null
+                                                ]
+                                            },
+                                            "_exploded": true,
+                                            "_verified": true
+                                        },
+                                        "options": {
+                                            "isTSX": false,
+                                            "allowNamespaces": true,
+                                            "disallowAmbiguousJSXLike": false,
+                                            "jsxPragmaFrag": "React.Fragment",
+                                            "optimizeConstEnums": false
+                                        },
+                                        "externalDependencies": []
+                                    }
+                                ],
+                                "presets": [],
+                                "parserOpts": {
+                                    "sourceType": "module",
+                                    "sourceFileName": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\file.ts",
+                                    "plugins": [
+                                        "objectRestSpread",
+                                        "classProperties",
+                                        [
+                                            "typescript",
+                                            {
+                                                "disallowAmbiguousJSXLike": false
+                                            }
+                                        ]
+                                    ]
+                                },
+                                "generatorOpts": {
+                                    "filename": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\file.ts",
+                                    "comments": true,
+                                    "compact": "auto",
+                                    "sourceMaps": false,
+                                    "sourceFileName": "file.ts"
+                                }
+                            },
+                            "ast": null,
+                            "code": "function foo() {\n  return 5;\n}",
+                            "map": null,
+                            "sourceType": "module",
+                            "externalDependencies": {}
+                        }
+                    }
+                }
+            ],
+            "errors": []
+        }
+    ]
+}
