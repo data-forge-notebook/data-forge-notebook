@@ -1,6 +1,4 @@
 import { CellOutputViewModel } from "../../view-model/cell-output";
-import { CellOutputValueViewModel } from "../../view-model/cell-output-value";
-import { expectEventRaised } from "../lib/utils";
 
 describe("view-model / cell-output", () => {
 

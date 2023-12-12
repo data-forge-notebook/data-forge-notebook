@@ -28,8 +28,6 @@ function makeModel(text: string): any {
     const onTextChanged = new EventSource<BasicEventHandler>();
     const onSetFocus = new EventSource<FocusedEventHandler>();
     const onSetCaretPosition = new EventSource<SetCaretPositionEventHandler>();
-    const onEditorSelectionChanging = new EventSource<EditorSelectionChangedEventHandler>();
-    const onEditorSelectionChanged = new EventSource<EditorSelectionChangedEventHandler>();
     const onSelectText = new EventSource<SelectTextEventHandler>();
     const onDeselectText = new EventSource<BasicEventHandler>();
     const onReplaceText = new EventSource<ReplaceTextEventHandler>();
@@ -60,8 +58,6 @@ function makeModel(text: string): any {
         onTextChanged,
         onSetFocus,
         onSetCaretPosition,
-        onEditorSelectionChanging,
-        onEditorSelectionChanged,
         onSelectText,
         onDeselectText,
         onReplaceText,

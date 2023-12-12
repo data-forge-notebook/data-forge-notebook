@@ -8,8 +8,6 @@ export type SetCaretPositionEventHandler = (sender: ICellViewModel, caretPositio
 export type FindNextMatchEventHandler = (startingPosition: IEditorCaretPosition, searchDirection: SearchDirection, doSelection: boolean, findDetails: IFindDetails) => Promise<void>;
 export type SelectTextEventHandler = (range: ITextRange) => Promise<void>;
 export type ReplaceTextEventHandler = (range: ITextRange, replaceText: string) => Promise<void>;
-export type EditorSelectionChangingEventHandler = (sender: ICellViewModel, willBeSelected: boolean) => Promise<void>;
-export type EditorSelectionChangedEventHandler = (sender: ICellViewModel) => Promise<void>;
 
 //
 // Specifies whether a text search goes forward or backward.
@@ -486,16 +484,6 @@ export abstract class CellViewModel implements ICellViewModel {
 
         this.selected = false;
     }
-
-    //
-    // Event raised when the selection is about to change.
-    //
-    onEditorSelectionChanging: IEventSource<EditorSelectionChangingEventHandler> = new EventSource<EditorSelectionChangingEventHandler>();
-
-    //
-    // Event raised when the selection for this cell has changed.
-    //
-    onEditorSelectionChanged: IEventSource<EditorSelectionChangedEventHandler> = new EventSource<EditorSelectionChangedEventHandler>();
 
     //
     // Select a range of text in the cell.

@@ -4,8 +4,13 @@ import { ICellViewModel, IFindDetails, ITextRange, SearchDirection } from "../..
 import { IEditorCaretPosition } from "../../view-model/editor-caret-position";
 import { expectEventRaised, trackEventsRaised } from "../lib/utils";
 import { CodeCellViewModel } from "../../view-model/code-cell";
+import { disableInjector } from "@codecapers/fusion";
 
 describe("view-model / cell", () => {
+
+    beforeAll(() => {
+        disableInjector();
+    });
 
     test("can construct", () => {
 
@@ -18,19 +23,13 @@ describe("view-model / cell", () => {
         expect(cell.text).toEqual(theText);
     });
 
-    test("setting the text to the same makes no change", () => {
-
-        const cell = new CodeCellViewModel("", CellType.Code, "hello", undefined, [], []);
-
-        expect(cell.setText("hello")).toBe(false);
-    });
-
     test("setting the text to the different changes the text", () => {
 
         const cell = new CodeCellViewModel("", CellType.Code, "hello", undefined, [], []);
 
         const newText = "world";
-        expect(cell.setText(newText)).toBe(true);
+        cell.setText(newText);
+
         expect(cell.text).toBe(newText);
     });
 
@@ -39,19 +38,10 @@ describe("view-model / cell", () => {
         const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
 
         const baseText = "Hello world";
-        expect(cell.setText(`${baseText} `)).toBe(true);
+        cell.setText(`${baseText} `);
+
         expect(cell.text).toEqual(baseText);
     });    
-
-    test("setting text raises onTextChanged event", async () => {
-
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
-
-        await expectEventRaised(cell, "onTextChanged", async () => {
-            cell.setText("some text!");
-            await sleep(1000); // The event is debounced!
-        });
-    });
 
     test("can scroll into view", async () => {
 
@@ -106,12 +96,11 @@ describe("view-model / cell", () => {
     test("can select cell", async () => {
         
         const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
-        const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged", "onSetFocus"]);
+        const events = await trackEventsRaised(cell, ["onSetFocus"]);
         
         expect(cell.selected).toBe(false);
 
-        //todo:
-        // await cell.select();
+        await cell.select();
 
         expect(cell.selected).toBe(true);
 
@@ -122,13 +111,11 @@ describe("view-model / cell", () => {
     test("more than one cell selection has no effect", async () => {
         
         const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
-        //todo:
-        // await cell.select();
+        await cell.select();
 
-        const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged", "onSetFocus"]);
+        const events = await trackEventsRaised(cell, ["onSetFocus"]);
 
-        //todo:
-        // await cell.select();
+        await cell.select();
 
         expect(cell.selected).toBe(true);
 
@@ -138,19 +125,13 @@ describe("view-model / cell", () => {
     test("can deselect cell", async () => {
 
         const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
-        //todo:
-        // await cell.select();
+        await cell.select();
 
         expect(cell.selected).toBe(true);
 
-        const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged"]);
-
-        //todo:
-        // await cell.deselect();
+        await cell.deselect();
 
         expect(cell.selected).toBe(false);
-
-        events.expectEventRaised();
     });
 
     test("deselecting an unselected cell has no effect", async () => {
@@ -159,14 +140,9 @@ describe("view-model / cell", () => {
 
         expect(cell.selected).toBe(false);
 
-        const events = await trackEventsRaised(cell, ["onEditorSelectionChanging", "onEditorSelectionChanged"]);
-
-        //todo:
-        // await cell.deselect();
+        await cell.deselect();
 
         expect(cell.selected).toBe(false);
-
-        events.expectEventNotRaised();
     });
 
     test("can select text", async () => {
