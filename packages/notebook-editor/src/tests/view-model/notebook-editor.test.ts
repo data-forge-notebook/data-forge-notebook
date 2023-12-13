@@ -275,11 +275,15 @@ describe('view-model / notebook-editor', () => {
 
         const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
 
-        // Force the code path that saves the "already saved" notebook.
-        notebook.setModified(true);
 
         notebook.save = jest.fn();
 
+        //
+        // TODO: Forcing these vars is a bit of a hack. There must be a better way to test this.
+        //
+        (notebook as any).unsaved = false;
+        (notebook as any).readOnly = false;
+        
         await notebookEditor.saveNotebook();
 
         expect(notebook.save).toHaveBeenCalledTimes(1);
@@ -357,10 +361,9 @@ describe('view-model / notebook-editor', () => {
     test("constructing the view model with a notebook clears the undo stack", () => {
 
         const mockNotebook: any = {
-            getStorageId: () => ({
+            storageId: {
                 getContainingPath: () => "/a/path",
-            }),
-            onModified: new EventSource<BasicEventHandler>(),
+            },
         };
 
         const { notebookEditor, mockUndoRedo } = createNotebookEditor(mockNotebook);
@@ -368,7 +371,7 @@ describe('view-model / notebook-editor', () => {
         notebookEditor.mount();
 
         expect(mockUndoRedo.clearStack).toHaveBeenCalledTimes(1);
-        expect(mockUndoRedo.clearStack).toHaveBeenCalledWith(mockNotebook);
+        expect(mockUndoRedo.clearStack).toHaveBeenCalledWith(notebookEditor.notebook);
     });
 
     test("opening a new notebook clears the undo stack", async () => {
