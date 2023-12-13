@@ -6,7 +6,6 @@
 import { IChange } from "../services/undoredo";
 import { ICellViewModel } from "../view-model/cell";
 
-
 export class CellTextChange implements IChange {
 
     cell: ICellViewModel;

@@ -9,7 +9,7 @@ describe('services / undoredo / cell-text-change', () => {
     beforeEach(() => {
         mockSetText = jest.fn();
         mockCell = {
-            getText: () => oldCellText,
+            text: oldCellText,
             setText: mockSetText,
         };
     });
@@ -34,7 +34,7 @@ describe('services / undoredo / cell-text-change', () => {
     });
 
     test("can undo change to cell text when original text was empty", async () => {
-        mockCell.getText = () => ""; // No code in this cell yet.
+        mockCell.text = ""; // No code in this cell yet.
         const newCellText = "some-new-text";
         const change = new CellTextChange(mockCell, newCellText);
         await change.do();
