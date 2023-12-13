@@ -4,7 +4,7 @@ import { NotebookViewModel } from "../../view-model/notebook";
 import { expectEventRaised } from "../lib/utils";
 import { disableInjector } from "@codecapers/fusion";
 
-describe('view-model / notebook', () => {
+describe('view-model / notebook-only', () => {
 
     beforeAll(() => {
         disableInjector();
@@ -15,11 +15,13 @@ describe('view-model / notebook', () => {
     //
     function createMockCellViewModel(fields: any = {}) {
         const mockCell: any = {
-            getId: () => fields.id || "1234",
-            getCellType: () => fields.cellType || "code",
-            flushChanges: () => {},
+            id: () => fields.id || "1234",
+            cellType: fields.cellType || "code",
+            flushChanges: jest.fn(),
             select: jest.fn(),
             deselect: jest.fn(),
+            clearOutputs: jest.fn(),
+            clearErrors: jest.fn(),
             ...fields,
         };
         return mockCell;
@@ -66,6 +68,7 @@ describe('view-model / notebook', () => {
         return { 
             ...created, 
             cell, 
+            mockCellViewModel,
         };
     }
 
@@ -112,40 +115,45 @@ describe('view-model / notebook', () => {
     test("can add cells", async () => {
         const { notebook } = createNotebookViewModel([]);
 
-        const cell1 = createMockCellViewModel();
+        const cell1 = createMockCellViewModel({ id: "cell-1" });
         await notebook.addCell(cell1, 0);
 
-        const cell2 = createMockCellViewModel();
+        const cell2 = createMockCellViewModel({ id: "cell-2" });
         await notebook.addCell(cell2, 1);
 
         const cells = notebook.cells;
         expect(cells.length).toEqual(2);
-        expect(cells[0]).toBe(cell1);
-        expect(cells[1]).toBe(cell2);
+        expect(notebook.cells[0].id).toBe("cell-1");
+        expect(notebook.cells[1].id).toBe("cell-2");
     });
 
     test("can add second cell at start", async () => {        
         const { notebook } = createNotebookViewModel([]);
 
-        const mockCell1 = createMockCellViewModel();
-        const mockCell2 = createMockCellViewModel();
+        const mockCell1 = createMockCellViewModel({ id: "cell-1" });
+        const mockCell2 = createMockCellViewModel({ id: "cell-2" });
         await notebook.addCell(mockCell1, 0);
         await notebook.addCell(mockCell2, 0);
 
-        expect(notebook.cells).toEqual([ mockCell2, mockCell1 ]);
+        expect(notebook.cells.length).toBe(2);
+        expect(notebook.cells[0].id).toBe("cell-2");
+        expect(notebook.cells[1].id).toBe("cell-1");
     });
 
     test("can add cell in the middle", async () => {        
         const { notebook } = createNotebookViewModel([]);
 
-        const mockCell1 = createMockCellViewModel();
-        const mockCell2 = createMockCellViewModel();
-        const mockCell3 = createMockCellViewModel();
+        const mockCell1 = createMockCellViewModel({ id: "cell-1" });
+        const mockCell2 = createMockCellViewModel({ id: "cell-2" });
+        const mockCell3 = createMockCellViewModel({ id: "cell-3" });
         await notebook.addCell(mockCell1, 0);
         await notebook.addCell(mockCell2, 1);
         await notebook.addCell(mockCell3, 1);
 
-        expect(notebook.cells).toEqual([ mockCell1, mockCell3, mockCell2 ]);
+        expect(notebook.cells.length).toBe(3);
+        expect(notebook.cells[0].id).toBe("cell-1");
+        expect(notebook.cells[1].id).toBe("cell-3");
+        expect(notebook.cells[2].id).toBe("cell-2");
     });
 
     test("throws when adding a cell beyond the range", async () => {
@@ -169,13 +177,13 @@ describe('view-model / notebook', () => {
     test("can construct with a cell then add a new cell", async () => {
         const { notebook } = createNotebookWithCell();
 
-        const newCell = createMockCellViewModel();
+        const newCell = createMockCellViewModel({ id: "new-cell" });
         await notebook.addCell(newCell, 1);
 
         const cells = notebook.cells;
         expect(cells.length).toEqual(2);
         expect(cells[0]).toBeDefined();
-        expect(cells[1]).toBe(newCell);
+        expect(cells[1].id).toBe("new-cell");
     });
 
     test("flushing changes raises onFlushChanges", async () => {
@@ -208,8 +216,7 @@ describe('view-model / notebook', () => {
 
         const { notebook, cell } = createNotebookWithCell();
 
-        //todo:
-        // await cell.onEditorSelectionChanged.raise(cell);
+        await notebook.select(cell);
 
         expect(notebook.selectedCell).toBe(cell);
     });
@@ -220,8 +227,7 @@ describe('view-model / notebook', () => {
         
         const cell = cells[1];
 
-        //todo:
-        // await cell.onEditorSelectionChanged.raise(cell);
+        await notebook.select(cell);
 
         expect(notebook.getSelectedCellIndex()).toBe(1);
     });
@@ -229,8 +235,8 @@ describe('view-model / notebook', () => {
     test("can deselect", async () => {
 
         const { notebook, cell } = createNotebookWithCell();
-        //todo:
-        // await cell.select();
+
+        await notebook.select(cell);
 
         await notebook.deselect();
 
@@ -239,26 +245,19 @@ describe('view-model / notebook', () => {
 
     test("selecting a new cell deselects old cells", async () => {
 
-        const { notebook, cells } = createNotebookWithCells(2);
+        const { notebook, cells, mockCellViewModels } = createNotebookWithCells(2);
 
         const cell1 = cells[0];
 
-        //todo:
-        // await cell1.onEditorSelectionChanged.raise(cell1);
+        await notebook.select(cell1);
 
         expect(notebook.selectedCell).toBe(cell1);
 
         const cell2 = cells[1];
 
-        //todo:
-        // await cell2.onEditorSelectionChanging.raise(cell2, true);
+        await notebook.select(cell2);
 
-        //todo:
-        // expect(cell1.deselect).toHaveBeenCalled();
-
-        //todo:
-        // await cell2.onEditorSelectionChanged.raise(cell2);
-
+        expect(mockCellViewModels[0].deselect).toHaveBeenCalled();
         expect(notebook.selectedCell).toBe(cell2);
     });
 
@@ -299,12 +298,11 @@ describe('view-model / notebook', () => {
     
     test("deleting a cell selects the next cell", async () => {
 
-        const { notebook, cells } = createNotebookWithCells(2);
+        const { notebook, cells, mockCellViewModels } = createNotebookWithCells(2);
 
         await notebook.deleteCell(cells[0], true);
 
-        //todo:
-        // expect(cells[1].select).toHaveBeenCalled();
+        expect(mockCellViewModels[1].select).toHaveBeenCalled();
     });
 
     test("deleting cell when there is no next cell has no effect", async () => {
@@ -490,8 +488,7 @@ describe('view-model / notebook', () => {
 
         const { notebook, cell } = createNotebookWithCell();
 
-        //todo:
-        // await cell.onEditorSelectionChanged.raise(cell);
+        await notebook.select(cell);
 
         const caretPosition: any = {};
         cell.getCaretPosition = () => caretPosition; // Mock the caret position provider.
@@ -506,8 +503,7 @@ describe('view-model / notebook', () => {
 
         const { notebook, cell } = createNotebookWithCell();
 
-        //todo;
-        // await cell.onEditorSelectionChanged.raise(cell);
+        await notebook.select(cell);
 
         cell.getCaretPosition = () => null; // Mock the caret position provider.
 
@@ -535,35 +531,29 @@ describe('view-model / notebook', () => {
 
     test("can clear outputs", async () => {
 
-        const { notebook, cell } = createNotebookWithCell();
-
-        cell.clearOutputs = jest.fn();
+        const { notebook, mockCellViewModel } = createNotebookWithCell();
 
         await notebook.clearOutputs();
 
-        expect(cell.clearOutputs).toHaveBeenCalled();
+        expect(mockCellViewModel.clearOutputs).toHaveBeenCalled();
     });
 
     test("can clear errors", async () => {
 
-        const { notebook, cell } = createNotebookWithCell();
-
-        cell.clearErrors = jest.fn();
+        const { notebook, mockCellViewModel } = createNotebookWithCell();
 
         await notebook.clearErrors();
 
-        expect(cell.clearErrors).toHaveBeenCalled();
+        expect(mockCellViewModel.clearErrors).toHaveBeenCalled();
     });
 
     test("can flush changes", async () => {
 
-        const { notebook, cell } = createNotebookWithCell();
-
-        cell.flushChanges = jest.fn();
+        const { notebook, mockCellViewModel } = createNotebookWithCell();
 
         await notebook.flushChanges();
 
-        expect(cell.flushChanges).toHaveBeenCalled();
+        expect(mockCellViewModel.flushChanges).toHaveBeenCalled();
     });
 
     test("calling flush changes raises onFlushChanges", async () => {

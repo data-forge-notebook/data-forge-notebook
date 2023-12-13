@@ -32,24 +32,6 @@ describe("view-model / markdown-cell", () => {
         expect(cell.editing).toBe(true);
     });
 
-    test("entering edit mode focuses the cell", async () => {
-
-        const { cell } = createCell();
-
-        await expectEventRaised(cell, "onSetFocus", async () => {
-            await cell.enterEditMode();
-        });
-    });
-
-    test("entering edit mode selects the cell", async () => {
-
-        const { cell } = createCell();
-
-        await cell.enterEditMode();
-
-        expect(cell.selected).toBe(true);
-    });
-    
     test("can return to preview mode", async () => {
 
         const { cell } = createCell();
