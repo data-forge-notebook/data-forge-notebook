@@ -1,11 +1,12 @@
-import "jest";
 import { disableInjector } from "@codecapers/fusion";
 import { IChange, UndoRedo } from "../../services/undoredo";
 import { IEditorCaretPosition } from "../../view-model/editor-caret-position";
 
 describe('services / undoredo', () => {
 
-    let mockSetModified: jest.Mock<any, any>
+    let mockSelect: jest.Mock<any, any>;
+    let mockMakeUnmodified: jest.Mock<any, any>;
+    let mockSetModified: jest.Mock<any, any>;
     let mockNotebook: any;
     let service: UndoRedo;
 
@@ -14,13 +15,17 @@ describe('services / undoredo', () => {
     });
 
     beforeEach(() => {
+        mockSelect = jest.fn();
+        mockMakeUnmodified = jest.fn();
         mockSetModified = jest.fn();
         mockNotebook = {
-            isModified: () => false,
+            modified: false,
+            makeUnmodified: mockMakeUnmodified,
             setModified: mockSetModified,
             flushChanges: () => {},
             getCellIndex: () => 0,
             getCaretPosition: () => undefined,
+            select: mockSelect,
         };
         service = new UndoRedo();
         const mockLog: any = {
@@ -307,7 +312,7 @@ describe('services / undoredo', () => {
 
     test("undoing a change can set notebook to modified state", async () => {
 
-        mockNotebook.isModified = () => true;
+        mockNotebook.isModified = true;
 
         await service.applyChanges(makeMockChange());
         await service.movePrevious();
@@ -318,7 +323,7 @@ describe('services / undoredo', () => {
 
     test("undoing a change can clear notebook modified state", async () => {
 
-        mockNotebook.isModified = () => false;
+        mockNotebook.isModified = false;
 
         await service.applyChanges(makeMockChange());
         await service.movePrevious();
@@ -329,7 +334,8 @@ describe('services / undoredo', () => {
 
     test("undoing a change can set caret position", async () => {
 
-        mockNotebook.isModified = () => true;
+        mockNotebook.isModified = true;
+
         const caretPosition: IEditorCaretPosition = {
             lineNumber: 5,
             column: 3,
@@ -338,10 +344,8 @@ describe('services / undoredo', () => {
             cellIndex: 14,
             cellPosition: caretPosition,
         });
-        const mockSelect = jest.fn();
         const mockSetCaretPosition = jest.fn();
         const mockCell = {
-            select: mockSelect,
             setCaretPosition: mockSetCaretPosition,
         };
         mockNotebook.getCellByIndex = (cellIndex: number) => {
@@ -359,13 +363,12 @@ describe('services / undoredo', () => {
 
     test("redoing a change can set notebook to modified state", async () => {
 
-        mockNotebook.isModified = () => true;
+        mockNotebook.isModified = true;
 
         await service.applyChanges(makeMockChange());
         await service.movePrevious();
 
-        const mockSetModified = jest.fn();
-        mockNotebook.setModified = mockSetModified;
+        mockSetModified.mockClear();
 
         await service.moveNext();
 
@@ -375,23 +378,22 @@ describe('services / undoredo', () => {
     
     test("redoing a change can clear notebook modified state", async () => {
 
-        mockNotebook.isModified = () => false;
+        mockNotebook.isModified = false;
 
         await service.applyChanges(makeMockChange());
         await service.movePrevious();
 
-        const mockSetModified = jest.fn();
-        mockNotebook.setModified = mockSetModified;
+        mockMakeUnmodified.mockClear();
         
         await service.moveNext();
 
-        expect(mockSetModified).toBeCalledTimes(1);
-        expect(mockSetModified).toBeCalledWith(false);
+        expect(mockMakeUnmodified).toBeCalledTimes(1);
     });
 
     test("redoing a change can set caret position", async () => {
 
-        mockNotebook.isModified = () => true;
+        mockNotebook.isModified = true;
+
         const caretPosition: IEditorCaretPosition = {
             lineNumber: 5,
             column: 3,
@@ -404,7 +406,6 @@ describe('services / undoredo', () => {
         await service.applyChanges(makeMockChange());
 
         const mockCell1 = {
-            select: () => {},
             setCaretPosition: () => {},
         };
         mockNotebook.getCellByIndex = () => {
@@ -413,16 +414,16 @@ describe('services / undoredo', () => {
         
         await service.movePrevious();
 
-        const mockSelect = jest.fn();
         const mockSetCaretPosition = jest.fn();
         const mockCell2 = {
-            select: mockSelect,
             setCaretPosition: mockSetCaretPosition,
         };
         mockNotebook.getCellByIndex = (cellIndex: number) => {
             expect(cellIndex).toBe(18);
             return mockCell2;
         };
+
+        mockSelect.mockClear();
 
         await service.moveNext();
 

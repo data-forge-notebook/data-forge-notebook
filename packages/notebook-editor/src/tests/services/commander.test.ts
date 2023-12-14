@@ -29,10 +29,7 @@ describe("commander", () => {
         commander.notification = mockNotification;
         commander.undoRedo = mockUndoRedo;
 
-        const mockNotebookEditor: any = {
-            isNotebookOpen: () => false,
-            isWorking: () => false,
-        };
+        const mockNotebookEditor: any = {};
 
         commander.setNotebookEditor(mockNotebookEditor);
 
@@ -129,7 +126,7 @@ describe("commander", () => {
 
     test("can invoke cell command", async () => {
 
-        const { commander, mockCommand } = createCommander();
+        const { commander, mockCommand, mockNotebookEditor } = createCommander();
 
         mockCommand.isCellCommand = () => true;
 
@@ -137,6 +134,11 @@ describe("commander", () => {
             invoke: jest.fn(),
         };
         mockCommand.resolveAction = () => mockAction;
+
+        const mockNotebook: any = {
+            flushChanges: () => {},
+        };
+        mockNotebookEditor.notebook = mockNotebook;
 
         const mockCell: any = {};
         const mockContext: any = {
@@ -161,8 +163,7 @@ describe("commander", () => {
         const mockNotebook: any = {
             flushChanges: jest.fn(),
         };
-        mockNotebookEditor.isNotebookOpen = () => true;
-        mockNotebookEditor.getOpenNotebook = () => mockNotebook;
+        mockNotebookEditor.notebook = mockNotebook;
 
         await commander.invokeNamedCommand(mockCommandId);
 
@@ -182,7 +183,7 @@ describe("commander", () => {
         mockCommand.resolveAction = () => mockAction;
 
         // Notebook is not open.
-        mockNotebookEditor.isNotebookOpen = () => false;
+        mockNotebookEditor.notebook = undefined;
 
         await commander.invokeNamedCommand(mockCommandId);
 
@@ -196,14 +197,12 @@ describe("commander", () => {
 
         const mockCell: any = {};
         const mockNotebook: any = {
-            getSelectedCell: () => mockCell,
+            selectedCell: mockCell,
             flushChanges: jest.fn(),
         };
-        Object.assign(mockNotebookEditor, {
-            isNotebookOpen: () => true,
-            getOpenNotebook: () => mockNotebook,
-        });
 
+        mockNotebookEditor.notebook = mockNotebook;
+        
         const mockAction: any = {
             invoke: jest.fn(),
         };
@@ -226,10 +225,8 @@ describe("commander", () => {
             getSelectedCell: () => undefined, // No cell selected.
             flushChanges: jest.fn(),
         };
-        Object.assign(mockNotebookEditor, {
-            isNotebookOpen: () => true,
-            getOpenNotebook: () => mockNotebook,
-        });
+        
+        mockNotebookEditor.notebook = mockNotebook;
 
         const mockAction: any = {
             invoke: jest.fn(),
@@ -255,11 +252,9 @@ describe("commander", () => {
             getSelectedCell: () => mockCell,
             flushChanges: jest.fn(),
         };
-        Object.assign(mockNotebookEditor, {
-            isNotebookOpen: () => true,
-            getOpenNotebook: () => mockNotebook,
-            isWorking: () => true,
-        });
+
+        mockNotebookEditor.notebook = mockNotebook;
+        mockNotebookEditor.isBlocked = true;
 
         const mockAction: any = {
             invoke: jest.fn(),
@@ -283,11 +278,9 @@ describe("commander", () => {
         const mockNotebook: any = {
             flushChanges: jest.fn(),
         };
-        Object.assign(mockNotebookEditor, {
-            isNotebookOpen: () => true,
-            getOpenNotebook: () => mockNotebook,
-            isWorking: () => true,
-        });
+
+        mockNotebookEditor.notebook = mockNotebook;
+        mockNotebookEditor.isBlocked = true;
 
         const mockAction: any = {
             invoke: jest.fn(),

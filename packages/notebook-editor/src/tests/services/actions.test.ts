@@ -6,31 +6,31 @@ describe("action", () => {
 
         const mockNotebookEditor: any = { id: "notebook-editor" };
         const mockContextInitializer: any = {};
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
         expect(actionContext.getNotebookEditor()).toBe(mockNotebookEditor);
     });
 
-    test("can test for notebook in context", () => {
+    test("`can test for no`tebook in context", () => {
 
         const mockNotebookEditor: any = {};
         const mockNotebook: any = {};
         const mockContextInitializer: any = {
             notebook: mockNotebook,
         };
+        
         const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
-
         expect(actionContext.hasNotebook()).toBe(true);
     });
 
     test("can test for notebook in editor", () => {
 
         const mockNotebookEditor: any = {
-            isNotebookOpen: () => true,
+            notebook: {},
         };
         const mockContextInitializer: any = {};
+        
         const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
-
         expect(actionContext.hasNotebook()).toBe(true);
     });
 
@@ -41,8 +41,8 @@ describe("action", () => {
         const mockContextInitializer: any = {
             notebook: mockNotebook,
         };
+        
         const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
-
         expect(actionContext.getNotebook()).toBe(mockNotebook);
     });
 
@@ -50,11 +50,11 @@ describe("action", () => {
 
         const mockNotebook: any = { id: "notebook" };
         const mockNotebookEditor: any = {
-            getOpenNotebook: () => mockNotebook,
+            notebook: mockNotebook,
         };
         const mockContextInitializer: any = {};
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
         expect(actionContext.getNotebook()).toBe(mockNotebook);
     });
 
@@ -65,8 +65,8 @@ describe("action", () => {
         const mockContextInitializer: any = {
             cellOutput: mockCellOutput,
         };
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
         expect(actionContext.getCellOutput()).toBe(mockCellOutput);
     });
 
@@ -77,8 +77,8 @@ describe("action", () => {
         const mockContextInitializer: any = {
             cell: mockCell,
         };
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
         expect(actionContext.getCell()).toBe(mockCell);
     });
 
@@ -86,13 +86,13 @@ describe("action", () => {
 
         const mockCell: any = { id: "cell" };
         const mockNotebookEditor: any = {
-            getOpenNotebook: () => ({
-                getSelectedCell: () => mockCell,
-            })
+            notebook: {
+                selectedCell: mockCell,
+            },
         };
         const mockContextInitializer: any = {};
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
         expect(actionContext.getCell()).toBe(mockCell);
     });
 
@@ -103,8 +103,8 @@ describe("action", () => {
         const mockContextInitializer: any = {
             cell: mockCell,
         };
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
         expect(actionContext.hasCell()).toBe(true);
     });
 
@@ -112,40 +112,39 @@ describe("action", () => {
 
         const mockCell: any = { id: "cell" };
         const mockNotebookEditor: any = {
-            isNotebookOpen: () => true,
-            getOpenNotebook: () => ({
-                getSelectedCell: () => mockCell,
-            })
+            notebook: {
+                selectedCell: mockCell,
+            },
         };
         const mockContextInitializer: any = {};
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
         expect(actionContext.hasCell()).toBe(true);
     });
 
     test("getSelectedCell returns undefined when no cell is available", () => {
 
         const mockNotebookEditor: any = {
-            getOpenNotebook: () => ({
-                getSelectedCell: () => undefined,
-            })
+            notebook: {
+                selectedCell: undefined,
+            },
         };
         const mockContextInitializer: any = {};
+        
         const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
-
         expect(actionContext.getSelectedCell()).toBeUndefined();
     });
     
     test("getCell throws when no cell is available", () => {
 
         const mockNotebookEditor: any = {
-            getOpenNotebook: () => ({
-                getSelectedCell: () => undefined,
-            })
+            notebook: {
+                selectedCell: undefined,
+            },
         };
         const mockContextInitializer: any = {};
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer);
         expect(() => actionContext.getCell()).toThrow();
     });
 
@@ -154,8 +153,8 @@ describe("action", () => {
         const mockNotebookEditor: any = {};
         const mockContextInitializer: any = {};
         const mockParams: any = { id: "params" };
-        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer, mockParams);
 
+        const actionContext = new ActionContext(mockNotebookEditor, mockContextInitializer, mockParams);
         expect(actionContext.getParams()).toBe(mockParams);
     });
 });
