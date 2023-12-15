@@ -86,7 +86,7 @@ describe('view-model / notebook-editor', () => {
 
         const result = createNotebookEditor();
 
-        const notebook = (await result.notebookEditor.newNotebook("javascript"))!;
+        const notebook = (await result.notebookEditor.newNotebook())!;
 
         return {
             ...result,
@@ -118,7 +118,7 @@ describe('view-model / notebook-editor', () => {
 
         notebookEditor.promptSave = jest.fn(async () => true);
 
-        const newNotebook = await notebookEditor.newNotebook("javascript");
+        const newNotebook = await notebookEditor.newNotebook();
         expect(newNotebook).toBeDefined();
 
         expect(await notebookEditor.promptSave).toHaveBeenCalledTimes(1);

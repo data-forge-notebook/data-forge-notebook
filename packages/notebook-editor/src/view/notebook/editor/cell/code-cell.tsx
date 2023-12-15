@@ -90,7 +90,7 @@ class CodeCellUIView extends React.Component<ICodeCellProps, ICodeCellState> {
                         }}
                         >
                         <MonacoEditor
-                            language="javascript"
+                            language="typescript"
                             cell={this.props.cell} 
                             working={cellExecuting}
                             onEscapeKey={this.onEscapeKey}

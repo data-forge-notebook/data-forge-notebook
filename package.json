@@ -1,6 +1,6 @@
 {
   "name": "data-forge-notebook",
-  "description": "Data-Forge Notebook is a cross-platform notebook application for JavaScript.",
+  "description": "Data-Forge Notebook is a cross-platform notebook application for JavaScript and TypeScript.",
   "author": "ashley@codecapers.com.au",
   "scripts": {
     "evaluation-engine": "cross-env PORT=9000 pnpm --filter evaluation-engine-shell run start:dev",

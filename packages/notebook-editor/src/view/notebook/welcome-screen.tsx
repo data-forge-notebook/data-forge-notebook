@@ -145,7 +145,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                             className="mt-4 mb-5 ml-8 mr-8"
                             style={subTitleStyle}
                             >
-                            Exploratory coding and data analysis for JavaScript
+                            Exploratory coding and data analysis for JavaScript and TypeScript
                         </div>
                     </div>
                     <div className="flex-grow" />
@@ -277,14 +277,9 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 <div
                                     >
                                     <a onClick={() => this.commander.invokeNamedCommand("new-notebook")}>
-                                        New JavaScript notebook
+                                        New notebook
                                     </a>
                                 </div>
-                                {/* <div>
-                                    <a onClick={() => this.commander.invokeNamedCommand("new-typescript-notebook")}>
-                                        New TypeScript notebook
-                                    </a>
-                                </div> */}
                                 <div>
                                     <a onClick={() => this.commander.invokeNamedCommand("open-notebook")}>
                                         Open notebook...

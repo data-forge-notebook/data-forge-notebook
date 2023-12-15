@@ -1,6 +1,6 @@
 # data-forge-notebook
 
-Data-Forge Notebook is a cross-platform notebook application for JavaScript.
+Data-Forge Notebook is a cross-platform notebook application for JavaScript and TypeScript.
 
 The is the mono repo for Data-Forge Notebook.
 

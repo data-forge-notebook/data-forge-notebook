@@ -119,7 +119,7 @@ export interface INotebookEditorViewModel  {
     // Create a new notebook.
     // Returns null if we couldn't create a new notebook.
     //
-    newNotebook(language: string): Promise<INotebookViewModel | undefined>;
+    newNotebook(): Promise<INotebookViewModel | undefined>;
 
     //
     // Open a notebook from a user-selected file.
@@ -438,7 +438,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Create a template for a new notebok.
     //
-    newNotebookTemplate(language: string): ISerializedNotebook1 {
+    newNotebookTemplate(): ISerializedNotebook1 {
         const template: ISerializedNotebook1 = {
             "version": notebookVersion,
             "cells": [
@@ -457,21 +457,21 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
     //
     // Create a new notebook.
     //
-    async newNotebook(language: string): Promise<INotebookViewModel | undefined> { 
+    async newNotebook(): Promise<INotebookViewModel | undefined> { 
 
         if (this.isBlocked) {
             this.notification.warn("Already working!");
             return undefined;
         }
 
-        this.log.info(`Creating new notebook for language ${language}.`);
+        this.log.info(`Creating new notebook for language.`);
 
         if (await this.promptSave("New notebook")) {
 			this.startBlockingTask();
         	
             try {
                 const newNotebookId = this.notebookRepository.makeUntitledNotebookId();
-                const notebookTemplate = this.newNotebookTemplate(language);
+                const notebookTemplate = this.newNotebookTemplate();
                 const notebook = NotebookViewModel.deserialize(newNotebookId, true, false, notebookTemplate);
                 await this.setNotebook(notebook, false);
                 notebook.select(notebook.cells[0]); // Auto select the first cell.
