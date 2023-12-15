@@ -257,8 +257,8 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                     </div>
                 }
 
-                <div className="flex flex-row w-full mb-32">
-                    <div className="flex flex-col w-1/2">
+                <div className="flex flex-row mb-32">
+                    <div className="flex flex-col flex-grow">
                         <div 
                             className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
                             style={{
@@ -294,7 +294,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                         </div>
                     
                         <div 
-                            className="flex flex-col p-1 pl-2 m-1 mb-3"
+                            className="flex flex-col p-1 pl-2 ml-2 mr-2 mb-3"
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
@@ -325,11 +325,39 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 </a>
                             </div>
                         </div>
+                        
+                        <div
+                            className="flex flex-col flex-grow ml-2 mr-2 mb-3 p-1 pl-2" 
+                            style={{
+                                border: "1px dashed #C5DAE9",
+                                backgroundColor: "#F8F8F8",
+                                borderRadius: "3px",
+                            }}
+                            >
+                            <div
+                                className="mb-1"
+                                style={headingStyle}
+                                >
+                                Give feedback
+                            </div>
+                            <div style={textStyle}>
+                                <div>
+                                    <a target="_blank" href="http://issues.data-forge-notebook.com/new">Report a problem</a>
+                                </div>
+                                <div className="mt-1">
+                                    Drop an email to <a target="_blank" href="mailto:support@data-forge-notebook.com">support@data-forge-notebook.com</a>
+                                </div>
+                                <div className="mt-1">
+                                    Talk to the developer on Slack: send an email to ask for an invite.
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div className="flex flex-col w-1/2">
-                        <div 
-                            className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
+                    <div className="flex flex-col flex-grow">
+                    <div 
+                            className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2 pb-8"
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
@@ -363,6 +391,11 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 </div>
 
                                 <div>
+                                    <a target="_blank" href="https://www.typescriptlang.org/docs/">Learn TypeScript</a>.
+                                </div>
+                                
+
+                                <div>
                                     <a target="_blank" href="https://www.nodebeginner.org/">Learn Node.js</a>.
                                 </div>
                             </div>
@@ -373,30 +406,65 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                         </div>
 
                         <div
-                            className="flex flex-col flex-grow ml-2 mr-2 mb-3 p-1 pl-2" 
+                            className="mt-3 ml-2 mr-2 mb-3 p-1 pl-2 pt-3 flex-grow"
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
                                 borderRadius: "3px",
                             }}
                             >
-                            <div
-                                className="mb-1"
-                                style={headingStyle}
-                                >
-                                Give feedback
+                            {/* <!-- Begin Mailchimp Signup Form --> */}
+                            <div id="mc_embed_signup">
+                                <form 
+                                    action="https://data-forge-notebook.us18.list-manage.com/subscribe/post?u=f0220333a13f2b0e980819dbe&amp;id=c526152b6e" 
+                                    method="post" 
+                                    id="mc-embedded-subscribe-form" 
+                                    name="mc-embedded-subscribe-form" 
+                                    className="validate" 
+                                    target="_blank" 
+                                    noValidate
+                                    style={{ padding: "5px", }}
+                                    >
+                                    <div id="mc_embed_signup_scroll">
+                                    <label htmlFor="mce-EMAIL" style={{ marginTop: "3px" }}>Stay in the know</label>
+                                    <div className="mb-2">Sign up for occasional news about DFN</div>
+                                    <input 
+                                        type="email" 
+                                        defaultValue="" 
+                                        name="EMAIL" 
+                                        className="email" 
+                                        id="mce-EMAIL" 
+                                        placeholder="Enter your email address" 
+                                        required 
+                                        style={{ width: "90%" }} 
+                                        onClick={evt => {
+                                            evt.stopPropagation();
+                                        }}
+                                        />
+                                    {/* <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups--> */}
+                                    <div style={{ position: "absolute", left: "-5000px", }}>
+                                        <input type="text" name="b_f0220333a13f2b0e980819dbe_c526152b6e" tabIndex={-1} value="" readOnly />
+                                    </div>
+                                    <div className="clear">
+                                        <input 
+                                            type="submit" 
+                                            name="subscribe" 
+                                            id="mc-embedded-subscribe" 
+                                            className="button" 
+                                            style={{ paddingLeft: "1em", paddingRight: "1em", width: "auto", height: "auto" }} 
+                                            onClick={evt => {
+                                                var email = evt.currentTarget.value;
+                                                console.log(evt.currentTarget.value); //fio:
+                                                if (email) {
+                                                    email = email.trim();
+                                                }
+                                            }}
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <div style={textStyle}>
-                                <div>
-                                    <a target="_blank" href="http://issues.data-forge-notebook.com/new">Report a problem</a>
-                                </div>
-                                <div className="mt-1">
-                                    Drop an email to <a target="_blank" href="mailto:support@data-forge-notebook.com">support@data-forge-notebook.com</a>
-                                </div>
-                                <div className="mt-1">
-                                    Talk to the developer on Slack: send an email to ask for an invite.
-                                </div>
-                            </div>
+                            {/* <!--End mc_embed_signup--> */}
                         </div>
                     </div>
                 </div>
