@@ -424,6 +424,15 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                     target="_blank" 
                                     noValidate
                                     style={{ padding: "5px", }}
+                                    onSubmit={event => {
+                                        event.preventDefault();
+
+                                        // https://stackoverflow.com/a/14589251/25868
+                                        const form = event.target as HTMLFormElement;
+                                        form.submit(); // Submit the form.
+                                        form.reset();  // Reset the form.
+                                        return false;  // Prevent page refresh.
+                                    }}
                                     >
                                     <div id="mc_embed_signup_scroll">
                                     <label htmlFor="mce-EMAIL" style={{ marginTop: "3px" }}>Stay in the know</label>
@@ -437,9 +446,6 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                         placeholder="Enter your email address" 
                                         required 
                                         style={{ width: "90%" }} 
-                                        onClick={evt => {
-                                            evt.stopPropagation();
-                                        }}
                                         />
                                     {/* <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups--> */}
                                     <div style={{ position: "absolute", left: "-5000px", }}>
@@ -452,13 +458,6 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                             id="mc-embedded-subscribe" 
                                             className="button" 
                                             style={{ paddingLeft: "1em", paddingRight: "1em", width: "auto", height: "auto" }} 
-                                            onClick={evt => {
-                                                var email = evt.currentTarget.value;
-                                                console.log(evt.currentTarget.value); //fio:
-                                                if (email) {
-                                                    email = email.trim();
-                                                }
-                                            }}
                                             />
                                         </div>
                                     </div>
