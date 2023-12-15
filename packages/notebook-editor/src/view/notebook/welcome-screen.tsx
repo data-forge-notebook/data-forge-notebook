@@ -213,10 +213,10 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
 
                 { showRecentFiles
                     && <div 
-                        className="flex flex-row flex-grow ml-2 mr-2 mb-3"
+                        className="flex flex-row flex-grow"
                         >
                         <div 
-                            className="flex flex-col flex-grow p-1 pl-2 m-1"
+                            className="flex flex-col flex-grow ml-2 mr-2 mb-3 p-1 pl-2"
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
