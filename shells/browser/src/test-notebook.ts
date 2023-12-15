@@ -2,7 +2,6 @@
 export const testNotebook: any = {
     "version": 3,
     "nodejs": "14.17.4",
-    "language": "javascript",
     "cells": [
         {
             "id": "e297e6d1-3249-11ec-ae8f-ef3292b6499b",
