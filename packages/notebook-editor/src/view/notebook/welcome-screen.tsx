@@ -237,16 +237,6 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                     </div>
                                 )}
                             </div>
-                            {/* <div style={bigTextStyle} className="mt-1">
-                                <a 
-                                    onClick={() => {
-                                        this.commander.invokeNamedCommand("clear-recent-files");
-                                        this.forceUpdate();
-                                    }}
-                                    >
-                                    Clear recent files
-                                </a>
-                            </div> */}
                             <div style={bigTextStyle} className="mt-1">
                                 <a onClick={() => this.commander.invokeNamedCommand("toggle-recent-file-picker")}>
                                     Browse recent notebooks
