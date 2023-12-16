@@ -233,7 +233,7 @@ export class CodeEvaluator implements ICodeEvaluator {
         this.log = log;
         this.notebook = notebook;
         this.cells = allCells.filter(cell => cell.cellType === CellType.Code);
-        this.cellIds = this.cells.map(cell => cell.id);
+        this.cellIds = this.cells.map(cell => cell.instanceId!);
 
         const numCells = this.cells.length;
         this.cellsCompleted = new Array(numCells);
@@ -395,7 +395,7 @@ export class CodeEvaluator implements ICodeEvaluator {
                     await this.npm.ensureRequiredModules(cell.code || "", projectPath, false);
                 }
                 catch (err: any) {
-                    this.reportError(ErrorSource.ModuleInstall, cell.id, err.message, err.stack);
+                    this.reportError(ErrorSource.ModuleInstall, cell.instanceId!, err.message, err.stack);
                 }
             }
         }

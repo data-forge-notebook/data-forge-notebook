@@ -39,8 +39,8 @@ const NotebookCells = observer(({ notebook, isDragging }: { notebook: INotebookV
         <>
             {notebook.cells.map((cell, index) => (
                 <Draggable
-                    key={cell.id} 
-                    draggableId={cell.id}
+                    key={cell.instanceId} 
+                    draggableId={cell.instanceId}
                     index={index}
                     >
                     {(provided, snapshot) => (

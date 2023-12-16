@@ -57,7 +57,7 @@ describe("javascript code generation", () => {
             "language": "javascript",
             "cells": [
                 {
-                    "id": "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
+                    "instanceId": "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
                     "cellType": "code",
                     "cellScope": "global",
                     "code": "console.log(\"Hello JavaScript!\");",
@@ -104,13 +104,13 @@ describe("javascript code generation", () => {
             "language": "javascript",
             "cells": [
                 {
-                    "id": "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
+                    "instanceId": "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
                     "cellType": "code",
                     "cellScope": "global",
                     "code": "console.log(\"Cell 1!\");",
                 },
                 {
-                    "id": "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
+                    "instanceId": "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
                     "cellType": "code",
                     "cellScope": "global",
                     "code": "console.log(\"Cell 2!\");",
@@ -151,7 +151,7 @@ describe("javascript code generation", () => {
             "language": "javascript",
             "cells": [
                 {
-                    "id": "e9fe6a21-76df-11e9-b6bb-81a2f4ed2364",
+                    "instanceId": "e9fe6a21-76df-11e9-b6bb-81a2f4ed2364",
                     "cellType": "markdown",
                     "code": "# This is markdown!",
                 },
@@ -179,7 +179,7 @@ describe("javascript code generation", () => {
             "language": "javascript",
             "cells": [
                 {
-                    "id": "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
+                    "instanceId": "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
                     "cellType": "code",
                     "cellScope": "global",
                     "code": "const foo = require('foo');",
@@ -216,7 +216,7 @@ describe("javascript code generation", () => {
             "language": "javascript",
             "cells": [
                 {
-                    "id": "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
+                    "instanceId": "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
                     "cellType": "code",
                     "cellScope": "global",
                     "code": "import foo from 'foo';",
@@ -253,12 +253,12 @@ describe("javascript code generation", () => {
             "language": "javascript",
             "cells": [
                 {
-                    "id": "e9fe6a21-76df-11e9-b6bb-81a2f4ed2364",
+                    "instanceId": "e9fe6a21-76df-11e9-b6bb-81a2f4ed2364",
                     "cellType": "markdown",
                     "code": "# Markdown!",
                 },
                 {
-                    "id": "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
+                    "instanceId": "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
                     "cellType": "code",
                     "cellScope": "global",
                     "code": "import foo from 'foo';",

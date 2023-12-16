@@ -25,7 +25,7 @@ describe("view-model / code-cell", () => {
     function createMockCellOutput(fields?: any) {
         const mockCellOutputViewModel: any = {
             markStale: jest.fn(),
-            getHeight: () => undefined,
+            height: undefined,
             setHeight: jest.fn(),
             ...fields,
         };
@@ -36,13 +36,11 @@ describe("view-model / code-cell", () => {
     // Creates a mock error that can be added to a cell.
     //
     function createMockCellError(fields?: any) {
-        const mockCellErrorModel: any = {};
         const mockCellErrorViewModel: any = {
-            getModel: () => mockCellErrorModel,
             markStale: jest.fn(),
             ...fields,
         };
-        return { mockCellErrorViewModel, mockCellErrorModel };
+        return { mockCellErrorViewModel };
     }   
 
     //
@@ -63,10 +61,10 @@ describe("view-model / code-cell", () => {
     async function createCellWithError() {
         const { cell } = createCell();
 
-        const { mockCellErrorViewModel, mockCellErrorModel } = createMockCellError();
+        const { mockCellErrorViewModel } = createMockCellError();
         await cell.addError(mockCellErrorViewModel);
 
-        return { cell, mockCellErrorViewModel, mockCellErrorModel };
+        return { cell, mockCellErrorViewModel };
     }
 
     test("can construct", () => {
@@ -75,7 +73,7 @@ describe("view-model / code-cell", () => {
         const output: ICellOutputViewModel[] = [];
         const errors: ICellErrorViewModel[] = [];
         const cell = new CodeCellViewModel("test-id", CellType.Code, "some-code", now, output, errors);
-        expect(cell.id).toBe("test-id");
+        expect(cell.instanceId).toBe("test-id");
         expect(cell.cellType).toBe(CellType.Code);
         expect(cell.text).toBe("some-code");
         expect(cell.lastEvaluationDate).toBe(now);
@@ -269,12 +267,26 @@ describe("view-model / code-cell", () => {
         const theLastEvaluationDate = moment();
         const cell = new CodeCellViewModel(theId, CellType.Code, theText, theLastEvaluationDate.toDate(), [], []);
         expect(cell.serialize()).toEqual({
-            id: theId,
             cellType: CellType.Code,
             code: theText,
             lastEvaluationDate: theLastEvaluationDate.toISOString(true),
             output: [],
             errors: [],
+        });        
+    });
+
+    test("can serialize code cell for evaluation", () => {
+        const theId = "1234";
+        const theText = "const x = 3;";
+        const theLastEvaluationDate = moment();
+        const cell = new CodeCellViewModel(theId, CellType.Code, theText, theLastEvaluationDate.toDate(), [], []);
+        expect(cell.serializeForEval()).toEqual({
+            instanceId: theId,
+            cellType: CellType.Code,
+            code: theText,
+            lastEvaluationDate: undefined,
+            output: undefined,
+            errors: undefined
         });        
     });
 
@@ -296,11 +308,11 @@ describe("view-model / code-cell", () => {
         const theId = "1234";
         const theText = "const x = 1;";
         const cell = CodeCellViewModel.deserialize({
-            id: theId,
+            instanceId: theId,
             cellType: CellType.Code,
             code: theText,
         });
-        expect(cell.id).toEqual(theId);
+        expect(cell.instanceId).toEqual(theId);
         expect(cell.text).toEqual(theText);
         expect(cell.cellType).toEqual(CellType.Code);
         expect(cell.output).toEqual([]);
@@ -312,7 +324,7 @@ describe("view-model / code-cell", () => {
 
         const theLastEvaluationDate = moment();
         const cell = CodeCellViewModel.deserialize({
-            id: "1234",
+            instanceId: "1234",
             cellType: CellType.Code,
             code: "",
             lastEvaluationDate: theLastEvaluationDate.toISOString(true),
@@ -327,7 +339,7 @@ describe("view-model / code-cell", () => {
             value: serializedOutputValue,
         };
         const cell = CodeCellViewModel.deserialize({
-            id: "1234",
+            instanceId: "1234",
             cellType: CellType.Code,
             code: "",
             output: [
@@ -343,7 +355,7 @@ describe("view-model / code-cell", () => {
 
         const serializedError: any = {};
         const cell = CodeCellViewModel.deserialize({
-            id: "1234",
+            instanceId: "1234",
             cellType: CellType.Code,
             code: "",
             errors: [

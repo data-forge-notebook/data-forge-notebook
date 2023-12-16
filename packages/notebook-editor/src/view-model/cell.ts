@@ -2,6 +2,7 @@ import { IEditorCaretPosition } from "./editor-caret-position";
 import { IEventSource, BasicEventHandler, EventSource } from "utils";
 import { CellType, ISerializedCell1 } from "model";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { v4 as uuid } from "uuid";
 
 export type FocusedEventHandler = (sender: ICellViewModel) => Promise<void>;
 export type SetCaretPositionEventHandler = (sender: ICellViewModel, caretPosition: IEditorCaretPosition) => Promise<void>;
@@ -82,9 +83,9 @@ export type ScrollIntoViewEventHandler = (scrollReason: string) => Promise<void>
 export interface ICellViewModel {   
 
     //
-    // Unique id for the cell.
+    // Instance id for the cell.
     //
-    readonly id: string;
+    readonly instanceId: string;
 
     //
     // The type of the cell.
@@ -285,9 +286,9 @@ export interface ICellViewModel {
 export abstract class CellViewModel implements ICellViewModel {
 
     //
-    // Unique id for the cell.
+    // Instance id for the cell.
     //
-    readonly id: string;
+    readonly instanceId: string;
 
     //
     // The type of the cell.
@@ -324,8 +325,8 @@ export abstract class CellViewModel implements ICellViewModel {
     //
     modified: boolean = false;
 
-    constructor(id: string, cellType: CellType, text: string) {
-        this.id = id;
+    constructor(instanceId: string | undefined, cellType: CellType, text: string) {
+        this.instanceId = instanceId || uuid();
         this.cellType = cellType;
         this.text = text;
 
@@ -369,7 +370,6 @@ export abstract class CellViewModel implements ICellViewModel {
     //
     serialize(): ISerializedCell1 {
         return {
-            id: this.id,
             cellType: this.cellType,
             code: this.text,
         };
@@ -380,7 +380,7 @@ export abstract class CellViewModel implements ICellViewModel {
     //
     serializeForEval(): ISerializedCell1 {
         return {
-            id: this.id,
+            instanceId: this.instanceId,
             cellType: this.cellType,
             code: this.text,
         };

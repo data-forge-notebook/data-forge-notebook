@@ -442,11 +442,11 @@ export class NotebookViewModel implements INotebookViewModel {
             nextSelectedCell = cellIndex; // The cell after the deleted one will be selected next.
         }
 
-        const cellId = cell.id;
+        const cellId = cell.instanceId;
 
-        const cellsRemoved = this.cells.filter(cell => cell.id === cellId);
+        const cellsRemoved = this.cells.filter(cell => cell.instanceId === cellId);
 
-        this.cells = this.cells.filter(cell => cell.id !== cellId);        
+        this.cells = this.cells.filter(cell => cell.instanceId !== cellId);        
 
         if (selectNextCell && nextSelectedCell >= 0) {
             const nextFocusedCell = this.getCellByIndex(nextSelectedCell);
@@ -476,7 +476,7 @@ export class NotebookViewModel implements INotebookViewModel {
     findCellIndex(cellId: string): number | undefined {
         let cellIndex = 0;
         while (cellIndex < this.cells.length) {
-            if (this.cells[cellIndex].id === cellId) {
+            if (this.cells[cellIndex].instanceId === cellId) {
                 return cellIndex;
             }
             cellIndex += 1;

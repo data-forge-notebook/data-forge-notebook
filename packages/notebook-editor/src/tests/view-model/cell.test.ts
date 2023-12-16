@@ -18,7 +18,7 @@ describe("view-model / cell", () => {
         const theCellType = CellType.Code;
         const theText = "const x = 3;";
         const cell = new CodeCellViewModel(theId, theCellType, theText, undefined, [], []);
-        expect(cell.id).toEqual(theId);
+        expect(cell.instanceId).toEqual(theId);
         expect(cell.cellType).toEqual(CellType.Code);
         expect(cell.text).toEqual(theText);
     });

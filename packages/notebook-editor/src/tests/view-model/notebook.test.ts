@@ -15,7 +15,7 @@ describe('view-model / notebook-only', () => {
     //
     function createMockCellViewModel(fields: any = {}) {
         const mockCell: any = {
-            id: () => fields.id || "1234",
+            instanceId: fields.id || "1234",
             cellType: fields.cellType || "code",
             flushChanges: jest.fn(),
             select: jest.fn(),
@@ -123,8 +123,8 @@ describe('view-model / notebook-only', () => {
 
         const cells = notebook.cells;
         expect(cells.length).toEqual(2);
-        expect(notebook.cells[0].id).toBe("cell-1");
-        expect(notebook.cells[1].id).toBe("cell-2");
+        expect(notebook.cells[0].instanceId).toBe("cell-1");
+        expect(notebook.cells[1].instanceId).toBe("cell-2");
     });
 
     test("can add second cell at start", async () => {        
@@ -136,8 +136,8 @@ describe('view-model / notebook-only', () => {
         await notebook.addCell(mockCell2, 0);
 
         expect(notebook.cells.length).toBe(2);
-        expect(notebook.cells[0].id).toBe("cell-2");
-        expect(notebook.cells[1].id).toBe("cell-1");
+        expect(notebook.cells[0].instanceId).toBe("cell-2");
+        expect(notebook.cells[1].instanceId).toBe("cell-1");
     });
 
     test("can add cell in the middle", async () => {        
@@ -151,9 +151,9 @@ describe('view-model / notebook-only', () => {
         await notebook.addCell(mockCell3, 1);
 
         expect(notebook.cells.length).toBe(3);
-        expect(notebook.cells[0].id).toBe("cell-1");
-        expect(notebook.cells[1].id).toBe("cell-3");
-        expect(notebook.cells[2].id).toBe("cell-2");
+        expect(notebook.cells[0].instanceId).toBe("cell-1");
+        expect(notebook.cells[1].instanceId).toBe("cell-3");
+        expect(notebook.cells[2].instanceId).toBe("cell-2");
     });
 
     test("throws when adding a cell beyond the range", async () => {
@@ -183,7 +183,7 @@ describe('view-model / notebook-only', () => {
         const cells = notebook.cells;
         expect(cells.length).toEqual(2);
         expect(cells[0]).toBeDefined();
-        expect(cells[1].id).toBe("new-cell");
+        expect(cells[1].instanceId).toBe("new-cell");
     });
 
     test("flushing changes raises onFlushChanges", async () => {
@@ -388,9 +388,9 @@ describe('view-model / notebook-only', () => {
 
         const { notebook, cells } = createNotebookWithCells(3);
 
-        expect(notebook.findCell(cells[0].id)).toBe(cells[0]);
-        expect(notebook.findCell(cells[1].id)).toBe(cells[1]);
-        expect(notebook.findCell(cells[2].id)).toBe(cells[2]);
+        expect(notebook.findCell(cells[0].instanceId)).toBe(cells[0]);
+        expect(notebook.findCell(cells[1].instanceId)).toBe(cells[1]);
+        expect(notebook.findCell(cells[2].instanceId)).toBe(cells[2]);
     });
 
     test("finding a cell in a empty notebook returns undefined", () => {
@@ -418,14 +418,14 @@ describe('view-model / notebook-only', () => {
 
         const { notebook, cells } = createNotebookWithCells(2);
 
-        expect(notebook.findNextCell(cells[0].id)).toBe(cells[1]);
+        expect(notebook.findNextCell(cells[0].instanceId)).toBe(cells[1]);
     });
 
     test("finding the next cell returns undefined when there is no next cell", () => {
 
         const { notebook, cells } = createNotebookWithCells(1);
 
-        expect(notebook.findNextCell(cells[0].id)).toBeUndefined();
+        expect(notebook.findNextCell(cells[0].instanceId)).toBeUndefined();
     });
 
     test("finding the prev cell in a empty notebook returns undefined", () => {
@@ -439,14 +439,14 @@ describe('view-model / notebook-only', () => {
 
         const { notebook, cells } = createNotebookWithCells(2);
 
-        expect(notebook.findPrevCell(cells[1].id)).toBe(cells[0]);
+        expect(notebook.findPrevCell(cells[1].instanceId)).toBe(cells[0]);
     });
 
     test("finding the prev cell returns undefined when there is no prev cell", () => {
 
         const { notebook, cells } = createNotebookWithCells(1);
 
-        expect(notebook.findPrevCell(cells[0].id)).toBeUndefined();
+        expect(notebook.findPrevCell(cells[0].instanceId)).toBeUndefined();
     });
 
     test("can get first cell", () => {

@@ -36,7 +36,7 @@ export class AddCellChange implements IChange {
     //
     async do(): Promise<void> {
         const cellToAdd: ISerializedCell1 = {
-            id: this.idGenerator.genId(),
+            instanceId: this.idGenerator.genId(),
             cellType: this.cellType,
             code: this.cellCode,
         };
@@ -53,7 +53,7 @@ export class AddCellChange implements IChange {
     //
     async redo(): Promise<void> {
         const cellToAdd: ISerializedCell1 = {
-            id: this.idGenerator.genId(),
+            instanceId: this.idGenerator.genId(),
             cellType: this.cellType,
             code: this.cellCode,
         };

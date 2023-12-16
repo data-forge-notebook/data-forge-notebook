@@ -30,8 +30,8 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     editing: boolean;
 
-    constructor(id: string, cellType: CellType, text: string) {
-        super(id, cellType, text);
+    constructor(instanceId: string | undefined, cellType: CellType, text: string) {
+        super(instanceId, cellType, text);
 
         this.editing = false;
 
@@ -68,7 +68,7 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     //
     static deserialize(input: ISerializedCell1): IMarkdownCellViewModel {
         return new MarkdownCellViewModel(
-            input.id,
+            input.instanceId,
             input.cellType || CellType.Code,
             input.code || ""
         );

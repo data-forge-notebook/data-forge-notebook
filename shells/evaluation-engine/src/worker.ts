@@ -98,7 +98,7 @@ async function main(): Promise<void> {
 //
 function findCell(notebook: ISerializedNotebook1, cellId: string): ISerializedCell1 | undefined {
     for (const cell of notebook.cells) {
-        if (cell.id === cellId) {
+        if (cell.instanceId === cellId) {
             return cell;
         }
     }
@@ -166,7 +166,7 @@ async function onMessage(msg: IWorkerMsg): Promise<void> {
                 cells = [];
                 for (const cell of notebook.cells) {
                     cells.push(cell);
-                    if (cell.id === evaluateNotebookMsg.cellId) {
+                    if (cell.instanceId === evaluateNotebookMsg.cellId) {
                         foundCell = true;
                         break;
                     }

@@ -67,7 +67,6 @@ describe("view-model / markdown-cell", () => {
         const theText = "# Hello markdown;";
         const cell = new MarkdownCellViewModel(theId, CellType.Markdown, theText);
         expect(cell.serialize()).toEqual({
-            id: theId,
             cellType: CellType.Markdown,
             code: theText,
             height: undefined,
@@ -79,11 +78,11 @@ describe("view-model / markdown-cell", () => {
         const theId = "1234";
         const theText = "# Hello markdown;";
         const cell = MarkdownCellViewModel.deserialize({
-            id: theId,
+            instanceId: theId,
             cellType: CellType.Markdown,
             code: theText,
         });
-        expect(cell.id).toEqual(theId);
+        expect(cell.instanceId).toEqual(theId);
         expect(cell.text).toEqual(theText);
         expect(cell.cellType).toEqual(CellType.Markdown);
     });

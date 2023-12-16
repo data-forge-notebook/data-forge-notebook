@@ -123,8 +123,8 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     lastEvaluationDate: Date | undefined = undefined;
 
-    constructor(id: string, cellType: CellType, text: string, lastEvaluationDate: Date | undefined, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
-        super(id, cellType, text);
+    constructor(instanceId: string | undefined, cellType: CellType, text: string, lastEvaluationDate: Date | undefined, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
+        super(instanceId, cellType, text);
 
         this.lastEvaluationDate = lastEvaluationDate;
         this.output = output;
@@ -362,7 +362,7 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
         const lastEvaluationDate = input.lastEvaluationDate && moment(input.lastEvaluationDate, moment.ISO_8601).toDate() || undefined;
 
         return new CodeCellViewModel(
-            input.id,
+            input.instanceId,
             input.cellType || CellType.Code,
             input.code || "",
             lastEvaluationDate,

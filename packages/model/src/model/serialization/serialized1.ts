@@ -64,9 +64,9 @@ export interface ISerializedCellError1 {
 //
 export interface ISerializedCell1 {
     //
-    // id of the cell.
+    // Instance id of the cell.
     //
-    id: string;
+    instanceId?: string;
 
     //
     // The type of the cell.

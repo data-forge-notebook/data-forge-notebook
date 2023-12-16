@@ -38,7 +38,7 @@ describe("evaluation engine shell", () => {
                     "language": "javascript",
                     "cells": [
                         {
-                            "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
+                            "instanceId": "f0627130-2e9c-11e9-9f0a-97b474081a71",
                             "cellType": "code",
                             "code": "console.log(\"fooey\");"
                         }
@@ -118,7 +118,7 @@ describe("evaluation engine shell", () => {
                     "language": "javascript",
                     "cells": [
                         {
-                            "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
+                            "instanceId": "f0627130-2e9c-11e9-9f0a-97b474081a71",
                             "cellType": "code",
                             "code": "console.log(\"fooey\");"
                         }

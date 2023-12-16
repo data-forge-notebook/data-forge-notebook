@@ -443,7 +443,6 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             "version": notebookVersion,
             "cells": [
                 {
-                    "id": this.idGenerator.genId(),
                     "cellType": CellType.Code,
                     "code": "",
                     "output": [],
@@ -713,7 +712,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         await this.notebook.flushChanges();
 
         this.evaluating = true;
-        this.evaluator.evalToCell(this.notebook.instanceId, this.notebook.serializeForEval(), cell.id, this.notebook.storageId.getContainingPath());
+        this.evaluator.evalToCell(this.notebook.instanceId, this.notebook.serializeForEval(), cell.instanceId, this.notebook.storageId.getContainingPath());
 
         await this.onEvaluationStarted();
     }
@@ -749,7 +748,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
         }
 
         this.evaluating = true;
-        this.evaluator.evalSingleCell(this.notebook.instanceId, this.notebook.serializeForEval(), cell.id, this.notebook.storageId.getContainingPath());
+        this.evaluator.evalSingleCell(this.notebook.instanceId, this.notebook.serializeForEval(), cell.instanceId, this.notebook.storageId.getContainingPath());
 
         await this.onEvaluationStarted();
     }

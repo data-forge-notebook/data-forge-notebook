@@ -93,12 +93,12 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
         //
         for (const cell of cells) {
             if (!forExport) {
-                const preCellCode = `__cell(${cellIndex}, "${cell.id}", async () => {\r\n`;
+                const preCellCode = `__cell(${cellIndex}, "${cell.instanceId}", async () => {\r\n`;
                 code += preCellCode;
                 generatedCodeOffset += this.computeNumLines(preCellCode);
             }
 
-            const cellId = cell.id;
+            const cellId = cell.instanceId!;
             const cellStartLine = generatedCodeOffset;
                 
             let cellCode = cell.code || "";
@@ -127,7 +127,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
             if (!forExport) {
                 // Generate code to capture local variables.
-                const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.id}", () => ({}));\r\n`;
+                const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.instanceId}", () => ({}));\r\n`;
                 code += captureLocalsCode;
                 generatedCodeOffset += this.computeNumLines(captureLocalsCode);
             }
