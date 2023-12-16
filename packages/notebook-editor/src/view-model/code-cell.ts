@@ -40,11 +40,6 @@ export interface ICodeCellViewModel extends ICellViewModel {
     readonly nextErrorIndex: number;
 
     //
-    // The date that the cell was last evaluated.
-    //
-    readonly lastEvaluationDate: Date | undefined;
-
-    //
     // Add output to the cell.
     //
     addOutput(output: ICellOutputViewModel): Promise<void>;
@@ -118,15 +113,9 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     //
     nextErrorIndex: number = 0;
 
-    //
-    // The date that the cell was last evaluated.
-    //
-    lastEvaluationDate: Date | undefined = undefined;
-
-    constructor(instanceId: string | undefined, cellType: CellType, text: string, lastEvaluationDate: Date | undefined, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
+    constructor(instanceId: string | undefined, cellType: CellType, text: string, output: ICellOutputViewModel[], errors: ICellErrorViewModel[]) {
         super(instanceId, cellType, text);
 
-        this.lastEvaluationDate = lastEvaluationDate;
         this.output = output;
         this.errors = errors;
 
@@ -136,7 +125,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             nextOutputIndex: observable,
             errors: observable,
             nextErrorIndex: observable,
-            lastEvaluationDate: observable,
             notifyNotebookEvalStarted: action,
             notifyCodeEvalStarted: action,
             notifyCodeEvalComplete: action,
@@ -208,9 +196,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     async notifyCodeEvalComplete(): Promise<void> {
 
         if (this.executing) {
-            // Was actually executing, update the last eval date.
-            this.lastEvaluationDate = this.dateProvider.now();
-
             // Only clear output and errors if the cell was executing.
             // This has to be done in the if-stmt here so that running a single code cell 
             // doesn't cause outputs and errors to be stripped from all cells.
@@ -326,7 +311,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     serialize(): ISerializedCell1 {
         return {
             ...super.serialize(),
-            lastEvaluationDate: this.lastEvaluationDate && moment(this.lastEvaluationDate).toISOString(true) || undefined,
             output: this.output.map(output => output.serialize()),
             errors: this.errors.map(error => error.serialize()),
         };
@@ -359,13 +343,10 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
             }
         }
 
-        const lastEvaluationDate = input.lastEvaluationDate && moment(input.lastEvaluationDate, moment.ISO_8601).toDate() || undefined;
-
         return new CodeCellViewModel(
             input.instanceId,
             input.cellType || CellType.Code,
             input.code || "",
-            lastEvaluationDate,
             output,
             input.errors && input.errors.map(error => CellErrorViewModel.deserialize(error)) || [],
         );

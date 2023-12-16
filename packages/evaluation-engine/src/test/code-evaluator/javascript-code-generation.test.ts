@@ -61,7 +61,6 @@ describe("javascript code generation", () => {
                     "cellType": "code",
                     "cellScope": "global",
                     "code": "console.log(\"Hello JavaScript!\");",
-                    "lastEvaluationDate": "2019-06-06T20:12:41.602+10:00",
                     "output": [
                         {
                             "values": [

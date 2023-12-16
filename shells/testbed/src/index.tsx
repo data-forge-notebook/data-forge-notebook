@@ -20,7 +20,6 @@ function App() {
                             "1234",
                             CellType.Code,
                             "const x = 1;",
-                            undefined,                            
                             [], []
                         )
                     }

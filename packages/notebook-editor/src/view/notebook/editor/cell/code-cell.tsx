@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { CellErrorUI } from './cell-error';
-const humanizeDuration = require('humanize-duration');
 import moment from 'moment';
 import { ICodeCellViewModel } from '../../../../view-model/code-cell';
 import { CellOutputUI } from './cell-output';
@@ -31,23 +30,6 @@ class CodeCellUIView extends React.Component<ICodeCellProps, ICodeCellState> {
 
         this.state = {};
     }
-
-    //
-    // Humanize the time duration.
-    //
-    humanizeDuration(durationMS: number): string {
-        if (durationMS < 1000) {
-            return "a moment ago";
-        }
-
-        const humanizeOptions = {
-            units: ['y', 'mo', 'w', 'd', 'h', 'm', 's', ],
-            round: true,
-            largest: 1,
-        };
-                
-        return humanizeDuration(durationMS, humanizeOptions) + " ago";
-    }
     
     private onEscapeKey = async () => {
         await this.props.notebook.deselect();
@@ -55,27 +37,6 @@ class CodeCellUIView extends React.Component<ICodeCellProps, ICodeCellState> {
 
     render () {
         const cellExecuting = this.props.cell.executing;
-        const inError = !cellExecuting && this.props.cell.errors?.length > 0;
-
-        let lastEvaluationMsg = "Not evaluated";
-        const lastEvaluationDate = this.props.cell.lastEvaluationDate;
-        const lastEvaluationDuration = lastEvaluationDate !== undefined ? moment().diff(lastEvaluationDate!) : undefined;
-        const humanizedDuration = lastEvaluationDuration !== undefined ? this.humanizeDuration(lastEvaluationDuration!) : undefined;
-
-        if (cellExecuting) {
-            lastEvaluationMsg = "Evaluating...";
-        }
-        else if (inError) {
-            lastEvaluationMsg = "Errored";
-
-            if (humanizedDuration) {
-                    lastEvaluationMsg += " " + humanizedDuration;
-            }
-        }
-        else if (humanizedDuration) {
-            lastEvaluationMsg = "Evaluated " + humanizedDuration;
-        }
-
         const errors = this.props.cell.errors;
         const outputs = this.props.cell.output;
 

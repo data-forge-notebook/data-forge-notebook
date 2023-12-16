@@ -35,7 +35,6 @@
         "@blueprintjs/icons": "^5.4.1",
         "@codecapers/fusion": "1.0.15",
         "classnames": "^2.3.1",
-        "humanize-duration": "^3.27.1",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
         "monaco-editor": "^0.32.1",

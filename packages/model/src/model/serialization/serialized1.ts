@@ -79,11 +79,6 @@ export interface ISerializedCell1 {
     code?: string;
 
     //
-    // The date that the cell was last evaluated.
-    //
-    lastEvaluationDate?: string;
-
-    //
     // Serialized output from the cell.
     //
     output?: ISerializedCellOutput1[];

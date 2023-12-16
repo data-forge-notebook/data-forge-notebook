@@ -17,7 +17,7 @@ describe("view-model / cell", () => {
         const theId = "1234";
         const theCellType = CellType.Code;
         const theText = "const x = 3;";
-        const cell = new CodeCellViewModel(theId, theCellType, theText, undefined, [], []);
+        const cell = new CodeCellViewModel(theId, theCellType, theText, [], []);
         expect(cell.instanceId).toEqual(theId);
         expect(cell.cellType).toEqual(CellType.Code);
         expect(cell.text).toEqual(theText);
@@ -25,7 +25,7 @@ describe("view-model / cell", () => {
 
     test("setting the text to the different changes the text", () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "hello", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "hello", [], []);
 
         const newText = "world";
         cell.setText(newText);
@@ -35,7 +35,7 @@ describe("view-model / cell", () => {
 
     test("setting the text trims whitespace from the end", () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         const baseText = "Hello world";
         cell.setText(`${baseText} `);
@@ -45,7 +45,7 @@ describe("view-model / cell", () => {
 
     test("can scroll into view", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         await expectEventRaised(cell, "onScrollIntoView", async () => {
             await cell.scrollIntoView("some reason");
@@ -54,7 +54,7 @@ describe("view-model / cell", () => {
 
     test("can set focus", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         await expectEventRaised(cell, "onSetFocus", async () => {
             await cell.focus();
@@ -63,14 +63,14 @@ describe("view-model / cell", () => {
 
     test("getting caret postition when provider is not set returns null", () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         expect(cell.getCaretPosition()).toBeNull();
     });
 
     test("getting caret postition forwards to the provider", () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
         const caretPosition = { lineNumber: 1, column: 2 };
         cell.caretPositionProvider = () => caretPosition;
         expect(cell.getCaretPosition()).toBe(caretPosition);
@@ -78,7 +78,7 @@ describe("view-model / cell", () => {
 
     test("can set caret position", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
         const caretPosition = { lineNumber: 1, column: 2 };
         await expectEventRaised(
             cell, 
@@ -95,7 +95,7 @@ describe("view-model / cell", () => {
 
     test("can select cell", async () => {
         
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
         const events = await trackEventsRaised(cell, ["onSetFocus"]);
         
         expect(cell.selected).toBe(false);
@@ -110,7 +110,7 @@ describe("view-model / cell", () => {
 
     test("more than one cell selection has no effect", async () => {
         
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
         await cell.select();
 
         const events = await trackEventsRaised(cell, ["onSetFocus"]);
@@ -124,7 +124,7 @@ describe("view-model / cell", () => {
 
     test("can deselect cell", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
         await cell.select();
 
         expect(cell.selected).toBe(true);
@@ -136,7 +136,7 @@ describe("view-model / cell", () => {
 
     test("deselecting an unselected cell has no effect", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         expect(cell.selected).toBe(false);
 
@@ -147,7 +147,7 @@ describe("view-model / cell", () => {
 
     test("can select text", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         const range = { startLineNumber: 1, endLineNumber: 2, startColumn: 3,  endColumn: 4 };
         await expectEventRaised(
@@ -164,7 +164,7 @@ describe("view-model / cell", () => {
 
     test("can deselect text", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
         await expectEventRaised(cell, "onDeselectText", async () => {
             await cell.deselectText();
         });
@@ -172,7 +172,7 @@ describe("view-model / cell", () => {
 
     test("can replace text", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         const range = { startLineNumber: 1, endLineNumber: 2, startColumn: 3,  endColumn: 4 };
         const text = "the replacement text";
@@ -191,7 +191,7 @@ describe("view-model / cell", () => {
 
     test("can flush changes", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
         await expectEventRaised(cell, "onFlushChanges", async () => {
             await cell.flushChanges();
         });
@@ -199,7 +199,7 @@ describe("view-model / cell", () => {
 
     test("can find next match", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         const startingPosition = { lineNumber: 1, column: 2 };
         const searchDirection = SearchDirection.Backward;

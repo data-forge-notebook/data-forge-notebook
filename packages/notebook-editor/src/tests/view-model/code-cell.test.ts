@@ -15,7 +15,7 @@ describe("view-model / code-cell", () => {
     // Creates a cell for testing.
     //
     function createCell() {
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
         return { cell };
     }
 
@@ -69,21 +69,19 @@ describe("view-model / code-cell", () => {
 
     test("can construct", () => {
 
-        const now = new Date();
         const output: ICellOutputViewModel[] = [];
         const errors: ICellErrorViewModel[] = [];
-        const cell = new CodeCellViewModel("test-id", CellType.Code, "some-code", now, output, errors);
+        const cell = new CodeCellViewModel("test-id", CellType.Code, "some-code", output, errors);
         expect(cell.instanceId).toBe("test-id");
         expect(cell.cellType).toBe(CellType.Code);
         expect(cell.text).toBe("some-code");
-        expect(cell.lastEvaluationDate).toBe(now);
         expect(cell.output.length).toBe(0);
         expect(cell.errors.length).toBe(0);
     });
 
     test("can add an output", async () => {
 
-        const cell = new CodeCellViewModel("", CellType.Code, "", undefined, [], []);
+        const cell = new CodeCellViewModel("", CellType.Code, "", [], []);
 
         const { mockCellOutputViewModel } = createMockCellOutput({ instanceId: "new-output" });
         await cell.addOutput(mockCellOutputViewModel);
@@ -264,12 +262,10 @@ describe("view-model / code-cell", () => {
     test("can serialize code cell", () => {
         const theId = "1234";
         const theText = "const x = 3;";
-        const theLastEvaluationDate = moment();
-        const cell = new CodeCellViewModel(theId, CellType.Code, theText, theLastEvaluationDate.toDate(), [], []);
+        const cell = new CodeCellViewModel(theId, CellType.Code, theText, [], []);
         expect(cell.serialize()).toEqual({
             cellType: CellType.Code,
             code: theText,
-            lastEvaluationDate: theLastEvaluationDate.toISOString(true),
             output: [],
             errors: [],
         });        
@@ -278,13 +274,11 @@ describe("view-model / code-cell", () => {
     test("can serialize code cell for evaluation", () => {
         const theId = "1234";
         const theText = "const x = 3;";
-        const theLastEvaluationDate = moment();
-        const cell = new CodeCellViewModel(theId, CellType.Code, theText, theLastEvaluationDate.toDate(), [], []);
+        const cell = new CodeCellViewModel(theId, CellType.Code, theText, [], []);
         expect(cell.serializeForEval()).toEqual({
             instanceId: theId,
             cellType: CellType.Code,
             code: theText,
-            lastEvaluationDate: undefined,
             output: undefined,
             errors: undefined
         });        
@@ -297,7 +291,7 @@ describe("view-model / code-cell", () => {
         const mockError: any = {
             serialize: () => serializedError,
         };
-        const cell = new CodeCellViewModel("1234", CellType.Code, "", undefined, [ mockOutput ], [ mockError ]);
+        const cell = new CodeCellViewModel("1234", CellType.Code, "", [ mockOutput ], [ mockError ]);
         const serialized = cell.serialize();
         expect(serialized.output).toEqual([ serializedOutput ]);
         expect(serialized.errors).toEqual([ serializedError ]);
@@ -317,19 +311,6 @@ describe("view-model / code-cell", () => {
         expect(cell.cellType).toEqual(CellType.Code);
         expect(cell.output).toEqual([]);
         expect(cell.errors).toEqual([]);
-        expect(cell.lastEvaluationDate).toBeUndefined();
-    });
-
-    test("can deserialize cell with evaluation date", () => {
-
-        const theLastEvaluationDate = moment();
-        const cell = CodeCellViewModel.deserialize({
-            instanceId: "1234",
-            cellType: CellType.Code,
-            code: "",
-            lastEvaluationDate: theLastEvaluationDate.toISOString(true),
-        });
-        expect(cell.lastEvaluationDate).toEqual(theLastEvaluationDate.toDate());
     });
 
     test("can deserialize code cell with output", () => {
