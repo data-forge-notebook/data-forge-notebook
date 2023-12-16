@@ -3,14 +3,14 @@ import { DeclareCommand } from "../services/command";
 
 @DeclareCommand({
     id: "new-notebook",
-    desc: "Create a new JavaScript notebook", 
-    label: "New &JavaScript notebook",
+    desc: "Create a new notebook", 
+    label: "&New notebook",
     accelerator: "CmdOrCtrl+N",
     icon: "document",
 })
 export class NewNotebookAction implements IAction {
 
     async invoke(context: IActionContext): Promise<void> {
-        await context.getNotebookEditor().newNotebook("javascript");
+        await context.getNotebookEditor().newNotebook();
     }
 }

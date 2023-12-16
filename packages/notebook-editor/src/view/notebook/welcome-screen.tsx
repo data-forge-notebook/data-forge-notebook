@@ -145,7 +145,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                             className="mt-4 mb-5 ml-8 mr-8"
                             style={subTitleStyle}
                             >
-                            Exploratory coding and data analysis for JavaScript
+                            Exploratory coding and data analysis for JavaScript and TypeScript
                         </div>
                     </div>
                     <div className="flex-grow" />
@@ -153,7 +153,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
 
                 { this.state.showGettingStarted
                     && <div 
-                        className="flex flex-col flex-grow ml-2 mr-2 mb-3 p-1 pl-2"
+                        className="flex flex-col flex-grow ml-2 mr-2 mt-6 mb-6 p-1 pl-2"
                         style={{
                             border: "1px dashed #C5DAE9",
                             backgroundColor: "#F8F8F8",
@@ -213,10 +213,10 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
 
                 { showRecentFiles
                     && <div 
-                        className="flex flex-row flex-grow ml-2 mr-2 mb-3"
+                        className="flex flex-row flex-grow"
                         >
                         <div 
-                            className="flex flex-col flex-grow p-1 pl-2 m-1"
+                            className="flex flex-col flex-grow ml-2 mr-2 mb-6 p-1 pl-2 pb-3"
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
@@ -237,16 +237,6 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                     </div>
                                 )}
                             </div>
-                            {/* <div style={bigTextStyle} className="mt-1">
-                                <a 
-                                    onClick={() => {
-                                        this.commander.invokeNamedCommand("clear-recent-files");
-                                        this.forceUpdate();
-                                    }}
-                                    >
-                                    Clear recent files
-                                </a>
-                            </div> */}
                             <div style={bigTextStyle} className="mt-1">
                                 <a onClick={() => this.commander.invokeNamedCommand("toggle-recent-file-picker")}>
                                     Browse recent notebooks
@@ -257,10 +247,10 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                     </div>
                 }
 
-                <div className="flex flex-row w-full mb-32">
-                    <div className="flex flex-col w-1/2">
+                <div className="flex flex-row mb-32">
+                    <div className="flex flex-col flex-grow">
                         <div 
-                            className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
+                            className="flex flex-col ml-2 mr-2 mb-6 p-1 pl-2 pb-3"
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
@@ -277,14 +267,9 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 <div
                                     >
                                     <a onClick={() => this.commander.invokeNamedCommand("new-notebook")}>
-                                        New JavaScript notebook
+                                        New notebook
                                     </a>
                                 </div>
-                                {/* <div>
-                                    <a onClick={() => this.commander.invokeNamedCommand("new-typescript-notebook")}>
-                                        New TypeScript notebook
-                                    </a>
-                                </div> */}
                                 <div>
                                     <a onClick={() => this.commander.invokeNamedCommand("open-notebook")}>
                                         Open notebook...
@@ -299,7 +284,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                         </div>
                     
                         <div 
-                            className="flex flex-col p-1 pl-2 m-1 mb-3"
+                            className="flex flex-col flex-grow p-1 pl-2 ml-2 mr-2 pb-3"
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
@@ -332,9 +317,9 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                         </div>
                     </div>
 
-                    <div className="flex flex-col w-1/2">
+                    <div className="flex flex-col flex-grow">
                         <div 
-                            className="flex flex-col ml-2 mr-2 mb-3 p-1 pl-2"
+                            className="flex flex-col ml-2 mr-2 mb-6 p-1 pl-2"
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
@@ -368,6 +353,11 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 </div>
 
                                 <div>
+                                    <a target="_blank" href="https://www.typescriptlang.org/docs/">Learn TypeScript</a>.
+                                </div>
+                                
+
+                                <div>
                                     <a target="_blank" href="https://www.nodebeginner.org/">Learn Node.js</a>.
                                 </div>
                             </div>
@@ -378,7 +368,7 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                         </div>
 
                         <div
-                            className="flex flex-col flex-grow ml-2 mr-2 mb-3 p-1 pl-2" 
+                            className="flex flex-col flex-grow ml-2 mr-2 p-1 pl-2 pb-4" 
                             style={{
                                 border: "1px dashed #C5DAE9",
                                 backgroundColor: "#F8F8F8",
@@ -389,21 +379,27 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 className="mb-1"
                                 style={headingStyle}
                                 >
-                                Give feedback
+                                Stay in touch
                             </div>
                             <div style={textStyle}>
                                 <div>
+                                    <a target="_blank" href="http://eepurl.com/dyb9dn">Join the mailing list for occasional news and resources</a>
+                                </div>
+
+                                <div className="mt-1">
                                     <a target="_blank" href="http://issues.data-forge-notebook.com/new">Report a problem</a>
                                 </div>
                                 <div className="mt-1">
                                     Drop an email to <a target="_blank" href="mailto:support@data-forge-notebook.com">support@data-forge-notebook.com</a>
                                 </div>
                                 <div className="mt-1">
-                                    Talk to the developer on Slack: send an email to ask for an invite.
+                                    Join the community on Slack: send an email to ask for an invite.
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         );
