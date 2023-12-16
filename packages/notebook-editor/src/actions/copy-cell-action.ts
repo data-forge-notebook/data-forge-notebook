@@ -1,6 +1,7 @@
 import { IAction, IActionContext } from "../services/action";
 import { DeclareCommand } from "../services/command";
 import { IChange } from "../services/undoredo";
+import { serializeCell } from "../view-model/serialize";
 
 @DeclareCommand({
     id: "copy-cell", 
@@ -14,7 +15,7 @@ export class CopyCellAction implements IAction {
 
     async invoke(context: IActionContext): Promise<IChange | void> {
         const cell = context.getCell();
-        const cellClipboard = cell.serialize();
+        const cellClipboard = serializeCell(cell);
         context.getNotebookEditor().setCellClipboard(cellClipboard);
     }
 }

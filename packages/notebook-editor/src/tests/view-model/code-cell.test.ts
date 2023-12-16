@@ -4,6 +4,8 @@ import { ICellErrorViewModel } from "../../view-model/cell-error";
 import { ICellOutputViewModel } from "../../view-model/cell-output";
 import { CodeCellViewModel } from "../../view-model/code-cell";
 import moment from "moment";
+import { serializeCodeCell } from "../../view-model/serialize";
+import { serialize } from "v8";
 
 describe("view-model / code-cell", () => {
     
@@ -263,7 +265,7 @@ describe("view-model / code-cell", () => {
         const theId = "1234";
         const theText = "const x = 3;";
         const cell = new CodeCellViewModel(theId, CellType.Code, theText, [], []);
-        expect(cell.serialize()).toEqual({
+        expect(serializeCodeCell(cell)).toEqual({
             cellType: CellType.Code,
             code: theText,
             output: [],
@@ -285,16 +287,36 @@ describe("view-model / code-cell", () => {
     });
 
     test("can serialize cell with output and errors", () => {
-        const serializedOutput: any = {};
-        const { mockCellOutputViewModel: mockOutput } = createMockCellOutput({ serialize: () => serializedOutput });
-        const serializedError: any = {};
+        const mockOutput: any = {
+            value: {
+                displayType: "chart",
+                plugin: "test-plugin",
+                data: {},
+            },
+        };
         const mockError: any = {
-            serialize: () => serializedError,
+            msg: "error-message"
         };
         const cell = new CodeCellViewModel("1234", CellType.Code, "", [ mockOutput ], [ mockError ]);
-        const serialized = cell.serialize();
-        expect(serialized.output).toEqual([ serializedOutput ]);
-        expect(serialized.errors).toEqual([ serializedError ]);
+        const serialized = serializeCodeCell(cell);
+        expect(serialized).toEqual( {
+            "cellType": "code",
+            "code": "",
+            "output": [
+                {
+                    "value": {
+                        "displayType": "chart",
+                        "plugin": "test-plugin",
+                        "data": {}
+                    }
+                }
+            ],
+            "errors": [
+                {
+                    "msg": "error-message"
+                }
+            ]
+        });
     });
 
     test("can deserialize code cell", () => {

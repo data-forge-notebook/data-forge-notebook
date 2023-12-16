@@ -1,4 +1,5 @@
 import { CellOutputViewModel } from "../../view-model/cell-output";
+import { serializeCell, serializeCellOutput } from "../../view-model/serialize";
 
 describe("view-model / cell-output", () => {
 
@@ -18,15 +19,20 @@ describe("view-model / cell-output", () => {
     });
 
     test("can serialize", () => {
-        const mockSerializedValue: any = { id: "1234" };
-        const mockValue: any = { 
-            serialize: () => mockSerializedValue,
-        };        
+        const mockValue: any = {
+            displayType: "displayType",
+            plugin: "plugin",
+            data: "data",
+        };
         const theHeight = 15;
         const cellOutput = new CellOutputViewModel(mockValue, theHeight);
-        const serialized = cellOutput.serialize();
+        const serialized = serializeCellOutput(cellOutput);
         expect(serialized).toEqual({
-            value: mockSerializedValue,
+            value: {
+                displayType: "displayType",
+                plugin: "plugin",
+                data: "data",
+            },
             height: theHeight,
         });
     });

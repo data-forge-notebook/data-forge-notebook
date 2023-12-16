@@ -1,4 +1,5 @@
 import { CellErrorViewModel } from "../../view-model/cell-error";
+import { serializeError } from "../../view-model/serialize";
 
 describe("view-model / cell-error", () => {
 
@@ -25,7 +26,7 @@ describe("view-model / cell-error", () => {
     test("can serialize", () => {
         const theMessage = "An error";
         const cellError = new CellErrorViewModel(theMessage);
-        expect(cellError.serialize()).toEqual({
+        expect(serializeError(cellError)).toEqual({
             msg: theMessage,
         });
     });

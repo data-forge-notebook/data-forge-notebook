@@ -25,11 +25,6 @@ export interface ICellErrorViewModel {
     readonly fresh: boolean;
 
     //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCellError1;
-
-    //
     // Mark the output as out of data.
     //
     markStale(): void;
@@ -59,15 +54,6 @@ export class CellErrorViewModel implements ICellErrorViewModel {
 
         makeAutoObservable(this);
     }
-
-    //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCellError1 {
-        return {
-            msg: this.msg
-        };
-    }    
 
     //
     // Deserialize the model from a previously serialized data structure.

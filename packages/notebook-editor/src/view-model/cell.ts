@@ -158,11 +158,6 @@ export interface ICellViewModel {
     clearErrors(): Promise<void>;
     
     //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCell1;
-
-    //
     // Serialize the CELL for evaluation. This excludes elements of the data that aren't needed for evaluation.
     //
     serializeForEval(): ISerializedCell1;
@@ -365,16 +360,6 @@ export abstract class CellViewModel implements ICellViewModel {
         this.text = text.trimEnd();
     }
     
-    //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCell1 {
-        return {
-            cellType: this.cellType,
-            code: this.text,
-        };
-    }
-
     //
     // Serialize the CELL for evaluation. This excludes elements of the data that aren't needed for evaluation.
     //

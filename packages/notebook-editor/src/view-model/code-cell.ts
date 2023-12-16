@@ -306,17 +306,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     }
 
     //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCell1 {
-        return {
-            ...super.serialize(),
-            output: this.output.map(output => output.serialize()),
-            errors: this.errors.map(error => error.serialize()),
-        };
-    }    
-
-    //
     // Deserialize the model from a previously serialized data structure.
     //
     static deserialize(input: ISerializedCell1): ICodeCellViewModel {

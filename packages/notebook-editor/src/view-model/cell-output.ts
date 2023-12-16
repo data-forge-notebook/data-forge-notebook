@@ -35,11 +35,6 @@ export interface ICellOutputViewModel {
     readonly modified: boolean;
 
     //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCellOutput1;
-
-    //
     // Mark the output as out of data.
     //
     markStale(): void;
@@ -96,16 +91,6 @@ export class CellOutputViewModel implements ICellOutputViewModel {
             makeUnmodified: action,
         });
     }
-
-    //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCellOutput1 {
-        return {
-            value: this.value.serialize(),
-            height: this.height,
-        };
-    }    
 
     //
     // Deserialize the model from a previously serialized data structure.

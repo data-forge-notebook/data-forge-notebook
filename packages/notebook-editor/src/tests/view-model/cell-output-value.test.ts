@@ -1,4 +1,5 @@
 import { CellOutputValueViewModel } from "../../view-model/cell-output-value";
+import { serializeCellOutputValue } from "../../view-model/serialize";
 
 describe("view-model / cell-output-value", () => {
 
@@ -18,7 +19,7 @@ describe("view-model / cell-output-value", () => {
         const theDisplayType = "string";
         const theData = "hello";
         const cellOutputValue = new CellOutputValueViewModel(theDisplayType, undefined, theData);
-        expect(cellOutputValue.serialize()).toEqual({
+        expect(serializeCellOutputValue(cellOutputValue)).toEqual({
             displayType: theDisplayType,
             data: theData,
         });

@@ -3,6 +3,7 @@ import { ICellViewModel } from "../../view-model/cell";
 import { NotebookViewModel } from "../../view-model/notebook";
 import { expectEventRaised } from "../lib/utils";
 import { disableInjector } from "@codecapers/fusion";
+import { serializeNotebook } from "../../view-model/serialize";
 
 describe('view-model / notebook-only', () => {
 
@@ -642,7 +643,7 @@ describe('view-model / notebook-only', () => {
     test("can serialize", () => {
         const storageId: any = {};
         const notebook = new NotebookViewModel(storageId, [], undefined, false, false);
-        expect(notebook.serialize()).toEqual({
+        expect(serializeNotebook(notebook)).toEqual({
             version: 3,
             cells: [],
         });

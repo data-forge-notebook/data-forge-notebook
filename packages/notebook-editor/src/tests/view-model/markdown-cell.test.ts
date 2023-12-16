@@ -1,6 +1,7 @@
 import { CellType } from "model";
 import { MarkdownCellViewModel } from "../../view-model/markdown-cell";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
+import { serializeMarkdownCell } from "../../view-model/serialize";
 
 describe("view-model / markdown-cell", () => {
 
@@ -66,7 +67,7 @@ describe("view-model / markdown-cell", () => {
         const theId = "1234";
         const theText = "# Hello markdown;";
         const cell = new MarkdownCellViewModel(theId, CellType.Markdown, theText);
-        expect(cell.serialize()).toEqual({
+        expect(serializeMarkdownCell(cell)).toEqual({
             cellType: CellType.Markdown,
             code: theText,
             height: undefined,

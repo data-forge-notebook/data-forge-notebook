@@ -8,13 +8,13 @@ import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { v4 as uuid } from "uuid";
 import { action, computed, makeObservable, observable } from "mobx";
+import { serializeNotebook } from "./serialize";
 
-export const notebookVersion = 3;
+export const notebookVersion = 4;
 
 //
 // Creates a cell view-model based on cell type.
 //
-
 export function cellViewModelFactory(cell: ISerializedCell1): ICellViewModel {
 
     if (!cell) {
@@ -173,11 +173,6 @@ export interface INotebookViewModel {
     // Get the index of the currently selected cell in the notebook.
     //
     getSelectedCellIndex(): number | undefined;
-
-    //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedNotebook1;
 
     //
     // Serialize the notebook for evaluation. This excludes elements of the data that aren't needed for evaluation.
@@ -592,17 +587,6 @@ export class NotebookViewModel implements INotebookViewModel {
     }
 
     //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedNotebook1 {
-        return {
-            version: notebookVersion,
-            description: this.description,
-            cells: this.cells.map(cell => cell.serialize()),
-        };
-    }
-
-    //
     // Serialize the notebook for evaluation. This excludes elements of the data that aren't needed for evaluation.
     //
     serializeForEval(): ISerializedNotebook1 {
@@ -635,7 +619,7 @@ export class NotebookViewModel implements INotebookViewModel {
     async _save(notebookId: INotebookStorageId): Promise<void> {
         await this.flushChanges();
 
-        const serialized = this.serialize();
+        const serialized = serializeNotebook(this);
         await this.notebookRepository.writeNotebook(serialized, notebookId);
 
         this.makeUnmodified();

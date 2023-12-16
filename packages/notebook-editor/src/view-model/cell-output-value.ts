@@ -20,11 +20,6 @@ export interface ICellOutputValueViewModel {
     // The actual value.
     //
     readonly data: any;
-
-    //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCellOutputValue1;
 }
 
 export class CellOutputValueViewModel implements ICellOutputValueViewModel {
@@ -49,17 +44,6 @@ export class CellOutputValueViewModel implements ICellOutputValueViewModel {
         this.plugin = plugin;
         this.data = data;
     }
-    
-    //
-    // Serialize to a data structure suitable for serialization.
-    //
-    serialize(): ISerializedCellOutputValue1 {
-        return {
-            displayType: this.displayType,
-            plugin: this.plugin,
-            data: this.data,
-        };
-    }    
 
     //
     // Deserialize the model from a previously serialized data structure.
