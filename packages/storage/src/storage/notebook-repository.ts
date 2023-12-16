@@ -59,7 +59,7 @@ export interface INotebookRepository {
     //
     // Writes a notebook to storage.
     //
-    writeNotebook(notebook: ISerializedNotebook1, notebookId: INotebookStorageId): Promise<void>;
+    writeNotebook(notebook: string, notebookId: INotebookStorageId): Promise<void>;
 
     //
     // Reads a notebook from storage.

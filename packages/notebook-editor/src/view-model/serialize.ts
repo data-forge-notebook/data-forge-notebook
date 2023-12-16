@@ -1,4 +1,4 @@
-import { CellType, ISerializedCell1, ISerializedCellError1, ISerializedCellOutput1, ISerializedCellOutputValue1, ISerializedNotebook1 } from "model";
+import { CellType } from "model";
 import { ICodeCellViewModel } from "./code-cell";
 import { IMarkdownCellViewModel } from "./markdown-cell";
 import { ICellOutputViewModel } from "./cell-output";
@@ -7,34 +7,43 @@ import { INotebookViewModel } from "./notebook";
 import { ICellViewModel } from "./cell";
 import { ICellOutputValueViewModel } from "./cell-output-value";
 
-export const notebookVersion = 3;
+export const notebookVersion = 4;
 
 //
 // Serialize to a data structure suitable for serialization.
 //
-export function serializeCodeCell(cell: ICodeCellViewModel): ISerializedCell1 {
-    return {
-        cellType: cell.cellType,
-        code: cell.text,
-        output: cell.output.map(output => serializeCellOutput(output)),
-        errors: cell.errors.map(error => serializeError(error)),
-    };
+export function serializeCodeCell(cell: ICodeCellViewModel): string {
+    const startCode = "```typecript";
+    const endCode = "```";
+    return (
+        `${startCode}\n` +
+        `${cell.text}\n` +
+        `${endCode}\n` +
+        `${cell.errors.map(error => serializeError(error)).join("\n")}\n` +
+        `${cell.output.map(output => serializeCellOutput(output)).join("\n")}\n`
+    );
 }    
 
 //
 // Serialize to a data structure suitable for serialization.
 //
-export function serializeCellOutput(output: ICellOutputViewModel): ISerializedCellOutput1 {
-    return {
-        value: serializeCellOutputValue(output.value),
-        height: output.height,
-    };
+export function serializeCellOutput(output: ICellOutputViewModel): string {
+    const startOutput = "```json - output";
+    const endOutput = "```";
+    return (
+        `${startOutput}\n` +
+        `${JSON.stringify({
+            value: serializeCellOutputValue(output.value),
+            height: output.height,
+        }, null, 4)}\n` +
+        `${endOutput}\n`
+    );
 }    
 
 //
 // Serialize to a data structure suitable for serialization.
 //
-export function serializeCellOutputValue(value: ICellOutputValueViewModel): ISerializedCellOutputValue1 {
+export function serializeCellOutputValue(value: ICellOutputValueViewModel): any {
     return {
         displayType: value.displayType,
         plugin: value.plugin,
@@ -45,20 +54,21 @@ export function serializeCellOutputValue(value: ICellOutputValueViewModel): ISer
 //
 // Serialize to a data structure suitable for serialization.
 //
-export function serializeError(error: ICellErrorViewModel): ISerializedCellError1 {
-    return {
-        msg: error.msg
-    };
+export function serializeError(error: ICellErrorViewModel): string {
+    const startError = "```json - error";
+    const endError = "```";
+    return (
+        `${startError}\n` +
+        `${error.msg}\n` +
+        `${endError}\n`
+    );
 } 
 
 //
 // Serialize to a data structure suitable for serialization.
 //
-export function serializeMarkdownCell(cell: IMarkdownCellViewModel): ISerializedCell1 {
-    return {
-        cellType: cell.cellType,
-        code: cell.text,
-    };
+export function serializeMarkdownCell(cell: IMarkdownCellViewModel): string {
+    return cell.text;
 }    
 
 //
@@ -78,10 +88,12 @@ export function serializeCell(cell: ICellViewModel) {
 //
 // Serialize to a data structure suitable for serialization.
 //
-export function serializeNotebook(notebook: INotebookViewModel): ISerializedNotebook1 {
-    return {
-        version: notebookVersion,
-        description: notebook.description,
-        cells: notebook.cells.map(serializeCell),
-    };
+export function serializeNotebook(notebook: INotebookViewModel): string {
+    return (
+        `---\n` +
+        `description: ${notebook.description}\n` +
+        `version: ${notebookVersion}\n` +
+        `---\n` +
+        `${notebook.cells.map(serializeCell).join("\n")}\n`
+    );
 }

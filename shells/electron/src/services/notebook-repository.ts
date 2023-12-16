@@ -120,7 +120,7 @@ export class NotebookRepository implements INotebookRepository {
     //
     // Writes a notebook to storage.
     //
-    async writeNotebook(notebook: ISerializedNotebook1, notebookId: INotebookStorageId): Promise<void> {
+    async writeNotebook(notebook: string, notebookId: INotebookStorageId): Promise<void> {
         const id = notebookId as NotebookStorageId;
         const fileName = id.getFileName();
         if (fileName === undefined) {
@@ -131,7 +131,7 @@ export class NotebookRepository implements INotebookRepository {
             throw new Error("Can't write notebook until the containing path has been set in the notebook id.");
         }
         const fullPath = path.join(containingPath, fileName);
-        await this.file.writeJsonFile(fullPath, notebook);
+        await this.file.writeFile(fullPath, notebook);
     }
 
     //
