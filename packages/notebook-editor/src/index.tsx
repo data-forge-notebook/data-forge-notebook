@@ -2,6 +2,7 @@ import React from "react";
 export { NotebookViewModel } from "./view-model/notebook";
 export { NotebookEditorViewModel } from "./view-model/notebook-editor";
 export { NotebookEditor } from "./view/notebook/notebook-editor";
+export * from "./view-model/deserialize";
 
 export { INotebookRepositoryId, INotebookStorageId, INotebookRepository } from "storage";
 export { IIdGenerator, IIdGeneratorId } from "utils";

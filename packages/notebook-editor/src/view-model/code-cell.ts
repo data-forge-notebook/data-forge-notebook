@@ -304,40 +304,4 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
     clearStaleErrors(): void {
         this.errors = this.errors.filter(error => error.fresh);
     }
-
-    //
-    // Deserialize the model from a previously serialized data structure.
-    //
-    static deserialize(input: ISerializedCell1): ICodeCellViewModel {
-        const output = [];
-        if (input.output) {
-            //
-            // Convert multi-outputs to single outputs.
-            //
-            for (const cellOutput of input.output) {
-                if (cellOutput.value) {
-                    output.push(CellOutputViewModel.deserialize(cellOutput));
-                }
-                else if (cellOutput.values) {
-                    //
-                    // This format can be deserialized for backward compatibility,
-                    // but is no longer serialized.
-                    //
-                    for (const cellOutputValue of cellOutput.values) {
-                        const singleOutput = Object.assign({}, cellOutput, { value: cellOutputValue });
-                        delete singleOutput.values;
-                        output.push(CellOutputViewModel.deserialize(singleOutput));
-                    }
-                }
-            }
-        }
-
-        return new CodeCellViewModel(
-            input.instanceId,
-            input.cellType || CellType.Code,
-            input.code || "",
-            output,
-            input.errors && input.errors.map(error => CellErrorViewModel.deserialize(error)) || [],
-        );
-    }       
 }

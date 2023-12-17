@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { instantiateSingleton, registerSingleton } from "@codecapers/fusion";
-import { commands, EvaluationEventHandler, expandAccelerator, humanizeAccelerator, ICommand, ICommander, ICommanderId, IConfirmationDialogId, IEvaluatorId, INotebookRepositoryId, IPlatform, IPlatformId, NotebookEditor, NotebookEditorViewModel, NotebookViewModel } from "notebook-editor";
+import { commands, deserializeNotebook, EvaluationEventHandler, expandAccelerator, humanizeAccelerator, ICommand, ICommander, ICommanderId, IConfirmationDialogId, IEvaluatorId, INotebookRepositoryId, IPlatform, IPlatformId, NotebookEditor, NotebookEditorViewModel, NotebookViewModel } from "notebook-editor";
 import { testNotebook } from "./test-notebook";
 import { EventSource, ILogId, ConsoleLog, handleAsyncErrors } from "utils";
 const hotkeys = require("hotkeys-js").default;
@@ -39,7 +39,7 @@ const mockId: any = {
 };
 
 // Example notebook:
-const notebookViewModel = NotebookViewModel.deserialize(mockId, false, false, testNotebook);
+const notebookViewModel = deserializeNotebook(mockId, false, false, testNotebook);
 const notebookEditorViewModel = new NotebookEditorViewModel(notebookViewModel);
 
 // Welcome screen.

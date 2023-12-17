@@ -1,5 +1,3 @@
-import { ISerializedCellOutputValue1 } from "model";
-
 //
 // View-model for output from a cell.
 //
@@ -43,12 +41,5 @@ export class CellOutputValueViewModel implements ICellOutputValueViewModel {
         this.displayType = displayType;
         this.plugin = plugin;
         this.data = data;
-    }
-
-    //
-    // Deserialize the model from a previously serialized data structure.
-    //
-    static deserialize(input: ISerializedCellOutputValue1): ICellOutputValueViewModel {
-        return new CellOutputValueViewModel(input.displayType, input.plugin, input.data);
     }
 }

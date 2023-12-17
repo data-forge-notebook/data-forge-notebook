@@ -6,6 +6,7 @@ import { CodeCellViewModel } from "../../view-model/code-cell";
 import moment from "moment";
 import { serializeCodeCell } from "../../view-model/serialize";
 import { serialize } from "v8";
+import { deserializeCodeCell } from "../../view-model/deserialize";
 
 describe("view-model / code-cell", () => {
     
@@ -323,7 +324,7 @@ describe("view-model / code-cell", () => {
 
         const theId = "1234";
         const theText = "const x = 1;";
-        const cell = CodeCellViewModel.deserialize({
+        const cell = deserializeCodeCell({
             instanceId: theId,
             cellType: CellType.Code,
             code: theText,
@@ -341,7 +342,7 @@ describe("view-model / code-cell", () => {
         const serializedOutput: any = {
             value: serializedOutputValue,
         };
-        const cell = CodeCellViewModel.deserialize({
+        const cell = deserializeCodeCell({
             instanceId: "1234",
             cellType: CellType.Code,
             code: "",
@@ -357,7 +358,7 @@ describe("view-model / code-cell", () => {
     test("can deserialize code cell with error", () => {
 
         const serializedError: any = {};
-        const cell = CodeCellViewModel.deserialize({
+        const cell = deserializeCodeCell({
             instanceId: "1234",
             cellType: CellType.Code,
             code: "",

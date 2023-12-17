@@ -64,17 +64,6 @@ export class MarkdownCellViewModel extends CellViewModel implements IMarkdownCel
     }
 
     //
-    // Deserialize the model from a previously serialized data structure.
-    //
-    static deserialize(input: ISerializedCell1): IMarkdownCellViewModel {
-        return new MarkdownCellViewModel(
-            input.instanceId,
-            input.cellType || CellType.Code,
-            input.code || ""
-        );
-    }           
-
-    //
     // The notebook has started executing.
     //
     notifyNotebookEvalStarted(): void {

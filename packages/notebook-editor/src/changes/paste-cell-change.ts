@@ -7,7 +7,8 @@ import { ISerializedCell1 } from "model";
 import { IIdGeneratorId, IIdGenerator } from "utils";
 import { IChange } from "../services/undoredo";
 import { ICellViewModel } from "../view-model/cell";
-import { INotebookViewModel, cellViewModelFactory } from "../view-model/notebook";
+import { INotebookViewModel } from "../view-model/notebook";
+import { cellViewModelFactory } from "../view-model/deserialize";
 
 //
 @InjectableClass()

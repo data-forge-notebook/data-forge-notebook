@@ -1,9 +1,7 @@
 import { ICellViewModel } from "./cell";
 import { INotebookCaretPosition } from "./notebook-caret-position";
-import { CodeCellViewModel } from "./code-cell";
 import { IEventSource, BasicEventHandler, EventSource, ILog, ILogId } from "utils";
-import { CellType, ISerializedCell1, ISerializedNotebook1 } from "model";
-import { MarkdownCellViewModel } from "./markdown-cell";
+import { ISerializedNotebook1 } from "model";
 import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { v4 as uuid } from "uuid";
@@ -11,26 +9,6 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { serializeNotebook } from "./serialize";
 
 export const notebookVersion = 4;
-
-//
-// Creates a cell view-model based on cell type.
-//
-export function cellViewModelFactory(cell: ISerializedCell1): ICellViewModel {
-
-    if (!cell) {
-        throw new Error("Cell model not specified.");
-    }
-
-    if (cell.cellType === CellType.Code) {
-        return CodeCellViewModel.deserialize(cell);
-    }
-    else if (cell.cellType === CellType.Markdown) {
-        return MarkdownCellViewModel.deserialize(cell);
-    }
-    else {
-        throw new Error("Unexpected cell type: " + cell.cellType);
-    }
-}
 
 //
 // The view-model for the entire notebook.
@@ -595,23 +573,6 @@ export class NotebookViewModel implements INotebookViewModel {
             cells: this.cells.map(cell => cell.serializeForEval()),
         };
     }
-
-    //
-    // Deserialize the model from a previously serialized data structure.
-    //
-    static deserialize(notebookStorageId: INotebookStorageId, unsaved: boolean, readOnly: boolean, input: ISerializedNotebook1): INotebookViewModel {
-        let language: string;
-        let cells: ICellViewModel[];
-        if (input.sheet) {
-            // This is preserved for backward compatibility and loading old notebooks.
-            cells = input.sheet.cells && input.sheet.cells.map(cell => cellViewModelFactory(cell)) || [];
-        }
-        else {
-            cells = input.cells && input.cells.map(cell => cellViewModelFactory(cell)) || [];
-        }
-
-        return new NotebookViewModel(notebookStorageId, cells, input.description, unsaved, readOnly);
-    }    
 
     //
     // Saves the notebook.

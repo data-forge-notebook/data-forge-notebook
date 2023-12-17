@@ -1,4 +1,5 @@
 import { CellOutputValueViewModel } from "../../view-model/cell-output-value";
+import { deserializeCellOutputValue } from "../../view-model/deserialize";
 import { serializeCellOutputValue } from "../../view-model/serialize";
 
 describe("view-model / cell-output-value", () => {
@@ -29,7 +30,7 @@ describe("view-model / cell-output-value", () => {
 
         const theDisplayType = "string";
         const theData = "hello";
-        const cellOutputValue = CellOutputValueViewModel.deserialize({
+        const cellOutputValue = deserializeCellOutputValue({
             displayType: theDisplayType,
             data: theData,
         });

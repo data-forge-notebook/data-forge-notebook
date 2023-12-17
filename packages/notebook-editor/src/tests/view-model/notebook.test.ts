@@ -4,6 +4,7 @@ import { NotebookViewModel } from "../../view-model/notebook";
 import { expectEventRaised } from "../lib/utils";
 import { disableInjector } from "@codecapers/fusion";
 import { serializeNotebook } from "../../view-model/serialize";
+import { deserializeNotebook } from "../../view-model/deserialize";
 
 describe('view-model / notebook-only', () => {
 
@@ -521,7 +522,7 @@ describe('view-model / notebook-only', () => {
     test("can deserialize", () => {
 
         const mockId: any = {};
-        const notebook = NotebookViewModel.deserialize(mockId, false, false, {
+        const notebook = deserializeNotebook(mockId, false, false, {
             version: 3,
             cells: [],
         });
@@ -651,7 +652,7 @@ describe('view-model / notebook-only', () => {
 
     test("can deserialize", () => {
         const storageId: any = {};
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
+        const notebook = deserializeNotebook(storageId, false, false, {
             version: 3,
             cells: [],
         });
@@ -661,7 +662,7 @@ describe('view-model / notebook-only', () => {
 
     test("can deserialize with undefined cells", () => {
         const storageId: any = {};
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
+        const notebook = deserializeNotebook(storageId, false, false, {
             version: 3,
             cells: undefined,
         } as any);
@@ -672,7 +673,7 @@ describe('view-model / notebook-only', () => {
     test("can deserialize with cells", () => {
         const storageId: any = {};
         const serializedCell: any = { cellType: "code" };
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
+        const notebook = deserializeNotebook(storageId, false, false, {
             version: 3,
             cells: [
                 serializedCell,
@@ -684,7 +685,7 @@ describe('view-model / notebook-only', () => {
 
     test("can deserialize with sheet", () => {
         const storageId: any = {};
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
+        const notebook = deserializeNotebook(storageId, false, false, {
             version: 2,
             sheet: {
                 id: "1234",
@@ -697,7 +698,7 @@ describe('view-model / notebook-only', () => {
 
     test("can deserialize with sheet and undefined cells", () => {
         const storageId: any = {};
-        const notebook = NotebookViewModel.deserialize(storageId, false, false, {
+        const notebook = deserializeNotebook(storageId, false, false, {
             version: 2,
             sheet: {
                 id: "1234",

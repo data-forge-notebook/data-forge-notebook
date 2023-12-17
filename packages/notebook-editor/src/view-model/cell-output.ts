@@ -93,13 +93,6 @@ export class CellOutputViewModel implements ICellOutputViewModel {
     }
 
     //
-    // Deserialize the model from a previously serialized data structure.
-    //
-    static deserialize(input: ISerializedCellOutput1): ICellOutputViewModel {
-        return new CellOutputViewModel(CellOutputValueViewModel.deserialize(input.value), input.height);
-    }
-
-    //
     // Mark the output as out of data.
     //
     markStale(): void {

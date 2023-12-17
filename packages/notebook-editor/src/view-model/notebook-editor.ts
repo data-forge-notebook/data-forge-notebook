@@ -18,6 +18,7 @@ import { ICellViewModel } from "./cell";
 import { CellOutputViewModel } from "./cell-output";
 import { CellErrorViewModel } from "./cell-error";
 import { action, computed, makeObservable, observable } from "mobx";
+import { deserializeCellOutput, deserializeNotebook } from "./deserialize";
 
 type OpenNotebookChangedEventHandler = (isReload: boolean) => Promise<void>;
 
@@ -471,7 +472,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             try {
                 const newNotebookId = this.notebookRepository.makeUntitledNotebookId();
                 const notebookTemplate = this.newNotebookTemplate();
-                const notebook = NotebookViewModel.deserialize(newNotebookId, true, false, notebookTemplate);
+                const notebook = deserializeNotebook(newNotebookId, true, false, notebookTemplate);
                 await this.setNotebook(notebook, false);
                 notebook.select(notebook.cells[0]); // Auto select the first cell.
                 return this.notebook!;
@@ -537,7 +538,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 
         try {
 			const { data, readOnly } = await this.notebookRepository.readNotebook(notebookId);
-			const notebook = NotebookViewModel.deserialize(notebookId, false, readOnly, data);
+			const notebook = deserializeNotebook(notebookId, false, readOnly, data);
 			await this.setNotebook(notebook, isReload);
             const filePath = notebookId.toString();
             if (filePath) {
@@ -802,7 +803,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
             for (const cellOutput of args.outputs) {
                 const cell = this.notebook!.findCell(cellOutput.cellId) as ICodeCellViewModel;
                 if (cell) {
-                    cell.addOutput(CellOutputViewModel.deserialize({ value:  cellOutput.output }));
+                    cell.addOutput(deserializeCellOutput({ value:  cellOutput.output }));
                 }
                 else {
                     this.log.error("receive-display: Failed to find cell " + cellOutput.cellId);

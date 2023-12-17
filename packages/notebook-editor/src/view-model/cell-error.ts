@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { ISerializedCellError1 } from "model";
 import { v4 as uuid } from "uuid";
 
 //
@@ -53,13 +52,6 @@ export class CellErrorViewModel implements ICellErrorViewModel {
         this.msg = msg;
 
         makeAutoObservable(this);
-    }
-
-    //
-    // Deserialize the model from a previously serialized data structure.
-    //
-    static deserialize(input: ISerializedCellError1): ICellErrorViewModel {
-        return new CellErrorViewModel(input.msg);
     }
 
     //
