@@ -3,8 +3,7 @@ import { BasicEventHandler, IEventSource, EventSource, ILogId, ILog } from "util
 import { CellType, ISerializedCell1 } from "model";
 import { ISerializedNotebook1 } from "model";
 import { IIdGenerator, IIdGeneratorId } from "utils/src/lib/id-generator";
-import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
-import { INotebookViewModel, notebookVersion, NotebookViewModel } from "./notebook";
+import { INotebookViewModel, notebookVersion } from "./notebook";
 import * as path from "path";
 import { IConfirmationDialog, IConfirmationDialogId } from "../services/confirmation-dialog";
 import { INotification, INotificationId } from "../services/notification";
@@ -15,10 +14,10 @@ import { IUndoRedo, IUndoRedoId } from "../services/undoredo";
 import { IRecentFiles, IRecentFiles_ID } from "../services/recent-files";
 import { IZoom, IZoomId } from "../services/zoom";
 import { ICellViewModel } from "./cell";
-import { CellOutputViewModel } from "./cell-output";
 import { CellErrorViewModel } from "./cell-error";
 import { action, computed, makeObservable, observable } from "mobx";
 import { deserializeCellOutput, deserializeNotebook } from "./deserialize";
+import { INotebookStorageId, INotebookRepositoryId, INotebookRepository } from "../services/notebook-repository";
 
 type OpenNotebookChangedEventHandler = (isReload: boolean) => Promise<void>;
 
@@ -537,8 +536,7 @@ export class NotebookEditorViewModel implements INotebookEditorViewModel {
 		this.log.info("Opening notebook: " + notebookId.displayName());
 
         try {
-			const { data, readOnly } = await this.notebookRepository.readNotebook(notebookId);
-			const notebook = deserializeNotebook(notebookId, false, readOnly, data);
+			const notebook = await this.notebookRepository.readNotebook(notebookId);
 			await this.setNotebook(notebook, isReload);
             const filePath = notebookId.toString();
             if (filePath) {

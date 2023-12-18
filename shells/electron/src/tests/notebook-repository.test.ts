@@ -1,7 +1,6 @@
 import { disableInjector } from "@codecapers/fusion";
 import { NotebookRepository, NotebookStorageId } from "../services/notebook-repository";
 import * as path from "path";
-import { rejects } from "assert";
 
 describe("electron / notebook-repository", () => {
 
@@ -117,10 +116,9 @@ describe("electron / notebook-repository", () => {
 
         const notebookRepository = new NotebookRepository();
         notebookRepository.file = mockFile;
-        const { data: loadedNotebook, readOnly } = await notebookRepository.readNotebook(mockId);
-        
-        expect(loadedNotebook).toBe(mockNotebook);
-        expect(readOnly).toBe(true);
+
+        const notebook = await notebookRepository.readNotebook(mockId);        
+        expect(notebook).toBe(mockNotebook);
     });
 
     test("can't read untitled notebook", async () => {

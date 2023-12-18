@@ -4,9 +4,9 @@ import { CellOutputValueViewModel, ICellOutputValueViewModel } from "./cell-outp
 import { CellOutputViewModel, ICellOutputViewModel } from "./cell-output";
 import { CodeCellViewModel, ICodeCellViewModel } from "./code-cell";
 import { IMarkdownCellViewModel, MarkdownCellViewModel } from "./markdown-cell";
-import { INotebookStorageId } from "storage";
 import { INotebookViewModel, NotebookViewModel } from "./notebook";
 import { ICellViewModel } from "./cell";
+import { INotebookStorageId } from "../services/notebook-repository";
 
 //
 // Deserialize the model from a previously serialized data structure.

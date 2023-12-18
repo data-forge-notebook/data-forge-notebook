@@ -1,8 +1,8 @@
 import { InjectProperty } from "@codecapers/fusion";
 import { IAction, IActionContext } from "../services/action";
 import { DeclareCommand } from "../services/command";
-import { INotebookRepository, INotebookRepositoryId } from "storage";
 import * as path from "path";
+import { INotebookRepositoryId, INotebookRepository } from "../services/notebook-repository";
 
 @DeclareCommand({
     id: "open-notebook", 

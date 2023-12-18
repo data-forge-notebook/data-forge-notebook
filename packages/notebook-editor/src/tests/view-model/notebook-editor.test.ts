@@ -1,8 +1,7 @@
 import { disableInjector } from "@codecapers/fusion";
 import { EventSource, BasicEventHandler } from "utils";
-import { INotebookStorageId } from "storage";
 import { NotebookEditorViewModel, SaveChoice } from "../../view-model/notebook-editor";
-import { expectEventRaised } from "../lib/utils";
+import { INotebookStorageId } from "../../services/notebook-repository";
 
 describe('view-model / notebook-editor', () => {
 
@@ -10,8 +9,8 @@ describe('view-model / notebook-editor', () => {
         disableInjector();
     });
 
-    function createNotebookEditor(mockNotebook?: any) {
-        const notebookEditor = new NotebookEditorViewModel(mockNotebook);
+    function createNotebookEditor() {
+        const notebookEditor = new NotebookEditorViewModel();
 
         const mockLog: any = {
             info: () => {},
@@ -19,21 +18,13 @@ describe('view-model / notebook-editor', () => {
         };
         notebookEditor.log = mockLog;
 
-        const mockNotebookId: any = { 
-            a: "notebook id", 
+        const mockUntitledNotebookId: any = { 
+            a: "untitled notebook id", 
             displayName: () => "/a/path",
             getContainingPath: () => "/a/path",
         };
         const mockRepository: any = {
-            makeUntitledNotebookId: () => mockNotebookId,
-            readNotebook: async (notebookId: INotebookStorageId) => {
-                return {
-                    data: {
-                        cells: [],
-                    },
-                    readOnly: false,
-                };
-            },
+            makeUntitledNotebookId: () => mockUntitledNotebookId,
         };
         notebookEditor.notebookRepository = mockRepository;
 
@@ -52,7 +43,7 @@ describe('view-model / notebook-editor', () => {
 
         const mockEvaluator: any = {
             installNotebook: () => {},
-            stopEvaluation: () => {},
+            stopEvaluation: () => {},            
             onEvaluationEvent: new EventSource<BasicEventHandler>(),
         };
         notebookEditor.evaluator = mockEvaluator;
@@ -77,20 +68,39 @@ describe('view-model / notebook-editor', () => {
             mockRepository,
             mockIdGenerator,
             mockConfirmationDialog,
-            mockNotebookId,
+            mockUntitledNotebookId,
             mockUndoRedo,
         };
     }
 
-    async function createNotebookEditorWithNotebook() {
+    function createNotebookEditorWithNotebook(notebookFields?: any) {
+
+        const mockNotebookId: any = { 
+            a: "notebook id 2", 
+            displayName: () => "/another/path",
+            getContainingPath: () => "/another/path",
+        };
+
+        const mockNotebook: any = {
+            serializeForEval() { 
+                return {};
+            },
+            storageId: mockNotebookId,
+            save: jest.fn(),
+            saveAs: jest.fn(),
+            unsaved: notebookFields?.unsaved || false,
+            readOnly: notebookFields?.readNotebook || false,
+            isModified: notebookFields?.isModified || false,
+        };
 
         const result = createNotebookEditor();
 
-        const notebook = (await result.notebookEditor.newNotebook())!;
+        result.notebookEditor.notebook = mockNotebook;
 
         return {
             ...result,
-            notebook,
+            mockNotebook,
+            mockNotebookId,
         };
     }
 
@@ -103,18 +113,19 @@ describe('view-model / notebook-editor', () => {
 
     test("can create a new notebook", async () => {
 
-        const { notebookEditor, notebook, mockNotebookId } = await createNotebookEditorWithNotebook();
+        const { notebookEditor } = createNotebookEditor();
 
-        expect(notebook).toBeDefined();
+        const notebook = await notebookEditor.newNotebook();
+
+        expect(notebookEditor.notebook).toBeDefined();
         expect(notebookEditor.notebook).toBe(notebook);
-        expect(notebook.storageId).toBe(mockNotebookId);
     });
 
     test("creating a new notebook over a modified notebook prompts the user to save", async () => {
 
-        const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockNotebook } = createNotebookEditorWithNotebook();
         
-        notebook.setModified(true);
+        mockNotebook.isModified = true;
 
         notebookEditor.promptSave = jest.fn(async () => true);
 
@@ -126,9 +137,7 @@ describe('view-model / notebook-editor', () => {
 
     test("can prompt save and user can choose to abort", async () => {
 
-        const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
-        
-        notebook.setModified(true);
+        const { notebookEditor, mockNotebook, mockConfirmationDialog } = createNotebookEditorWithNotebook({ isModified: true });
 
         // User cancels creation of the new notebook.
         mockConfirmationDialog.show = async () => SaveChoice.Cancel;
@@ -138,10 +147,8 @@ describe('view-model / notebook-editor', () => {
 
     test("can prompt save and user can choose to save", async () => {
 
-        const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockNotebook, mockConfirmationDialog } = createNotebookEditorWithNotebook({ isModified: true });
         
-        notebook.setModified(true);
-
         notebookEditor.saveNotebook = jest.fn();
 
         // User chooses to save the notebook.
@@ -153,10 +160,8 @@ describe('view-model / notebook-editor', () => {
 
     test("can prompt save and user can choose not to save", async () => {
 
-        const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockNotebook, mockConfirmationDialog } = createNotebookEditorWithNotebook({ isModified: true });
         
-        notebook.setModified(true);
-
         notebookEditor.saveNotebook = jest.fn();
 
         // User chooses to save the notebook.
@@ -178,24 +183,25 @@ describe('view-model / notebook-editor', () => {
             getContainingPath: () => "/a/path",
         };
         mockRepository.showNotebookOpenDialog = async () => notebookToOpenId;
+
+        const mockNotebook: any = {
+            serializeForEval() {
+                return {};
+            },
+            storageId: notebookToOpenId,
+        };
         mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
             expect(notebookId).toBe(notebookToOpenId);
 
             notebookWasLoaded = true;
 
-            return {
-                data: {
-                    cells: [],
-                },
-                readOnly: false,
-            };
+            return mockNotebook;
         };
 
         const notebook = await notebookEditor.openNotebook();
 
         expect(notebook).toBeDefined();
         expect(notebookEditor.notebook).toBe(notebook);
-        expect(notebook!.storageId).toBe(notebookToOpenId);
         expect(notebookWasLoaded).toBe(true);
     });
 
@@ -216,6 +222,15 @@ describe('view-model / notebook-editor', () => {
 
         mockRepository.showNotebookOpenDialog = async () => undefined;
 
+        const mockNotebook: any = {
+            serializeForEval() {
+                return {};
+            },
+        };
+        mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
+            return mockNotebook;
+        };
+
         notebookEditor.promptSave = jest.fn(async () => true);
 
         await notebookEditor.openNotebook();
@@ -234,32 +249,44 @@ describe('view-model / notebook-editor', () => {
             displayName: () => "/a/path",
             getContainingPath: () => "/a/path",
         };
+        const mockNotebook: any = {
+            serializeForEval() {
+                return {};
+            },
+            storageId: notebookToOpenId,
+        };
         mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
             expect(notebookId).toBe(notebookToOpenId);
 
             notebookWasLoaded = true;
 
-            return {
-                data: {
-                    cells: [],
-                },
-                readOnly: false,
-            };
+            return mockNotebook;
         };
 
         const notebook = await notebookEditor.openSpecificNotebook(notebookToOpenId);
 
         expect(notebook).toBeDefined();
         expect(notebookEditor.notebook).toBe(notebook);
-        expect(notebook?.storageId).toBe(notebookToOpenId);
         expect(notebookWasLoaded).toBe(true);
     });
 
     test("opening a specific notebook prompts the user to save the current notebook", async () => {
 
-        const { notebookEditor, notebook, mockConfirmationDialog } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockRepository } = createNotebookEditorWithNotebook();
 
         notebookEditor.promptSave = jest.fn(async () => true);
+
+        const mockNotebook: any = {
+            serializeForEval() {
+                return {};
+            },
+            storageId: {
+                getContainingPath: () => "/a/path",
+            },
+        };
+        mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
+            return mockNotebook;
+        };
 
         const notebookToOpenId: any = { 
             a: "another notebook id", 
@@ -273,28 +300,19 @@ describe('view-model / notebook-editor', () => {
 
     test("can save a previously saved notebook", async () => {
 
-        const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockNotebook } = createNotebookEditorWithNotebook();
 
-
-        notebook.save = jest.fn();
-
-        //
-        // TODO: Forcing these vars is a bit of a hack. There must be a better way to test this.
-        //
-        (notebook as any).unsaved = false;
-        (notebook as any).readOnly = false;
-        
         await notebookEditor.saveNotebook();
 
-        expect(notebook.save).toHaveBeenCalledTimes(1);
+        expect(mockNotebook.save).toHaveBeenCalledTimes(1);
     });
 
     test("save defaults to 'save as' for an unsaved notebook", async () => {
 
-        const { notebookEditor, notebook } = await createNotebookEditorWithNotebook();
-
-        // Force the code path that defaults to "save as".
-        notebook.setModified(true);
+        const { notebookEditor } = createNotebookEditorWithNotebook({
+            unsaved: true, // Force the code path that defaults to "save as".
+            readOnly: true,
+        });
 
         notebookEditor.saveNotebookAs = jest.fn();
 
@@ -303,55 +321,67 @@ describe('view-model / notebook-editor', () => {
         expect(notebookEditor.saveNotebookAs).toHaveBeenCalledTimes(1);
     });
 
-    test("can save a notebook as a new file", async () => {
+    test("can save a notebook as", async () => {
 
-        const { notebookEditor, notebook, mockRepository } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockNotebook, mockRepository } = createNotebookEditorWithNotebook();
 
         const notebookToSaveId: any = { 
-            a: "another notebook id", 
-            displayName: () => "/a/path",
-            getContainingPath: () => "/a/path",
+            a: "save as notebook id", 
+            displayName: () => "/a/different/path",
+            getContainingPath: () => "/a/different/path",
         };
         mockRepository.showNotebookSaveAsDialog = async () => notebookToSaveId;
 
-        notebook.saveAs = jest.fn();
-
         await notebookEditor.saveNotebookAs();
 
-        expect(notebook.saveAs).toHaveBeenCalledTimes(1);
-        expect(notebook.saveAs).toHaveBeenCalledWith(notebookToSaveId);
+        expect(mockNotebook.saveAs).toHaveBeenCalledTimes(1);
+        expect(mockNotebook.saveAs).toHaveBeenCalledWith(notebookToSaveId);
     });
 
     test("can reload notebook", async () => {
 
-        const { notebookEditor, mockRepository, mockNotebookId } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockRepository, mockNotebookId } = createNotebookEditorWithNotebook();
 
         let notebookWasLoaded = false;
+
+        const mockNotebookReloaded: any = {
+            serializeForEval() { 
+                return {};
+            },
+            storageId: mockNotebookId,
+        };
         
         mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
-            expect(notebookId).toBe(mockNotebookId);
+            expect(notebookId.getContainingPath()).toEqual(mockNotebookId.getContainingPath());
 
             notebookWasLoaded = true;
 
-            return {
-                data: {
-                    cells: [],
-                },
-                readOnly: false,
-            };
+            return mockNotebookReloaded;
         };
 
         await notebookEditor.reloadNotebook();
 
         expect(notebookWasLoaded).toBe(true);
+        expect(notebookEditor.notebook).toBeDefined();
     });
-
 
     test("reloading a notebook prompts the user to save the current notebook", async () => {
 
-        const { notebookEditor } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockRepository } = createNotebookEditorWithNotebook();
 
         notebookEditor.promptSave = jest.fn(async () => true);
+
+        const mockNotebook: any = {
+            serializeForEval() {
+                return {};
+            },
+            storageId: {
+                getContainingPath: () => "/a/path",
+            },
+        };
+        mockRepository.readNotebook = async (notebookId: INotebookStorageId) => {
+            return mockNotebook;
+        };
 
         await notebookEditor.reloadNotebook();
 
@@ -360,13 +390,7 @@ describe('view-model / notebook-editor', () => {
 
     test("constructing the view model with a notebook clears the undo stack", () => {
 
-        const mockNotebook: any = {
-            storageId: {
-                getContainingPath: () => "/a/path",
-            },
-        };
-
-        const { notebookEditor, mockUndoRedo } = createNotebookEditor(mockNotebook);
+        const { notebookEditor, mockUndoRedo } = createNotebookEditorWithNotebook();
 
         notebookEditor.mount();
 
@@ -376,7 +400,9 @@ describe('view-model / notebook-editor', () => {
 
     test("opening a new notebook clears the undo stack", async () => {
 
-        const { notebook, mockUndoRedo } = await createNotebookEditorWithNotebook();
+        const { notebookEditor, mockUndoRedo } = createNotebookEditor();
+
+        const notebook = await notebookEditor.newNotebook();
 
         expect(mockUndoRedo.clearStack).toHaveBeenCalledTimes(1);
         expect(mockUndoRedo.clearStack).toHaveBeenCalledWith(notebook);

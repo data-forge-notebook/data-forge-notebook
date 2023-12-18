@@ -10,10 +10,10 @@ import { ICommander, ICommanderId } from "../../services/commander";
 import { humanizeAccelerator, ICommand } from "../../services/command";
 import { IPlatform, IPlatformId } from "../../services/platform";
 import * as path from "path";
-import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { IRecentFiles, IRecentFiles_ID } from "../../services/recent-files";
 import { WelcomeScreen } from "./welcome-screen";
 import { observer } from "mobx-react";
+import { IExampleNotebook, INotebookRepositoryId, INotebookRepository } from "../../services/notebook-repository";
 
 export interface INotebookEditorProps {
     //

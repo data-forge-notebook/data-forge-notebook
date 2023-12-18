@@ -1,4 +1,4 @@
-import { ISerializedNotebook1 } from "model";
+import { INotebookViewModel } from "../view-model/notebook";
 
 //
 // Reference to an example notebook.
@@ -59,12 +59,12 @@ export interface INotebookRepository {
     //
     // Writes a notebook to storage.
     //
-    writeNotebook(notebook: ISerializedNotebook1, notebookId: INotebookStorageId): Promise<void>;
+    writeNotebook(notebook: INotebookViewModel, notebookId: INotebookStorageId): Promise<void>;
 
     //
     // Reads a notebook from storage.
     //
-    readNotebook(notebookId: INotebookStorageId): Promise<{ data: ISerializedNotebook1, readOnly: boolean }>;
+    readNotebook(notebookId: INotebookStorageId): Promise<INotebookViewModel>;
 
     //
     // Makes the id for a new untititled notebook.

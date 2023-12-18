@@ -4,7 +4,6 @@ export { NotebookEditorViewModel } from "./view-model/notebook-editor";
 export { NotebookEditor } from "./view/notebook/notebook-editor";
 export * from "./view-model/deserialize";
 
-export { INotebookRepositoryId, INotebookStorageId, INotebookRepository } from "storage";
 export { IIdGenerator, IIdGeneratorId } from "utils";
 export { IConfirmationDialogId, IConfirmationDialog, IConfirmOptions } from "./services/confirmation-dialog";
 export * from "./services/evaluator-client";
@@ -17,6 +16,7 @@ export * from "./services/open";
 export * from "./services/paths";
 export * from "./services/zoom";
 export * from "./services/clipboard";
+export * from "./services/notebook-repository";
 
 import "./services/impl/plugin-repository";
 import "./services/impl/date-provider";

@@ -2,11 +2,10 @@ import { ICellViewModel } from "./cell";
 import { INotebookCaretPosition } from "./notebook-caret-position";
 import { IEventSource, BasicEventHandler, EventSource, ILog, ILogId } from "utils";
 import { ISerializedNotebook1 } from "model";
-import { INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { InjectableClass, InjectProperty } from "@codecapers/fusion";
 import { v4 as uuid } from "uuid";
 import { action, computed, makeObservable, observable } from "mobx";
-import { serializeNotebook } from "./serialize";
+import { INotebookStorageId, INotebookRepositoryId, INotebookRepository } from "../services/notebook-repository";
 
 export const notebookVersion = 4;
 
@@ -580,8 +579,7 @@ export class NotebookViewModel implements INotebookViewModel {
     async _save(notebookId: INotebookStorageId): Promise<void> {
         await this.flushChanges();
 
-        const serialized = serializeNotebook(this);
-        await this.notebookRepository.writeNotebook(serialized, notebookId);
+        await this.notebookRepository.writeNotebook(this, notebookId);
 
         this.makeUnmodified();
     }

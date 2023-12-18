@@ -2,11 +2,10 @@ import { InjectProperty, InjectableSingleton } from "@codecapers/fusion";
 import * as path from "path";
 import { IFile, IFileId } from "./file";
 import { IIdGenerator, IIdGeneratorId } from "utils";
-import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "storage";
 import { IDialogs, IDialogsId } from "./dialogs";
-import { ISerializedNotebook1 } from "model";
-import { IPaths, IPaths_ID } from "notebook-editor/build/services/paths";
 import { exampleNotebooks } from "../data/example-notebooks";
+import { INotebookViewModel } from "notebook-editor/build/view-model/notebook";
+import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId, IPaths, IPaths_ID, deserializeNotebook } from "notebook-editor";
 
 //
 // Identifies a notebook in storage.
@@ -120,7 +119,7 @@ export class NotebookRepository implements INotebookRepository {
     //
     // Writes a notebook to storage.
     //
-    async writeNotebook(notebook: ISerializedNotebook1, notebookId: INotebookStorageId): Promise<void> {
+    async writeNotebook(notebook: INotebookViewModel, notebookId: INotebookStorageId): Promise<void> {
         const id = notebookId as NotebookStorageId;
         const fileName = id.getFileName();
         if (fileName === undefined) {
@@ -137,7 +136,7 @@ export class NotebookRepository implements INotebookRepository {
     //
     // Reads a notebook from storage.
     //
-    async readNotebook(notebookId: INotebookStorageId): Promise<{ data: ISerializedNotebook1, readOnly: boolean }> {
+    async readNotebook(notebookId: INotebookStorageId): Promise<INotebookViewModel> {
         const id = notebookId as NotebookStorageId;
         const fileName = id.getFileName();
         if (fileName === undefined) {
@@ -150,7 +149,7 @@ export class NotebookRepository implements INotebookRepository {
         const fullPath = path.join(containingPath, fileName);
         const data = await this.file.readJsonFile(fullPath);
         const readOnly = await this.file.isReadOnly(fullPath);
-        return { data, readOnly };
+        return deserializeNotebook(notebookId, false, readOnly, data);
     }
 
     //

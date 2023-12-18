@@ -8,9 +8,9 @@ import { ISettings, ISettings_ID } from '../../services/settings';
 import { IOpen, IOpen_ID } from '../../services/open';
 import { ILog, ILogId } from 'utils';
 import { updateState } from 'browser-utils';
-import { INotebookRepository, INotebookRepositoryId } from 'storage';
 import { Button } from '@blueprintjs/core';
 import { IPaths, IPaths_ID } from '../../services/paths';
+import { INotebookRepositoryId, INotebookRepository } from '../../services/notebook-repository';
 
 const headingStyle = {
     fontSize: "1.2em",
