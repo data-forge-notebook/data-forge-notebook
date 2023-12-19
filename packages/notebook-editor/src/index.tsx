@@ -2,7 +2,9 @@ import React from "react";
 export { NotebookViewModel } from "./view-model/notebook";
 export { NotebookEditorViewModel } from "./view-model/notebook-editor";
 export { NotebookEditor } from "./view/notebook/notebook-editor";
-export * from "./serialization/json/deserialize";
+export * as jsonSerialization from "./serialization/json/serialize";
+export * as jsonDeserialization from "./serialization/json/deserialize";
+export * as markdownSerialization from "./serialization/markdown/serialize";
 
 export { IIdGenerator, IIdGeneratorId } from "utils";
 export { IConfirmationDialogId, IConfirmationDialog, IConfirmOptions } from "./services/confirmation-dialog";
