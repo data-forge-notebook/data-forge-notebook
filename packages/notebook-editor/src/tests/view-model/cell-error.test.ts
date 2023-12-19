@@ -1,6 +1,6 @@
 import { CellErrorViewModel } from "../../view-model/cell-error";
-import { deserializeCellError } from "../../view-model/deserialize";
-import { serializeError } from "../../view-model/serialize";
+import { deserializeCellError } from "../../serialization/json/deserialize";
+import { serializeError } from "../../serialization/json/serialize";
 
 describe("view-model / cell-error", () => {
 

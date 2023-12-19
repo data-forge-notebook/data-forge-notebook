@@ -3,8 +3,8 @@ import { ICellViewModel } from "../../view-model/cell";
 import { NotebookViewModel } from "../../view-model/notebook";
 import { expectEventRaised } from "../lib/utils";
 import { disableInjector } from "@codecapers/fusion";
-import { serializeNotebook } from "../../view-model/serialize";
-import { deserializeNotebook } from "../../view-model/deserialize";
+import { serializeNotebook } from "../../serialization/json/serialize";
+import { deserializeNotebook } from "../../serialization/json/deserialize";
 
 describe('view-model / notebook-only', () => {
 

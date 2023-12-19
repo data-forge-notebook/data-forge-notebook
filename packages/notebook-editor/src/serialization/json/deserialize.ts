@@ -1,12 +1,12 @@
 import { CellType, ISerializedCell1, ISerializedCellError1, ISerializedCellOutput1, ISerializedCellOutputValue1, ISerializedNotebook1 } from "model";
-import { CellErrorViewModel, ICellErrorViewModel } from "./cell-error";
-import { CellOutputValueViewModel, ICellOutputValueViewModel } from "./cell-output-value";
-import { CellOutputViewModel, ICellOutputViewModel } from "./cell-output";
-import { CodeCellViewModel, ICodeCellViewModel } from "./code-cell";
-import { IMarkdownCellViewModel, MarkdownCellViewModel } from "./markdown-cell";
-import { INotebookViewModel, NotebookViewModel } from "./notebook";
-import { ICellViewModel } from "./cell";
-import { INotebookStorageId } from "../services/notebook-repository";
+import { CellErrorViewModel, ICellErrorViewModel } from "../../view-model/cell-error";
+import { CellOutputValueViewModel, ICellOutputValueViewModel } from "../../view-model/cell-output-value";
+import { CellOutputViewModel, ICellOutputViewModel } from "../../view-model/cell-output";
+import { CodeCellViewModel, ICodeCellViewModel } from "../../view-model/code-cell";
+import { IMarkdownCellViewModel, MarkdownCellViewModel } from "../../view-model/markdown-cell";
+import { INotebookViewModel, NotebookViewModel } from "../../view-model/notebook";
+import { ICellViewModel } from "../../view-model/cell";
+import { INotebookStorageId } from "../../services/notebook-repository";
 
 //
 // Deserialize the model from a previously serialized data structure.

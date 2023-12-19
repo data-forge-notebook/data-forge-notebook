@@ -9,7 +9,7 @@ import { IChange } from "../services/undoredo";
 import { ICellViewModel } from "../view-model/cell";
 import { INotebookViewModel } from "../view-model/notebook";
 import { IIdGenerator, IIdGeneratorId } from "utils";
-import { cellViewModelFactory } from "../view-model/deserialize";
+import { cellViewModelFactory } from "../serialization/json/deserialize";
 
 @InjectableClass()
 export class AddCellChange implements IChange {

@@ -1,11 +1,11 @@
 import { CellType, ISerializedCell1, ISerializedCellError1, ISerializedCellOutput1, ISerializedCellOutputValue1, ISerializedNotebook1 } from "model";
-import { ICodeCellViewModel } from "./code-cell";
-import { IMarkdownCellViewModel } from "./markdown-cell";
-import { ICellOutputViewModel } from "./cell-output";
-import { ICellErrorViewModel } from "./cell-error";
-import { INotebookViewModel } from "./notebook";
-import { ICellViewModel } from "./cell";
-import { ICellOutputValueViewModel } from "./cell-output-value";
+import { ICodeCellViewModel } from "../../view-model/code-cell";
+import { IMarkdownCellViewModel } from "../../view-model/markdown-cell";
+import { ICellOutputViewModel } from "../../view-model/cell-output";
+import { ICellErrorViewModel } from "../../view-model/cell-error";
+import { INotebookViewModel } from "../../view-model/notebook";
+import { ICellViewModel } from "../../view-model/cell";
+import { ICellOutputValueViewModel } from "../../view-model/cell-output-value";
 
 export const notebookVersion = 3;
 

@@ -1,8 +1,8 @@
 import { CellType } from "model";
 import { MarkdownCellViewModel } from "../../view-model/markdown-cell";
 import { expectEventNotRaised, expectEventRaised } from "../lib/utils";
-import { serializeMarkdownCell } from "../../view-model/serialize";
-import { deserializeMarkdownCell } from "../../view-model/deserialize";
+import { serializeMarkdownCell } from "../../serialization/json/serialize";
+import { deserializeMarkdownCell } from "../../serialization/json/deserialize";
 
 describe("view-model / markdown-cell", () => {
 

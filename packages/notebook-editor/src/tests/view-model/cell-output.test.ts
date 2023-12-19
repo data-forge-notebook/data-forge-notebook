@@ -1,5 +1,5 @@
 import { CellOutputViewModel } from "../../view-model/cell-output";
-import { serializeCell, serializeCellOutput } from "../../view-model/serialize";
+import { serializeCell, serializeCellOutput } from "../../serialization/json/serialize";
 
 describe("view-model / cell-output", () => {
 

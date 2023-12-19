@@ -1,6 +1,6 @@
 import { CellOutputValueViewModel } from "../../view-model/cell-output-value";
-import { deserializeCellOutputValue } from "../../view-model/deserialize";
-import { serializeCellOutputValue } from "../../view-model/serialize";
+import { deserializeCellOutputValue } from "../../serialization/json/deserialize";
+import { serializeCellOutputValue } from "../../serialization/json/serialize";
 
 describe("view-model / cell-output-value", () => {
 

@@ -16,7 +16,7 @@ import { IZoom, IZoomId } from "../services/zoom";
 import { ICellViewModel } from "./cell";
 import { CellErrorViewModel } from "./cell-error";
 import { action, computed, makeObservable, observable } from "mobx";
-import { deserializeCellOutput, deserializeNotebook } from "./deserialize";
+import { deserializeCellOutput, deserializeNotebook } from "../serialization/json/deserialize";
 import { INotebookStorageId, INotebookRepositoryId, INotebookRepository } from "../services/notebook-repository";
 
 type OpenNotebookChangedEventHandler = (isReload: boolean) => Promise<void>;

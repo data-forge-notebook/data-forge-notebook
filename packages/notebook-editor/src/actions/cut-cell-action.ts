@@ -2,7 +2,7 @@ import { DeleteCellChange } from "../changes/delete-cell-change";
 import { IAction, IActionContext } from "../services/action";
 import { DeclareCommand } from "../services/command";
 import { IChange } from "../services/undoredo";
-import { serializeCell } from "../view-model/serialize";
+import { serializeCell } from "../serialization/json/serialize";
 
 @DeclareCommand({
     id: "cut-cell", 

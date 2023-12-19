@@ -8,7 +8,7 @@ import { IIdGeneratorId, IIdGenerator } from "utils";
 import { IChange } from "../services/undoredo";
 import { ICellViewModel } from "../view-model/cell";
 import { INotebookViewModel } from "../view-model/notebook";
-import { cellViewModelFactory } from "../view-model/deserialize";
+import { cellViewModelFactory } from "../serialization/json/deserialize";
 
 //
 @InjectableClass()

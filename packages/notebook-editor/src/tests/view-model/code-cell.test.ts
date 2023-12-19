@@ -4,9 +4,9 @@ import { ICellErrorViewModel } from "../../view-model/cell-error";
 import { ICellOutputViewModel } from "../../view-model/cell-output";
 import { CodeCellViewModel } from "../../view-model/code-cell";
 import moment from "moment";
-import { serializeCodeCell } from "../../view-model/serialize";
+import { serializeCodeCell } from "../../serialization/json/serialize";
 import { serialize } from "v8";
-import { deserializeCodeCell } from "../../view-model/deserialize";
+import { deserializeCodeCell } from "../../serialization/json/deserialize";
 
 describe("view-model / code-cell", () => {
     

@@ -1,7 +1,7 @@
 import { IAction, IActionContext } from "../services/action";
 import { DeclareCommand } from "../services/command";
 import { IChange } from "../services/undoredo";
-import { serializeCell } from "../view-model/serialize";
+import { serializeCell } from "../serialization/json/serialize";
 
 @DeclareCommand({
     id: "copy-cell", 
