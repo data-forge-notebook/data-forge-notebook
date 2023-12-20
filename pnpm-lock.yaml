@@ -325,9 +325,6 @@ importers:
       serialize-error:
         specifier: ^11.0.0
         version: 11.0.0
-      storage:
-        specifier: workspace:*
-        version: link:../storage
       typy:
         specifier: ^3.3.0
         version: 3.3.0
@@ -418,22 +415,6 @@ importers:
         version: 10.9.1(@types/node@16.11.36)(typescript@4.6.4)
       typescript:
         specifier: ^4.6.4
-        version: 4.6.4
-
-  packages/storage:
-    dependencies:
-      '@codecapers/fusion':
-        specifier: 1.0.15
-        version: 1.0.15
-      model:
-        specifier: workspace:*
-        version: link:../model
-    devDependencies:
-      '@types/node':
-        specifier: ^16.11.7
-        version: 16.11.36
-      typescript:
-        specifier: ^4.6.2
         version: 4.6.4
 
   packages/utils:
@@ -761,9 +742,6 @@ importers:
       react-dom:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
-      storage:
-        specifier: workspace:*
-        version: link:../../packages/storage
       utils:
         specifier: workspace:*
         version: link:../../packages/utils
@@ -11033,7 +11011,7 @@ packages:
       map-cache: 0.2.2
 
   /fresh@0.5.2:
-    resolution: {integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=}
+    resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
 
   /from2@2.3.0:

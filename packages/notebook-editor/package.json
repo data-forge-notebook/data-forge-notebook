@@ -50,7 +50,6 @@
         "react-fps-stats": "^0.1.1",
         "react-markdown": "^8.0.3",
         "serialize-error": "^11.0.0",
-        "storage": "workspace:*",
         "typy": "^3.3.0",
         "utils": "workspace:*",
         "uuid": "^9.0.0"
