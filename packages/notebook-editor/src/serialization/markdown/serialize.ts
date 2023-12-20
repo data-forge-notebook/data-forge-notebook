@@ -15,12 +15,16 @@ export const notebookVersion = 4;
 export function serializeCodeCell(cell: ICodeCellViewModel): string {
     const startCode = "```typecript";
     const endCode = "```";
+    const errors = cell.errors.map(error => serializeError(error)).join("\n######\n");
+    const output = cell.output.map(output => serializeCellOutput(output)).join("\n######\n");
     return (
         `${startCode}\n` +
         `${cell.text}\n` +
         `${endCode}\n` +
-        `${cell.errors.map(error => serializeError(error)).join("\n")}\n` +
-        `${cell.output.map(output => serializeCellOutput(output)).join("\n")}\n`
+        `\n######\n` +
+        `${errors}\n` +
+        `\n######\n` +
+        `${output}\n`
     );
 }    
 
@@ -94,6 +98,6 @@ export function serializeNotebook(notebook: INotebookViewModel): string {
         `description: ${notebook.description}\n` +
         `version: ${notebookVersion}\n` +
         `---\n` +
-        `${notebook.cells.map(serializeCell).join("\n")}\n`
+        `${notebook.cells.map(serializeCell).join("\n------\n")}\n`
     );
 }
