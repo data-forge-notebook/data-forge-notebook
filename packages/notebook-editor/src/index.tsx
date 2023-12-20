@@ -5,6 +5,7 @@ export { NotebookEditor } from "./view/notebook/notebook-editor";
 export * as jsonSerialization from "./serialization/json/serialize";
 export * as jsonDeserialization from "./serialization/json/deserialize";
 export * as markdownSerialization from "./serialization/markdown/serialize";
+export * as markdownDeserialization from "./serialization/markdown/deserialize";
 
 export { IIdGenerator, IIdGeneratorId } from "utils";
 export { IConfirmationDialogId, IConfirmationDialog, IConfirmOptions } from "./services/confirmation-dialog";

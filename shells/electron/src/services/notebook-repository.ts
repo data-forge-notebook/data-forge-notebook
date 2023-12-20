@@ -5,7 +5,7 @@ import { IIdGenerator, IIdGeneratorId } from "utils";
 import { IDialogs, IDialogsId } from "./dialogs";
 import { exampleNotebooks } from "../data/example-notebooks";
 import { INotebookViewModel } from "notebook-editor/build/view-model/notebook";
-import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId, IPaths, IPaths_ID, jsonDeserialization, markdownSerialization } from "notebook-editor";
+import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId, IPaths, IPaths_ID, jsonDeserialization, markdownSerialization, markdownDeserialization } from "notebook-editor";
 
 //
 // Identifies a notebook in storage.
@@ -147,9 +147,16 @@ export class NotebookRepository implements INotebookRepository {
             throw new Error("Can't write notebook until the containing path has been set in the notebook id.");
         }
         const fullPath = path.join(containingPath, fileName);
-        const data = await this.file.readJsonFile(fullPath);
         const readOnly = await this.file.isReadOnly(fullPath);
-        return jsonDeserialization.deserializeNotebook(notebookId, false, readOnly, data);
+        const dataStr = await this.file.readFile(fullPath);
+        if (dataStr.startsWith("{")) {
+            // Assume a JSON notebook.
+            return jsonDeserialization.deserializeNotebook(notebookId, false, readOnly, JSON.parse(dataStr));
+        }
+        else {
+            // Assume a markdown notebook.
+            return markdownDeserialization.deserializeNotebook(notebookId, false, readOnly, dataStr);
+        }
     }
 
     //

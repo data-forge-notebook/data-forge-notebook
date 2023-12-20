@@ -13,7 +13,7 @@ export const notebookVersion = 4;
 // Serialize to a data structure suitable for serialization.
 //
 export function serializeCodeCell(cell: ICodeCellViewModel): string {
-    const startCode = "```typecript";
+    const startCode = "```typescript";
     const endCode = "```";
     const errors = cell.errors.map(error => serializeError(error)).join("\n######\n");
     const output = cell.output.map(output => serializeCellOutput(output)).join("\n######\n");
