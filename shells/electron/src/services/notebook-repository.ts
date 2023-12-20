@@ -130,7 +130,7 @@ export class NotebookRepository implements INotebookRepository {
             throw new Error("Can't write notebook until the containing path has been set in the notebook id.");
         }
         const fullPath = path.join(containingPath, fileName);
-        await this.file.writeJsonFile(fullPath, markdownSerialization.serializeNotebook(notebook));
+        await this.file.writeFile(fullPath, markdownSerialization.serializeNotebook(notebook));
     }
 
     //
