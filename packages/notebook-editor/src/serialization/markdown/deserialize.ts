@@ -50,7 +50,7 @@ export function deserializeCodeCell(input: string): ICodeCellViewModel {
     for (let part of parts) {
         if (part.startsWith("```typescript")) {
             part = removeFirstLine(part);
-            if (part.endsWith("```\n")) {
+            if (part.endsWith("```") || part.endsWith("```\n")) {
                 part = removeLastLine(part);
             }
 
@@ -58,14 +58,14 @@ export function deserializeCodeCell(input: string): ICodeCellViewModel {
         }
         else if (part.startsWith("```json - error")) {
             part = removeFirstLine(part);
-            if (part.endsWith("```\n")) {
+            if (part.endsWith("```") || part.endsWith("```\n")) {
                 part = removeLastLine(part);
             }
             errors.push(deserializeCellError(part));
         }
         else if (part.startsWith("```json - output")) {
             part = removeFirstLine(part);
-            if (part.endsWith("```\n")) {
+            if (part.endsWith("```") || part.endsWith("```\n")) {
                 part = removeLastLine(part);
             }
             output.push(deserializeCellOutput(part));
