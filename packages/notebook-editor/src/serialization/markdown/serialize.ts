@@ -16,14 +16,15 @@ export function serializeCodeCell(cell: ICodeCellViewModel): string {
     const startCode = "```typescript";
     const endCode = "```";
     const errors = cell.errors.map(error => serializeError(error)).join("\n######\n");
+    
     const output = cell.output.map(output => serializeCellOutput(output)).join("\n######\n");
     return (
         `${startCode}\n` +
         `${cell.text}\n` +
         `${endCode}\n` +
-        `\n######\n` +
+        (errors.length > 0 ? `\n######\n` : ``) +
         `${errors}\n` +
-        `\n######\n` +
+        (output.length > 0 ? `\n######\n` : ``) +
         `${output}\n`
     );
 }    
