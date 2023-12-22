@@ -1,77 +1,95 @@
+---
+version: 4
+---
+```typescript
+display([
+    [ "timestamp", "open", "high", "low", "close" ],
+    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5],
+], "table");
+
+display([
+    { x: "1", y: "a" },
+    { x: "2", y: "b" },
+], "table");
+
+display({
+    x: "1",
+    y: "a",
+}, "table");
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "nodejs": "14.17.4",
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "e297e6d1-3249-11ec-ae8f-ef3292b6499b",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display([\r\n    [ \"timestamp\", \"open\", \"high\", \"low\", \"close\" ],\r\n    [1, 2, 3, 4, 5],\r\n    [1, 2, 3, 4, 5],\r\n    [1, 2, 3, 4, 5],\r\n], \"table\");\r\n\r\ndisplay([\r\n    { x: \"1\", y: \"a\" },\r\n    { x: \"2\", y: \"b\" },\r\n], \"table\");\r\n\r\ndisplay({\r\n    x: \"1\",\r\n    y: \"a\",\r\n}, \"table\");",
-            "lastEvaluationDate": "2023-11-19T16:36:02.255+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "table",
-                        "data": [
-                            [
-                                "timestamp",
-                                "open",
-                                "high",
-                                "low",
-                                "close"
-                            ],
-                            [
-                                1,
-                                2,
-                                3,
-                                4,
-                                5
-                            ],
-                            [
-                                1,
-                                2,
-                                3,
-                                4,
-                                5
-                            ],
-                            [
-                                1,
-                                2,
-                                3,
-                                4,
-                                5
-                            ]
-                        ]
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "table",
-                        "data": [
-                            {
-                                "x": "1",
-                                "y": "a"
-                            },
-                            {
-                                "x": "2",
-                                "y": "b"
-                            }
-                        ]
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "table",
-                        "data": {
-                            "x": "1",
-                            "y": "a"
-                        }
-                    }
-                }
+    "value": {
+        "displayType": "table",
+        "data": [
+            [
+                "timestamp",
+                "open",
+                "high",
+                "low",
+                "close"
             ],
-            "errors": [],
-            "height": 861
-        }
-    ]
+            [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        ]
+    }
 }
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "table",
+        "data": [
+            {
+                "x": "1",
+                "y": "a"
+            },
+            {
+                "x": "2",
+                "y": "b"
+            }
+        ]
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "table",
+        "data": {
+            "x": "1",
+            "y": "a"
+        }
+    }
+}
+```
+
+

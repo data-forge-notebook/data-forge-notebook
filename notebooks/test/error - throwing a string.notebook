@@ -1,19 +1,14 @@
-, {
-    "version": 1,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "throw \"foobar\";",
-            "lastEvaluationDate": "2020-03-18T14:21:03.096+10:00",
-            "output": [],
-            "errors": [
-                {
-                    "msg": "An error occurred."
-                }
-            ]
-        }
-    ]
-}
+---
+version: 4
+---
+```typescript
+throw "foobar";
+```
+
+######
+```json - error
+An error occurred.
+```
+
+
+

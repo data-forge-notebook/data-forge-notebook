@@ -1,732 +1,766 @@
+---
+description: Example of parsing JavaScript to an abstract syntax tree (AST) using Babel.
+version: 4
+---
+# JavaScript parsing example
+
+This is an example of parsing JavaScript code and manipulating the abstract syntax tree derived from [the Babel Plugin Handbook](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md).
+
+This is straightward way to learn the basics of creating [Babel plugins](https://babeljs.io/docs/en/plugins/).
+------
+## We need some code
+
+First we need some code to play with:
+------
+```typescript
+const code = 
+    `function square(n) {
+         return n * n;
+    }`;
+```
+
+
+
+------
+## Parse the code
+
+Now we use [Babylon](https://babeljs.io/docs/en/babylon.html) ([Babel's](https://babeljs.io/) parser) to parse the code:
+------
+```typescript
+import * as babylon from "babylon";
+
+const ast = babylon.parse(code);
+```
+
+
+
+------
+## Visualize the AST
+
+Parsing the code gives us an [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
+
+Let's visualize the structure of the AST:
+------
+```typescript
+display(ast);
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "description": "Example of parsing JavaScript to an abstract syntax tree (AST) using Babel.",
-    "cells": [
-        {
-            "id": "9c882d50-7efc-11ea-a340-f3285a3cd6bb",
-            "cellType": "markdown",
-            "code": "# JavaScript parsing example\r\n\r\nThis is an example of parsing JavaScript code and manipulating the abstract syntax tree derived from [the Babel Plugin Handbook](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md).\r\n\r\nThis is straightward way to learn the basics of creating [Babel plugins](https://babeljs.io/docs/en/plugins/).",
-            "lastEvaluationDate": "2020-04-15T19:41:40.348+10:00",
-            "output": [],
-            "errors": [],
-            "height": 144
-        },
-        {
-            "id": "42c96550-844b-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "markdown",
-            "code": "## We need some code\r\n\r\nFirst we need some code to play with:",
-            "lastEvaluationDate": "2020-04-22T14:08:43.787+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "45344ad0-844b-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "const code = \r\n    `function square(n) {\r\n         return n * n;\r\n    }`;",
-            "lastEvaluationDate": "2023-11-14T08:16:51.028+10:00",
-            "output": [],
-            "errors": [],
-            "height": 128
-        },
-        {
-            "id": "ab851260-844b-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "markdown",
-            "code": "## Parse the code\r\n\r\nNow we use [Babylon](https://babeljs.io/docs/en/babylon.html) ([Babel's](https://babeljs.io/) parser) to parse the code:",
-            "lastEvaluationDate": "2020-04-22T14:08:43.787+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "a6dc71e0-844b-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "import * as babylon from \"babylon\";\r\n\r\nconst ast = babylon.parse(code);",
-            "lastEvaluationDate": "2023-11-14T08:16:51.035+10:00",
-            "output": [],
-            "errors": [],
-            "height": 109
-        },
-        {
-            "id": "f1717660-844b-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "markdown",
-            "code": "## Visualize the AST\r\n\r\nParsing the code gives us an [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).\r\n\r\nLet's visualize the structure of the AST:",
-            "lastEvaluationDate": "2020-04-22T14:08:43.787+10:00",
-            "output": [],
-            "errors": [],
-            "height": 131
-        },
-        {
-            "id": "110b5e00-844c-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display(ast);",
-            "lastEvaluationDate": "2023-11-14T08:16:51.040+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": {
-                            "type": "File",
-                            "start": 0,
+    "value": {
+        "data": {
+            "type": "File",
+            "start": 0,
+            "end": 49,
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 5
+                }
+            },
+            "program": {
+                "type": "Program",
+                "start": 0,
+                "end": 49,
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 0
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 5
+                    }
+                },
+                "sourceType": "script",
+                "body": [
+                    {
+                        "type": "FunctionDeclaration",
+                        "start": 0,
+                        "end": 49,
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 0
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 5
+                            }
+                        },
+                        "id": {
+                            "type": "Identifier",
+                            "start": 9,
+                            "end": 15,
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 9
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 15
+                                },
+                                "identifierName": "square"
+                            },
+                            "name": "square"
+                        },
+                        "generator": false,
+                        "expression": false,
+                        "async": false,
+                        "params": [
+                            {
+                                "type": "Identifier",
+                                "start": 16,
+                                "end": 17,
+                                "loc": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 16
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 17
+                                    },
+                                    "identifierName": "n"
+                                },
+                                "name": "n"
+                            }
+                        ],
+                        "body": {
+                            "type": "BlockStatement",
+                            "start": 19,
                             "end": 49,
                             "loc": {
                                 "start": {
                                     "line": 1,
-                                    "column": 0
+                                    "column": 19
                                 },
                                 "end": {
                                     "line": 3,
                                     "column": 5
                                 }
                             },
-                            "program": {
-                                "type": "Program",
-                                "start": 0,
-                                "end": 49,
-                                "loc": {
-                                    "start": {
-                                        "line": 1,
-                                        "column": 0
-                                    },
-                                    "end": {
-                                        "line": 3,
-                                        "column": 5
-                                    }
-                                },
-                                "sourceType": "script",
-                                "body": [
-                                    {
-                                        "type": "FunctionDeclaration",
-                                        "start": 0,
-                                        "end": 49,
-                                        "loc": {
-                                            "start": {
-                                                "line": 1,
-                                                "column": 0
-                                            },
-                                            "end": {
-                                                "line": 3,
-                                                "column": 5
-                                            }
-                                        },
-                                        "id": {
-                                            "type": "Identifier",
-                                            "start": 9,
-                                            "end": 15,
-                                            "loc": {
-                                                "start": {
-                                                    "line": 1,
-                                                    "column": 9
-                                                },
-                                                "end": {
-                                                    "line": 1,
-                                                    "column": 15
-                                                },
-                                                "identifierName": "square"
-                                            },
-                                            "name": "square"
-                                        },
-                                        "generator": false,
-                                        "expression": false,
-                                        "async": false,
-                                        "params": [
-                                            {
-                                                "type": "Identifier",
-                                                "start": 16,
-                                                "end": 17,
-                                                "loc": {
-                                                    "start": {
-                                                        "line": 1,
-                                                        "column": 16
-                                                    },
-                                                    "end": {
-                                                        "line": 1,
-                                                        "column": 17
-                                                    },
-                                                    "identifierName": "n"
-                                                },
-                                                "name": "n"
-                                            }
-                                        ],
-                                        "body": {
-                                            "type": "BlockStatement",
-                                            "start": 19,
-                                            "end": 49,
-                                            "loc": {
-                                                "start": {
-                                                    "line": 1,
-                                                    "column": 19
-                                                },
-                                                "end": {
-                                                    "line": 3,
-                                                    "column": 5
-                                                }
-                                            },
-                                            "body": [
-                                                {
-                                                    "type": "ReturnStatement",
-                                                    "start": 30,
-                                                    "end": 43,
-                                                    "loc": {
-                                                        "start": {
-                                                            "line": 2,
-                                                            "column": 9
-                                                        },
-                                                        "end": {
-                                                            "line": 2,
-                                                            "column": 22
-                                                        }
-                                                    },
-                                                    "argument": {
-                                                        "type": "BinaryExpression",
-                                                        "start": 37,
-                                                        "end": 42,
-                                                        "loc": {
-                                                            "start": {
-                                                                "line": 2,
-                                                                "column": 16
-                                                            },
-                                                            "end": {
-                                                                "line": 2,
-                                                                "column": 21
-                                                            }
-                                                        },
-                                                        "left": {
-                                                            "type": "Identifier",
-                                                            "start": 37,
-                                                            "end": 38,
-                                                            "loc": {
-                                                                "start": {
-                                                                    "line": 2,
-                                                                    "column": 16
-                                                                },
-                                                                "end": {
-                                                                    "line": 2,
-                                                                    "column": 17
-                                                                },
-                                                                "identifierName": "n"
-                                                            },
-                                                            "name": "n"
-                                                        },
-                                                        "operator": "*",
-                                                        "right": {
-                                                            "type": "Identifier",
-                                                            "start": 41,
-                                                            "end": 42,
-                                                            "loc": {
-                                                                "start": {
-                                                                    "line": 2,
-                                                                    "column": 20
-                                                                },
-                                                                "end": {
-                                                                    "line": 2,
-                                                                    "column": 21
-                                                                },
-                                                                "identifierName": "n"
-                                                            },
-                                                            "name": "n"
-                                                        }
-                                                    }
-                                                }
-                                            ],
-                                            "directives": []
-                                        }
-                                    }
-                                ],
-                                "directives": []
-                            },
-                            "comments": [],
-                            "tokens": [
+                            "body": [
                                 {
-                                    "type": {
-                                        "label": "function",
-                                        "keyword": "function",
-                                        "beforeExpr": false,
-                                        "startsExpr": true,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
-                                    },
-                                    "value": "function",
-                                    "start": 0,
-                                    "end": 8,
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 0
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 8
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "name",
-                                        "beforeExpr": false,
-                                        "startsExpr": true,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
-                                    },
-                                    "value": "square",
-                                    "start": 9,
-                                    "end": 15,
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 9
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 15
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "(",
-                                        "beforeExpr": true,
-                                        "startsExpr": true,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
-                                    },
-                                    "start": 15,
-                                    "end": 16,
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 15
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 16
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "name",
-                                        "beforeExpr": false,
-                                        "startsExpr": true,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
-                                    },
-                                    "value": "n",
-                                    "start": 16,
-                                    "end": 17,
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 16
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 17
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": ")",
-                                        "beforeExpr": false,
-                                        "startsExpr": false,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
-                                    },
-                                    "start": 17,
-                                    "end": 18,
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 17
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 18
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "{",
-                                        "beforeExpr": true,
-                                        "startsExpr": true,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
-                                    },
-                                    "start": 19,
-                                    "end": 20,
-                                    "loc": {
-                                        "start": {
-                                            "line": 1,
-                                            "column": 19
-                                        },
-                                        "end": {
-                                            "line": 1,
-                                            "column": 20
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "return",
-                                        "keyword": "return",
-                                        "beforeExpr": true,
-                                        "startsExpr": false,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null,
-                                        "updateContext": null
-                                    },
-                                    "value": "return",
+                                    "type": "ReturnStatement",
                                     "start": 30,
-                                    "end": 36,
-                                    "loc": {
-                                        "start": {
-                                            "line": 2,
-                                            "column": 9
-                                        },
-                                        "end": {
-                                            "line": 2,
-                                            "column": 15
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "name",
-                                        "beforeExpr": false,
-                                        "startsExpr": true,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
-                                    },
-                                    "value": "n",
-                                    "start": 37,
-                                    "end": 38,
-                                    "loc": {
-                                        "start": {
-                                            "line": 2,
-                                            "column": 16
-                                        },
-                                        "end": {
-                                            "line": 2,
-                                            "column": 17
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "*",
-                                        "beforeExpr": true,
-                                        "startsExpr": false,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": 10,
-                                        "updateContext": null
-                                    },
-                                    "value": "*",
-                                    "start": 39,
-                                    "end": 40,
-                                    "loc": {
-                                        "start": {
-                                            "line": 2,
-                                            "column": 18
-                                        },
-                                        "end": {
-                                            "line": 2,
-                                            "column": 19
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "name",
-                                        "beforeExpr": false,
-                                        "startsExpr": true,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
-                                    },
-                                    "value": "n",
-                                    "start": 41,
-                                    "end": 42,
-                                    "loc": {
-                                        "start": {
-                                            "line": 2,
-                                            "column": 20
-                                        },
-                                        "end": {
-                                            "line": 2,
-                                            "column": 21
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": ";",
-                                        "beforeExpr": true,
-                                        "startsExpr": false,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null,
-                                        "updateContext": null
-                                    },
-                                    "start": 42,
                                     "end": 43,
                                     "loc": {
                                         "start": {
                                             "line": 2,
-                                            "column": 21
+                                            "column": 9
                                         },
                                         "end": {
                                             "line": 2,
                                             "column": 22
                                         }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "}",
-                                        "beforeExpr": false,
-                                        "startsExpr": false,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null
                                     },
-                                    "start": 48,
-                                    "end": 49,
-                                    "loc": {
-                                        "start": {
-                                            "line": 3,
-                                            "column": 4
+                                    "argument": {
+                                        "type": "BinaryExpression",
+                                        "start": 37,
+                                        "end": 42,
+                                        "loc": {
+                                            "start": {
+                                                "line": 2,
+                                                "column": 16
+                                            },
+                                            "end": {
+                                                "line": 2,
+                                                "column": 21
+                                            }
                                         },
-                                        "end": {
-                                            "line": 3,
-                                            "column": 5
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": {
-                                        "label": "eof",
-                                        "beforeExpr": false,
-                                        "startsExpr": false,
-                                        "rightAssociative": false,
-                                        "isLoop": false,
-                                        "isAssign": false,
-                                        "prefix": false,
-                                        "postfix": false,
-                                        "binop": null,
-                                        "updateContext": null
-                                    },
-                                    "start": 49,
-                                    "end": 49,
-                                    "loc": {
-                                        "start": {
-                                            "line": 3,
-                                            "column": 5
+                                        "left": {
+                                            "type": "Identifier",
+                                            "start": 37,
+                                            "end": 38,
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 16
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 17
+                                                },
+                                                "identifierName": "n"
+                                            },
+                                            "name": "n"
                                         },
-                                        "end": {
-                                            "line": 3,
-                                            "column": 5
+                                        "operator": "*",
+                                        "right": {
+                                            "type": "Identifier",
+                                            "start": 41,
+                                            "end": 42,
+                                            "loc": {
+                                                "start": {
+                                                    "line": 2,
+                                                    "column": 20
+                                                },
+                                                "end": {
+                                                    "line": 2,
+                                                    "column": 21
+                                                },
+                                                "identifierName": "n"
+                                            },
+                                            "name": "n"
                                         }
                                     }
                                 }
-                            ]
+                            ],
+                            "directives": []
+                        }
+                    }
+                ],
+                "directives": []
+            },
+            "comments": [],
+            "tokens": [
+                {
+                    "type": {
+                        "label": "function",
+                        "keyword": "function",
+                        "beforeExpr": false,
+                        "startsExpr": true,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "value": "function",
+                    "start": 0,
+                    "end": 8,
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 8
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "name",
+                        "beforeExpr": false,
+                        "startsExpr": true,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "value": "square",
+                    "start": 9,
+                    "end": 15,
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 9
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 15
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "(",
+                        "beforeExpr": true,
+                        "startsExpr": true,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "start": 15,
+                    "end": 16,
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 15
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 16
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "name",
+                        "beforeExpr": false,
+                        "startsExpr": true,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "value": "n",
+                    "start": 16,
+                    "end": 17,
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 16
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 17
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": ")",
+                        "beforeExpr": false,
+                        "startsExpr": false,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "start": 17,
+                    "end": 18,
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 17
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 18
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "{",
+                        "beforeExpr": true,
+                        "startsExpr": true,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "start": 19,
+                    "end": 20,
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 19
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 20
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "return",
+                        "keyword": "return",
+                        "beforeExpr": true,
+                        "startsExpr": false,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null,
+                        "updateContext": null
+                    },
+                    "value": "return",
+                    "start": 30,
+                    "end": 36,
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 9
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 15
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "name",
+                        "beforeExpr": false,
+                        "startsExpr": true,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "value": "n",
+                    "start": 37,
+                    "end": 38,
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 16
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 17
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "*",
+                        "beforeExpr": true,
+                        "startsExpr": false,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": 10,
+                        "updateContext": null
+                    },
+                    "value": "*",
+                    "start": 39,
+                    "end": 40,
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 18
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 19
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "name",
+                        "beforeExpr": false,
+                        "startsExpr": true,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "value": "n",
+                    "start": 41,
+                    "end": 42,
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 20
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 21
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": ";",
+                        "beforeExpr": true,
+                        "startsExpr": false,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null,
+                        "updateContext": null
+                    },
+                    "start": 42,
+                    "end": 43,
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 21
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 22
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "}",
+                        "beforeExpr": false,
+                        "startsExpr": false,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null
+                    },
+                    "start": 48,
+                    "end": 49,
+                    "loc": {
+                        "start": {
+                            "line": 3,
+                            "column": 4
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 5
+                        }
+                    }
+                },
+                {
+                    "type": {
+                        "label": "eof",
+                        "beforeExpr": false,
+                        "startsExpr": false,
+                        "rightAssociative": false,
+                        "isLoop": false,
+                        "isAssign": false,
+                        "prefix": false,
+                        "postfix": false,
+                        "binop": null,
+                        "updateContext": null
+                    },
+                    "start": 49,
+                    "end": 49,
+                    "loc": {
+                        "start": {
+                            "line": 3,
+                            "column": 5
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 5
                         }
                     }
                 }
-            ],
-            "errors": [],
-            "height": 275
-        },
-        {
-            "id": "d46aee60-844c-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "markdown",
-            "code": "## Traverse and modify\r\n\r\nNow we'll the [Babel traverse library](https://babeljs.io/docs/en/babel-traverse) and a [visitor](https://en.wikipedia.org/wiki/Visitor_pattern) to traverse the AST so that we can make changes to it.\r\n\r\nAs a trivial example we'll replace identifier with name `n` to `x`. Actually this isn't as trivial as it might first sound. Something like this is the basis of the \"refactor rename\" tool that's in Visual Studio Code.",
-            "lastEvaluationDate": "2020-04-22T14:08:43.787+10:00",
-            "output": [],
-            "errors": [],
-            "height": 150
-        },
-        {
-            "id": "0a557670-844e-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "import traverse from \"babel-traverse\";\r\n\r\ntraverse(ast, {\r\n    Identifier(path) {\r\n        if (path.node.name === \"n\") { // Replace name \"n\"\r\n            path.node.name = \"x\"      // with name \"x\"\r\n        }\r\n    }\r\n});",
-            "lastEvaluationDate": "2023-11-14T08:16:51.043+10:00",
-            "output": [],
-            "errors": [],
-            "height": 223
-        },
-        {
-            "id": "a103fc90-844e-11ea-9eb6-0771ca8fdcdc",
-            "cellType": "markdown",
-            "code": "## Convert back to JavaScript\r\n\r\nNow to check the changes we have made to the AST, let's use the [Babel generator library](https://babeljs.io/docs/en/babel-generator) to convert it back to JavaScript code so we can inspect it:",
-            "lastEvaluationDate": "2020-04-22T14:08:43.787+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "fb684bf0-7fc6-11ea-981f-79dff3053342",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "import generate from \"babel-generator\";\r\n\r\nconst generated = generate(ast, code);\r\ndisplay.text(generated.code);",
-            "lastEvaluationDate": "2023-11-14T08:16:51.045+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "!! An error occurred while evaluating notebook \"notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4\" details follow.\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Filename ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error source ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "Code evaluation\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Cell id ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "fb684bf0-7fc6-11ea-981f-79dff3053342\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error message ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "display.text is not a function\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error location ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "<no-location>\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Error stacktrace ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "TypeError: display.text is not a function\n    at notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4:52:21\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:571:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:202:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:563:26)\n    at notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4:50:11\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:571:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:202:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:563:26)\n    at notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4:37:9\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:571:17\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "== Translated error message and stack trace ==\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "{\n    \"display\": \"display.text is not a function\\r\\n at Code cell, line 4\",\n    \"cellId\": \"fb684bf0-7fc6-11ea-981f-79dff3053342\",\n    \"stack\": \" at Code cell, line 4\"\n}\n"
-                    }
-                }
-            ],
-            "errors": [
-                {
-                    "msg": "display.text is not a function\r\n at Code cell, line 4"
-                }
-            ],
-            "height": 1376
-        },
-        {
-            "id": "612a5af0-844f-11ea-96d1-e3855b65ec1a",
-            "cellType": "markdown",
-            "code": "## Further reading\r\n\r\nTo learn more about parsing JavaScript and writing Babel plugins, please see the Babel Plugin Handbook:\r\n\r\n[https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md)",
-            "lastEvaluationDate": "2020-04-22T14:12:14.033+10:00",
-            "output": [],
-            "errors": [],
-            "height": 131
+            ]
         }
-    ]
+    }
 }
+```
+
+
+------
+## Traverse and modify
+
+Now we'll the [Babel traverse library](https://babeljs.io/docs/en/babel-traverse) and a [visitor](https://en.wikipedia.org/wiki/Visitor_pattern) to traverse the AST so that we can make changes to it.
+
+As a trivial example we'll replace identifier with name `n` to `x`. Actually this isn't as trivial as it might first sound. Something like this is the basis of the "refactor rename" tool that's in Visual Studio Code.
+------
+```typescript
+import traverse from "babel-traverse";
+
+traverse(ast, {
+    Identifier(path) {
+        if (path.node.name === "n") { // Replace name "n"
+            path.node.name = "x"      // with name "x"
+        }
+    }
+});
+```
+
+
+
+------
+## Convert back to JavaScript
+
+Now to check the changes we have made to the AST, let's use the [Babel generator library](https://babeljs.io/docs/en/babel-generator) to convert it back to JavaScript code so we can inspect it:
+------
+```typescript
+import generate from "babel-generator";
+
+const generated = generate(ast, code);
+display.text(generated.code);
+```
+
+######
+```json - error
+display.text is not a function
+ at Code cell, line 4
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "!! An error occurred while evaluating notebook \"notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4\" details follow.\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "== Filename ==\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "== Error source ==\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "Code evaluation\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "== Cell id ==\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "fb684bf0-7fc6-11ea-981f-79dff3053342\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "== Error message ==\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "display.text is not a function\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "== Error location ==\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "<no-location>\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "== Error stacktrace ==\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "TypeError: display.text is not a function\n    at notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4:52:21\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:571:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:202:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:563:26)\n    at notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4:50:11\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:571:17\n    at AsyncResource.runInAsyncScope (node:async_hooks:202:9)\n    at CodeEvaluator.__cell (C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:563:26)\n    at notebook-3ce6f2b4-4a12-4abb-b372-c2bbba300db4:37:9\n    at C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\src\\lib\\code-evaluator.ts:571:17\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "== Translated error message and stack trace ==\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "{\n    \"display\": \"display.text is not a function\\r\\n at Code cell, line 4\",\n    \"cellId\": \"fb684bf0-7fc6-11ea-981f-79dff3053342\",\n    \"stack\": \" at Code cell, line 4\"\n}\n"
+    }
+}
+```
+
+
+------
+## Further reading
+
+To learn more about parsing JavaScript and writing Babel plugins, please see the Babel Plugin Handbook:
+
+[https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md)

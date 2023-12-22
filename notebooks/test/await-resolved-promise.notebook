@@ -1,23 +1,21 @@
+---
+version: 4
+---
+```typescript
+await Promise.resolve();
+
+console.log("XXX");
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "6e25c8f1-a879-11e9-9ea2-6f5e11f0a88e",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "await Promise.resolve();\r\n\r\nconsole.log(\"XXX\");",
-            "lastEvaluationDate": "2019-10-07T19:22:56.878+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "string",
-                        "data": "XXX\n"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 167
-        }
-    ]
+    "value": {
+        "displayType": "string",
+        "data": "XXX\n"
+    }
 }
+```
+
+

@@ -1,64 +1,68 @@
+---
+version: 4
+---
+```typescript
+display({
+    location: [0, 0],
+    zoom: 5,
+    markers: [[null, null]],
+}, "geo");
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "e4165aa1-b9b9-11ea-a905-e3caaae6960d",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display({\r\n    location: [0, 0],\r\n    zoom: 5,\r\n    markers: [[null, null]],\r\n}, \"geo\");",
-            "lastEvaluationDate": "2023-11-19T16:18:24.655+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": {
-                            "location": [
-                                0,
-                                0
-                            ],
-                            "zoom": 5,
-                            "markers": [
-                                [
-                                    null,
-                                    null
-                                ]
-                            ]
-                        }
-                    }
-                }
+    "value": {
+        "displayType": "geo",
+        "data": {
+            "location": [
+                0,
+                0
             ],
-            "errors": [],
-            "height": 309
-        },
-        {
-            "id": "573ae0f0-b9bf-11ea-82d6-6f17affc695b",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display({\r\n    location: [0, 0],\r\n    zoom: 5,\r\n    markers: [[undefined, undefined]],\r\n}, \"geo\");",
-            "lastEvaluationDate": "2023-11-19T16:18:24.652+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": {
-                            "location": [
-                                0,
-                                0
-                            ],
-                            "zoom": 5,
-                            "markers": [
-                                [
-                                    null,
-                                    null
-                                ]
-                            ]
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 309
+            "zoom": 5,
+            "markers": [
+                [
+                    null,
+                    null
+                ]
+            ]
         }
-    ]
+    }
 }
+```
+
+
+------
+```typescript
+display({
+    location: [0, 0],
+    zoom: 5,
+    markers: [[undefined, undefined]],
+}, "geo");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "geo",
+        "data": {
+            "location": [
+                0,
+                0
+            ],
+            "zoom": 5,
+            "markers": [
+                [
+                    null,
+                    null
+                ]
+            ]
+        }
+    }
+}
+```
+
+

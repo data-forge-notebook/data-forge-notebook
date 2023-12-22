@@ -1,26 +1,26 @@
+---
+description: Shows how to load a separate JavaScript code module into your notebook.
+version: 4
+---
+# Example of a reusable code module
+
+This example shows how to import and call a function from a reusable code module.
+------
+```typescript
+import myModule from './example-code-module';
+
+myModule.aReusableFunction();
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "description": "Shows how to load a separate JavaScript code module into your notebook.",
-    "cells": [
-        {
-            "id": "26035251-da79-11e8-9dbd-99c140282e28",
-            "cellType": "markdown",
-            "code": "# Example of a reusable code module\r\n\r\nThis example shows how to import and call a function from a reusable code module."
-        },
-        {
-            "id": "26035252-da79-11e8-9dbd-99c140282e28",
-            "cellType": "code",
-            "code": "import myModule from './example-code-module';\r\n\r\nmyModule.aReusableFunction();",
-            "lastEvaluationDate": "2023-12-12T08:35:55.104+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "Hello from a reusable function. You can use reuse this function across multiple notebooks.\n"
-                    }
-                }
-            ],
-            "errors": []
-        }
-    ]
+    "value": {
+        "displayType": "text",
+        "data": "Hello from a reusable function. You can use reuse this function across multiple notebooks.\n"
+    }
 }
+```
+
+

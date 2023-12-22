@@ -1,32 +1,31 @@
-{
-    "version": 3,
-    "nodejs": "v16.14.0",
-    "language": "javascript",
-    "description": "Calculates a bunch of random numbers.",
-    "cells": [
-        {
-            "id": "8f526d80-8763-11ee-b8c4-e52f9150cb72",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "function rand() {\r\n    return Math.random() * 100;\r\n}\r\n\r\ndisplay([rand(), rand(), rand(), rand(), rand(), rand()]);",
-            "lastEvaluationDate": "2023-11-20T15:15:16.285+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": [
-                            77.44220615889176,
-                            94.947803025765,
-                            20.35506969760137,
-                            59.00030508656411,
-                            12.311968048199473,
-                            54.58415761581221
-                        ]
-                    },
-                    "height": 314
-                }
-            ],
-            "errors": [],
-            "height": 470
-        }
-    ]
+---
+description: Calculates a bunch of random numbers.
+version: 4
+---
+```typescript
+function rand() {
+    return Math.random() * 100;
 }
+
+display([rand(), rand(), rand(), rand(), rand(), rand()]);
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "data": [
+            77.44220615889176,
+            94.947803025765,
+            20.35506969760137,
+            59.00030508656411,
+            12.311968048199473,
+            54.58415761581221
+        ]
+    },
+    "height": 314
+}
+```
+
+

@@ -1,92 +1,103 @@
+---
+description: Simple example of plotting charts using Data-Forge Notebook.
+version: 4
+---
+# A simple charting example
+
+This example shows how to render a simple line chart.
+------
+```typescript
+const data = [
+    ["Net Profit", "Revenue", "Free Cash Flow"],
+    [44, 76, 35],
+    [55, 85, 41],
+    [57, 101, 36],
+    [56, 98, 26],
+    [61, 87, 45],
+    [58, 105, 48],
+    [63, 91, 52],
+    [60, 114, 53],
+    [66, 94, 41],
+];
+display(data, "apex");
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "description": "Simple example of plotting charts using Data-Forge Notebook.",
-    "cells": [
-        {
-            "id": "715b3300-a773-11e8-be47-d189ccafed88",
-            "cellType": "markdown",
-            "code": "# A simple charting example\r\n\r\nThis example shows how to render a simple line chart.",
-            "lastEvaluationDate": "2018-09-05T18:40:44.747+10:00",
-            "output": [],
-            "errors": [],
-            "height": 115
-        },
-        {
-            "id": "715b3301-a773-11e8-be47-d189ccafed88",
-            "cellType": "code",
-            "code": "const data = [\r\n    [\"Net Profit\", \"Revenue\", \"Free Cash Flow\"],\r\n    [44, 76, 35],\r\n    [55, 85, 41],\r\n    [57, 101, 36],\r\n    [56, 98, 26],\r\n    [61, 87, 45],\r\n    [58, 105, 48],\r\n    [63, 91, 52],\r\n    [60, 114, 53],\r\n    [66, 94, 41],\r\n];\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-06T18:59:20.522+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "apex",
-                        "data": [
-                            [
-                                "Net Profit",
-                                "Revenue",
-                                "Free Cash Flow"
-                            ],
-                            [
-                                44,
-                                76,
-                                35
-                            ],
-                            [
-                                55,
-                                85,
-                                41
-                            ],
-                            [
-                                57,
-                                101,
-                                36
-                            ],
-                            [
-                                56,
-                                98,
-                                26
-                            ],
-                            [
-                                61,
-                                87,
-                                45
-                            ],
-                            [
-                                58,
-                                105,
-                                48
-                            ],
-                            [
-                                63,
-                                91,
-                                52
-                            ],
-                            [
-                                60,
-                                114,
-                                53
-                            ],
-                            [
-                                66,
-                                94,
-                                41
-                            ]
-                        ]
-                    }
-                }
+    "value": {
+        "displayType": "apex",
+        "data": [
+            [
+                "Net Profit",
+                "Revenue",
+                "Free Cash Flow"
             ],
-            "errors": [],
-            "height": 708
-        },
-        {
-            "id": "4642ce70-9cd2-11ea-89b4-d59a11d5b26f",
-            "cellType": "markdown",
-            "code": "## What's next?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [See more charts](http://open-notebook=./charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)\r\n\r\n[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
-            "lastEvaluationDate": "2020-05-23T18:50:10.555+10:00",
-            "output": [],
-            "errors": [],
-            "height": 283
-        }
-    ]
+            [
+                44,
+                76,
+                35
+            ],
+            [
+                55,
+                85,
+                41
+            ],
+            [
+                57,
+                101,
+                36
+            ],
+            [
+                56,
+                98,
+                26
+            ],
+            [
+                61,
+                87,
+                45
+            ],
+            [
+                58,
+                105,
+                48
+            ],
+            [
+                63,
+                91,
+                52
+            ],
+            [
+                60,
+                114,
+                53
+            ],
+            [
+                66,
+                94,
+                41
+            ]
+        ]
+    }
 }
+```
+
+
+------
+## What's next?
+
+There's so much you can do with Data-Forge Notebook.
+
+What are you interested in?
+
+- [See more charts](http://open-notebook=./charts.notebook)
+- [Plot maps](http://open-notebook=./plot-maps.notebook)
+- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)
+- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)
+- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)
+
+[Check out all the visualizations supported by Data-Forge Notebook](http://open-notebook=./viz.notebook)
+
+[Browse all example notebooks](http://command+open-example-notebook)

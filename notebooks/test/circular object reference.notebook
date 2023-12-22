@@ -1,29 +1,39 @@
+---
+version: 4
+---
+```typescript
+
+var objA = {
+    a: "foo",
+    b: objB,
+};
+var objB = {
+    a: objA,
+    b: "smeg",
+};
+console.log(JSON.stringify(objA, null, 4));
+console.log(JSON.stringify(objB, null, 4));
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "c7e447d0-7ead-11ea-969d-e53f557e3aa9",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "\r\nvar objA = {\r\n    a: \"foo\",\r\n    b: objB,\r\n};\r\nvar objB = {\r\n    a: objA,\r\n    b: \"smeg\",\r\n};\r\nconsole.log(JSON.stringify(objA, null, 4));\r\nconsole.log(JSON.stringify(objB, null, 4));",
-            "lastEvaluationDate": "2020-04-15T13:49:32.514+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "string",
-                        "data": "{\n    \"a\": \"foo\"\n}\n"
-                    }
-                },
-                {
-                    "value": {
-                        "displayType": "string",
-                        "data": "{\n    \"a\": {\n        \"a\": \"foo\"\n    },\n    \"b\": \"smeg\"\n}\n"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 481
-        }
-    ]
+    "value": {
+        "displayType": "string",
+        "data": "{\n    \"a\": \"foo\"\n}\n"
+    }
 }
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "string",
+        "data": "{\n    \"a\": {\n        \"a\": \"foo\"\n    },\n    \"b\": \"smeg\"\n}\n"
+    }
+}
+```
+
+

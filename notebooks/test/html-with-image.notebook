@@ -1,24 +1,23 @@
+---
+version: 4
+---
+```typescript
+const i = "https://d3544la1u8djza.cloudfront.net/APHI/Blog/2021/07-06/small+white+fluffy+dog+smiling+at+the+camera+in+close-up-min.jpg";
+const j = "file://C:\\Users\\Ash\\Downloads\\KOA_Nassau_2697x1517.jpg"; // (Be sure to download image before trying this alternative)
+const h = `<img src="${i}">`;
+
+display(h, "html")
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "nodejs": "v16.14.0",
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "2503e920-866b-11ee-84ff-f19a97647555",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "const i = \"https://d3544la1u8djza.cloudfront.net/APHI/Blog/2021/07-06/small+white+fluffy+dog+smiling+at+the+camera+in+close-up-min.jpg\";\r\nconst j = \"file://C:\\\\Users\\\\Ash\\\\Downloads\\\\KOA_Nassau_2697x1517.jpg\"; // (Be sure to download image before trying this alternative)\r\nconst h = `<img src=\"${i}\">`;\r\n\r\ndisplay(h, \"html\")",
-            "lastEvaluationDate": "2023-11-20T08:17:23.689+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "html",
-                        "data": "<img src=\"https://d3544la1u8djza.cloudfront.net/APHI/Blog/2021/07-06/small+white+fluffy+dog+smiling+at+the+camera+in+close-up-min.jpg\">"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 556
-        }
-    ]
+    "value": {
+        "displayType": "html",
+        "data": "<img src=\"https://d3544la1u8djza.cloudfront.net/APHI/Blog/2021/07-06/small+white+fluffy+dog+smiling+at+the+camera+in+close-up-min.jpg\">"
+    }
 }
+```
+
+

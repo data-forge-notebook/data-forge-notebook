@@ -1,24 +1,19 @@
+---
+version: 4
+---
+```typescript
+display(process.cwd());
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "nodejs": "v16.14.0",
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "9c37a230-be56-11ed-b279-999e2caca54c",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display(process.cwd());",
-            "lastEvaluationDate": "2023-03-09T18:50:31.488+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "string",
-                        "data": "C:\\projects\\data-forge-notebook\\editor-core\\notebooks\\test"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 140
-        }
-    ]
+    "value": {
+        "displayType": "string",
+        "data": "C:\\projects\\data-forge-notebook\\editor-core\\notebooks\\test"
+    }
 }
+```
+
+

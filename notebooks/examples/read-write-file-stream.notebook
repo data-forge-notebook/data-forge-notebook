@@ -1,17 +1,14 @@
-{
-    "version": 2,
-    "language": "javascript",
-    "description": "Copies a file using Node.js streams.",
-    "cells": [
-        {
-            "id": "3d344ac1-f629-11e9-9262-d96d156d0976",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "const fs = require(\"fs\");\r\n\r\nconst readStream = fs.createReadStream('./example.csv');\r\nconst writeStream = fs.createWriteStream('./output.csv');\r\nreadStream.pipe(writeStream);",
-            "lastEvaluationDate": "2020-06-22T17:17:16.456+10:00",
-            "output": [],
-            "errors": [],
-            "height": 184
-        }
-    ]
-}
+---
+description: Copies a file using Node.js streams.
+version: 4
+---
+```typescript
+const fs = require("fs");
+
+const readStream = fs.createReadStream('./example.csv');
+const writeStream = fs.createWriteStream('./output.csv');
+readStream.pipe(writeStream);
+```
+
+
+

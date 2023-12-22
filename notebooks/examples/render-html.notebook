@@ -1,25 +1,21 @@
+---
+description: Shows how to render HTML.
+version: 4
+---
+```typescript
+display(`<h1>Hello HTML!</h2><a href="https://www.google.com">Google</a><p>HTML in the house.</p>`, "html");
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "description": "Shows how to render HTML.",
-    "cells": [
-        {
-            "id": "3b79dd01-948a-11e8-8960-155134b446b4",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display(`<h1>Hello HTML!</h2><a href=\"https://www.google.com\">Google</a><p>HTML in the house.</p>`, \"html\");",
-            "lastEvaluationDate": "2023-11-18T08:15:21.249+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "html",
-                        "data": "<h1>Hello HTML!</h2><a href=\"https://www.google.com\">Google</a><p>HTML in the house.</p>"
-                    },
-                    "height": 169
-                }
-            ],
-            "errors": [],
-            "height": 260
-        }
-    ]
+    "value": {
+        "displayType": "html",
+        "data": "<h1>Hello HTML!</h2><a href=\"https://www.google.com\">Google</a><p>HTML in the house.</p>"
+    },
+    "height": 169
 }
+```
+
+

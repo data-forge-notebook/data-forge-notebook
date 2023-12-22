@@ -1,29 +1,35 @@
-{
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "f1ff3430-bac1-11ea-9157-73ec29f79923",
-            "cellType": "markdown",
-            "code": "This notebook was broken. An error installing sharp.\r\n\r\nWorks after I nuked the cache:\r\nrm -rf C:\\Users\\ash\\AppData\\Roaming\\data-forge-notebook\\npm-cache",
-            "lastEvaluationDate": "2020-06-30T21:09:06.569+10:00",
-            "output": [],
-            "errors": [],
-            "height": 129
-        },
-        {
-            "id": "3c0ccb20-bac0-11ea-9157-73ec29f79923",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "const sharp = require(\"sharp\");",
-            "lastEvaluationDate": "2023-11-19T16:22:22.154+10:00",
-            "output": [],
-            "errors": [
-                {
-                    "msg": "\nSomething went wrong installing the \"sharp\" module\n\nCannot find module '../build/Release/sharp-win32-x64.node'\nRequire stack:\n- C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\node_modules\\sharp\\lib\\sharp.js\n- C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\node_modules\\sharp\\lib\\constructor.js\n- C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\node_modules\\sharp\\lib\\index.js\n- C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\build\\lib\\code-evaluator.js\n- C:\\projects\\data-forge-notebook\\data-forge-notebook\\packages\\evaluation-engine\\build\\index.js\n- C:\\projects\\data-forge-notebook\\data-forge-notebook\\shells\\evaluation-engine\\src\\evaluation-engine.ts\n- C:\\projects\\data-forge-notebook\\data-forge-notebook\\shells\\evaluation-engine\\src\\worker.ts\n\nPossible solutions:\n- Install with verbose logging and look for errors: \"npm install --ignore-scripts=false --foreground-scripts --verbose sharp\"\n- Install for the current win32-x64 runtime: \"npm install --platform=win32 --arch=x64 sharp\"\n- Consult the installation documentation: https://sharp.pixelplumbing.com/install"
-                }
-            ],
-            "height": 1618
-        }
-    ]
-}
+---
+version: 4
+---
+This notebook was broken. An error installing sharp.
+
+Works after I nuked the cache:
+rm -rf C:\Users\ash\AppData\Roaming\data-forge-notebook\npm-cache
+------
+```typescript
+const sharp = require("sharp");
+```
+
+######
+```json - error
+
+Something went wrong installing the "sharp" module
+
+Cannot find module '../build/Release/sharp-win32-x64.node'
+Require stack:
+- C:\projects\data-forge-notebook\data-forge-notebook\notebooks\test\node_modules\sharp\lib\sharp.js
+- C:\projects\data-forge-notebook\data-forge-notebook\notebooks\test\node_modules\sharp\lib\constructor.js
+- C:\projects\data-forge-notebook\data-forge-notebook\notebooks\test\node_modules\sharp\lib\index.js
+- C:\projects\data-forge-notebook\data-forge-notebook\packages\evaluation-engine\build\lib\code-evaluator.js
+- C:\projects\data-forge-notebook\data-forge-notebook\packages\evaluation-engine\build\index.js
+- C:\projects\data-forge-notebook\data-forge-notebook\shells\evaluation-engine\src\evaluation-engine.ts
+- C:\projects\data-forge-notebook\data-forge-notebook\shells\evaluation-engine\src\worker.ts
+
+Possible solutions:
+- Install with verbose logging and look for errors: "npm install --ignore-scripts=false --foreground-scripts --verbose sharp"
+- Install for the current win32-x64 runtime: "npm install --platform=win32 --arch=x64 sharp"
+- Consult the installation documentation: https://sharp.pixelplumbing.com/install
+```
+
+
+

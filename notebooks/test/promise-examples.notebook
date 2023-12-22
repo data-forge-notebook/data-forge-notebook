@@ -1,71 +1,70 @@
+---
+version: 4
+---
+```typescript
+setTimeout(() => display(123), 5000);
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "441bda10-a46c-11e9-b0d1-f548be82b332",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "setTimeout(() => display(123), 5000);",
-            "lastEvaluationDate": "2023-11-14T07:52:59.642+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": 123
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 244
-        },
-        {
-            "id": "c1dbd771-97f6-11e9-959d-1b6c4bd0aa33",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "let numberPromise1 = Promise.resolve(1);\r\nnumberPromise1.then(n => console.log(n));",
-            "lastEvaluationDate": "2023-11-14T07:52:54.665+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "1\n"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 148
-        },
-        {
-            "id": "d77b81f0-97f8-11e9-959d-1b6c4bd0aa33",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "let numberPromise2 = Promise.resolve(2);\r\nnumberPromise2.then(n => display(n));",
-            "lastEvaluationDate": "2023-11-14T07:52:54.644+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": 2
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 148
-        },
-        {
-            "id": "0ae63260-97f9-11e9-959d-1b6c4bd0aa33",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "let numberPromise3 = Promise.resolve(3);\r\nnumberPromise3.then(n => display(n));",
-            "lastEvaluationDate": "2023-11-14T07:52:54.650+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": 3
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 148
-        }
-    ]
+    "value": {
+        "data": 123
+    }
 }
+```
+
+
+------
+```typescript
+let numberPromise1 = Promise.resolve(1);
+numberPromise1.then(n => console.log(n));
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "1\n"
+    }
+}
+```
+
+
+------
+```typescript
+let numberPromise2 = Promise.resolve(2);
+numberPromise2.then(n => display(n));
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "data": 2
+    }
+}
+```
+
+
+------
+```typescript
+let numberPromise3 = Promise.resolve(3);
+numberPromise3.then(n => display(n));
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "data": 3
+    }
+}
+```
+
+

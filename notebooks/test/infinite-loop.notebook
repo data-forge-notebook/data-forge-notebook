@@ -1,26 +1,22 @@
-{
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "e3ad77d2-84df-11e8-aba4-eb7f7496a17e",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "let a = 1;\r\n\r\nwhile (true) {\r\n    a += 1;\r\n}",
-            "lastEvaluationDate": "2018-09-05T18:45:21.862+10:00",
-            "output": [],
-            "errors": [],
-            "height": 147
-        },
-        {
-            "id": "93e37070-9479-11e8-8d2e-a5c07646ec0a",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "while (true) {\r\n    x.x = 3;\r\n}",
-            "lastEvaluationDate": "2018-09-05T18:45:21.867+10:00",
-            "output": [],
-            "errors": [],
-            "height": 109
-        }
-    ]
+---
+version: 4
+---
+```typescript
+let a = 1;
+
+while (true) {
+    a += 1;
 }
+```
+
+
+
+------
+```typescript
+while (true) {
+    x.x = 3;
+}
+```
+
+
+

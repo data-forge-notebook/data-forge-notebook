@@ -1,33 +1,8 @@
-{
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "fe7c9f70-a053-11e8-b94f-e95386da9a24",
-            "cellType": "markdown",
-            "code": "A",
-            "lastEvaluationDate": "2018-09-05T18:47:25.341+10:00",
-            "output": [],
-            "errors": [],
-            "height": 56
-        },
-        {
-            "id": "021a1180-a054-11e8-b94f-e95386da9a24",
-            "cellType": "markdown",
-            "code": "B",
-            "lastEvaluationDate": "2018-09-05T18:47:25.342+10:00",
-            "output": [],
-            "errors": [],
-            "height": 56
-        },
-        {
-            "id": "00cafc40-a054-11e8-b94f-e95386da9a24",
-            "cellType": "markdown",
-            "code": "C",
-            "lastEvaluationDate": "2018-09-05T18:47:25.342+10:00",
-            "output": [],
-            "errors": [],
-            "height": 56
-        }
-    ]
-}
+---
+version: 4
+---
+A
+------
+B
+------
+C

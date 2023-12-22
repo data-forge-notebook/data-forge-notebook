@@ -1,23 +1,20 @@
+---
+version: 4
+---
+```typescript
+let data3 = `this is a #3`;
+display(data3, "html");
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "6a6af2e1-f318-11ea-9701-f95b38ff1ea1",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "let data3 = `this is a #3`;\r\ndisplay(data3, \"html\");",
-            "lastEvaluationDate": "2023-11-14T07:59:23.464+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "html",
-                        "data": "this is a #3"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 252
-        }
-    ]
+    "value": {
+        "displayType": "html",
+        "data": "this is a #3"
+    }
 }
+```
+
+

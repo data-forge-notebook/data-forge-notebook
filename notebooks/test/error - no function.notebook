@@ -1,19 +1,15 @@
-{
-    "version": 1,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "85a5ad70-effe-11e9-8a90-1b368980512f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "foo();",
-            "lastEvaluationDate": "2020-03-18T13:43:19.372+10:00",
-            "output": [],
-            "errors": [
-                {
-                    "msg": "foo is not defined\r\nat Code cell, line 1"
-                }
-            ]
-        }
-    ]
-}
+---
+version: 4
+---
+```typescript
+foo();
+```
+
+######
+```json - error
+foo is not defined
+at Code cell, line 1
+```
+
+
+

@@ -1,22 +1,19 @@
+---
+version: 4
+---
+```typescript
+let numberPromise1 = Promise.resolve(5);
+numberPromise1.then(n => display(n));
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "c1dbd771-97f6-11e9-959d-1b6c4bd0aa33",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "let numberPromise1 = Promise.resolve(5);\r\nnumberPromise1.then(n => display(n));",
-            "lastEvaluationDate": "2023-11-14T07:56:02.759+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": 5
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 252
-        }
-    ]
+    "value": {
+        "data": 5
+    }
 }
+```
+
+

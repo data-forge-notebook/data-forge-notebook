@@ -1,94 +1,96 @@
+---
+description: Example of using the file system in Data-Forge Notebook
+version: 4
+---
+```typescript
+console.log(process.cwd()); // The current working directory is the same directory that this notebook was loaded from.
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "description": "Example of using the file system in Data-Forge Notebook",
-    "cells": [
-        {
-            "id": "16125731-95da-11e8-93c0-9b886ae8e3da",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "console.log(process.cwd()); // The current working directory is the same directory that this notebook was loaded from.",
-            "lastEvaluationDate": "2023-11-13T08:49:57.823+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\n"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 140
-        },
-        {
-            "id": "18105f30-95dc-11e8-8611-87ce3df6d6ca",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "const fs = require('fs');                   // Node.js module for accessing the file system.\r\nvar promisify = require('promisify-any');   // Module for converting Node.js callback-style functions to promise-based functions (this means we can use the await keword)\r\n\r\nconst directoryContent = await promisify(fs.readdir)(\"./\"); // Read the current directory.\r\ndisplay(directoryContent);",
-            "lastEvaluationDate": "2023-11-13T08:49:58.797+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": [
-                            "await-resolved-promise.notebook",
-                            "bad-map.notebook",
-                            "basic plot test.notebook",
-                            "big-code-cell.notebook",
-                            "broken-sharp.notebook",
-                            "callback-based-request.notebook",
-                            "callback-read-file-test.notebook",
-                            "circular object reference.notebook",
-                            "current-working-directory.notebook",
-                            "display.notebook",
-                            "error - a long error message.notebook",
-                            "error - console trace.notebook",
-                            "error - deep stack error.notebook",
-                            "example.csv",
-                            "example.json",
-                            "file-system.notebook",
-                            "node_modules",
-                            "package-lock.json",
-                            "package.json",
-                            "sleep.notebook",
-                            "timeout.notebook"
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 375
-        },
-        {
-            "id": "c57568f0-95dc-11e8-8611-87ce3df6d6ca",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "process.chdir(\"c:/temp\"); // You can change the working directory to whatever you want and it only affects this cell.\r\n\r\ndisplay(process.cwd());",
-            "lastEvaluationDate": "2023-11-13T08:49:58.833+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": "c:\\temp"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 271
-        },
-        {
-            "id": "f3b55090-95dc-11e8-8611-87ce3df6d6ca",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display(process.cwd()); // The working directory is reset in the next cell.",
-            "lastEvaluationDate": "2023-11-13T08:49:58.837+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": "c:\\temp"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 244
-        }
-    ]
+    "value": {
+        "displayType": "text",
+        "data": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\n"
+    }
 }
+```
+
+
+------
+```typescript
+const fs = require('fs');                   // Node.js module for accessing the file system.
+var promisify = require('promisify-any');   // Module for converting Node.js callback-style functions to promise-based functions (this means we can use the await keword)
+
+const directoryContent = await promisify(fs.readdir)("./"); // Read the current directory.
+display(directoryContent);
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "data": [
+            "await-resolved-promise.notebook",
+            "bad-map.notebook",
+            "basic plot test.notebook",
+            "big-code-cell.notebook",
+            "broken-sharp.notebook",
+            "callback-based-request.notebook",
+            "callback-read-file-test.notebook",
+            "circular object reference.notebook",
+            "current-working-directory.notebook",
+            "display.notebook",
+            "error - a long error message.notebook",
+            "error - console trace.notebook",
+            "error - deep stack error.notebook",
+            "example.csv",
+            "example.json",
+            "file-system.notebook",
+            "node_modules",
+            "package-lock.json",
+            "package.json",
+            "sleep.notebook",
+            "timeout.notebook"
+        ]
+    }
+}
+```
+
+
+------
+```typescript
+process.chdir("c:/temp"); // You can change the working directory to whatever you want and it only affects this cell.
+
+display(process.cwd());
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "data": "c:\\temp"
+    }
+}
+```
+
+
+------
+```typescript
+display(process.cwd()); // The working directory is reset in the next cell.
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "data": "c:\\temp"
+    }
+}
+```
+
+

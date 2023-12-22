@@ -1,34 +1,32 @@
+---
+version: 4
+---
+```typescript
+
+
+display({ x: [1, 2, 3], y: [4, 6, 3] }, "apex");
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "4710c8e0-0c2f-11ea-a0ff-7fef915fc004",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "\r\n\r\ndisplay({ x: [1, 2, 3], y: [4, 6, 3] }, \"apex\");",
-            "lastEvaluationDate": "2023-11-13T08:45:00.676+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": {},
-                        "data": {
-                            "x": [
-                                1,
-                                2,
-                                3
-                            ],
-                            "y": [
-                                4,
-                                6,
-                                3
-                            ]
-                        }
-                    }
-                }
+    "value": {
+        "displayType": "apex",
+        "data": {
+            "x": [
+                1,
+                2,
+                3
             ],
-            "errors": [],
-            "height": 271
+            "y": [
+                4,
+                6,
+                3
+            ]
         }
-    ]
+    }
 }
+```
+
+

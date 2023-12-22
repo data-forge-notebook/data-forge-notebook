@@ -1,16 +1,21 @@
-{
-    "version": 3,
-    "cells": [
-        {
-            "id": "27535680-9876-11ee-9e33-6774fc3a65ce",
-            "cellType": "code",
-            "code": "\r\nfunction add(a: number, b: number): number {\r\n    return a + b;\r\n}\r\n\r\ndisplay(add(2, 3));",
-            "output": [],
-            "errors": [
-                {
-                    "msg": ".presets[0][2] must be a string, or undefined"
-                }
-            ]
-        }
-    ]
+---
+description: undefined
+version: 4
+---
+```typescript
+
+function add(a: number, b: number): number {
+    return a + b;
 }
+
+display(add(2, 3));
+```
+
+######
+```json - error
+C:\projects\data-forge-notebook\data-forge-notebook\notebooks\examples\file.notebook: Unexpected token, expected "," 
+ at Code cell, line 2
+```
+
+
+

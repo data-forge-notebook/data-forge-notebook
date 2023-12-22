@@ -1,24 +1,16 @@
-{
-    "version": 1,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "00b33aa1-fb67-11e9-a309-5fcd36eeac13",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "const data = \"fooey\";\r\ndisplay.json(data);",
-            "lastEvaluationDate": "2020-03-18T13:42:24.909+10:00",
-            "output": [
-                {
-                    "values": [
-                        {
-                            "data": "fooey",
-                            "displayType": "json"
-                        }
-                    ]
-                }
-            ],
-            "errors": []
-        }
-    ]
-}
+---
+version: 4
+---
+```typescript
+const data = "fooey";
+display.json(data);
+```
+
+######
+```json - error
+display.json is not a function
+ at Code cell, line 2
+```
+
+
+

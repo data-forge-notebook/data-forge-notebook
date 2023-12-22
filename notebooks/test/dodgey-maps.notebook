@@ -1,156 +1,149 @@
+---
+version: 4
+---
+```typescript
+display([], "geo");
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "d43ff531-b8ee-11ea-9d85-0f821b270f4f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display([], \"geo\");",
-            "lastEvaluationDate": "2020-06-28T13:24:41.624+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": []
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 491
-        },
-        {
-            "id": "ea541e50-b8ee-11ea-9d85-0f821b270f4f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display([[null]], \"geo\");",
-            "lastEvaluationDate": "2020-06-28T13:24:59.736+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": [
-                            [
-                                null
-                            ]
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 491
-        },
-        {
-            "id": "f5343cb0-b8ee-11ea-9d85-0f821b270f4f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display([undefined], \"geo\");",
-            "lastEvaluationDate": "2020-06-28T13:25:18.733+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": [
-                            null
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 491
-        },
-        {
-            "id": "1293ebc0-b8ef-11ea-9d85-0f821b270f4f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display({ markers: null }, \"geo\");",
-            "lastEvaluationDate": "2020-06-28T13:26:35.132+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": {
-                            "markers": null
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 491
-        },
-        {
-            "id": "30849030-b8ef-11ea-9d85-0f821b270f4f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display({ markers: [] }, \"geo\");",
-            "lastEvaluationDate": "2020-06-28T13:26:52.413+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": {
-                            "markers": []
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 491
-        },
-        {
-            "id": "377e2590-b8ef-11ea-9d85-0f821b270f4f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display({ markers: [null] }, \"geo\");",
-            "lastEvaluationDate": "2020-06-28T13:27:11.841+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": {
-                            "markers": [
-                                null
-                            ]
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 491
-        },
-        {
-            "id": "446f70b0-b8ef-11ea-9d85-0f821b270f4f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display({ markers: [[null, null]] }, \"geo\");",
-            "lastEvaluationDate": "2020-06-28T13:27:29.801+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": {
-                            "markers": [
-                                [
-                                    null,
-                                    null
-                                ]
-                            ]
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 491
-        },
-        {
-            "id": "53352db0-b8ef-11ea-9d85-0f821b270f4f",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display({ markers: [[undefined, undefined]] }, \"geo\");",
-            "lastEvaluationDate": "2020-06-28T13:27:51.246+10:00",
-            "output": [],
-            "errors": [],
-            "height": 82
-        }
-    ]
+    "value": {
+        "displayType": "geo",
+        "data": []
+    }
 }
+```
+
+
+------
+```typescript
+display([[null]], "geo");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "geo",
+        "data": [
+            [
+                null
+            ]
+        ]
+    }
+}
+```
+
+
+------
+```typescript
+display([undefined], "geo");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "geo",
+        "data": [
+            null
+        ]
+    }
+}
+```
+
+
+------
+```typescript
+display({ markers: null }, "geo");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "geo",
+        "data": {
+            "markers": null
+        }
+    }
+}
+```
+
+
+------
+```typescript
+display({ markers: [] }, "geo");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "geo",
+        "data": {
+            "markers": []
+        }
+    }
+}
+```
+
+
+------
+```typescript
+display({ markers: [null] }, "geo");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "geo",
+        "data": {
+            "markers": [
+                null
+            ]
+        }
+    }
+}
+```
+
+
+------
+```typescript
+display({ markers: [[null, null]] }, "geo");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "geo",
+        "data": {
+            "markers": [
+                [
+                    null,
+                    null
+                ]
+            ]
+        }
+    }
+}
+```
+
+
+------
+```typescript
+display({ markers: [[undefined, undefined]] }, "geo");
+```
+
+
+

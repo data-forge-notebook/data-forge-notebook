@@ -1,804 +1,771 @@
+---
+description: Shows various ways to visualize data in Data-Forge Notebook.
+version: 4
+---
+# Examples of visualization
+
+There's many ways to visualize your data in Data-Forge Notebook, lets look at a few here.
+------
+## Plain ole' console logging
+
+Use `console.log` to output whatever you want.
+------
+```typescript
+const data = "Whatever you want to log!";
+console.log(data);
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "description": "Shows various ways to visualize data in Data-Forge Notebook.",
-    "cells": [
-        {
-            "id": "d0647090-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
-            "code": "# Examples of visualization\r\n\r\nThere's many ways to visualize your data in Data-Forge Notebook, lets look at a few here.",
-            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-            "output": [],
-            "errors": [],
-            "height": 115
-        },
-        {
-            "id": "ea3ea260-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
-            "code": "## Plain ole' console logging\r\n\r\nUse `console.log` to output whatever you want.",
-            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "f0627130-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "code",
-            "code": "const data = \"Whatever you want to log!\";\r\nconsole.log(data);",
-            "lastEvaluationDate": "2023-11-30T20:20:18.703+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "Whatever you want to log!\n"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 148
-        },
-        {
-            "id": "dd75ede0-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
-            "code": "## JavaScript array\r\n\r\nWe can use the `display` function for formatted data visualization. \r\n\r\nWe can use it to visualize JavaScript arrays:",
-            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-            "output": [],
-            "errors": [],
-            "height": 131
-        },
-        {
-            "id": "1b752e00-a804-11e8-b3eb-53e94e633165",
-            "cellType": "code",
-            "code": "const data = [1, 2, 3, 4];\r\ndisplay(data);",
-            "lastEvaluationDate": "2023-11-30T20:20:18.694+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": [
-                            1,
-                            2,
-                            3,
-                            4
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 252
-        },
-        {
-            "id": "e33a5ea0-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
-            "code": "## JavaScript object\r\n\r\nWe can also use the `display` function to visualize JavaScript objects:",
-            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "27b6d830-a804-11e8-b3eb-53e94e633165",
-            "cellType": "code",
-            "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data);",
-            "lastEvaluationDate": "2023-11-30T20:20:18.696+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": {
-                            "A": 1,
-                            "B": "hello"
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 252
-        },
-        {
-            "id": "02b6d330-2e9d-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
-            "code": "## JavaScript object as table\r\n\r\nUse the `display` function and `table` plugin to visualize a JavaScript object as tabular data:",
-            "lastEvaluationDate": "2019-02-12T18:06:37.479+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "c6a99850-2e9c-11e9-9f0a-97b474081a71",
-            "cellType": "code",
-            "code": "const data = { A: 1, B: \"hello\" };\r\ndisplay(data, \"table\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.697+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "table",
-                        "data": {
-                            "A": 1,
-                            "B": "hello"
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 252
-        },
-        {
-            "id": "466a7d20-f3cd-11e9-97b7-a975ba8f6456",
-            "cellType": "markdown",
-            "code": "## JavaScript array as table\r\n\r\nUse the `display` function with the `table` plugin to visualize a JavaScript array as tabular data.",
-            "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "6570d750-f3cd-11e9-97b7-a975ba8f6456",
-            "cellType": "code",
-            "code": "const data = [{ A: 1, B: \"Hello\" }, { A: 2, B: \"Computer!\" }];\r\ndisplay(data, \"table\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.699+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "table",
-                        "data": [
-                            {
-                                "A": 1,
-                                "B": "Hello"
-                            },
-                            {
-                                "A": 2,
-                                "B": "Computer!"
-                            }
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 252
-        },
-        {
-            "id": "6743dc40-fb65-11e9-b87a-47633ef72d4e",
-            "cellType": "markdown",
-            "code": "## JSON data\r\n\r\nUse the `display` function with the `json` plugin to render JSON text as structured data without having to parse it.",
-            "lastEvaluationDate": "2019-10-31T08:36:01.792+10:00",
-            "output": [],
-            "errors": [],
-            "height": 121
-        },
-        {
-            "id": "74ae4f00-fb65-11e9-b87a-47633ef72d4e",
-            "cellType": "code",
-            "code": "const data = '[ { \"A\": 1, \"B\": \"Hello\" }, { \"A\": 2, \"B\": \"Computer!\" } ]';\r\ndisplay(data, \"json\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.700+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "json",
-                        "data": "[ { \"A\": 1, \"B\": \"Hello\" }, { \"A\": 2, \"B\": \"Computer!\" } ]"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 252
-        },
-        {
-            "id": "abc0e040-f4ab-11e9-bc75-6b676fbda00a",
-            "cellType": "markdown",
-            "code": "## Preformatted text\r\n\r\nUse `display` to print pre-formatted text to cell output.",
-            "lastEvaluationDate": "2019-10-22T19:10:51.480+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "c01509e0-f4ab-11e9-bc75-6b676fbda00a",
-            "cellType": "code",
-            "code": "const text = \"Hello!\\nThis is some preformatted text with newlines baked in :)\";\r\ndisplay(text, \"text\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.702+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "Hello!\nThis is some preformatted text with newlines baked in :)"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 252
-        },
-        {
-            "id": "0ee8ed00-2e9d-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
-            "code": "## Preview data from CSV file\r\n\r\nUse the [datakit](https://www.npmjs.com/package/datakit) library to read a CSV data file and view it as a table.",
-            "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "31ae9260-a804-11e8-b3eb-53e94e633165",
-            "cellType": "code",
-            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data.slice(0, 5), \"table\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.787+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "table",
-                        "data": [
-                            {
-                                "Name": "Alex",
-                                "Sex": "M",
-                                "Age": 41,
-                                "Height (in)": 74,
-                                "Weight (lbs)": 170
-                            },
-                            {
-                                "Name": "Bert",
-                                "Sex": "M",
-                                "Age": 42,
-                                "Height (in)": 68,
-                                "Weight (lbs)": 166
-                            },
-                            {
-                                "Name": "Carl",
-                                "Sex": "M",
-                                "Age": 32,
-                                "Height (in)": 70,
-                                "Weight (lbs)": 155
-                            },
-                            {
-                                "Name": "Dave",
-                                "Sex": "M",
-                                "Age": 39,
-                                "Height (in)": 72,
-                                "Weight (lbs)": 167
-                            },
-                            {
-                                "Name": "Elly",
-                                "Sex": "F",
-                                "Age": 30,
-                                "Height (in)": 66,
-                                "Weight (lbs)": 124
-                            }
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 318
-        },
-        {
-            "id": "c5c26fb0-1335-11ea-ba9f-279dfd8c67c3",
-            "cellType": "markdown",
-            "code": "## Preview data from JSON file\r\n\r\nUse the [datakit](https://www.npmjs.com/package/datakit) library to read a JSON data file and view it as a table.",
-            "lastEvaluationDate": "2019-11-30T15:55:19.803+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "d0e47910-1335-11ea-ba9f-279dfd8c67c3",
-            "cellType": "code",
-            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readJson(\"./example.json\");\r\ndisplay(data.slice(0, 3), \"table\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.848+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "table",
-                        "data": [
-                            {
-                                "Name": "Alex",
-                                "Sex": "M",
-                                "Age": 41,
-                                "Height (in)": 74,
-                                "Weight (lbs)": 170
-                            },
-                            {
-                                "Name": "Bert",
-                                "Sex": "M",
-                                "Age": 42,
-                                "Height (in)": 68,
-                                "Weight (lbs)": 166
-                            },
-                            {
-                                "Name": "Carl",
-                                "Sex": "M",
-                                "Age": 32,
-                                "Height (in)": 70,
-                                "Weight (lbs)": 155
-                            }
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 273
-        },
-        {
-            "id": "fc067e40-f3cd-11e9-97b7-a975ba8f6456",
-            "cellType": "markdown",
-            "code": "## Charts: Plot any ole JavaScript data!\r\n\r\nEasily create charts from JavaScript data using the `apex` plugin with the `display` function.\r\n\r\n## Plot arrays of numbers",
-            "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
-            "output": [],
-            "errors": [],
-            "height": 155
-        },
-        {
-            "id": "f879ae00-f3cd-11e9-97b7-a975ba8f6456",
-            "cellType": "code",
-            "code": "const data = [50, 20, 10, 40, 15, 25];\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.851+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "apex",
-                        "data": [
-                            50,
-                            20,
-                            10,
-                            40,
-                            15,
-                            25
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 499
-        },
-        {
-            "id": "21231020-1332-11ea-b4ba-813ffa5b9c8b",
-            "cellType": "markdown",
-            "code": "## Plot arrays of JavaScript objects",
-            "lastEvaluationDate": "2019-11-30T15:33:11.656+10:00",
-            "output": [],
-            "errors": [],
-            "height": 73
-        },
-        {
-            "id": "24ef35e0-f3ce-11e9-97b7-a975ba8f6456",
-            "cellType": "code",
-            "code": "const data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.857+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "apex",
-                        "data": [
-                            {
-                                "D1": 50,
-                                "D2": 30
-                            },
-                            {
-                                "D1": 20,
-                                "D2": 200
-                            },
-                            {
-                                "D1": 10,
-                                "D2": 100
-                            },
-                            {
-                                "D1": 40,
-                                "D2": 400
-                            }
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 518
-        },
-        {
-            "id": "67178a70-1332-11ea-b4ba-813ffa5b9c8b",
-            "cellType": "markdown",
-            "code": "## Plot by column!",
-            "lastEvaluationDate": "2019-11-30T15:33:11.656+10:00",
-            "output": [],
-            "errors": [],
-            "height": 73
-        },
-        {
-            "id": "48cae350-1332-11ea-b4ba-813ffa5b9c8b",
-            "cellType": "code",
-            "code": "const data = {\r\n    D1: [30, 10, 50, 15],\r\n    D2: [300, 20, 10, 150],\r\n};\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.860+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "apex",
-                        "data": {
-                            "D1": [
-                                30,
-                                10,
-                                50,
-                                15
-                            ],
-                            "D2": [
-                                300,
-                                20,
-                                10,
-                                150
-                            ]
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 556
-        },
-        {
-            "id": "13bac060-2e9d-11e9-9f0a-97b474081a71",
-            "cellType": "markdown",
-            "code": "## Load and plot CSV and JSON data!\r\n\r\nEasily load and plot CSV and JSON data with help of [datakit](https://www.npmjs.com/package/daki) on npm.",
-            "lastEvaluationDate": "2019-02-12T18:06:37.480+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "3736bd70-a804-11e8-b3eb-53e94e633165",
-            "cellType": "code",
-            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readCsv(\"./example.csv\");\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.862+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "apex",
-                        "data": [
-                            {
-                                "Name": "Alex",
-                                "Sex": "M",
-                                "Age": 41,
-                                "Height (in)": 74,
-                                "Weight (lbs)": 170
-                            },
-                            {
-                                "Name": "Bert",
-                                "Sex": "M",
-                                "Age": 42,
-                                "Height (in)": 68,
-                                "Weight (lbs)": 166
-                            },
-                            {
-                                "Name": "Carl",
-                                "Sex": "M",
-                                "Age": 32,
-                                "Height (in)": 70,
-                                "Weight (lbs)": 155
-                            },
-                            {
-                                "Name": "Dave",
-                                "Sex": "M",
-                                "Age": 39,
-                                "Height (in)": 72,
-                                "Weight (lbs)": 167
-                            },
-                            {
-                                "Name": "Elly",
-                                "Sex": "F",
-                                "Age": 30,
-                                "Height (in)": 66,
-                                "Weight (lbs)": 124
-                            },
-                            {
-                                "Name": "Fran",
-                                "Sex": "F",
-                                "Age": 33,
-                                "Height (in)": 66,
-                                "Weight (lbs)": 115
-                            },
-                            {
-                                "Name": "Gwen",
-                                "Sex": "F",
-                                "Age": 26,
-                                "Height (in)": 64,
-                                "Weight (lbs)": 121
-                            },
-                            {
-                                "Name": "Hank",
-                                "Sex": "M",
-                                "Age": 30,
-                                "Height (in)": 71,
-                                "Weight (lbs)": 158
-                            },
-                            {
-                                "Name": "Ivan",
-                                "Sex": "M",
-                                "Age": 53,
-                                "Height (in)": 72,
-                                "Weight (lbs)": 175
-                            },
-                            {
-                                "Name": "Jake",
-                                "Sex": "M",
-                                "Age": 32,
-                                "Height (in)": 69,
-                                "Weight (lbs)": 143
-                            },
-                            {
-                                "Name": "Kate",
-                                "Sex": "F",
-                                "Age": 47,
-                                "Height (in)": 69,
-                                "Weight (lbs)": 139
-                            },
-                            {
-                                "Name": "Luke",
-                                "Sex": "M",
-                                "Age": 34,
-                                "Height (in)": 72,
-                                "Weight (lbs)": 163
-                            },
-                            {
-                                "Name": "Myra",
-                                "Sex": "F",
-                                "Age": 23,
-                                "Height (in)": 62,
-                                "Weight (lbs)": 98
-                            },
-                            {
-                                "Name": "Neil",
-                                "Sex": "M",
-                                "Age": 36,
-                                "Height (in)": 75,
-                                "Weight (lbs)": 160
-                            },
-                            {
-                                "Name": "Omar",
-                                "Sex": "M",
-                                "Age": 38,
-                                "Height (in)": 70,
-                                "Weight (lbs)": 145
-                            },
-                            {
-                                "Name": "Page",
-                                "Sex": "F",
-                                "Age": 31,
-                                "Height (in)": 67,
-                                "Weight (lbs)": 135
-                            },
-                            {
-                                "Name": "Quin",
-                                "Sex": "M",
-                                "Age": 29,
-                                "Height (in)": 71,
-                                "Weight (lbs)": 176
-                            },
-                            {
-                                "Name": "Ruth",
-                                "Sex": "F",
-                                "Age": 28,
-                                "Height (in)": 65,
-                                "Weight (lbs)": 131
-                            }
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 518
-        },
-        {
-            "id": "913a48b0-1332-11ea-b4ba-813ffa5b9c8b",
-            "cellType": "code",
-            "code": "const datakit = require('datakit');\r\nconst data = await datakit.readJson(\"./example.json\");\r\ndisplay(data, \"apex\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.865+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "apex",
-                        "data": [
-                            {
-                                "Name": "Alex",
-                                "Sex": "M",
-                                "Age": 41,
-                                "Height (in)": 74,
-                                "Weight (lbs)": 170
-                            },
-                            {
-                                "Name": "Bert",
-                                "Sex": "M",
-                                "Age": 42,
-                                "Height (in)": 68,
-                                "Weight (lbs)": 166
-                            },
-                            {
-                                "Name": "Carl",
-                                "Sex": "M",
-                                "Age": 32,
-                                "Height (in)": 70,
-                                "Weight (lbs)": 155
-                            },
-                            {
-                                "Name": "Dave",
-                                "Sex": "M",
-                                "Age": 39,
-                                "Height (in)": 72,
-                                "Weight (lbs)": 167
-                            },
-                            {
-                                "Name": "Elly",
-                                "Sex": "F",
-                                "Age": 30,
-                                "Height (in)": 66,
-                                "Weight (lbs)": 124
-                            },
-                            {
-                                "Name": "Fran",
-                                "Sex": "F",
-                                "Age": 33,
-                                "Height (in)": 66,
-                                "Weight (lbs)": 115
-                            },
-                            {
-                                "Name": "Gwen",
-                                "Sex": "F",
-                                "Age": 26,
-                                "Height (in)": 64,
-                                "Weight (lbs)": 121
-                            },
-                            {
-                                "Name": "Hank",
-                                "Sex": "M",
-                                "Age": 30,
-                                "Height (in)": 71,
-                                "Weight (lbs)": 158
-                            },
-                            {
-                                "Name": "Ivan",
-                                "Sex": "M",
-                                "Age": 53,
-                                "Height (in)": 72,
-                                "Weight (lbs)": 175
-                            },
-                            {
-                                "Name": "Jake",
-                                "Sex": "M",
-                                "Age": 32,
-                                "Height (in)": 69,
-                                "Weight (lbs)": 143
-                            },
-                            {
-                                "Name": "Kate",
-                                "Sex": "F",
-                                "Age": 47,
-                                "Height (in)": 69,
-                                "Weight (lbs)": 139
-                            },
-                            {
-                                "Name": "Luke",
-                                "Sex": "M",
-                                "Age": 34,
-                                "Height (in)": 72,
-                                "Weight (lbs)": 163
-                            },
-                            {
-                                "Name": "Myra",
-                                "Sex": "F",
-                                "Age": 23,
-                                "Height (in)": 62,
-                                "Weight (lbs)": 98
-                            },
-                            {
-                                "Name": "Neil",
-                                "Sex": "M",
-                                "Age": 36,
-                                "Height (in)": 75,
-                                "Weight (lbs)": 160
-                            },
-                            {
-                                "Name": "Omar",
-                                "Sex": "M",
-                                "Age": 38,
-                                "Height (in)": 70,
-                                "Weight (lbs)": 145
-                            },
-                            {
-                                "Name": "Page",
-                                "Sex": "F",
-                                "Age": 31,
-                                "Height (in)": 67,
-                                "Weight (lbs)": 135
-                            },
-                            {
-                                "Name": "Quin",
-                                "Sex": "M",
-                                "Age": 29,
-                                "Height (in)": 71,
-                                "Weight (lbs)": 176
-                            },
-                            {
-                                "Name": "Ruth",
-                                "Sex": "F",
-                                "Age": 28,
-                                "Height (in)": 65,
-                                "Weight (lbs)": 131
-                            }
-                        ]
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 518
-        },
-        {
-            "id": "f61e2630-675a-11ea-94da-357be68abebe",
-            "cellType": "markdown",
-            "code": "## Visualize geographic data\r\n\r\nUse the `display` function to plot geographic coordinates and GeoJSON!",
-            "lastEvaluationDate": "2020-03-16T17:53:11.948+10:00",
-            "output": [],
-            "errors": [],
-            "height": 102
-        },
-        {
-            "id": "f1491e80-675a-11ea-94da-357be68abebe",
-            "cellType": "code",
-            "code": "display({\r\n    location: [51.505, -0.10],\r\n    zoom: 13,\r\n    markers: [\r\n        [51.505, -0.10],\r\n        [51.5, -0.09],\r\n        [51.51, -0.08]\r\n    ],\r\n}, \"geo\");",
-            "lastEvaluationDate": "2023-11-30T20:20:18.867+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "geo",
-                        "data": {
-                            "location": [
-                                51.505,
-                                -0.1
-                            ],
-                            "zoom": 13,
-                            "markers": [
-                                [
-                                    51.505,
-                                    -0.1
-                                ],
-                                [
-                                    51.5,
-                                    -0.09
-                                ],
-                                [
-                                    51.51,
-                                    -0.08
-                                ]
-                            ]
-                        }
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 632
-        },
-        {
-            "id": "53a712d0-8845-11e9-94c3-054beaa0f30f",
-            "cellType": "markdown",
-            "code": "## More charts!\r\n\r\nWant to see more charts?\r\n\r\n[See the charts example](http://open-example=./charts.notebook).",
-            "lastEvaluationDate": "2019-06-06T20:25:48.286+10:00",
-            "output": [],
-            "errors": [],
-            "height": 131
-        },
-        {
-            "id": "0ce2bcc0-9cd3-11ea-89b4-d59a11d5b26f",
-            "cellType": "markdown",
-            "code": "## More maps!\r\n\r\nWant to see more maps?\r\n\r\n[See the maps example](http://open-example=./maps.notebook)",
-            "lastEvaluationDate": "2020-05-23T18:55:16.762+10:00",
-            "output": [],
-            "errors": [],
-            "height": 131
-        },
-        {
-            "id": "608f3880-8fdc-11ee-98fc-f7fea87f8128",
-            "cellType": "markdown",
-            "code": "## What's the next step?\r\n\r\nThere's so much you can do with Data-Forge Notebook.\r\n\r\nWhat are you interested in?\r\n\r\n- [Plot charts](http://open-notebook=./plot-charts.notebook)\r\n- [Plot maps](http://open-notebook=./plot-maps.notebook)\r\n- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)\r\n- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)\r\n- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)\r\n\r\n[Browse all example notebooks](http://command+open-example-notebook)",
-            "output": [],
-            "errors": [],
-            "height": 19
-        },
-        {
-            "id": "8864e670-f3cd-11e9-97b7-a975ba8f6456",
-            "cellType": "markdown",
-            "code": "## More visualizations coming soon\r\n\r\nMore visualization are coming in future editions of Data-Forge Notebook, for example:\r\n\r\n- Images\r\n- Node.js buffers\r\n- Vectors, matrices and maths formulas\r\n- Colors\r\n\r\n[Email](mailto:support@data-forge-notebook.com) and let me know what else could be added!",
-            "lastEvaluationDate": "2019-10-21T16:48:16.310+10:00",
-            "output": [],
-            "errors": [],
-            "height": 225
-        }
-    ]
+    "value": {
+        "displayType": "text",
+        "data": "Whatever you want to log!\n"
+    }
 }
+```
+
+
+------
+## JavaScript array
+
+We can use the `display` function for formatted data visualization. 
+
+We can use it to visualize JavaScript arrays:
+------
+```typescript
+const data = [1, 2, 3, 4];
+display(data);
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "data": [
+            1,
+            2,
+            3,
+            4
+        ]
+    }
+}
+```
+
+
+------
+## JavaScript object
+
+We can also use the `display` function to visualize JavaScript objects:
+------
+```typescript
+const data = { A: 1, B: "hello" };
+display(data);
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "data": {
+            "A": 1,
+            "B": "hello"
+        }
+    }
+}
+```
+
+
+------
+## JavaScript object as table
+
+Use the `display` function and `table` plugin to visualize a JavaScript object as tabular data:
+------
+```typescript
+const data = { A: 1, B: "hello" };
+display(data, "table");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "table",
+        "data": {
+            "A": 1,
+            "B": "hello"
+        }
+    }
+}
+```
+
+
+------
+## JavaScript array as table
+
+Use the `display` function with the `table` plugin to visualize a JavaScript array as tabular data.
+------
+```typescript
+const data = [{ A: 1, B: "Hello" }, { A: 2, B: "Computer!" }];
+display(data, "table");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "table",
+        "data": [
+            {
+                "A": 1,
+                "B": "Hello"
+            },
+            {
+                "A": 2,
+                "B": "Computer!"
+            }
+        ]
+    }
+}
+```
+
+
+------
+## JSON data
+
+Use the `display` function with the `json` plugin to render JSON text as structured data without having to parse it.
+------
+```typescript
+const data = '[ { "A": 1, "B": "Hello" }, { "A": 2, "B": "Computer!" } ]';
+display(data, "json");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "json",
+        "data": "[ { \"A\": 1, \"B\": \"Hello\" }, { \"A\": 2, \"B\": \"Computer!\" } ]"
+    }
+}
+```
+
+
+------
+## Preformatted text
+
+Use `display` to print pre-formatted text to cell output.
+------
+```typescript
+const text = "Hello!\nThis is some preformatted text with newlines baked in :)";
+display(text, "text");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "Hello!\nThis is some preformatted text with newlines baked in :)"
+    }
+}
+```
+
+
+------
+## Preview data from CSV file
+
+Use the [datakit](https://www.npmjs.com/package/datakit) library to read a CSV data file and view it as a table.
+------
+```typescript
+const datakit = require('datakit');
+const data = await datakit.readCsv("./example.csv");
+display(data.slice(0, 5), "table");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "table",
+        "data": [
+            {
+                "Name": "Alex",
+                "Sex": "M",
+                "Age": 41,
+                "Height (in)": 74,
+                "Weight (lbs)": 170
+            },
+            {
+                "Name": "Bert",
+                "Sex": "M",
+                "Age": 42,
+                "Height (in)": 68,
+                "Weight (lbs)": 166
+            },
+            {
+                "Name": "Carl",
+                "Sex": "M",
+                "Age": 32,
+                "Height (in)": 70,
+                "Weight (lbs)": 155
+            },
+            {
+                "Name": "Dave",
+                "Sex": "M",
+                "Age": 39,
+                "Height (in)": 72,
+                "Weight (lbs)": 167
+            },
+            {
+                "Name": "Elly",
+                "Sex": "F",
+                "Age": 30,
+                "Height (in)": 66,
+                "Weight (lbs)": 124
+            }
+        ]
+    }
+}
+```
+
+
+------
+## Preview data from JSON file
+
+Use the [datakit](https://www.npmjs.com/package/datakit) library to read a JSON data file and view it as a table.
+------
+```typescript
+const datakit = require('datakit');
+const data = await datakit.readJson("./example.json");
+display(data.slice(0, 3), "table");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "table",
+        "data": [
+            {
+                "Name": "Alex",
+                "Sex": "M",
+                "Age": 41,
+                "Height (in)": 74,
+                "Weight (lbs)": 170
+            },
+            {
+                "Name": "Bert",
+                "Sex": "M",
+                "Age": 42,
+                "Height (in)": 68,
+                "Weight (lbs)": 166
+            },
+            {
+                "Name": "Carl",
+                "Sex": "M",
+                "Age": 32,
+                "Height (in)": 70,
+                "Weight (lbs)": 155
+            }
+        ]
+    }
+}
+```
+
+
+------
+## Charts: Plot any ole JavaScript data!
+
+Easily create charts from JavaScript data using the `apex` plugin with the `display` function.
+
+## Plot arrays of numbers
+------
+```typescript
+const data = [50, 20, 10, 40, 15, 25];
+display(data, "apex");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "apex",
+        "data": [
+            50,
+            20,
+            10,
+            40,
+            15,
+            25
+        ]
+    }
+}
+```
+
+
+------
+## Plot arrays of JavaScript objects
+------
+```typescript
+const data = [{ D1: 50, D2: 30 }, { D1: 20, D2: 200 }, { D1: 10, D2: 100 }, { D1: 40, D2: 400 }];
+display(data, "apex");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "apex",
+        "data": [
+            {
+                "D1": 50,
+                "D2": 30
+            },
+            {
+                "D1": 20,
+                "D2": 200
+            },
+            {
+                "D1": 10,
+                "D2": 100
+            },
+            {
+                "D1": 40,
+                "D2": 400
+            }
+        ]
+    }
+}
+```
+
+
+------
+## Plot by column!
+------
+```typescript
+const data = {
+    D1: [30, 10, 50, 15],
+    D2: [300, 20, 10, 150],
+};
+display(data, "apex");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "apex",
+        "data": {
+            "D1": [
+                30,
+                10,
+                50,
+                15
+            ],
+            "D2": [
+                300,
+                20,
+                10,
+                150
+            ]
+        }
+    }
+}
+```
+
+
+------
+## Load and plot CSV and JSON data!
+
+Easily load and plot CSV and JSON data with help of [datakit](https://www.npmjs.com/package/daki) on npm.
+------
+```typescript
+const datakit = require('datakit');
+const data = await datakit.readCsv("./example.csv");
+display(data, "apex");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "apex",
+        "data": [
+            {
+                "Name": "Alex",
+                "Sex": "M",
+                "Age": 41,
+                "Height (in)": 74,
+                "Weight (lbs)": 170
+            },
+            {
+                "Name": "Bert",
+                "Sex": "M",
+                "Age": 42,
+                "Height (in)": 68,
+                "Weight (lbs)": 166
+            },
+            {
+                "Name": "Carl",
+                "Sex": "M",
+                "Age": 32,
+                "Height (in)": 70,
+                "Weight (lbs)": 155
+            },
+            {
+                "Name": "Dave",
+                "Sex": "M",
+                "Age": 39,
+                "Height (in)": 72,
+                "Weight (lbs)": 167
+            },
+            {
+                "Name": "Elly",
+                "Sex": "F",
+                "Age": 30,
+                "Height (in)": 66,
+                "Weight (lbs)": 124
+            },
+            {
+                "Name": "Fran",
+                "Sex": "F",
+                "Age": 33,
+                "Height (in)": 66,
+                "Weight (lbs)": 115
+            },
+            {
+                "Name": "Gwen",
+                "Sex": "F",
+                "Age": 26,
+                "Height (in)": 64,
+                "Weight (lbs)": 121
+            },
+            {
+                "Name": "Hank",
+                "Sex": "M",
+                "Age": 30,
+                "Height (in)": 71,
+                "Weight (lbs)": 158
+            },
+            {
+                "Name": "Ivan",
+                "Sex": "M",
+                "Age": 53,
+                "Height (in)": 72,
+                "Weight (lbs)": 175
+            },
+            {
+                "Name": "Jake",
+                "Sex": "M",
+                "Age": 32,
+                "Height (in)": 69,
+                "Weight (lbs)": 143
+            },
+            {
+                "Name": "Kate",
+                "Sex": "F",
+                "Age": 47,
+                "Height (in)": 69,
+                "Weight (lbs)": 139
+            },
+            {
+                "Name": "Luke",
+                "Sex": "M",
+                "Age": 34,
+                "Height (in)": 72,
+                "Weight (lbs)": 163
+            },
+            {
+                "Name": "Myra",
+                "Sex": "F",
+                "Age": 23,
+                "Height (in)": 62,
+                "Weight (lbs)": 98
+            },
+            {
+                "Name": "Neil",
+                "Sex": "M",
+                "Age": 36,
+                "Height (in)": 75,
+                "Weight (lbs)": 160
+            },
+            {
+                "Name": "Omar",
+                "Sex": "M",
+                "Age": 38,
+                "Height (in)": 70,
+                "Weight (lbs)": 145
+            },
+            {
+                "Name": "Page",
+                "Sex": "F",
+                "Age": 31,
+                "Height (in)": 67,
+                "Weight (lbs)": 135
+            },
+            {
+                "Name": "Quin",
+                "Sex": "M",
+                "Age": 29,
+                "Height (in)": 71,
+                "Weight (lbs)": 176
+            },
+            {
+                "Name": "Ruth",
+                "Sex": "F",
+                "Age": 28,
+                "Height (in)": 65,
+                "Weight (lbs)": 131
+            }
+        ]
+    }
+}
+```
+
+
+------
+```typescript
+const datakit = require('datakit');
+const data = await datakit.readJson("./example.json");
+display(data, "apex");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "apex",
+        "data": [
+            {
+                "Name": "Alex",
+                "Sex": "M",
+                "Age": 41,
+                "Height (in)": 74,
+                "Weight (lbs)": 170
+            },
+            {
+                "Name": "Bert",
+                "Sex": "M",
+                "Age": 42,
+                "Height (in)": 68,
+                "Weight (lbs)": 166
+            },
+            {
+                "Name": "Carl",
+                "Sex": "M",
+                "Age": 32,
+                "Height (in)": 70,
+                "Weight (lbs)": 155
+            },
+            {
+                "Name": "Dave",
+                "Sex": "M",
+                "Age": 39,
+                "Height (in)": 72,
+                "Weight (lbs)": 167
+            },
+            {
+                "Name": "Elly",
+                "Sex": "F",
+                "Age": 30,
+                "Height (in)": 66,
+                "Weight (lbs)": 124
+            },
+            {
+                "Name": "Fran",
+                "Sex": "F",
+                "Age": 33,
+                "Height (in)": 66,
+                "Weight (lbs)": 115
+            },
+            {
+                "Name": "Gwen",
+                "Sex": "F",
+                "Age": 26,
+                "Height (in)": 64,
+                "Weight (lbs)": 121
+            },
+            {
+                "Name": "Hank",
+                "Sex": "M",
+                "Age": 30,
+                "Height (in)": 71,
+                "Weight (lbs)": 158
+            },
+            {
+                "Name": "Ivan",
+                "Sex": "M",
+                "Age": 53,
+                "Height (in)": 72,
+                "Weight (lbs)": 175
+            },
+            {
+                "Name": "Jake",
+                "Sex": "M",
+                "Age": 32,
+                "Height (in)": 69,
+                "Weight (lbs)": 143
+            },
+            {
+                "Name": "Kate",
+                "Sex": "F",
+                "Age": 47,
+                "Height (in)": 69,
+                "Weight (lbs)": 139
+            },
+            {
+                "Name": "Luke",
+                "Sex": "M",
+                "Age": 34,
+                "Height (in)": 72,
+                "Weight (lbs)": 163
+            },
+            {
+                "Name": "Myra",
+                "Sex": "F",
+                "Age": 23,
+                "Height (in)": 62,
+                "Weight (lbs)": 98
+            },
+            {
+                "Name": "Neil",
+                "Sex": "M",
+                "Age": 36,
+                "Height (in)": 75,
+                "Weight (lbs)": 160
+            },
+            {
+                "Name": "Omar",
+                "Sex": "M",
+                "Age": 38,
+                "Height (in)": 70,
+                "Weight (lbs)": 145
+            },
+            {
+                "Name": "Page",
+                "Sex": "F",
+                "Age": 31,
+                "Height (in)": 67,
+                "Weight (lbs)": 135
+            },
+            {
+                "Name": "Quin",
+                "Sex": "M",
+                "Age": 29,
+                "Height (in)": 71,
+                "Weight (lbs)": 176
+            },
+            {
+                "Name": "Ruth",
+                "Sex": "F",
+                "Age": 28,
+                "Height (in)": 65,
+                "Weight (lbs)": 131
+            }
+        ]
+    }
+}
+```
+
+
+------
+## Visualize geographic data
+
+Use the `display` function to plot geographic coordinates and GeoJSON!
+------
+```typescript
+display({
+    location: [51.505, -0.10],
+    zoom: 13,
+    markers: [
+        [51.505, -0.10],
+        [51.5, -0.09],
+        [51.51, -0.08]
+    ],
+}, "geo");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "geo",
+        "data": {
+            "location": [
+                51.505,
+                -0.1
+            ],
+            "zoom": 13,
+            "markers": [
+                [
+                    51.505,
+                    -0.1
+                ],
+                [
+                    51.5,
+                    -0.09
+                ],
+                [
+                    51.51,
+                    -0.08
+                ]
+            ]
+        }
+    }
+}
+```
+
+
+------
+## More charts!
+
+Want to see more charts?
+
+[See the charts example](http://open-example=./charts.notebook).
+------
+## More maps!
+
+Want to see more maps?
+
+[See the maps example](http://open-example=./maps.notebook)
+------
+## What's the next step?
+
+There's so much you can do with Data-Forge Notebook.
+
+What are you interested in?
+
+- [Plot charts](http://open-notebook=./plot-charts.notebook)
+- [Plot maps](http://open-notebook=./plot-maps.notebook)
+- [Work with CSV data files](http://open-notebook=./csv-file-example.notebook)
+- [Work with JSON data files](http://open-notebook=./json-file-example.notebook)
+- [Work with REST APIs](http://open-notebook=./rest-api-example.notebook)
+
+[Browse all example notebooks](http://command+open-example-notebook)
+------
+## More visualizations coming soon
+
+More visualization are coming in future editions of Data-Forge Notebook, for example:
+
+- Images
+- Node.js buffers
+- Vectors, matrices and maths formulas
+- Colors
+
+[Email](mailto:support@data-forge-notebook.com) and let me know what else could be added!

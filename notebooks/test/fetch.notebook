@@ -1,20 +1,17 @@
-{
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "05754c41-c7db-11ea-ba9d-e79152b00e7d",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "const response = await fetch(\"https://www.google.com\")\r\nconst text = await response.text();\r\ndisplay(text);",
-            "lastEvaluationDate": "2023-11-19T16:24:31.572+10:00",
-            "output": [],
-            "errors": [
-                {
-                    "msg": "fetch is not defined\r\n at Code cell, line 1"
-                }
-            ],
-            "height": 187
-        }
-    ]
-}
+---
+version: 4
+---
+```typescript
+const response = await fetch("https://www.google.com")
+const text = await response.text();
+display(text);
+```
+
+######
+```json - error
+fetch is not defined
+ at Code cell, line 1
+```
+
+
+

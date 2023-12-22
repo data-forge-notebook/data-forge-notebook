@@ -1,27 +1,28 @@
+---
+version: 4
+---
+```typescript
+console.log("1");
+
+process.exit(1);
+
+console.log("2");
+```
+
+######
+```json - error
+Notebook evaluation terminated unexpectedly.
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "7b0d76f1-9473-11e8-9b33-07260ad1e551",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "console.log(\"1\");\r\n\r\nprocess.exit(1);\r\n\r\nconsole.log(\"2\");",
-            "lastEvaluationDate": "2023-11-19T16:25:58.561+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "1\n"
-                    }
-                }
-            ],
-            "errors": [
-                {
-                    "msg": "Notebook evaluation terminated unexpectedly."
-                }
-            ],
-            "height": 371
-        }
-    ]
+    "value": {
+        "displayType": "text",
+        "data": "1\n"
+    }
 }
+```
+
+

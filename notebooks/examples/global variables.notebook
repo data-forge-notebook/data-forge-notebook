@@ -1,96 +1,64 @@
+---
+description: Shows how to use global variables in Data-Forge Notebook.
+version: 4
+---
+# JavaScript global variables
+
+You can define a global variable in one cell:
+------
+```typescript
+const myVar = 5;
+```
+
+
+
+------
+And then use it in another cell:
+------
+```typescript
+display(myVar);
+```
+
+
+######
+```json - output
 {
-    "version": 3,
-    "language": "javascript",
-    "description": "Shows how to use global variables in Data-Forge Notebook.",
-    "cells": [
-        {
-            "id": "01299661-acde-11e8-921e-bde3efc344bc",
-            "cellType": "markdown",
-            "code": "# JavaScript global variables\r\n\r\nYou can define a global variable in one cell:",
-            "lastEvaluationDate": "2018-09-05T17:38:42.637+10:00",
-            "output": [],
-            "errors": [],
-            "height": 115
-        },
-        {
-            "id": "01299662-acde-11e8-921e-bde3efc344bc",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "const myVar = 5;",
-            "lastEvaluationDate": "2023-11-14T08:10:12.503+10:00",
-            "output": [],
-            "errors": [],
-            "height": 82
-        },
-        {
-            "id": "16e60290-acde-11e8-921e-bde3efc344bc",
-            "cellType": "markdown",
-            "code": "And then use it in another cell:",
-            "lastEvaluationDate": "2018-09-05T17:38:42.639+10:00",
-            "output": [],
-            "errors": [],
-            "height": 56
-        },
-        {
-            "id": "1c144dd0-acde-11e8-921e-bde3efc344bc",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "display(myVar);",
-            "lastEvaluationDate": "2023-11-14T08:10:12.518+10:00",
-            "output": [
-                {
-                    "value": {
-                        "data": 5
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 244
-        },
-        {
-            "id": "3f13f5b0-acde-11e8-921e-bde3efc344bc",
-            "cellType": "markdown",
-            "code": "This also works for functions. \r\n\r\nThis next cell defines a global function:",
-            "lastEvaluationDate": "2018-09-05T17:38:42.641+10:00",
-            "output": [],
-            "errors": [],
-            "height": 68
-        },
-        {
-            "id": "4b6445e0-acde-11e8-921e-bde3efc344bc",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "function myFunction(msg) {\r\n    console.log(msg);\r\n}",
-            "lastEvaluationDate": "2023-11-14T08:10:12.506+10:00",
-            "output": [],
-            "errors": [],
-            "height": 109
-        },
-        {
-            "id": "65b29640-acde-11e8-921e-bde3efc344bc",
-            "cellType": "markdown",
-            "code": "Then call the function from another cell:",
-            "lastEvaluationDate": "2018-09-05T17:38:42.642+10:00",
-            "output": [],
-            "errors": [],
-            "height": 56
-        },
-        {
-            "id": "6c5d9670-acde-11e8-921e-bde3efc344bc",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "myFunction(\"Hello JavaScript!\");",
-            "lastEvaluationDate": "2023-11-14T08:10:12.507+10:00",
-            "output": [
-                {
-                    "value": {
-                        "displayType": "text",
-                        "data": "Hello JavaScript!\n"
-                    }
-                }
-            ],
-            "errors": [],
-            "height": 244
-        }
-    ]
+    "value": {
+        "data": 5
+    }
 }
+```
+
+
+------
+This also works for functions. 
+
+This next cell defines a global function:
+------
+```typescript
+function myFunction(msg) {
+    console.log(msg);
+}
+```
+
+
+
+------
+Then call the function from another cell:
+------
+```typescript
+myFunction("Hello JavaScript!");
+```
+
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "text",
+        "data": "Hello JavaScript!\n"
+    }
+}
+```
+
+

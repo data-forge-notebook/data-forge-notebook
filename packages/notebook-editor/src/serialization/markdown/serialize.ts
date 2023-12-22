@@ -96,7 +96,7 @@ export function serializeCell(cell: ICellViewModel) {
 export function serializeNotebook(notebook: INotebookViewModel): string {
     return (
         `---\n` +
-        `description: ${notebook.description}\n` +
+        (notebook.description !== undefined ? `description: ${notebook.description}\n` : ``) +
         `version: ${notebookVersion}\n` +
         `---\n` +
         `${notebook.cells.map(serializeCell).join("\n------\n")}\n`

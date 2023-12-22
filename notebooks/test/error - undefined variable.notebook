@@ -1,28 +1,26 @@
+---
+version: 4
+---
+```typescript
+console.log("smeg");
+x
+```
+
+######
+```json - error
+x is not defined
+at Code cell, line 2
+```
+
+
+######
+```json - output
 {
-    "version": 1,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "2a0bc262-84de-11e8-bd48-252399c91c27",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "console.log(\"smeg\");\r\nx",
-            "lastEvaluationDate": "2020-03-18T14:21:37.849+10:00",
-            "output": [
-                {
-                    "values": [
-                        {
-                            "data": "smeg\n",
-                            "displayType": "string"
-                        }
-                    ]
-                }
-            ],
-            "errors": [
-                {
-                    "msg": "x is not defined\r\nat Code cell, line 2"
-                }
-            ]
-        }
-    ]
+    "value": {
+        "displayType": "string",
+        "data": "smeg\n"
+    }
 }
+```
+
+

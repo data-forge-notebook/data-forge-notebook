@@ -1,53 +1,64 @@
+---
+version: 4
+---
+```typescript
+console.log("1")
+console.log("2")
+console.log("3")
+```
+
+
+######
+```json - output
 {
-    "version": 1,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "18f52840-1962-11e9-adfb-476805eddcf7",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "console.log(\"1\")\r\nconsole.log(\"2\")\r\nconsole.log(\"3\")",
-            "lastEvaluationDate": "2020-03-18T13:41:51.937+10:00",
-            "output": [
-                {
-                    "values": [
-                        {
-                            "data": "1\n",
-                            "displayType": "string"
-                        }
-                    ]
-                },
-                {
-                    "values": [
-                        {
-                            "data": "2\n",
-                            "displayType": "string"
-                        }
-                    ]
-                },
-                {
-                    "values": [
-                        {
-                            "data": "3\n",
-                            "displayType": "string"
-                        }
-                    ]
-                }
-            ],
-            "errors": []
-        },
-        {
-            "id": "7c5e7c60-1917-11e9-83a8-474ce3a39435",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "function inner() {\r\n    throw new Error(\"my error!\");\r\n}\r\n\r\nfunction outer() {\r\n    inner();\r\n}\r\n\r\nouter();",
-            "lastEvaluationDate": "2020-03-18T13:41:51.956+10:00",
-            "output": [],
-            "errors": [
-                {
-                    "msg": "my error!\r\nat inner, line 2\nat outer, line 6\nat Code cell, line 9"
-                }
-            ]
-        }
-    ]
+    "value": {
+        "displayType": "string",
+        "data": "1\n"
+    }
 }
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "string",
+        "data": "2\n"
+    }
+}
+```
+
+######
+```json - output
+{
+    "value": {
+        "displayType": "string",
+        "data": "3\n"
+    }
+}
+```
+
+
+------
+```typescript
+function inner() {
+    throw new Error("my error!");
+}
+
+function outer() {
+    inner();
+}
+
+outer();
+```
+
+######
+```json - error
+my error!
+at inner, line 2
+at outer, line 6
+at Code cell, line 9
+```
+
+
+

@@ -1,20 +1,15 @@
-{
-    "version": 3,
-    "language": "javascript",
-    "cells": [
-        {
-            "id": "2a0bc263-84de-11e8-bd48-252399c91c27",
-            "cellType": "code",
-            "cellScope": "global",
-            "code": "throw new Error(\"foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \");",
-            "lastEvaluationDate": "2023-11-19T16:23:31.053+10:00",
-            "output": [],
-            "errors": [
-                {
-                    "msg": "foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey \r\n at Code cell, line 1"
-                }
-            ],
-            "height": 168
-        }
-    ]
-}
+---
+version: 4
+---
+```typescript
+throw new Error("foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey ");
+```
+
+######
+```json - error
+foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey foobar donkey 
+ at Code cell, line 1
+```
+
+
+
