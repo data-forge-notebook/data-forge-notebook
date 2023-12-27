@@ -1,5 +1,5 @@
 //
-// Packages the evaluation-engine for bundling into the Tauri shell installer.
+// Packages the evaluation-engine for bundling into the Electron installer.
 //
 
 const util = require('util');

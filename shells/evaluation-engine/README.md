@@ -50,13 +50,3 @@ Or with live reload:
 ```bash
 npm run test:watch
 ```
-
-## Build the evaluation engine for inclusion in the DFN installer
-
-NOTE: This doesn't work under Windows terminal due to some problem with pnpm. This step should be done under Powershell.
-
-From the root of the mono repo:
-
-```bash
-pnpm run package-eval-engine
-```

@@ -38,7 +38,6 @@ A birds eye view of this project:
         ├───browser ---------------- Runs DFN in the browser.
         ├───electron --------------- Runs DFN in Electron.
         ├───evaluation-engine ------ HTTP server for the code evaluation engine.
-        ├───storybook -------------- Showcases UI components in Storybook.
         └───testbed ---------------- A custom testbed for UI components.
 ```
 ## Quickstart - Electron
@@ -169,14 +168,6 @@ The testbed is used for testing selected UI components.
 
 ```bash
 pnpm run testbed
-```
-
-## Run Storybook
-
-Storybook showcases various configurations for UI components.
-
-```bash
-pnpm run storybook
 ```
 
 ## Run automated tests
