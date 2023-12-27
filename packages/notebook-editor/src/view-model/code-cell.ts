@@ -218,7 +218,6 @@ export class CodeCellViewModel extends CellViewModel implements ICellViewModel {
 
             const origOutput = this.output[this.nextOutputIndex];
             const origOutputHeight = origOutput.height;
-
            
             this.output[this.nextOutputIndex] = output;
             if (origOutputHeight !== undefined) {
