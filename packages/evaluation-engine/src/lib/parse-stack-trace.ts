@@ -150,8 +150,7 @@ export function translateStackTrace(stackTrace: string, fileName: string, source
     const translated: string[] = [];
     for (const frame of stackFrames) {
         if (path.basename(frame.filePath) === fileName 
-            || frame.filePath === "/in-memory-file.ts" 
-            || frame.filePath === "/in-memory-file.js") {
+            || frame.filePath === "/in-memory-file.ts") {
             const displayFrame = translateStackFrame(frame, sourceMap);
             if (displayFrame) {
                 translated.push(displayFrame);

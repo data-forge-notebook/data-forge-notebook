@@ -65,7 +65,7 @@ function internalBabelCompile(log: ILog, code: string, babelConfig: TransformOpt
                         {
                             message,
                             location: {
-                                fileName: "in-memory-file.js",
+                                fileName: "in-memory-file.ts",
                                 line: err && err.loc && err.loc.line,
                                 column: err && err.loc && err.loc.column,
                             },
@@ -89,7 +89,7 @@ function internalBabelCompile(log: ILog, code: string, babelConfig: TransformOpt
 // Generated babel configuration.
 //    
 const defaultBabelConfigFile = {
-    filename: "file.notebook",
+    filename: "in-memory-file.ts",
     presets: [
         [
             require("@babel/preset-env"),
