@@ -23,7 +23,17 @@ export class StructuredData extends React.Component<IStructuredDataProps, {}> {
 
         let data = this.props.data;
         if (this.props.displayType === "json") {
-            data = JSON.parse(data);
+            try {
+                data = JSON.parse(data);
+            }
+            catch (error) {
+                console.error(`Failed to deserialization JSON:`);
+                console.error(data);
+                console.error(`Caught error:`);
+                console.error(error);
+                
+                data = "Failed to deserialize JSON: " + data;
+            }
         }
 
         return (

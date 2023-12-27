@@ -20,15 +20,16 @@ class App extends React.Component<{}, IAppState> {
                 // data: 502,
                 // data: "Hello world",
                 // data: true,
-                data: {
-                    hello: "world",
-                    a: [1, 2, 3],
-                    x: 22,
-                    nested: {
-                        y: 33,
-                    },
-                    foo: false,
-                },
+                // data: {
+                //     hello: "world",
+                //     a: [1, 2, 3],
+                //     x: 22,
+                //     nested: {
+                //         y: 33,
+                //     },
+                //     foo: false,
+                // },
+                data: "foobar",
             },
         };
     }
@@ -37,6 +38,8 @@ class App extends React.Component<{}, IAppState> {
         return (
             <StructuredData
                 data={this.state.config?.data}
+                // displayType={this.state.config.pluginRequest.displayType}
+                displayType="json"
                 />
         );
     }

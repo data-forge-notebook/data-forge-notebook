@@ -3,14 +3,18 @@ version: 4
 ---
 ```typescript
 const data = "fooey";
-display.json(data);
+display(data, "json");
 ```
+
 
 ######
-```json - error
-display.json is not a function
- at Code cell, line 2
+```json - output
+{
+    "value": {
+        "displayType": "json",
+        "data": "fooey"
+    }
+}
 ```
-
 
 
