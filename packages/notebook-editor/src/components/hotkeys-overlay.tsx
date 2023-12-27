@@ -71,8 +71,8 @@ export class HotkeysOverlay extends React.Component<IHotkeyOverlayProps, IHotkey
                         top: 0,
                         bottom: 0,
                         minWidth: "1000px",
-                        maxWidth: "80%",
-                        maxHeight: "80%",
+                        maxWidth: "90%",
+                        maxHeight: "90%",
                         margin: "auto",
                         backgroundColor: "white",
                         color: "#676767",
@@ -178,7 +178,7 @@ export class HotkeysOverlay extends React.Component<IHotkeyOverlayProps, IHotkey
                                                     display: "flex",
                                                     flexDirection: "row",
                                                     justifyItems: "left",
-                                                    width: "130px",
+                                                    width: "160px",
                                                 }}
                                                 >
                                                 <div 
@@ -229,7 +229,7 @@ export class HotkeysOverlay extends React.Component<IHotkeyOverlayProps, IHotkey
                                                     display: "flex",
                                                     flexDirection: "row",
                                                     justifyItems: "left",
-                                                    width: "130px",
+                                                    width: "160px",
                                                 }}
                                                 >
                                                 <div 
