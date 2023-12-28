@@ -8,7 +8,7 @@ foo();
 ######
 ```json - error
 foo is not defined
-at Code cell, line 1
+ at Code cell, line 1
 ```
 
 

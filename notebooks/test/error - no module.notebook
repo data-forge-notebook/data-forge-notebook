@@ -8,15 +8,10 @@ display(donkey);
 
 ######
 ```json - error
-Request failed with status code 404
-```
-
-######
-```json - error
 Cannot find module 'woburt'
 Require stack:
-- C:\projects\data-forge-notebook\data-forge-notebook-git\test\noop.js
-at Code cell, line 1
+- C:\projects\data-forge-notebook\data-forge-notebook\notebooks\test\noop.js
+ at Code cell, line 1
 ```
 
 
