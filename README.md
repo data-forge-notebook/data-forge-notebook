@@ -38,7 +38,8 @@ A birds eye view of this project:
         ├───browser ---------------- Runs DFN in the browser.
         ├───electron --------------- Runs DFN in Electron.
         ├───evaluation-engine ------ HTTP server for the code evaluation engine.
-        └───testbed ---------------- A custom testbed for UI components.
+        ├───testbed ---------------- A browser-based testbed for UI components.
+        └───testbed-cli ------------ A cli-based testbed.
 ```
 ## Quickstart - Electron
 

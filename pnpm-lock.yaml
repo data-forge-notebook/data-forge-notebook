@@ -911,6 +911,22 @@ importers:
         specifier: ^4.6.2
         version: 4.6.4
 
+  shells/testbed-cli:
+    dependencies:
+      evaluation-engine:
+        specifier: workspace:*
+        version: link:../../packages/evaluation-engine
+    devDependencies:
+      nodemon:
+        specifier: ^2.0.16
+        version: 2.0.19
+      ts-node:
+        specifier: ^10.7.0
+        version: 10.9.1(@types/node@16.11.36)(typescript@4.6.4)
+      typescript:
+        specifier: ^4.6.4
+        version: 4.6.4
+
 packages:
 
   /7zip-bin@5.2.0:
