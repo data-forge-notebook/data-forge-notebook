@@ -2,18 +2,15 @@ import { JavaScriptCodeGenerator } from "evaluation-engine/build/lib/javascript-
 
 async function main() {
     const notebook: any = {
-        "version": 1,
-        "language": "javascript",
+        "version": 4,
         "cells": [
             {
-                "instanceId": "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364",
+                "instanceId": "4cb8affa-34eb-4c7f-9db0-c3019a165051",
                 "cellType": "code",
-                "cellScope": "global",
-                "code": "import foo from 'foo';",
-            },
+                "code": "const x = (1 + 2;"
+            }
         ]
     };
-
     const mockLog: any = {};
 
     const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
