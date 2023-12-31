@@ -7,8 +7,8 @@ cosnt x = 3;
 
 ######
 ```json - error
-unknown: Unexpected token, expected ";" 
-at Code cell, line 1
+Missing semicolon.
+ at Code cell, line 1
 ```
 
 

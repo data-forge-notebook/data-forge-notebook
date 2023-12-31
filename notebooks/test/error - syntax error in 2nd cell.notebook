@@ -5,11 +5,6 @@ version: 4
 const a = 1;
 ```
 
-######
-```json - error
-unknown: Unexpected token, expected "," 
-```
-
 
 
 ------
@@ -19,8 +14,8 @@ const b = ((1);
 
 ######
 ```json - error
-unknown: Unexpected token, expected "," 
-at Code cell, line 1
+Unexpected token, expected ","
+ at Code cell, line 1
 ```
 
 

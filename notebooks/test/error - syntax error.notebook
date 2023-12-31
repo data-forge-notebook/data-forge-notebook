@@ -7,8 +7,8 @@ const x = (1 + 2;
 
 ######
 ```json - error
-unknown: Unexpected token, expected "," 
-at Code cell, line 1
+Unexpected token, expected ","
+ at Code cell, line 1
 ```
 
 
