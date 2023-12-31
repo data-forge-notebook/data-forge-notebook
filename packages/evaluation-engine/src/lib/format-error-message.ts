@@ -59,9 +59,16 @@ export function formatErrorMessage(
     origSourceMap?: ISourceMap,
     finalSourceMap?: ISourceMap): IFormattedErrorMessage {
 
-    let message = errorMessage;
     let location: string | undefined;
     let stack: string | undefined;
+
+    if (errorMessage) {
+        const fileNamePrefix = "in-memory-file.ts:";
+        const fileNameIndex = errorMessage.indexOf(fileNamePrefix);
+        if (fileNameIndex >= 0) {
+            errorMessage = errorMessage.substring(fileNameIndex + fileNamePrefix.length).trim();
+        }
+    }
 
     if (errorLocation) {
         location = translateStackFrame(
@@ -75,10 +82,10 @@ export function formatErrorMessage(
 }
 
     if (errorStack) {
-        if (!message) {
+        if (!errorMessage) {
             // If there is no explicit message, try and pull the message from the stack trace.
             const firstAtIndex = errorStack.indexOf("\n    at");
-            message = errorStack.substring(0, firstAtIndex).trim();
+            errorMessage = errorStack.substring(0, firstAtIndex).trim();
         }
 
         if (!location) {
@@ -91,11 +98,11 @@ export function formatErrorMessage(
         stack = translateStackTrace(errorStack, fileName, finalSourceMap);
     }
 
-    if (!message) {
-        message = "An error occurred."
+    if (!errorMessage) {
+        errorMessage = "An error occurred."
     }
 
-    let formattedMsg = `${message}`;
+    let formattedMsg = errorMessage;
     if (location) {
         formattedMsg += `\r\n${location}`;
     }
