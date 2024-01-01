@@ -260,12 +260,6 @@ const EXPORT_PRE_CODE =
     "          console.log(arg);\r\n" +
     "     }\r\n" +
     "}\r\n" +
-    "display.text = display.html = display.plot = display.markdown = display.json = display.geo = display;\r\n" +
-    "display.table = function () {\r\n" +
-    "     for (const arg of arguments) {\r\n" +
-    "          console.table(arg);\r\n" +
-    "     }\r\n" +
-    "}\r\n" + 
     "\r\n" +
     "async function main() {\r\n";
 
