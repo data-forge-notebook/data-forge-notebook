@@ -1,6 +1,6 @@
 import "jest";
 import { enableInjector, disableInjector } from "@codecapers/fusion";
-import { JavaScriptCodeGenerator } from "../../lib/javascript-code-generator";
+import { CodeGenerator } from "../lib/code-generator";
 
 function trim(input: string): string {
     const lines = input.split("\n")
@@ -9,7 +9,7 @@ function trim(input: string): string {
     return lines.join("\r\n");
 }
 
-describe("javascript code generation", () => {
+describe("code generator", () => {
 
     let mockLog: any;
     mockLog = {
@@ -36,7 +36,7 @@ describe("javascript code generation", () => {
             "cells": []
         };
 
-        const codeGenerator = new JavaScriptCodeGenerator(emptyNotebook, "test-path", mockLog);
+        const codeGenerator = new CodeGenerator(emptyNotebook, "test-path", mockLog);
         const code = await codeGenerator.genCode([]);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
@@ -76,7 +76,7 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
+        const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
@@ -117,7 +117,7 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
+        const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
@@ -157,7 +157,7 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
+        const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
@@ -186,7 +186,7 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
+        const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
@@ -223,7 +223,7 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
+        const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
         const expected = trim(`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
@@ -265,7 +265,7 @@ describe("javascript code generation", () => {
             ]
         };
 
-        const codeGenerator = new JavaScriptCodeGenerator(notebook, "test-path", mockLog);
+        const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const exported = trim(await codeGenerator.exportCode());
         const expected = trim(`
             import foo from 'foo';
