@@ -756,7 +756,7 @@ export class CodeEvaluator implements ICodeEvaluator {
         // this.log.info(this.finalSourceMap && JSON.stringify(this.finalSourceMap.getData(), null, 4) || "<no-source-map>");
 
         // this.log.info("== Exports data for testing ==");
-        // this.log.info(JSON.stringify({
+        // const jsonTestingData = JSON.stringify({
         //     fileName,
         //     errorSource,
         //     curCellId,
@@ -765,7 +765,9 @@ export class CodeEvaluator implements ICodeEvaluator {
         //     errorStack,
         //     origSourceMap: this.origSourceMap && this.origSourceMap.getData(),
         //     finalSourceMap: this.finalSourceMap && this.finalSourceMap.getData(),
-        // }, null, 4));
+        // }, null, 4)
+        // this.log.info(jsonTestingData);
+        // fs.writeFileSync("error.json", jsonTestingData);      
 
         const errorMsg = formatErrorMessage(fileName, errorSource, curCellId, errorMessage, errorLocation, errorStack, this.origSourceMap, this.finalSourceMap);
 
