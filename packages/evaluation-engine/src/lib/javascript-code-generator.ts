@@ -162,13 +162,6 @@ export class JavaScriptCodeGenerator {
     }
 
     //
-    // Format the file name for the particular language.
-    //
-    formatFileName(baseFileName: string): string {
-        return baseFileName + ".js";
-    }
-
-    //
     // Generate code for evaluation.
     //
     async genCode(cells: ISerializedCell1[]): Promise<IGeneratedCode> {

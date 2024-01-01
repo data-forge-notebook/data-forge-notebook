@@ -43,7 +43,7 @@ export class CodeGenerator implements ICodeGenerator {
     // Determine the file name based on the language.
     //
     formatFileName(baseFileName: string): string {
-        return this.languageCodeGenerator.formatFileName(baseFileName);
+        return baseFileName + ".js";
     }
 
 
