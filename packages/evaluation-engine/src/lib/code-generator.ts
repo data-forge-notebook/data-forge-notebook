@@ -104,7 +104,7 @@ export class CodeGenerator implements ICodeGenerator {
             if (moduleImportLines.length <= 0) {
                 continue;
             }
-            const moduleImportCode = moduleImportLines.join("\r\n") + "\r\n";
+            const moduleImportCode = moduleImportLines.join("\n") + "\n";
             code += moduleImportCode; //TODO: Need to find a way to get this into the source map.
             generatedCodeOffset += computeNumLines(moduleImportCode);
         }
@@ -125,7 +125,7 @@ export class CodeGenerator implements ICodeGenerator {
         //
         for (const cell of cells) {
             if (!forExport) {
-                const preCellCode = `__cell(${cellIndex}, "${cell.instanceId}", async () => {\r\n`;
+                const preCellCode = `__cell(${cellIndex}, "${cell.instanceId}", async () => {\n`;
                 code += preCellCode;
                 generatedCodeOffset += computeNumLines(preCellCode);
             }
@@ -148,9 +148,9 @@ export class CodeGenerator implements ICodeGenerator {
                 }
             });
             
-            cellCode = codeLines.join("\r\n");
+            cellCode = codeLines.join("\n");
 
-            cellCode += "\r\n";
+            cellCode += "\n";
 
             code += cellCode;
 
@@ -159,7 +159,7 @@ export class CodeGenerator implements ICodeGenerator {
 
             if (!forExport) {
                 // Generate code to capture local variables.
-                const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.instanceId}", () => ({}));\r\n`;
+                const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.instanceId}", () => ({}));\n`;
                 code += captureLocalsCode;
                 generatedCodeOffset += computeNumLines(captureLocalsCode);
             }
@@ -169,12 +169,12 @@ export class CodeGenerator implements ICodeGenerator {
         }
 
         if (!forExport) {
-            code += `__end();\r\n`;
+            code += `__end();\n`;
             generatedCodeOffset += 1;
 
             let numCells = cells.length;
             while (numCells-- > 0) {
-                code += "});\r\n";
+                code += "});\n";
                 generatedCodeOffset += 1;
             }
         }
@@ -194,7 +194,7 @@ export class CodeGenerator implements ICodeGenerator {
         //      await writeFile("./cell-" + cell.getId() + ".js", cell.getText());
         // }
 
-        //await writeFile("./generated.js", code + "\r\n" + sourceMapGenerator.makeInlineMapping());
+        //await writeFile("./generated.js", code + "\n" + sourceMapGenerator.makeInlineMapping());
 
         /* #endif */
 
@@ -290,30 +290,30 @@ const EXPORT_HEADER =
     "";
     
 const EXPORT_PRE_CODE = 
-    "function display() {\r\n" + 
-    "     for (const arg of arguments) {\r\n" +
-    "          console.log(arg);\r\n" +
-    "     }\r\n" +
-    "}\r\n" +
-    "\r\n" +
-    "async function main() {\r\n";
+    "function display() {\n" + 
+    "     for (const arg of arguments) {\n" +
+    "          console.log(arg);\n" +
+    "     }\n" +
+    "}\n" +
+    "\n" +
+    "async function main() {\n";
 
 
 const EXPORT_POST_CODE =
-    "\r\n" +
-    "}\r\n" +
-    "\r\n" +
-    "main()\r\n" +
-    "    .then(() => console.log(\"Done\"))\r\n" +
-    "    .catch(err => console.error(err && err.stack || err));\r\n"
+    "\n" +
+    "}\n" +
+    "\n" +
+    "main()\n" +
+    "    .then(() => console.log(\"Done\"))\n" +
+    "    .catch(err => console.error(err && err.stack || err));\n"
     ;
 
 const EVAL_PRE_CODE = 
-    "const wrapperFn = (async function () {\r\n"
+    "const wrapperFn = (async function () {\n"
     ;
 
 
-const EVAL_POST_CODE ="\r\n" +
+const EVAL_POST_CODE ="\n" +
     "})";
 
 const GLOBAL_PRE_CODE =
