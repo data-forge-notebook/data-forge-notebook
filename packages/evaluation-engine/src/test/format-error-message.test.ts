@@ -1,5 +1,5 @@
 import "jest";
-import { formatErrorMessage, ErrorSource } from "../../lib/format-error-message";
+import { formatErrorMessage, ErrorSource } from "../lib/format-error-message";
 import { mergeSourceMaps, SourceMap } from "source-map-lib";
 
 describe("format error message", () => {
