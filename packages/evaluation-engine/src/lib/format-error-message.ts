@@ -1,7 +1,7 @@
 import { translateStackTrace, translateLocation, translateStackFrame } from "./parse-stack-trace";
 import { ISourceMap } from "source-map-lib";
-import { IFileLocation } from "./language-code-generator";
 import { mapNotebookLocation } from "./source-map";
+import { IFileLocation } from "./babel-compile";
 
 export enum ErrorSource {
     ModuleInstall = "Module installation",
