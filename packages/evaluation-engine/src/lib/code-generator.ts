@@ -1,6 +1,6 @@
 import { ISerializedCell1, ISerializedNotebook1 } from "model";
 import { ILog } from "utils";
-import { ILanguageCodeGenerator, IGeneratedCode } from "./language-code-generator";
+import { IGeneratedCode } from "./language-code-generator";
 import { JavaScriptCodeGenerator } from "./javascript-code-generator";
 import { InjectableClass } from "@codecapers/fusion";
 
@@ -26,8 +26,7 @@ export interface ICodeGenerator {
 @InjectableClass()
 export class CodeGenerator implements ICodeGenerator {
     
-    //TODO: There doesn't need to be separate level of indirection here anymore.
-    languageCodeGenerator: ILanguageCodeGenerator;
+    languageCodeGenerator: JavaScriptCodeGenerator;
 
     notebook: ISerializedNotebook1;
 

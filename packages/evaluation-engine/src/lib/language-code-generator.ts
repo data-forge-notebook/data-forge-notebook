@@ -65,24 +65,3 @@ export interface IGeneratedCode {
     //
     diagnostics: IDiagnostic[];
 }
-
-//
-// Model used for code generation.
-//
-export interface ILanguageCodeGenerator {
-    
-    //
-    // Format the file name for the particular language.
-    //
-    formatFileName(baseFileName: string): string;
-
-    //
-    // Generate code for evaluation.
-    //
-    genCode(cells: ISerializedCell1[]): Promise<IGeneratedCode>;
-
-    //
-    // Generate code for export.
-    //
-    exportCode(): Promise<string>;
-}

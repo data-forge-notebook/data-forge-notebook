@@ -2,7 +2,7 @@ import { ISerializedCell1, ISerializedNotebook1 } from "model";
 import { CellType } from "model";
 import { ILog } from "utils";
 import { SourceMapGenerator } from "source-map-lib";
-import { ILanguageCodeGenerator, IGeneratedCode } from "./language-code-generator";
+import { IGeneratedCode } from "./language-code-generator";
 import { babelCompile } from "./babel-compile";
 import { isModuleImportStatement } from "./npm";
 import { computeNumLines } from "./lib/text";
@@ -10,7 +10,7 @@ import { computeNumLines } from "./lib/text";
 //
 // Model used for code generation.
 //
-export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
+export class JavaScriptCodeGenerator {
 
     //
     // The notebook to be compiled.
