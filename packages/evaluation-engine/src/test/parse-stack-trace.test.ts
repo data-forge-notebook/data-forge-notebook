@@ -1,4 +1,3 @@
-import "jest";
 import { parseFileLocator, parseStackTrace } from "../lib/parse-stack-trace";
 
 describe("parse stack trace", () => {

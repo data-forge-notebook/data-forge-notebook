@@ -1,10 +1,9 @@
-import "jest";
 import { formatErrorMessage, ErrorSource } from "../lib/format-error-message";
 import { mergeSourceMaps, SourceMap } from "source-map-lib";
 
 describe("format error message", () => {
 
-    it("syntax errror", () => {
+    test("syntax errror", () => {
 
         const input = {
             "fileName": "error - syntax error.notebook",
@@ -42,7 +41,7 @@ describe("format error message", () => {
         });
     });
 
-    it("typescript error", () => {
+    test("typescript error", () => {
 
         const input = {
             "fileName": "error - typescript type error.notebook",
@@ -95,7 +94,7 @@ describe("format error message", () => {
         });
     });
 
-    it("a long error message", () => {
+    test("a long error message", () => {
 
         const input = {
             "fileName": "856e82cc-6a7a-4abd-bee2-34709cb37c58",
@@ -144,7 +143,7 @@ describe("format error message", () => {
         });
     });
 
-    it("a deep stack error", () => {
+    test("a deep stack error", () => {
 
         const input = {
             "fileName": "78b62053-ce9d-412e-b59f-2a9069ae49c7",
@@ -196,7 +195,7 @@ describe("format error message", () => {
         });
     });
 
-    it("a module error", () => {
+    test("a module error", () => {
 
         const input = {
             "fileName": "error - no module.notebook",
@@ -234,7 +233,7 @@ describe("format error message", () => {
         });
     });
 
-    it("throwing an error object", () => {
+    test("throwing an error object", () => {
 
         const input = {
             "fileName": "error - throwing a error object.notebook",
@@ -272,7 +271,7 @@ describe("format error message", () => {
         });
     });
 
-    it("throwing an error string", () => {
+    test("throwing an error string", () => {
 
         const input = {
             "fileName": "error - throwing a string.notebook",
@@ -307,7 +306,7 @@ describe("format error message", () => {
         });
     });
 
-    it("undefined variable", () => {
+    test("undefined variable", () => {
 
         const input = {
             "fileName": "error - undefined variable.notebook",
@@ -345,7 +344,7 @@ describe("format error message", () => {
         });
     });
 
-    it("unexpected identifier", () => {
+    test("unexpected identifier", () => {
 
         const input = {
             "fileName": "error - unexpected identifier.notebook",
@@ -383,4 +382,51 @@ describe("format error message", () => {
         });
     });
 
+    test("trims file path from start of error message", () => {
+
+        const input = {
+            "fileName": "notebook",
+            "errorSource": "Compiler",
+            "curCellId": "773dbdfe-a77c-4108-8a59-5215220ea8d1",
+            "errorMessage": "C:\\projects\\data-forge-notebook\\data-forge-notebook\\notebooks\\test\\in-memory-file.ts: Unexpected token, expected \",\" ",
+            "errorLocation": {
+                "fileName": "in-memory-file.ts",
+                "line": 3,
+                "column": 16
+            },
+            "origSourceMap": {
+                "version": 3,
+                "names": [],
+                "sources": [
+                    "cell-773dbdfe-a77c-4108-8a59-5215220ea8d1"
+                ],
+                "mappings": ";;AAAA"
+            },
+            "finalSourceMap": {
+                "version": 3,
+                "names": [],
+                "sources": [
+                    "cell-773dbdfe-a77c-4108-8a59-5215220ea8d1"
+                ],
+                "mappings": ";;AAAA"
+            }
+        };
+
+        const msg = formatErrorMessage(
+            input.fileName,
+            ErrorSource.Compiler,
+            input.curCellId,
+            input.errorMessage,
+            input.errorLocation,
+            undefined,
+            new SourceMap(input.origSourceMap),
+            new SourceMap(input.finalSourceMap)
+        );
+
+        expect(msg).toEqual( {
+            "display": "Unexpected token, expected \",\"\r\n at Code cell, line 1",
+            "cellId": "773dbdfe-a77c-4108-8a59-5215220ea8d1",
+            "location": " at Code cell, line 1"
+        });
+    });
 });
