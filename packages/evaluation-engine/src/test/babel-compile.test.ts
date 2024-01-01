@@ -32,7 +32,7 @@ describe("babel-compile", () => {
     test("javascript error", async () => {
         const mockLog: any = {};
         const code = "1 = x;";
-        const projectPath = "/tmp";
+        const projectPath = "c:\\tmp";
 
         const result = await babelCompile(mockLog, code, projectPath);
 
