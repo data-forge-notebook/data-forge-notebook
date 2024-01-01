@@ -5,6 +5,7 @@ import { SourceMapGenerator } from "source-map-lib";
 import { ILanguageCodeGenerator, IGeneratedCode } from "./language-code-generator";
 import { babelCompile } from "./babel-compile";
 import { isModuleImportStatement } from "./npm";
+import { computeNumLines } from "./lib/text";
 
 //
 // Model used for code generation.
@@ -29,19 +30,6 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
         this.log = log;
     }
 
-    //
-    // Compute the number of lines in some code.
-    //
-    computeNumLines(code: string): number {
-        let numLines = 0;
-        for (let i = 0; i < code.length; ++i) {
-            if (code[i] == '\n') {
-                numLines++;
-            }
-        }
-
-        return numLines;
-    }
 
     //
     // Internal function for generating code.
@@ -53,7 +41,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
         let generatedCodeOffset = 0; 
 
-        generatedCodeOffset += this.computeNumLines(EXPORT_HEADER);
+        generatedCodeOffset += computeNumLines(EXPORT_HEADER);
         let code = EXPORT_HEADER;
 
         const sourceMapGenerator = new SourceMapGenerator();
@@ -74,16 +62,16 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
             }
             const moduleImportCode = moduleImportLines.join("\r\n") + "\r\n";
             code += moduleImportCode; //TODO: Need to find a way to get this into the source map.
-            generatedCodeOffset += this.computeNumLines(moduleImportCode);
+            generatedCodeOffset += computeNumLines(moduleImportCode);
         }
 
         if (forExport) {
             code += EXPORT_PRE_CODE;
-            generatedCodeOffset += this.computeNumLines(EXPORT_PRE_CODE);
+            generatedCodeOffset += computeNumLines(EXPORT_PRE_CODE);
         }
         else {
             code += EVAL_PRE_CODE;
-            generatedCodeOffset += this.computeNumLines(EVAL_PRE_CODE);
+            generatedCodeOffset += computeNumLines(EVAL_PRE_CODE);
         }
 
         let cellIndex = 0;
@@ -95,7 +83,7 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
             if (!forExport) {
                 const preCellCode = `__cell(${cellIndex}, "${cell.instanceId}", async () => {\r\n`;
                 code += preCellCode;
-                generatedCodeOffset += this.computeNumLines(preCellCode);
+                generatedCodeOffset += computeNumLines(preCellCode);
             }
 
             const cellId = cell.instanceId!;
@@ -122,14 +110,14 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
             code += cellCode;
 
-            const codeCellLines = this.computeNumLines(cellCode);
+            const codeCellLines = computeNumLines(cellCode);
             generatedCodeOffset += codeCellLines;
 
             if (!forExport) {
                 // Generate code to capture local variables.
                 const captureLocalsCode = `__capture_locals(${cellIndex}, "${cell.instanceId}", () => ({}));\r\n`;
                 code += captureLocalsCode;
-                generatedCodeOffset += this.computeNumLines(captureLocalsCode);
+                generatedCodeOffset += computeNumLines(captureLocalsCode);
             }
 
             sourceMapGenerator.addMappings(`cell-${cellId}`, cell.code || "", { line: cellStartLine, column: 0 });
@@ -149,11 +137,11 @@ export class JavaScriptCodeGenerator implements ILanguageCodeGenerator {
 
         if (forExport) {
             code += EXPORT_POST_CODE;
-            generatedCodeOffset += this.computeNumLines(EVAL_PRE_CODE);
+            generatedCodeOffset += computeNumLines(EVAL_PRE_CODE);
         }
         else {
             code += EVAL_POST_CODE;
-            generatedCodeOffset += this.computeNumLines(EVAL_PRE_CODE);
+            generatedCodeOffset += computeNumLines(EVAL_PRE_CODE);
         }
         
         /* #if debug */
