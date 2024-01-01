@@ -129,7 +129,6 @@ export class CodeEvaluator implements ICodeEvaluator {
     // For interaction with npm.
     //
     private npm: INpm;
-
    
     //
     // The number of cells to be evaluated.
@@ -386,6 +385,7 @@ export class CodeEvaluator implements ICodeEvaluator {
     // Ensure modules required by the notebook.
     //
     private async ensureRequiredModules(notebook: ISerializedNotebook1, cells: ISerializedCell1[], projectPath: string): Promise<void> {
+
         //
         // Automatically install modules referenced in the code.
         //
@@ -395,6 +395,7 @@ export class CodeEvaluator implements ICodeEvaluator {
                     await this.npm.ensureRequiredModules(cell.code || "", projectPath, false);
                 }
                 catch (err: any) {
+                    console.error(`Error installing modules for cell ${cell.instanceId}: ${err.message}`); //fio:
                     this.reportError(ErrorSource.ModuleInstall, cell.instanceId!, err.message, err.stack);
                 }
             }
