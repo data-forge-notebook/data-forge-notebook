@@ -77,7 +77,7 @@ function parseStackTraceLine(line: string): IStackFrame {
                 return stackFrame;
             }
             else {
-                throw new Error("Unrecognised component of stace trace line.");
+                throw new Error("Unrecognised component of stack trace line.");
             }
         }
         else {
