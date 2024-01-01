@@ -1,24 +1,12 @@
-import "jest";
 import { enableInjector, disableInjector } from "@codecapers/fusion";
 import { CodeGenerator } from "../lib/code-generator";
-
-function trim(input: string): string {
-    const lines = input.split("\n")
-        .map(line => line.trim()) // Trim white space.
-        .filter(line => line.length > 0) // Filter blank lines.
-    return lines.join("\r\n");
-}
+import { dedent } from "./lib/dedent";
 
 describe("code generator", () => {
 
     let mockLog: any;
     mockLog = {
         info: () => {},
-    };
-
-    let  mockPerformanceStatsCollection: any;
-    mockPerformanceStatsCollection = {
-        submitMeasurement: () => {},
     };
 
     beforeAll(() => {
@@ -29,7 +17,7 @@ describe("code generator", () => {
         enableInjector();
     });
 
-    it("can compile empty notebook", async () => {
+    test("can compile empty notebook", async () => {
         const emptyNotebook = {
             "version": 1,
             "language": "javascript",
@@ -38,20 +26,20 @@ describe("code generator", () => {
 
         const codeGenerator = new CodeGenerator(emptyNotebook, "test-path", mockLog);
         const code = await codeGenerator.genCode([]);
-        const expected = trim(`
+        const expected = dedent`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
             const wrapperFn = async function () {
-            __end();
+              __end();
             }; await wrapperFn(); })
-        `);
+        `;
 
-        expect(trim(code.code!)).toEqual(expected);
+        expect(code.code!).toEqual(expected);
         expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
-    it("can compile notebook with a single code cell", async () => {
+    test("can compile notebook with a single code cell", async () => {
         const notebook: any = {
             "version": 1,
             "language": "javascript",
@@ -78,26 +66,25 @@ describe("code generator", () => {
 
         const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
-        const expected = trim(`
+
+        const expected = dedent`
             (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
             const wrapperFn = async function () {
-            __cell(0, "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364", async () => {
+              __cell(0, "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364", async () => {
                 console.log("Hello JavaScript!");
-    
                 __capture_locals(0, "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364", () => ({}));
-    
                 __end();
-            });
+              });
             }; await wrapperFn(); })
-        `);
+        `;
 
-        expect(trim(code.code!)).toEqual(expected);
+        expect(code.code!).toEqual(expected);
         expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
-    it("can compile notebook with multiple code cells", async () => {
+    test("can compile notebook with multiple code cells", async () => {
         const notebook: any = {
             "version": 1,
             "language": "javascript",
@@ -119,32 +106,29 @@ describe("code generator", () => {
 
         const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
-        const expected = trim(`
-            (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
-            const wrapperFn = async function () {
+        const expected = dedent`
+          (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
+
+          const wrapperFn = async function () {
             __cell(0, "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364", async () => {
-                console.log("Cell 1!");
-    
-                __capture_locals(0, "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364", () => ({}));
-    
-                __cell(1, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", async () => {
+              console.log("Cell 1!");
+              __capture_locals(0, "e9fe6a22-76df-11e9-b6bb-81a2f4ed2364", () => ({}));
+              __cell(1, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", async () => {
                 console.log("Cell 2!");
-    
                 __capture_locals(1, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", () => ({}));
-    
                 __end();
-                });
+              });
             });
-            }; await wrapperFn(); })
-        `);
+          }; await wrapperFn(); })
+        `;
 
-        expect(trim(code.code!)).toEqual(expected);
+        expect(code.code!).toEqual(expected);
         expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
-    it("markdown cells are stripped", async () => {
+    test("markdown cells are stripped", async () => {
         const notebook: any = {
             "version": 1,
             "language": "javascript",
@@ -159,20 +143,21 @@ describe("code generator", () => {
 
         const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
-        const expected = trim(`
-            (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
-            const wrapperFn = async function () {
+        const expected = dedent`
+          (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
+
+          const wrapperFn = async function () {
             __end();
-            }; await wrapperFn(); })
-        `);
+          }; await wrapperFn(); })
+        `;
 
-        expect(trim(code.code!)).toEqual(expected);
+        expect(code.code!).toEqual(expected);
         expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
-    it("require statement", async () => {
+    test("require statement", async () => {
         const notebook: any = {
             "version": 1,
             "language": "javascript",
@@ -188,28 +173,27 @@ describe("code generator", () => {
 
         const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
-        const expected = trim(`
-            (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
-            const wrapperFn = async function () {
+        const expected = dedent`
+          (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
+
+          const wrapperFn = async function () {
             __cell(0, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", async () => {
-                const foo = require('foo');
-    
-                __capture_locals(0, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", () => ({
+              const foo = require('foo');
+              __capture_locals(0, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", () => ({
                 foo: foo
-                }));
-    
-                __end();
+              }));
+              __end();
             });
-            }; await wrapperFn(); })
-        `);
+          }; await wrapperFn(); })
+        `;
 
-        expect(trim(code.code!)).toEqual(expected);
+        expect(code.code!).toEqual(expected);
         expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
-    it("import statement", async () => {
+    test("import statement", async () => {
         const notebook: any = {
             "version": 1,
             "language": "javascript",
@@ -225,28 +209,27 @@ describe("code generator", () => {
 
         const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
         const code = await codeGenerator.genCode(notebook.cells);
-        const expected = trim(`
-            (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
 
-            var _foo = _interopRequireDefault(require("foo"));
-    
-            function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-    
-            const wrapperFn = async function () {
+        const expected = dedent`
+          (async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { "use strict";
+
+          Object.defineProperty(exports, "__esModule", {
+            value: true
+          });
+          const wrapperFn = async function () {
             __cell(0, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", async () => {
-                __capture_locals(0, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", () => ({}));
-    
-                __end();
+              __capture_locals(0, "a9fe6a22-76df-11e9-b6bb-81a2f4ed2364", () => ({}));
+              __end();
             });
-            }; await wrapperFn(); })
-        `);
+          }; await wrapperFn(); })
+        `;
 
-        expect(trim(code.code!)).toEqual(expected);
+        expect(code.code!).toEqual(expected);
         expect(code.sourceMapData).not.toBeUndefined();
         expect(code.diagnostics).toEqual([]);
     });
 
-    it("can export notebook", async () => {
+    test("can export notebook", async () => {
         const notebook: any = {
             "version": 1,
             "language": "javascript",
@@ -266,30 +249,26 @@ describe("code generator", () => {
         };
 
         const codeGenerator = new CodeGenerator(notebook, "test-path", mockLog);
-        const exported = trim(await codeGenerator.exportCode());
-        const expected = trim(`
-            import foo from 'foo';
-            function display() {
-                for (const arg of arguments) {
-                    console.log(arg);
-                }
-            }
-            display.text = display.html = display.plot = display.markdown = display.json = display.geo = display;
-            display.table = function () {
-                for (const arg of arguments) {
-                    console.table(arg);
-                }
-            }
-    
-            async function main() {
-    
-    
-            }
-    
-            main()
-                .then(() => console.log("Done"))
-                .catch(err => console.error(err && err.stack || err));
-        `);
+        const exported = (await codeGenerator.exportCode()).trim();
+
+        const expected = dedent`
+        import foo from 'foo';
+        function display() {
+             for (const arg of arguments) {
+                  console.log(arg);
+             }
+        }
+  
+        async function main() {
+  
+  
+        }
+  
+        main()
+            .then(() => console.log("Done"))
+            .catch(err => console.error(err && err.stack || err));            
+        `;
+
 
         expect(exported).toEqual(expected);
     });
