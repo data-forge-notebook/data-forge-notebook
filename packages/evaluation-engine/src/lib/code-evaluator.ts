@@ -5,7 +5,6 @@ import { ILog } from "utils";
 import * as vm from 'vm';
 import { formatErrorMessage, ErrorSource } from "./format-error-message";
 import { ISourceMap, mergeSourceMaps, SourceMap } from "source-map-lib";
-import { IFileLocation } from "./language-code-generator";
 import { CellType } from "model";
 import { IAsyncTracker, AsyncTracker } from "./async-tracker";
 import { AsyncResource, executionAsyncId } from "async_hooks";
@@ -14,6 +13,7 @@ import { EventEmitter } from "events";
 import { INpm } from "./npm";
 import { performance } from "perf_hooks";
 import stripAnsi from 'strip-ansi';
+import { IFileLocation } from "./babel-compile";
 
 //
 // Maximum number of outputs before outputs are capped.

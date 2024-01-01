@@ -1,8 +1,49 @@
-import { IDiagnostic } from "./language-code-generator";
 import { ILog } from "utils";
 import { isArray } from "util";
 import { transform, TransformOptions } from "@babel/core";
 import { customPlugin } from "./babel-plugin";
+
+//
+// Location in the file.
+//
+export interface IFileLocation {
+
+    //
+    // The particular file.
+    //
+    fileName: string;
+
+    //
+    // Line number.
+    //
+    line: number;
+
+    // 
+    // Column number.
+    //
+    column: number;
+}
+
+//
+// A diagnostic error message to display to the user.
+//
+export interface IDiagnostic {
+
+    //
+    // The message to display.
+    //
+    message: string;
+
+    //
+    // Location of issue in the file.
+    //
+    location?: IFileLocation;
+
+    //
+    // Source of the diagnostic message.
+    //
+    source: string;
+}
 
 //
 // Result of compiling TypeScript code.

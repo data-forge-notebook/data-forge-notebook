@@ -1,7 +1,6 @@
 import { ISerializedCell1, ISerializedNotebook1 } from "model";
 import { ILog } from "utils";
-import { IGeneratedCode } from "./language-code-generator";
-import { JavaScriptCodeGenerator } from "./javascript-code-generator";
+import { IGeneratedCode, JavaScriptCodeGenerator } from "./javascript-code-generator";
 import { InjectableClass } from "@codecapers/fusion";
 
 //
@@ -45,7 +44,6 @@ export class CodeGenerator implements ICodeGenerator {
     formatFileName(baseFileName: string): string {
         return baseFileName + ".js";
     }
-
 
     //
     // Generate code for evaluation.

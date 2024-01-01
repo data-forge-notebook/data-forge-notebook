@@ -2,10 +2,31 @@ import { ISerializedCell1, ISerializedNotebook1 } from "model";
 import { CellType } from "model";
 import { ILog } from "utils";
 import { SourceMapGenerator } from "source-map-lib";
-import { IGeneratedCode } from "./language-code-generator";
-import { babelCompile } from "./babel-compile";
+import { IDiagnostic, babelCompile } from "./babel-compile";
 import { isModuleImportStatement } from "./npm";
 import { computeNumLines } from "./lib/text";
+
+//
+// Structure that contains generated code and its source map.
+//
+export interface IGeneratedCode {
+    //
+    // Generated code.
+    // Or undefined if failed to generate code.
+    //
+    code?: string;
+
+    //
+    // Maps generated code back to source code.
+    // Or undefined if failed to generate code.
+    //
+    sourceMapData: any[];
+
+    //
+    // Array of diagnostic messages produced during compilation.
+    //
+    diagnostics: IDiagnostic[];
+}
 
 //
 // Model used for code generation.
