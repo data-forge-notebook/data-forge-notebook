@@ -1,6 +1,7 @@
 import { disableInjector, enableInjector } from "@codecapers/fusion";
 import { NotebookRepository, NotebookStorageId } from "../services/notebook-repository";
 import * as path from "path";
+import { dedent } from "utils";
 
 describe("electron / notebook-repository", () => {
 
@@ -52,7 +53,9 @@ describe("electron / notebook-repository", () => {
         const containingPath = "some/path";
         const fullPath = path.join(containingPath, fileName);
 
-        const mockNotebook: any = {};
+        const mockNotebook: any = {
+            cells: [],
+        };
         const mockId: any = {
             getFileName() {
                 return fileName;
@@ -63,17 +66,19 @@ describe("electron / notebook-repository", () => {
             }
         };
 
-
         const mockFile: any = {
-            writeJsonFile: jest.fn(),
+            writeFile: jest.fn(),
         };
+
+        const serializedNotebook = "---\nversion: 4\n---\n\n";
 
         const notebookRepository = new NotebookRepository();
         notebookRepository.file = mockFile;
+
         await notebookRepository.writeNotebook(mockNotebook, mockId);
 
-        expect(mockFile.writeJsonFile).toBeCalledTimes(1);
-        expect(mockFile.writeJsonFile).toHaveBeenCalledWith(fullPath, mockNotebook);
+        expect(mockFile.writeFile).toBeCalledTimes(1);
+        expect(mockFile.writeFile).toHaveBeenCalledWith(fullPath, serializedNotebook);
     });
 
     test("can't write untitled notebook", async () => {
@@ -107,11 +112,11 @@ describe("electron / notebook-repository", () => {
             }
         };
 
-        const mockNotebook = { a: "notebook" };
+        const serializedNotebook = "---\nversion: 4\n---\n\n";
         const mockFile: any = {
-            async readJsonFile(path: string) {
+            async readFile(path: string) {
                 expect(path).toBe(fullPath);
-                return mockNotebook;
+                return serializedNotebook;
             },
             async isReadOnly() { 
                 return true;
@@ -122,7 +127,8 @@ describe("electron / notebook-repository", () => {
         notebookRepository.file = mockFile;
 
         const notebook = await notebookRepository.readNotebook(mockId);        
-        expect(notebook).toBe(mockNotebook);
+        expect(notebook).toBeDefined();
+        expect(notebook.cells.length).toBe(0);
     });
 
     test("can't read untitled notebook", async () => {
