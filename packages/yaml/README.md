@@ -1,5 +1,7 @@
 # YAML <a href="https://www.npmjs.com/package/yaml"><img align="right" src="https://badge.fury.io/js/yaml.svg" title="npm package" /></a>
 
+Original code: https://github.com/eemeli/yaml
+
 `yaml` is a definitive library for [YAML](https://yaml.org/), the human friendly data serialization standard.
 This library:
 
