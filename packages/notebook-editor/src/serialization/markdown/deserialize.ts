@@ -1,4 +1,4 @@
-import { CellType, ISerializedCell1, ISerializedCellError1, ISerializedCellOutput1, ISerializedCellOutputValue1, ISerializedNotebook1 } from "model";
+import { CellType } from "model";
 import { CellErrorViewModel, ICellErrorViewModel } from "../../view-model/cell-error";
 import { CellOutputValueViewModel, ICellOutputValueViewModel } from "../../view-model/cell-output-value";
 import { CellOutputViewModel, ICellOutputViewModel } from "../../view-model/cell-output";
@@ -7,7 +7,7 @@ import { IMarkdownCellViewModel, MarkdownCellViewModel } from "../../view-model/
 import { INotebookViewModel, NotebookViewModel } from "../../view-model/notebook";
 import { ICellViewModel } from "../../view-model/cell";
 import { INotebookStorageId } from "../../services/notebook-repository";
-import * as yaml from "yaml";
+import yaml from "yaml";
 
 //
 // Removes the first line of the input.

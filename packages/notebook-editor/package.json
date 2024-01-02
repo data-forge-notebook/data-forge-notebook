@@ -53,6 +53,6 @@
         "typy": "^3.3.0",
         "utils": "workspace:*",
         "uuid": "^9.0.0",
-        "yaml": "^2.3.4"
+        "yaml": "workspace:*"
     }
 }
