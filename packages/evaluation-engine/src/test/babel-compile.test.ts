@@ -1,5 +1,5 @@
 import { babelCompile } from "../lib/babel-compile";
-import { dedent } from "./lib/dedent";
+import { dedent } from "utils";
 
 describe("babel-compile", () => {
 

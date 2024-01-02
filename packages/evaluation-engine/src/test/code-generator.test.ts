@@ -1,6 +1,6 @@
 import { enableInjector, disableInjector } from "@codecapers/fusion";
 import { CodeGenerator } from "../lib/code-generator";
-import { dedent } from "./lib/dedent";
+import { dedent } from "utils";
 
 describe("code generator", () => {
 

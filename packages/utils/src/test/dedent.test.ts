@@ -1,4 +1,4 @@
-import { dedent } from './dedent'; // Import the dedent function from your code
+import { dedent } from "../lib/dedent";
 
 describe('dedent', () => {
 

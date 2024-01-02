@@ -1,5 +1,5 @@
 import { CodeEvaluator } from "../lib/code-evaluator";
-import { dedent } from "./lib/dedent";
+import { dedent } from "utils";
 
 describe('code evaluator', () => {
 

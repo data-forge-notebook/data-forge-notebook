@@ -4,3 +4,4 @@ export * from "./lib/event-source";
 export * from "./lib/sleep";
 export * from "./lib/log";
 export * from "./lib/id-generator";
+export * from "./lib/dedent";
