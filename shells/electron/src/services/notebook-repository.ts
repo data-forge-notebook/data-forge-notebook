@@ -5,7 +5,11 @@ import { IIdGenerator, IIdGeneratorId } from "utils";
 import { IDialogs, IDialogsId } from "./dialogs";
 import { exampleNotebooks } from "../data/example-notebooks";
 import { INotebookViewModel } from "notebook-editor/build/view-model/notebook";
-import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId, IPaths, IPaths_ID, jsonDeserialization, markdownSerialization, markdownDeserialization } from "notebook-editor";
+import { IExampleNotebook, INotebookRepository, INotebookRepositoryId, INotebookStorageId } from "notebook-editor/build/services/notebook-repository";
+import { IPaths, IPaths_ID } from "notebook-editor/build/services/paths";
+import * as markdownSerialization from "notebook-editor/build/serialization/markdown/serialize";
+import * as markdownDeserialization from "notebook-editor/build/serialization/markdown/deserialize";
+import * as jsonDeserialization from "notebook-editor/build/serialization/json/deserialize";
 
 //
 // Identifies a notebook in storage.

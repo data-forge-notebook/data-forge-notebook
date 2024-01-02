@@ -1,4 +1,4 @@
-import { disableInjector } from "@codecapers/fusion";
+import { disableInjector, enableInjector } from "@codecapers/fusion";
 import { NotebookRepository, NotebookStorageId } from "../services/notebook-repository";
 import * as path from "path";
 
@@ -6,6 +6,10 @@ describe("electron / notebook-repository", () => {
 
     beforeAll(() => {
         disableInjector();
+    });
+
+    afterAll(() => {
+        enableInjector();
     });
 
     test("can get details for untitled notebook id", () => {
