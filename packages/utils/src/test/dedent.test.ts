@@ -68,4 +68,20 @@ describe('dedent', () => {
         const expected = "(async function (require, __filename, __dirname, display, __cell, __end, __capture_locals, __auto_display) { \"use strict\";\n\nconst wrapperFn = async function () {\n  __cell(0, \"e9fe6a22-76df-11e9-b6bb-81a2f4ed2364\", async () => {\n    console.log(\"Hello JavaScript!\");\n    __capture_locals(0, \"e9fe6a22-76df-11e9-b6bb-81a2f4ed2364\", () => ({}));\n    __end();\n  });\n}; await wrapperFn(); })";
         expect(dedented).toEqual(expected);
     });
+
+    test(`can dedent markdown with frontmatter`, () => {
+
+        const theDescription = "This is a description";
+        const input = dedent`
+            ---
+            version: 1
+            description: ${theDescription}
+            ---
+            # Hello World
+        `;
+
+        const expectedOutput = `---\nversion: 1\ndescription: ${theDescription}\n---\n# Hello World`;
+
+        expect(input).toEqual(expectedOutput);
+    });
 });
