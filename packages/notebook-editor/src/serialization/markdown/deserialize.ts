@@ -12,7 +12,7 @@ import yaml from "yaml";
 //
 // Removes the first line of the input.
 //
-export function removeFirstLine(input: string): string {
+function removeFirstLine(input: string): string {
     const newlineIndex = input.indexOf("\n");
     if (newlineIndex >= 0) {
         return input.substring(newlineIndex + 1);
@@ -25,7 +25,7 @@ export function removeFirstLine(input: string): string {
 //
 // Removes the last line of the input
 //
-export function removeLastLine(input: string): string {
+function removeLastLine(input: string): string {
     const newlineIndex = input.lastIndexOf("\n");
     if (newlineIndex >= 0) {
         return input.substring(0, newlineIndex);
@@ -33,6 +33,17 @@ export function removeLastLine(input: string): string {
     else {
         return "";
     }
+}
+
+//
+// Remove the code fence around some text.
+//
+function removeFence(input: string): string {
+    input = removeFirstLine(input);
+    if (input.endsWith("```") || input.endsWith("```\n")) {
+        input = removeLastLine(input);
+    }
+    return input;
 }
 
 //
@@ -49,25 +60,12 @@ export function deserializeCodeCell(input: string): ICodeCellViewModel {
 
     for (let part of parts) {
         if (part.startsWith("```typescript")) {
-            part = removeFirstLine(part);
-            if (part.endsWith("```") || part.endsWith("```\n")) {
-                part = removeLastLine(part);
-            }
-
-            text += part;
+            text += removeFence(part);
         }
         else if (part.startsWith("```json - error")) {
-            part = removeFirstLine(part);
-            if (part.endsWith("```") || part.endsWith("```\n")) {
-                part = removeLastLine(part);
-            }
             errors.push(deserializeCellError(part));
         }
         else if (part.startsWith("```json - output")) {
-            part = removeFirstLine(part);
-            if (part.endsWith("```") || part.endsWith("```\n")) {
-                part = removeLastLine(part);
-            }
             output.push(deserializeCellOutput(part));
         }
         else {
@@ -83,7 +81,7 @@ export function deserializeCodeCell(input: string): ICodeCellViewModel {
 // Deserialize the model from a previously serialized data structure.
 //
 export function deserializeCellError(input: string): ICellErrorViewModel {
-    return new CellErrorViewModel(input);
+    return new CellErrorViewModel(removeFence(input));
 }
 
 //
@@ -97,7 +95,7 @@ export function deserializeCellOutputValue(input: any): ICellOutputValueViewMode
 // Deserialize the model from a previously serialized data structure.
 //
 export function deserializeCellOutput(input: string): ICellOutputViewModel {
-    const output = JSON.parse(input);
+    const output = JSON.parse(removeFence(input));
     return new CellOutputViewModel(deserializeCellOutputValue(output.value), output.height);
 }
 
