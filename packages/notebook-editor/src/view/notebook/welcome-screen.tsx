@@ -375,17 +375,27 @@ export class WelcomeScreen extends React.Component<IWelcomeScreenProps, IWelcome
                                 borderRadius: "3px",
                             }}
                             >
-                            <div
-                                className="mb-1"
-                                style={headingStyle}
-                                >
-                                Stay in touch
+                            <div className="flex flex-row">
+                                <div
+                                    className="flex-grow mb-1"
+                                    style={headingStyle}
+                                    >
+                                    Stay in touch
+                                </div>
+                                <div>
+                                    <a 
+                                        className="mr-2"
+                                        target="_blank" 
+                                        href="https://codecapers.com.au/about#support-my-work"
+                                        >
+                                        Support the developer
+                                    </a>
+                                </div>
                             </div>
                             <div style={textStyle}>
                                 <div>
                                     <a target="_blank" href="http://eepurl.com/dyb9dn">Join the mailing list for occasional news and resources</a>
                                 </div>
-
                                 <div className="mt-1">
                                     <a target="_blank" href="http://issues.data-forge-notebook.com/new">Report a problem</a>
                                 </div>

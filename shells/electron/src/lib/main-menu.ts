@@ -456,6 +456,10 @@ export class MainMenu implements IMainMenu {
                     this.createSeparator(),
 
                     this.createLinkMenuItem("About Data-Forge Notebook", "https://github.com/data-forge-notebook/data-forge-notebook/wiki/quick-overview"),
+
+                    this.createSeparator(),
+
+                    this.createLinkMenuItem("Support the developer", "https://codecapers.com.au/about#support-my-work"),
                 ],
             },
         ];
