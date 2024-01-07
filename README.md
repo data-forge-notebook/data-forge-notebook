@@ -4,7 +4,7 @@ Data-Forge Notebook is a cross-platform notebook application for JavaScript and 
 
 The is the mono repo for Data-Forge Notebook.
 
-**DFN V2 official build is coming soon**. Can't wait for the official v2 build? [Jump into the releases page and download the latest v2 release candidate](https://github.com/data-forge-notebook/data-forge-notebook/releases)
+**DFN v2 has been released**. [Jump into the releases page and download the build for your platform](https://github.com/data-forge-notebook/data-forge-notebook/releases)
 
 [Data-Forge Notebook v1 available here](https://www.data-forge-notebook.com/)
 
