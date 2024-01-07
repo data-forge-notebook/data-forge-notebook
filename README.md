@@ -10,7 +10,7 @@ The is the mono repo for Data-Forge Notebook.
 
 [See the issues page and contribute](https://github.com/data-forge-notebook/data-forge-notebook/issues)
 
-[Follow the developer on Twitter for more news and updates](https://twitter.com/codecapers)
+[Support the developer](https://codecapers.com.au/about#support-my-work)
 
 ## Project structure
 
