@@ -6,8 +6,6 @@ The is the mono repo for Data-Forge Notebook.
 
 **DFN v2 has been released**. [Jump into the releases page and download the build for your platform](https://github.com/data-forge-notebook/data-forge-notebook/releases)
 
-[Data-Forge Notebook v1 available here](https://www.data-forge-notebook.com/)
-
 [Read the wiki](https://github.com/data-forge-notebook/data-forge-notebook/wiki)
 
 [See the issues page and contribute](https://github.com/data-forge-notebook/data-forge-notebook/issues)
