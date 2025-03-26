@@ -65,7 +65,7 @@ pnpm run start
 
 Clone this repo locally, open a terminal and change to the local directory.
 
-This projects used `pnpm` instead of `npm` because it's so much faster.
+This projects uses `pnpm` instead of `npm` because it's so much faster.
 
 Install pnpm:
 
