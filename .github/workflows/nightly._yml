@@ -74,7 +74,7 @@ jobs:
           version: 8.11.0
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20.10.18
           cache: 'pnpm'
