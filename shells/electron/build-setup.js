@@ -78,7 +78,7 @@ async function main() {
 
     let nodejsInstallBasename;
     let nodejsInstallFile;
-    const nodejsVersion = "20.10.0";
+    const nodejsVersion = "20.10.18";
     if (PLATFORM === "win") {
         nodejsInstallBasename = `node-v${nodejsVersion}-win-x64`;
         nodejsInstallFile = `${nodejsInstallBasename}.zip`;
