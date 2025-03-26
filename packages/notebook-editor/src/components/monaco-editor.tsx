@@ -346,6 +346,7 @@ class MonacoEditorView extends React.Component<IMonacoEditorProps, IMonacoEditor
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.DownArrow, () => this.invokeNamedCommand("move-cell-down"), "");
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.UpArrow, () => this.invokeNamedCommand("move-cell-up"), "");
         this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Slash, () => this.invokeNamedCommand("toggle-hotkeys"), "");
+        this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyR, () => this.invokeNamedCommand("eval-single-cell"), "");
 
         if (this.props.onEscapeKey) {
             this.editor.addCommand(monaco.KeyCode.Escape, () => {
